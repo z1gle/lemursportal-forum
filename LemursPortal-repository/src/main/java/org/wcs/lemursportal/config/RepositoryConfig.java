@@ -30,33 +30,14 @@ public class RepositoryConfig {
 
 	@Autowired
 	private Environment env;
-
-	@Bean(name="dataSource")
-	public DataSource dataSource() {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName(env.getProperty("dataSource.driverClassName"));
-	    dataSource.setUrl(env.getProperty("dataSource.url"));
-	    dataSource.setUsername(env.getProperty("dataSource.username"));
-	    dataSource.setPassword(env.getProperty("dataSource.password"));
-	    return dataSource;
-	    
-//		HikariConfig config = new HikariConfig();
-//		config.setMaximumPoolSize(Integer.parseInt(env.getProperty("dataSource.max.pool.size")));
-//		config.setDataSourceClassName(env.getProperty("dataSource.driverClassName"));
-//		config.addDataSourceProperty("url", env.getProperty("dataSource.url"));
-//		config.addDataSourceProperty("user",env.getProperty("dataSource.username"));
-//		config.addDataSourceProperty("password",env.getProperty("dataSource.password"));
-//		config.addDataSourceProperty("serverName",env.getProperty("dataSource.server"));
-//		config.addDataSourceProperty("portNumber",env.getProperty("dataSource.port"));
-//
-//		return new HikariDataSource(config);
-	}
 	
+	@Autowired
+	private DataSource dataSource;//on injecte la datasource pour qu'on puisse utiliser un autre datasource pour les test
 	
 	@Bean
 	public LocalSessionFactoryBean sessionFactory(){
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-		sessionFactory.setDataSource(dataSource());
+		sessionFactory.setDataSource(dataSource);
 		sessionFactory.setPackagesToScan("org.wcs.lemursportal.data");
 		Properties hibeProperties = new Properties();
 		hibeProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));

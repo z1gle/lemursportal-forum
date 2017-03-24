@@ -14,9 +14,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.wcs.lemursportal.data.authentication.Authority;
 import org.wcs.lemursportal.data.authentication.IUserInfo;
-import org.wcs.lemursportal.data.authentication.UserInfo;
+import org.wcs.lemursportal.data.user.UserInfo;
+import org.wcs.lemursportal.data.user.UserType;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>
@@ -56,10 +56,13 @@ public abstract class AbstractUserDetailsService<U extends IUserInfo> implements
 
 	private Collection<GrantedAuthority> getUserAuthorities(UserInfo userInfo) {
 		Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-//		for(Authority auth: userInfo.getAuthorities()){
-//			grantedAuthorities.add(new SimpleGrantedAuthority(auth.getAuthority()));
-//		}
-		grantedAuthorities.add(new SimpleGrantedAuthority(userInfo.getRole()));
+		for(UserType role: userInfo.getRoles()){
+			String rolePrefixed = role.getLibelle();
+			if(!rolePrefixed.toUpperCase().startsWith("ROLE_")){
+				rolePrefixed = "ROLE_" + role.getLibelle().toUpperCase();
+			}
+			grantedAuthorities.add(new SimpleGrantedAuthority(rolePrefixed));
+		}
 		return grantedAuthorities;
 	}
 }

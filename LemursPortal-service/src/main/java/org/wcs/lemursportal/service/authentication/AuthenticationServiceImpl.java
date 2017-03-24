@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.wcs.lemursportal.data.authentication.UserInfo;
-import org.wcs.lemursportal.repository.UserInfoRepository;
+import org.wcs.lemursportal.data.user.UserInfo;
+import org.wcs.lemursportal.repository.user.UserRepository;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>
@@ -19,7 +19,7 @@ public class AuthenticationServiceImpl extends
 		AbstractUserDetailsService<UserInfo> implements AuthenticationService {
 	
 	@Autowired
-	private UserInfoRepository userInfoRepository; 
+	private UserRepository userInfoRepository; 
 
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.service.authentication.AbstractUserDetailsService#findUserByLogin(java.lang.String)
