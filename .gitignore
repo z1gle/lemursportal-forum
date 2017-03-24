@@ -1,2 +1,10 @@
 **/target/**
 .settings/**
+/LemursPortal-web/target
+/LemursPortal-web/.settings
+/LemursPortal-service/target
+/LemursPortal-service/.settings
+/LemursPortal-repository/target
+/LemursPortal-repository/.settings
+/LemursPortal-data/target
+/LemursPortal-data/.settings
