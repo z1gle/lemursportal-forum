@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.wcs.lemursportal.data.user;
+package org.wcs.lemursportal.model.user;
 
 import java.io.Serializable;
 

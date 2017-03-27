@@ -1,4 +1,4 @@
-package org.wcs.lemursportal.data.user;
+package org.wcs.lemursportal.model.user;
 
 import java.util.Date;
 import java.util.Set;
@@ -11,9 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
-import org.wcs.lemursportal.data.authentication.IUserInfo;
+import org.wcs.lemursportal.model.authentication.IUserInfo;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>

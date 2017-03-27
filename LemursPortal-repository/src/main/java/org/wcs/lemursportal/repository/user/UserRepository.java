@@ -2,7 +2,7 @@ package org.wcs.lemursportal.repository.user;
 
 import java.util.List;
 
-import org.wcs.lemursportal.data.user.UserInfo;
+import org.wcs.lemursportal.model.user.UserInfo;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>

@@ -1,4 +1,4 @@
-package org.wcs.lemursportal.data.authentication;
+package org.wcs.lemursportal.model.authentication;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>

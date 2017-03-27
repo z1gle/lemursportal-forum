@@ -19,8 +19,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import org.wcs.lemursportal.data.user.UserInfo;
-import org.wcs.lemursportal.data.user.UserType;
+import org.wcs.lemursportal.model.user.UserInfo;
+import org.wcs.lemursportal.model.user.UserType;
 import org.wcs.lemursportal.repository.config.RepositoryTestConfig;
 
 /**
@@ -106,23 +106,22 @@ public class UserRepositoryImplTest {
 		org.junit.Assert.assertEquals(nbEnabledUser, users.size());
 	}
 	
-//	@Test
-//	public void testCreateUserWithSameLoginError(){
-//
-//		for(int i=0;i< 2; i++){
-//			UserInfo user = new UserInfo();
-//			user.setId(random.nextInt());
-//			user.setLogin("monlogin");
-//			user.setDateNaissance(new Date());
-//			boolean enabled = random.nextBoolean();
-//			user.setEnabled(enabled);
-//			user.setNom("nom " + random.nextInt());
-//			user.setPassword(encoder.encodePassword("password " + random.nextInt(), "s-a-l-t"));
-//			user.setPrenom("Prenom " + random.nextInt());
-//			int roleIndex = random.nextInt(4);
-//			user.setRoles(new HashSet<>(Arrays.asList(roles[roleIndex])));
-//			userRepository.insert(user);
-//		}
-//		
-//	}
+	@Test
+	public void testCreateUserWithSameLoginError(){
+		String login = "monlogin";
+		for(int i=0;i< 2; i++){
+			UserInfo user = new UserInfo();
+			user.setId(random.nextInt());
+			user.setLogin(login);
+			user.setDateNaissance(new Date());
+			user.setEnabled(true);
+			user.setNom("nom " + random.nextInt());
+			user.setPassword(encoder.encodePassword("password " + random.nextInt(), "s-a-l-t"));
+			user.setPrenom("Prenom " + random.nextInt());
+			int roleIndex = random.nextInt(4);
+			user.setRoles(new HashSet<>(Arrays.asList(roles[roleIndex])));
+			userRepository.insert(user);
+		}
+		org.junit.Assert.assertEquals(2, userRepository.findAll().size());
+	}
 }

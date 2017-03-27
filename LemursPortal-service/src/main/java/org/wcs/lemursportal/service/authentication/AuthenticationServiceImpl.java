@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.wcs.lemursportal.data.user.UserInfo;
+import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.user.UserRepository;
 
 /**

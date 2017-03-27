@@ -14,9 +14,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.wcs.lemursportal.data.authentication.IUserInfo;
-import org.wcs.lemursportal.data.user.UserInfo;
-import org.wcs.lemursportal.data.user.UserType;
+import org.wcs.lemursportal.model.authentication.IUserInfo;
+import org.wcs.lemursportal.model.user.UserInfo;
+import org.wcs.lemursportal.model.user.UserType;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>

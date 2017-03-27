@@ -7,7 +7,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.wcs.lemursportal.data.user.UserType;
+import org.wcs.lemursportal.model.user.UserType;
 
 /**
  * @author mikajy.hery

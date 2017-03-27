@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.wcs.lemursportal.data.user.UserInfo;
+import org.wcs.lemursportal.model.user.UserInfo;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>

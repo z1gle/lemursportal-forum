@@ -3,7 +3,7 @@
  */
 package org.wcs.lemursportal.repository.user;
 
-import org.wcs.lemursportal.data.user.UserType;
+import org.wcs.lemursportal.model.user.UserType;
 
 /**
  * @author mikajy.hery
