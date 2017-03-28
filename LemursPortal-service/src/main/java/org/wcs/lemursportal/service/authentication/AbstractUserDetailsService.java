@@ -5,6 +5,8 @@ package org.wcs.lemursportal.service.authentication;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,9 +26,12 @@ import org.wcs.lemursportal.model.user.UserType;
  * @param <U>
  */
 public abstract class AbstractUserDetailsService<U extends IUserInfo> implements UserDetailsService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractUserDetailsService.class);
 
 	@Override
 	public UserDetails loadUserByUsername(String username)	throws UsernameNotFoundException {
+		LOGGER.debug("Find user with login :" + username);
 		UserInfo account = this.findUserByLogin(username);
 		if(account == null) {
 			throw new UsernameNotFoundException("user not found");
@@ -55,14 +60,20 @@ public abstract class AbstractUserDetailsService<U extends IUserInfo> implements
 	
 
 	private Collection<GrantedAuthority> getUserAuthorities(UserInfo userInfo) {
+		StringBuilder sb = new StringBuilder("User Authorities : [");
 		Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 		for(UserType role: userInfo.getRoles()){
 			String rolePrefixed = role.getLibelle();
 			if(!rolePrefixed.toUpperCase().startsWith("ROLE_")){
 				rolePrefixed = "ROLE_" + role.getLibelle().toUpperCase();
 			}
+			sb.append(rolePrefixed).append(",");
 			grantedAuthorities.add(new SimpleGrantedAuthority(rolePrefixed));
 		}
+		sb.append("]");
+		LOGGER.debug(sb.toString());
 		return grantedAuthorities;
 	}
+	
+	
 }

@@ -39,7 +39,8 @@
 		</c:when>
 		<c:otherwise>
 			<c:url value="/login" var="loginUrl" />
-			Vous n'êtes pas authentifiés. <a href="${loginUrl}">Login</a>
+			<c:url value="/signup" var="signupUrl" />
+			Vous n'êtes pas authentifiés. <a href="${loginUrl}">Login</a> | <a href="${signupUrl}">S'inscrire</a> 
 		</c:otherwise>
 	</c:choose>
 	<div style="width:300px; float:right;">

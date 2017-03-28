@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -27,6 +29,7 @@ public class UserInfo implements IUserInfo {
 	private static final long serialVersionUID = 7606421457192166667L;
 	
 	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
 	private String nom;
@@ -48,6 +51,8 @@ public class UserInfo implements IUserInfo {
 	
 	@Column(name = "last_access_date")
 	private Date lastAccessDate;
+	
+	private String email;
 	
 	private String biographie;
 	
@@ -118,6 +123,12 @@ public class UserInfo implements IUserInfo {
 	}
 	public void setRoles(Set<UserType> roles) {
 		this.roles = roles;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 }

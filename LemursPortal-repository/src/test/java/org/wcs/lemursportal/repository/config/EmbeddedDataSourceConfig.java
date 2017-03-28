@@ -17,10 +17,11 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 @Profile("tests")
 public class EmbeddedDataSourceConfig {
 
-    @Bean
+    @Bean("datasource")
     public DataSource dataSource() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.HSQL)
+                .addScript("db/sql/create-db.sql")
                 .build();
     }
     

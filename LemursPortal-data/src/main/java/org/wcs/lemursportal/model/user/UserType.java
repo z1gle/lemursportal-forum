@@ -4,10 +4,12 @@
 package org.wcs.lemursportal.model.user;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
@@ -32,6 +34,9 @@ public class UserType implements Serializable {
 	@Column(name="description")
 	private String description;
 	
+	@ManyToMany(mappedBy="roles")
+	private Set<UserInfo> users;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -49,5 +54,11 @@ public class UserType implements Serializable {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	public Set<UserInfo> getUsers() {
+		return users;
+	}
+	public void setUsers(Set<UserInfo> users) {
+		this.users = users;
 	}
 }

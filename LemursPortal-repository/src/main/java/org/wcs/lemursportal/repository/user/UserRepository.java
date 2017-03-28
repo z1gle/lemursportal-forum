@@ -8,7 +8,7 @@ import org.wcs.lemursportal.model.user.UserInfo;
  * @author Mikajy <mikajy401@gmail.com>
  *
  */
-public interface UserRepository {
+public interface UserRepository /*extends JpaRepository<UserInfo, Integer>*/{
 	/**
 	 * 
 	 * @return

@@ -2,8 +2,12 @@ package org.wcs.lemursportal.repository.user;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -16,7 +20,9 @@ import org.wcs.lemursportal.model.user.UserInfo;
  */
 @Repository
 @Transactional(propagation=Propagation.REQUIRED)
-public class UserRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl implements UserRepository{
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryImpl.class);
 	
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -26,10 +32,19 @@ public class UserRepositoryImpl implements UserRepository {
 	 */
 	@Override
 	public UserInfo findUserByLogin(String login) {
-		Query<UserInfo> query = sessionFactory.getCurrentSession().createQuery("select u from UserInfo u where u.login=:login and u.enabled=:enabled", UserInfo.class);
-		query.setParameter("login", login);
-		query.setParameter("enabled", Boolean.TRUE);
-		UserInfo userInfo = query.getSingleResult();
+		UserInfo userInfo;
+		try{
+			Query<UserInfo> query = sessionFactory.getCurrentSession().createQuery("select u from UserInfo u where u.login=:login and u.enabled=:enabled", UserInfo.class);
+			query.setParameter("login", login);
+			query.setParameter("enabled", Boolean.TRUE);
+			userInfo = query.getSingleResult();
+			LOGGER.info(String.format("One user found for login '%s'", login));
+		}catch(NoResultException e){
+			userInfo = null;
+			LOGGER.debug(String.format("No user found for login '%s'", login));
+		}/*catch(NonUniqueResultException e){
+			userInfo = null;
+		}*/
 		return userInfo;
 	}
 

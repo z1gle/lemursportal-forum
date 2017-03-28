@@ -7,5 +7,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  *
  */
 public interface AuthenticationService extends UserDetailsService {
-
+	
+	/**
+	 * 
+	 * @return
+	 */
+//	public String findLoggedInUsername();
+	
+	/**
+	 * 
+	 * @param username
+	 * @param password
+	 */
+    public void doLogin(String username, String password);
 }
