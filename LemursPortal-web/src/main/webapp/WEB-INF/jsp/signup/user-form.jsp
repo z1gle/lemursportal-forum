@@ -11,7 +11,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<c:url var="userInfoFormAction" value="/signup"/>
+	<c:url var="userInfoFormAction" value="/registration"/>
 	<form:form modelAttribute="userInfoForm" method="POST" action="${userInfoFormAction}">
 		<form:hidden path="id"/>
 		<div>

@@ -2,14 +2,18 @@ package org.wcs.lemursportal.service.authentication;
 
 import java.util.Calendar;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.model.user.UserInfo;
@@ -40,9 +44,11 @@ public class AuthenticationServiceImpl extends
 			throws UsernameNotFoundException {
 		//k123 = "21a4ed0a0cf607e77e93bf7604e2bb1ad07757c5"
 		UserInfo userInfo = userInfoRepository.findUserByLogin(login);
-		userInfo.setLastAccessDate(Calendar.getInstance().getTime());
-		//update user to save lastAccessDate
-		userInfoRepository.update(userInfo);
+		if(userInfo != null){
+			userInfo.setLastAccessDate(Calendar.getInstance().getTime());
+			//update user to save lastAccessDate
+			userInfoRepository.update(userInfo);
+		}
 		return userInfo;
 	}
 
@@ -57,15 +63,19 @@ public class AuthenticationServiceImpl extends
 //	}
 
 	@Override
-	public void doLogin(String username, String password) {
-		UserDetails userDetails = this.loadUserByUsername(username);
+	public void autoLogin(String login, String password, HttpServletRequest request) {
+		UserDetails userDetails = this.loadUserByUsername(login);
+		LOGGER.debug("MIKAJY - " + password);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-
-        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        request.getSession();//créer une session si ce n'est pas déjà fait
+        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetails(request));
+        Authentication authenticatedUser = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
         if (usernamePasswordAuthenticationToken.isAuthenticated()) {
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            LOGGER.debug(String.format("Auto login '%s' successfully!", username));
+            SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+            LOGGER.debug(String.format("Auto login '%s' successfully!", login));
+        } else{
+        	LOGGER.debug(String.format("Auto login '%s' failed!", login));
         }
 		
 	}

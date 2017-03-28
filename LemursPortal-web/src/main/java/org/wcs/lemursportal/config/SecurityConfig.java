@@ -46,7 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 			.expressionHandler(defaultWebSecurityExpressionHandler())
-			.antMatchers("/", "/favicon.ico", "/resources/**", "/signup/**").permitAll()
+			.antMatchers("/", "/favicon.ico", "/resources/**", "/signup", "/registration").permitAll()
 			.antMatchers("/secure/**").hasAnyRole("ADMIN", "USER")
 			.anyRequest().authenticated()
 			.and().formLogin()

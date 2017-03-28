@@ -4,6 +4,8 @@ package org.wcs.lemursportal.service.authentication;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.wcs.lemursportal.model.authentication.IUserInfo;
+import org.wcs.lemursportal.model.authentication.UserRole;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.model.user.UserType;
 
@@ -58,17 +61,25 @@ public abstract class AbstractUserDetailsService<U extends IUserInfo> implements
 	 */
 	protected abstract UserInfo findUserByLogin(String login);
 	
-
 	private Collection<GrantedAuthority> getUserAuthorities(UserInfo userInfo) {
 		StringBuilder sb = new StringBuilder("User Authorities : [");
 		Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-		for(UserType role: userInfo.getRoles()){
-			String rolePrefixed = role.getLibelle();
-			if(!rolePrefixed.toUpperCase().startsWith("ROLE_")){
-				rolePrefixed = "ROLE_" + role.getLibelle().toUpperCase();
+		Set<UserType> roles = userInfo.getRoles();
+		if(roles != null){
+			for(UserType role: roles){
+				String rolePrefixed = role.getLibelle();
+				if(!rolePrefixed.toUpperCase().startsWith("ROLE_")){
+					rolePrefixed = "ROLE_" + role.getLibelle().toUpperCase();
+				}
+				sb.append(rolePrefixed).append(",");
+				grantedAuthorities.add(new SimpleGrantedAuthority(rolePrefixed));
 			}
-			sb.append(rolePrefixed).append(",");
-			grantedAuthorities.add(new SimpleGrantedAuthority(rolePrefixed));
+		}
+		if(grantedAuthorities.isEmpty()){
+			//Quand il n'y a pas de role definit par defaut pour l'utilisateur, 
+			//on lui attribue le role SIMPLE_UTILISATEUR par defaut
+			grantedAuthorities.add(new SimpleGrantedAuthority(UserRole.SIMPLE_USER.getRole()));
+			sb.append(UserRole.SIMPLE_USER.getRole()).append("(default)");
 		}
 		sb.append("]");
 		LOGGER.debug(sb.toString());

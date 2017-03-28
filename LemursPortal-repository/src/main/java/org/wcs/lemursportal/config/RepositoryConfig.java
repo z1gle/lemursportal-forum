@@ -34,7 +34,7 @@ public class RepositoryConfig {
 	public LocalSessionFactoryBean sessionFactory(){
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource);
-		sessionFactory.setPackagesToScan("org.wcs.lemursportal.data");
+		sessionFactory.setPackagesToScan("org.wcs.lemursportal.model");
 		Properties hibeProperties = new Properties();
 		hibeProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
 		hibeProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));

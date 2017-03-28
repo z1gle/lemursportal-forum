@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wcs.lemursportal.exception.LoginAlreadyExistException;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.user.UserRepository;
 
@@ -35,9 +36,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public void save(UserInfo user) {
 		//On verifie que le login n'existe pas encore en bdd
 		UserInfo userInfo = userRepository.findUserByLogin(user.getLogin());
-		if(userInfo != null){
+		/*if(userInfo != null){
 			throw new LoginAlreadyExistException();
-		}
+		}*/
 		String cryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
 		user.setPassword(cryptedPassword);
 		userRepository.insert(user);

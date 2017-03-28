@@ -3,6 +3,9 @@ package org.wcs.lemursportal.repository.user;
 import java.util.List;
 
 import javax.persistence.NoResultException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -33,8 +36,18 @@ public class UserRepositoryImpl implements UserRepository{
 	@Override
 	public UserInfo findUserByLogin(String login) {
 		UserInfo userInfo;
+		/*CriteriaBuilder criteriaBuilder = sessionFactory.getCriteriaBuilder();
+		CriteriaQuery<UserInfo> criteria = criteriaBuilder.createQuery(UserInfo.class);
+		Root<UserInfo> root = criteria.from(UserInfo.class);
+		criteria.select(root);
+		criteria.where(criteriaBuilder.and(
+				criteriaBuilder.equal(root.get("login"), login), 
+				criteriaBuilder.equal(root.get("enabled"), Boolean.TRUE)));
+		userInfo = sessionFactory.createEntityManager().createQuery(criteria).getSingleResult();
+		*/
 		try{
-			Query<UserInfo> query = sessionFactory.getCurrentSession().createQuery("select u from UserInfo u where u.login=:login and u.enabled=:enabled", UserInfo.class);
+			Query<UserInfo> query = sessionFactory.getCurrentSession()
+						.createQuery("from UserInfo as u where u.login=:login and u.enabled=:enabled", UserInfo.class);
 			query.setParameter("login", login);
 			query.setParameter("enabled", Boolean.TRUE);
 			userInfo = query.getSingleResult();

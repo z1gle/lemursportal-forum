@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.wcs.lemursportal.service.user;
+package org.wcs.lemursportal.exception;
 
 /**
  * @author mikajy.hery
