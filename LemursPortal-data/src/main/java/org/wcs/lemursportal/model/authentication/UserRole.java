@@ -20,10 +20,14 @@ public enum UserRole {
 	
 	private int id;
 	private String role;
+	private UserType userType;
 	
 	UserRole(int id, String role){
 		this.id = id;
 		this.role = role;
+		userType = new UserType();
+		userType.setId(id);
+		userType.setLibelle(role);
 	}
 	
 	public int getId(){
@@ -50,5 +54,9 @@ public enum UserRole {
 			}
 		}
 		return null;
+	}
+
+	public UserType getUserType() {
+		return userType;
 	}
 }

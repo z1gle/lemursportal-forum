@@ -3,33 +3,31 @@
  */
 package org.wcs.lemursportal.web.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.wcs.lemursportal.exception.RegistrationException;
 import org.wcs.lemursportal.factory.UserInfoFactory;
 import org.wcs.lemursportal.model.authentication.UserRole;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.service.authentication.AuthenticationService;
 import org.wcs.lemursportal.service.user.UserInfoService;
-import org.wcs.lemursportal.web.form.UserInfoForm;
+import org.wcs.lemursportal.web.form.RegistrationForm;
 import org.wcs.lemursportal.web.validator.UserInfoFormValidator;
 
 /**
@@ -38,9 +36,9 @@ import org.wcs.lemursportal.web.validator.UserInfoFormValidator;
  */
 @Transactional
 @Controller
-public class UserInfoController {
+public class RegistrationController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserInfoController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
 	
 	@Autowired
 	private UserInfoFormValidator userInfoFormValidator;
@@ -56,9 +54,9 @@ public class UserInfoController {
 	 */
 	@RequestMapping(value="/signup", method=RequestMethod.GET)
 	public String signupForm(Model model){
-		UserInfoForm userInfoForm = new UserInfoForm();
-		model.addAttribute("userInfoForm", userInfoForm);
-		return "signup/user-form";
+		RegistrationForm registrationForm = new RegistrationForm();
+		model.addAttribute("registrationForm", registrationForm);
+		return "signup/registration-form";
 	}
 	
 	/**
@@ -72,27 +70,27 @@ public class UserInfoController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/registration", method=RequestMethod.POST)
-	public String signupSubmit(@ModelAttribute @Valid UserInfoForm userInfoForm, 
-			HttpServletRequest request, BindingResult results, Model model)
+	@RequestMapping(value="/signup", method=RequestMethod.POST)
+	public String signupSubmit(HttpServletRequest request, Model model, 
+			@ModelAttribute RegistrationForm registrationForm, 
+			BindingResult results)
 	{
-		userInfoFormValidator.validate(userInfoForm, results);
+		userInfoFormValidator.validate(registrationForm, results);
 		if(results.hasErrors()){
-			return "signup/user-form";
+			return "signup/registration-form";
 		}
-		userInfoForm.setEnabled(true);//Par defaut c'est true
-		userInfoForm.setUserTypeIds(new ArrayList<Integer>((Arrays.asList(UserRole.SIMPLE_USER.getId()))));
-		UserInfo user = UserInfoFactory.toEntity(userInfoForm);
-		userInfoService.save(user);
-		LOGGER.info("INSCRIPTION REUSSI - AUTOLOGIN...");
-		authenticationService.autoLogin(user.getLogin(),userInfoForm.getPassword(), request);
+		try{
+			UserInfo user = UserInfoFactory.toEntity(registrationForm);
+			userInfoService.save(user);
+			LOGGER.info("INSCRIPTION REUSSI - AUTOLOGIN...");
+			authenticationService.autoLogin(user.getLogin(), registrationForm.getPassword(), request);
+		}catch(RegistrationException e){
+			if(e.getCode() == RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION){
+				results.rejectValue("login", "validation.login.exist");
+			}else{
+				throw e;//Erreur inconnu, on laisse passer en attendant d'identifier l'erreur
+			}
+		}
 		return "redirect:/";
-	}
-	
-	@InitBinder
-	public void dataBinding(WebDataBinder binder) {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		dateFormat.setLenient(false);
-		binder.registerCustomEditor(Date.class, "dob", new CustomDateEditor(dateFormat, true));
 	}
 }

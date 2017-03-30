@@ -11,52 +11,54 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-	<c:url var="userInfoFormAction" value="/registration"/>
-	<form:form modelAttribute="userInfoForm" method="POST" action="${userInfoFormAction}">
+<div style="width:300px; float:right;">
+		 <a href="?lang=mg">Malagasy</a> | <a href="?lang=en">English </a> | <a href="?lang=fr">Français</a>
+	</div>
+	<c:url var="userInfoFormAction" value="/signup"/>
+	<form:form modelAttribute="registrationForm" method="POST" action="${userInfoFormAction}">
 		<form:hidden path="id"/>
 		<div>
-			<label>Nom:</label>
+			<label><spring:message code="message.label.nom"/>:</label>
 			<span><form:input path="nom" /></span>
 			<span><form:errors path="nom"/></span>
 		</div>
 		<div>
-			<label>Prénom:</label>
+			<label><spring:message code="message.label.prenom"/>:</label>
 			<span><form:input path="prenom" /></span>
 			<span><form:errors path="prenom"/></span>
 		</div>
 		<div>
-			<label>E-mail:</label>
+			<label><spring:message code="message.label.email"/>:</label>
 			<span><form:input path="email" /></span>
 			<span><form:errors path="email"/></span>
 		</div>
 		<div>
-			<label>Date de naissance:</label>
-			<span><form:input path="dateNaissance" /></span>
+			<label><spring:message code="message.label.datenaissance"/>:</label>
+			<span><form:input path="dateNaissance" /><i>(<spring:message code="date.format"/>)</i></span>
 			<span><form:errors path="dateNaissance"/></span>
 		</div>
 		<div>
-			<label>Login:</label>
+			<label><spring:message code="message.label.login"/>:</label>
 			<span><form:input path="login" /></span>
 			<span><form:errors path="login"/></span>
 		</div>
 		<div>
-			<label>Mot de passe:</label>
+			<label><spring:message code="message.label.motdepasse"/>:</label>
 			<span><form:password path="password" /></span>
 			<span><form:errors path="password"/></span>
 		</div>
 		<div>
-			<label>Confirmation de mot de passe:</label>
+			<label><spring:message code="message.label.motdepasse.confirmation"/>:</label>
 			<span><form:password path="passwordConfirm" /></span>
 			<span><form:errors path="passwordConfirm"/></span>
 		</div>
 		<div>
-			<label>Biographie:</label>
+			<label><spring:message code="message.label.biographie"/>:</label>
 			<span><form:textarea path="biographie" /></span>
 			<span><form:errors path="biographie"/></span>
 		</div>
 		<div>
-			<form:button value="signup">S'inscrire</form:button>
+			<form:button value="signup"><spring:message code="message.label.sinscrire"/></form:button>
 		</div>
 	</form:form>
 </body>

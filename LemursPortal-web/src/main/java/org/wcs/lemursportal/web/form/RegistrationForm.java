@@ -15,18 +15,15 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author mikajy.hery
  *
  */
-public class UserInfoForm {
+public class RegistrationForm {
 	
 	private Integer id;
-	@NotNull @NotEmpty
 	private String nom;
 	private String prenom;
 	private Date dateNaissance;
 	private String login;
 	private String password;
 	private String passwordConfirm;
-	@NotEmpty
-	@Email 
 	private String email;
 	private Boolean enabled;
 	private Date lastAccessDate;

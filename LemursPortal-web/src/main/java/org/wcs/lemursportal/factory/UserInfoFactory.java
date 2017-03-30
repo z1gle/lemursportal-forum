@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.model.user.UserType;
-import org.wcs.lemursportal.web.form.UserInfoForm;
+import org.wcs.lemursportal.web.form.RegistrationForm;
 
 /**
  * @author mikajy.hery
@@ -14,10 +14,10 @@ import org.wcs.lemursportal.web.form.UserInfoForm;
  */
 public abstract class UserInfoFactory {
 	
-	public static UserInfoForm toForm(UserInfo user){
-		UserInfoForm form = null;
+	public static RegistrationForm toForm(UserInfo user){
+		RegistrationForm form = null;
 		if( user != null){
-			form = new UserInfoForm();
+			form = new RegistrationForm();
 			form.setBiographie(user.getBiographie());
 			form.setDateNaissance(user.getDateNaissance());
 			form.setEmail(user.getEmail());
@@ -36,7 +36,7 @@ public abstract class UserInfoFactory {
 		return form;
 	}
 	
-	public static UserInfo toEntity(UserInfoForm form){
+	public static UserInfo toEntity(RegistrationForm form){
 		UserInfo entity = null;
 		if(form != null){
 			entity = new UserInfo();
@@ -49,6 +49,7 @@ public abstract class UserInfoFactory {
 			entity.setLogin(form.getLogin());
 			entity.setPassword(form.getPassword());
 			entity.setPrenom(form.getPrenom());
+			entity.setNom(form.getNom());
 			//entity.setRoles(form.get);
 			
 		}

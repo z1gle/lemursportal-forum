@@ -394,7 +394,12 @@
 			    <artifactId>commons-collections4</artifactId>
 			    <version>${commons.collections.version}</version>
 			</dependency>
-
+			<!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
+			<dependency>
+			    <groupId>commons-validator</groupId>
+			    <artifactId>commons-validator</artifactId>
+			    <version>1.5.1</version>
+			</dependency>
 	        <!-- @Inject -->
 	        <dependency>
 	            <groupId>javax.inject</groupId>

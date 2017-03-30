@@ -95,12 +95,5 @@ public class WebAppConfigurer extends WebMvcConfigurerAdapter {
     	registry.addFormatter(dateFormatter);
 		super.addFormatters(registry);
 	}
-	
-//	@Override
-//    protected void addFormatters(FormatterRegistry registry) {
-//    	DefaultDateFormatter dateFormatter = defaultDateFormatter(); 
-//    	registry.addFormatter(dateFormatter);
-//    	super.addFormatters(registry);
-//    }
 
 }
