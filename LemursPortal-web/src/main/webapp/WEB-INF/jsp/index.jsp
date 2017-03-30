@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE>
 <html>
 <head>
@@ -10,8 +11,11 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<c:set var="now" value="<%=new java.util.Date()%>" />
+	<spring:message code="date.format" var="dateFormat"/>
 	<h1><spring:message code="message.welcome"/></h1>
 	<h3>Current Locale : ${pageContext.response.locale}</h3>
+	<h3>Date (${dateFormat}): <fmt:formatDate pattern="${dateFormat}" value="${now}"/></h3>
 	<sec:authorize access="hasRole('ADMIN')">
 	This content will only be visible to users who have
 	the "ADMIN" authority in their list of <tt>GrantedAuthority</tt>s.
