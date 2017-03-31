@@ -3,6 +3,8 @@
  */
 package org.wcs.lemursportal.service.user;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.exception.RegistrationException;
+import org.wcs.lemursportal.helper.pagination.PaginationRequest;
+import org.wcs.lemursportal.helper.pagination.PaginationResponse;
 import org.wcs.lemursportal.model.authentication.UserRole;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.model.user.UserType;
@@ -34,6 +38,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.service.user.UserInfoService#save(org.wcs.lemursportal.model.user.UserInfo)
 	 */
+	@Transactional(noRollbackFor=RegistrationException.class)
 	@Override
 	public void save(UserInfo user) {
 		if(user.getEnabled() == null){
@@ -53,6 +58,14 @@ public class UserInfoServiceImpl implements UserInfoService {
 		String cryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
 		user.setPassword(cryptedPassword);
 		userRepository.insert(user);
+	}
+
+	
+	@Override @Transactional(readOnly=true)
+	public PaginationResponse<UserInfo> findByPagination(PaginationRequest<UserInfo> request) {
+		//TODO - En attendant l'implementation d'une reherche avec pagination coté repository, on appel le findAll()
+		final List<UserInfo> results = userRepository.findAll();
+		return new PaginationResponse<>(results, request.getPageNum(), request.getPageSize(), request.getPageSize());
 	}
 
 }

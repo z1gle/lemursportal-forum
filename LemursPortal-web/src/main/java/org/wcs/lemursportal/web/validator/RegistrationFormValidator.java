@@ -16,7 +16,7 @@ import org.wcs.lemursportal.web.form.RegistrationForm;
  *
  */
 @Component
-public class UserInfoFormValidator implements Validator{
+public class RegistrationFormValidator implements Validator{
 
 	@Override
 	public boolean supports(Class<?> arg0) {

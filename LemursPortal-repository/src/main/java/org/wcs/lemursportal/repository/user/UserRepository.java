@@ -9,6 +9,13 @@ import org.wcs.lemursportal.model.user.UserInfo;
  *
  */
 public interface UserRepository /*extends JpaRepository<UserInfo, Integer>*/{
+	
+	/**
+	 * 
+	 * @param login
+	 * @return
+	 */
+	public boolean isLoginExist(String login);
 	/**
 	 * 
 	 * @return

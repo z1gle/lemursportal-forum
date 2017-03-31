@@ -37,8 +37,12 @@
 				}
 			</script>
 			<h2>
-				Vous êtes connecté en tant que : ${userName} ou <sec:authentication property="principal.username" /> | <a
-					href="javascript:formSubmit()"> Logout</a>
+				Vous êtes connecté en tant que : <sec:authentication property="principal.username" /> | 
+				<sec:authorize access="hasRole('ADMIN')">
+					<c:url value="/admin/user/list" var="userListUrl"/>
+					<a href="${userListUrl}"> Voir la Liste des utilisateurs enregistré</a> |
+				</sec:authorize>
+				<a href="javascript:formSubmit()"> Logout</a> 
 			</h2>
 		</c:when>
 		<c:otherwise>

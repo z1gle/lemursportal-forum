@@ -3,6 +3,8 @@
  */
 package org.wcs.lemursportal.service.user;
 
+import org.wcs.lemursportal.helper.pagination.PaginationRequest;
+import org.wcs.lemursportal.helper.pagination.PaginationResponse;
 import org.wcs.lemursportal.model.user.UserInfo;
 
 /**
@@ -10,6 +12,16 @@ import org.wcs.lemursportal.model.user.UserInfo;
  *
  */
 public interface UserInfoService {
-	
+	/**
+	 * 
+	 * @param user
+	 */
 	void save(UserInfo user);
+	
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 */
+	PaginationResponse<UserInfo> findByPagination(PaginationRequest<UserInfo> request);
 }

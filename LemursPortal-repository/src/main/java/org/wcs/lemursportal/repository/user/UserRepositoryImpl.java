@@ -8,6 +8,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,6 +81,12 @@ public class UserRepositoryImpl implements UserRepository{
 		query.setParameter("enabled", Boolean.TRUE);
 		List<UserInfo> users = query.getResultList();
 		return users;
+	}
+
+	@Override
+	public boolean isLoginExist(String login) {
+		
+		return false;
 	}
 
 }
