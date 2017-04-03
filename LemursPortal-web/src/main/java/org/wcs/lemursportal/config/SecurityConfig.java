@@ -37,13 +37,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private final static Logger LOGGER = LoggerFactory
 			.getLogger(SecurityConfig.class);
 
-	private static final String ROLE_HIERARCHY = "ROLE_ADMIN > ROLE_USER";
+	private static final String ROLE_HIERARCHY = "ROLE_ADMIN > ROLE_MODERATEUR > ROLE_EXPERT > ROLE_USER";
 
 	@Autowired
 	AuthenticationService authenticationService;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		//http.requiresChannel().anyRequest().requiresSecure();
+		//On securise les pages qui manipules des mots de passe
+		http.requiresChannel().antMatchers("/login**", "/authenticate**", "/signup**").requiresSecure();
+		http.sessionManagement().sessionFixation().none();//on veut garder la même session pour le basculement des pages http<->https
 		http.authorizeRequests()
 			.expressionHandler(defaultWebSecurityExpressionHandler())
 			.antMatchers("/", "/favicon.ico", "/resources/**", "/signup", "/registration").permitAll()
@@ -61,8 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     		.and().rememberMe()
     					.rememberMeServices(rememberMeServices())
     					.key("remember-me-key");
-    		//.and().csrf();
-		http.csrf().disable();
+		http.csrf();
+//		http.csrf().disable();
 	}
 	
 	@Bean

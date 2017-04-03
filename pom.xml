@@ -33,6 +33,7 @@
 		<jackson.version>2.6.3</jackson.version>
 		
 		<google.guava.version>18.0</google.guava.version>
+        <main.basedir>${project.parent.basedir}</main.basedir>
 	</properties>
 	<build>
 		<finalName>lemursPortal</finalName>
@@ -62,13 +63,16 @@
 					<artifactId>tomcat7-maven-plugin</artifactId>
 					<version>2.3-SNAPSHOT</version>
 					<configuration>
-						<path>/</path>
-						<port>8080</port>
-						<!-- <additionalClasspathDirs> -->
-						<!-- <additionalClasspathDir>${main.directory}/external/production/</additionalClasspathDir> -->
-						<!-- <additionalClasspathDir>${main.directory}/external/logging/</additionalClasspathDir> -->
-						<!-- </additionalClasspathDirs> -->
-					</configuration>
+	                    <path>/</path>
+	                    <port>8080</port>
+				        <httpsPort>8443</httpsPort>
+				        <keystoreFile>${main.basedir}/external/certificate/.keystore</keystoreFile>
+				        <keystorePass>123lemurs456</keystorePass>
+<!-- 	                    <additionalClasspathDirs> -->
+<!-- 	                    	<additionalClasspathDir>${main.directory}/external/production/</additionalClasspathDir> -->
+<!-- 	                    	<additionalClasspathDir>${main.directory}/external/logging/</additionalClasspathDir> -->
+<!-- 	                    </additionalClasspathDirs> -->
+	                </configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>

@@ -16,6 +16,7 @@
 	</div>
 	<c:url var="userInfoFormAction" value="/signup"/>
 	<form:form modelAttribute="registrationForm" method="POST" action="${userInfoFormAction}">
+		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<form:hidden path="id"/>
 		<div>
 			<label><spring:message code="message.label.nom"/>:</label>
