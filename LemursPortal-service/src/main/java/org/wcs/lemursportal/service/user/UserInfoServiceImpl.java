@@ -4,6 +4,7 @@
 package org.wcs.lemursportal.service.user;
 
 import java.util.List;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +67,21 @@ public class UserInfoServiceImpl implements UserInfoService {
 		//TODO - En attendant l'implementation d'une reherche avec pagination coté repository, on appel le findAll()
 		final List<UserInfo> results = userRepository.findAll();
 		return new PaginationResponse<>(results, request.getPageNum(), request.getPageSize(), request.getPageSize());
+	}
+
+
+	@Override @Transactional(readOnly=true)
+	public UserInfo getById(Integer id) {
+		UserInfo user = userRepository.findById(id);
+		return user;
+	}
+
+
+	@Override
+	public void updateUserRoles(Integer userId, Set<UserType> roles) {
+		UserInfo user = getById(userId);
+		user.setRoles(roles);
+		userRepository.update(user);
 	}
 
 }

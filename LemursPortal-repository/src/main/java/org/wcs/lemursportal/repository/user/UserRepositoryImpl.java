@@ -89,4 +89,10 @@ public class UserRepositoryImpl implements UserRepository{
 		return false;
 	}
 
+	@Override
+	public UserInfo findById(Integer id) {
+		UserInfo userInfo = sessionFactory.getCurrentSession().load(UserInfo.class, id);
+		return userInfo;
+	}
+
 }

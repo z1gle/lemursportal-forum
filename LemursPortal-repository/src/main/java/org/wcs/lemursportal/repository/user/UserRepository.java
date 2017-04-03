@@ -38,4 +38,11 @@ public interface UserRepository /*extends JpaRepository<UserInfo, Integer>*/{
 	 * @param user
 	 */
 	void insert(UserInfo user);
+	
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	UserInfo findById(Integer id);
 }

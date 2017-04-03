@@ -49,7 +49,7 @@ public class RegistrationController {
 	public String signupForm(Model model){
 		RegistrationForm registrationForm = new RegistrationForm();
 		model.addAttribute("registrationForm", registrationForm);
-		return "signup/registration-form";
+		return "user/registration-form";
 	}
 	
 	/**
@@ -70,7 +70,7 @@ public class RegistrationController {
 	{
 		registrationFormValidator.validate(registrationForm, results);
 		if(results.hasErrors()){
-			return "signup/registration-form";
+			return "user/registration-form";
 		}
 		try{
 			UserInfo user = UserInfoFactory.toEntity(registrationForm);
@@ -80,7 +80,7 @@ public class RegistrationController {
 		}catch(RegistrationException e){
 			if(e.getCode() == RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION){
 				results.rejectValue("login", "validation.login.exist");
-				return "signup/registration-form";
+				return "user/registration-form";
 			}else{
 				throw e;//Erreur inconnu, on laisse passer en attendant d'identifier l'erreur
 			}

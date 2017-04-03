@@ -3,6 +3,8 @@
  */
 package org.wcs.lemursportal.repository.user;
 
+import java.util.List;
+
 import org.wcs.lemursportal.model.user.UserType;
 
 /**
@@ -12,4 +14,9 @@ import org.wcs.lemursportal.model.user.UserType;
 public interface UserTypeRepository {
 	
 	void insert(UserType userType);
+	/**
+	 * 
+	 * @return
+	 */
+	List<UserType> findAll();
 }

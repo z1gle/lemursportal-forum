@@ -22,7 +22,10 @@
 			<th>Email</th>
 			<th>Date de naissance</th>
 			<th>Date de dernier accès</th>
+			<th></th>
+<!-- 			<th></th> -->
 		</tr>
+		<c:url var="editBaseUrl" value="/admin/roles/user/"/>
 		<c:forEach items="${paginationResponse.results}" var="user">
 			<tr>
 				<td>${user.id}</td>
@@ -40,6 +43,8 @@
 						<fmt:formatDate pattern="${dateFormat}" value="${user.lastAccessDate}"/>
 					</c:if>
 				</td>
+				<td><a href="${editBaseUrl}${user.id}">Rôles</a></td>
+<!-- 				<td><a href="#">Désactiver</a></td> -->
 			</tr>
 		</c:forEach>
 	</table>
