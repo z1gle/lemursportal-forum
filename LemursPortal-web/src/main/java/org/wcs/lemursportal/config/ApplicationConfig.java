@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration 
 @ComponentScan("org.wcs.lemursportal") 
 @EnableWebMvc   
-@Import({ WebAppConfigurer.class, SecurityConfig.class })
+@Import({ WebAppConfigurer.class, SecurityConfig.class, MailConfig.class })
 public class ApplicationConfig{
 
 }
