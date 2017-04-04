@@ -11,6 +11,16 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<div style="width:300px; float:right;">
+		 <a href="?lang=mg">Malagasy</a> | <a href="?lang=en">English </a> | <a href="?lang=fr">Français</a>
+	</div>
+	
+	<c:if test="${not empty successMessage}">
+		<div style="color:#ffffff;background-color:green;width: 100%;height: 50px;">
+			<c:out value="${successMessage}"/>
+		</div>
+	</c:if>
+	
 	<c:set var="now" value="<%=new java.util.Date()%>" />
 	<spring:message code="date.format" var="dateFormat"/>
 	<h1><spring:message code="message.welcome"/></h1>
@@ -42,6 +52,8 @@
 					<c:url value="/admin/user/list" var="userListUrl"/>
 					<a href="${userListUrl}"> Voir la Liste des utilisateurs enregistré</a> |
 				</sec:authorize>
+				<c:url value="/user/edit" var="currentUserEditUrl" />
+				<a href="${currentUserEditUrl}"> Modifier votre profil</a> | 
 				<a href="javascript:formSubmit()"> Logout</a> 
 			</h2>
 		</c:when>
@@ -51,8 +63,5 @@
 			Vous n'êtes pas authentifiés. <a href="${loginUrl}">Login</a> | <a href="${signupUrl}">S'inscrire</a> 
 		</c:otherwise>
 	</c:choose>
-	<div style="width:300px; float:right;">
-		 <a href="?lang=mg">Malagasy</a> | <a href="?lang=en">English </a> | <a href="?lang=fr">Français</a>
-	</div>
 </body>
 </html>

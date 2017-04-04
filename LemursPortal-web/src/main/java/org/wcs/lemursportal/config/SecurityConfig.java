@@ -30,7 +30,7 @@ import org.wcs.lemursportal.service.authentication.AuthenticationService;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true/*, securedEnabled=true*/)
 @ComponentScan("org.wcs.lemursportal")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.expressionHandler(defaultWebSecurityExpressionHandler())
 			.antMatchers("/", "/favicon.ico", "/resources/**", "/signup", "/registration").permitAll()
-			.antMatchers("/admin/**").hasRole("ADMIN")
+			.antMatchers("/admin/**").hasRole("USER")
 			.antMatchers("/secure/**").hasAnyRole("ADMIN", "USER")
 			.anyRequest().authenticated()
 			.and().formLogin()
@@ -106,7 +106,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return defaultWebSecurityExpressionHandler;
 	}
 	
-	@Bean("AuthenticationManager")
+	@Bean("authenticationManager")
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		// TODO Auto-generated method stub

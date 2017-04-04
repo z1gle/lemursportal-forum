@@ -30,18 +30,22 @@ public class RegistrationFormValidator implements Validator{
 		RegistrationForm user = (RegistrationForm)target;
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "nom", "validation.mandatory");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "validation.mandatory");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "login", "validation.mandatory");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "validation.mandatory");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordConfirm", "validation.mandatory");
+		if(user.getId() == null){
+			//ces champs existe seuleemnt pour la création de compte
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "login", "validation.mandatory");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "validation.mandatory");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordConfirm", "validation.mandatory");
+			if(!user.getPassword().equals(user.getPasswordConfirm())){
+				errors.rejectValue("passwordConfirm", "validation.diff.passwordconfirm");
+			}
+		}
 //		if(user.getPassword().length() < 8){
 //			
 //		}
 		if(StringUtils.isNotEmpty(user.getEmail()) && !EmailValidator.getInstance().isValid(user.getEmail())){
 			errors.rejectValue("email", "validation.email.format.invalid", "Invalid email");
 		}
-		if(!user.getPassword().equals(user.getPasswordConfirm())){
-			errors.rejectValue("passwordConfirm", "validation.diff.passwordconfirm");
-		}
+		
 		
 	}
 

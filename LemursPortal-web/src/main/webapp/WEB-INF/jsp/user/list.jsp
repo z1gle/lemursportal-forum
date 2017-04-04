@@ -11,7 +11,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<sec:authorize access="hasRole('ADMIN')">
+	<sec:authorize access="hasRole('USER')">
 	<spring:message code="date.format" var="dateFormat"/>
 	<table>
 		<tr>

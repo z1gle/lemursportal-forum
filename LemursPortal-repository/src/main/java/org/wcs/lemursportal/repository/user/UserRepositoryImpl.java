@@ -69,6 +69,13 @@ public class UserRepositoryImpl implements UserRepository{
 	public void update(UserInfo user) {
 		sessionFactory.getCurrentSession().update(user);
 	}
+	
+
+
+	@Override
+	public void merge(UserInfo user) {
+		sessionFactory.getCurrentSession().merge(user);
+	}
 
 	@Override
 	public void insert(UserInfo user) {

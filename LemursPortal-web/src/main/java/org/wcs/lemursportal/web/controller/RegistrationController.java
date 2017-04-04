@@ -3,16 +3,24 @@
  */
 package org.wcs.lemursportal.web.controller;
 
+import java.util.Locale;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.wcs.lemursportal.exception.RegistrationException;
@@ -40,18 +48,20 @@ public class RegistrationController {
 	@Autowired
 	private AuthenticationService authenticationService;
 	
+	@Autowired
+	private MessageSource messageSource;
+	
 	/**
 	 * Affichage du formulaire d'inscription (nouvel utilisateur)
 	 * 
 	 * @return
 	 */
-	@RequestMapping(value="/signup", method=RequestMethod.GET)
+	@RequestMapping(value={"/signup"}, method=RequestMethod.GET)
 	public String signupForm(Model model){
 		RegistrationForm registrationForm = new RegistrationForm();
 		model.addAttribute("registrationForm", registrationForm);
 		return "user/registration-form";
-	}
-	
+	}	
 	/**
 	 * Validation du formulaire d'inscription de l'utilisateur
 	 * Si le formulaire est valide, on appelle de service d'inscription
@@ -72,8 +82,8 @@ public class RegistrationController {
 		if(results.hasErrors()){
 			return "user/registration-form";
 		}
+		UserInfo user = UserInfoFactory.toEntity(registrationForm);
 		try{
-			UserInfo user = UserInfoFactory.toEntity(registrationForm);
 			userInfoService.save(user);
 			LOGGER.info("INSCRIPTION REUSSI - AUTOLOGIN...");
 			authenticationService.autoLogin(user.getLogin(), registrationForm.getPassword(), request);
@@ -87,4 +97,35 @@ public class RegistrationController {
 		}
 		return "redirect:/";
 	}
+	/**
+	 * 
+	 * @param userId
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(value="/user/edit")
+	@PreAuthorize("hasRole('USER')")
+	public String edit(Authentication authentication, Model model){
+		String login = authentication.getName();
+		UserInfo userInfo = userInfoService.getByLogin(login);
+		RegistrationForm registrationForm = UserInfoFactory.toForm(userInfo);
+		model.addAttribute("registrationForm", registrationForm);
+		return "user/edit-form";
+	}
+	
+	@PostMapping(value="/user/edit")
+	public String editSubmit(Locale locale, Model model, 
+			@ModelAttribute RegistrationForm registrationForm, 
+			BindingResult results)
+	{
+		registrationFormValidator.validate(registrationForm, results);
+		if(results.hasErrors()){
+			return "user/registration-form";
+		}
+		UserInfo user = UserInfoFactory.toEntity(registrationForm);
+		userInfoService.update(user);
+		model.addAttribute("successMessage", messageSource.getMessage("message.edit.successMessage",new Object[]{} ,locale));
+		return "redirect:/";
+	}
+
 }

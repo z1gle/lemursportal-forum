@@ -9,6 +9,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,7 +68,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public PaginationResponse<UserInfo> findByPagination(PaginationRequest<UserInfo> request) {
 		//TODO - En attendant l'implementation d'une reherche avec pagination coté repository, on appel le findAll()
 		final List<UserInfo> results = userRepository.findAll();
-		return new PaginationResponse<>(results, request.getPageNum(), request.getPageSize(), request.getPageSize());
+		return new PaginationResponse<UserInfo>(results, request.getPageNum(), request.getPageSize(), request.getPageSize());
 	}
 
 
@@ -82,6 +84,28 @@ public class UserInfoServiceImpl implements UserInfoService {
 		UserInfo user = getById(userId);
 		user.setRoles(roles);
 		userRepository.update(user);
+	}
+
+	/**
+	 * Modifier un utilisateur.
+	 * S'assurer bien qu'on ne modifie que les champs modifiable.
+	 */
+	@Override
+	public void update(UserInfo user) {
+		UserInfo persistUser = getById(user.getId());
+		persistUser.setBiographie(user.getBiographie());
+		persistUser.setDateNaissance(user.getDateNaissance());
+		persistUser.setEmail(user.getEmail());
+		persistUser.setNom(user.getNom());
+		persistUser.setPrenom(user.getPrenom());
+//		persistUser.setLogin(user.getLogin());
+		userRepository.merge(persistUser);
+	}
+
+
+	@Override
+	public UserInfo getByLogin(String login) {
+		return userRepository.findUserByLogin(login);
 	}
 
 }

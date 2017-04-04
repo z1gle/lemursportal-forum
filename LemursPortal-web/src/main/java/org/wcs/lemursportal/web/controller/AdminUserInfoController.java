@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -33,7 +34,7 @@ import org.wcs.lemursportal.web.validator.UserRoleEditFormValidator;
  */
 @Transactional
 @Controller
-public class UserController {
+public class AdminUserInfoController {
 	@Autowired
 	private UserInfoService userInfoService;
 	@Autowired
@@ -42,6 +43,7 @@ public class UserController {
 	UserRoleEditFormValidator userRoleEditFormValidator;
 	
 	@GetMapping(value="/admin/user/list")
+	@PreAuthorize("hasRole('ADMIN')")
 	public String list(HttpServletRequest request, Model model){
 		PaginationRequest<UserInfo> paginationRequest = new PaginationRequest<>(1, 50);
 		PaginationResponse<UserInfo> paginationResponse = userInfoService.findByPagination(paginationRequest);
@@ -50,7 +52,8 @@ public class UserController {
 	}
 	
 	@GetMapping(value="/admin/roles/user/{userId}")
-	public String editUserRoles(
+	@PreAuthorize("hasRole('ADMIN')")
+	public String editUserRoles( 
 				@PathVariable(name="userId", required=false) Integer userId, Model model)
 	{
 		if(userId == null){
@@ -64,6 +67,7 @@ public class UserController {
 	}
 	
 	@PostMapping(value="/admin/roles/user")
+	@PreAuthorize("hasRole('ADMIN')")
 	public String editUserRolesSubmit(Model model, @ModelAttribute UserRoleEditForm userRoleEditForm, BindingResult results){
 		//Validation
 		userRoleEditFormValidator.validate(userRoleEditForm, results);

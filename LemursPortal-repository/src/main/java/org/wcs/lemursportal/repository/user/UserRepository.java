@@ -33,6 +33,12 @@ public interface UserRepository /*extends JpaRepository<UserInfo, Integer>*/{
 	 * @param user
 	 */
 	void update(UserInfo user);
+	
+	/**
+	 * 
+	 * @param user
+	 */
+	void merge(UserInfo user);
 	/**
 	 * 
 	 * @param user
