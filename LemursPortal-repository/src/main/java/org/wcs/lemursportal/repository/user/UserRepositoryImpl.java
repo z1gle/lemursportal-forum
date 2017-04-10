@@ -2,14 +2,15 @@ package org.wcs.lemursportal.repository.user;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projections;
-import org.hibernate.query.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,37 +29,23 @@ public class UserRepositoryImpl implements UserRepository{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryImpl.class);
 	
-	@Autowired
-	private SessionFactory sessionFactory;
-
+//	@Autowired
+//	private EntityManagerFactory entityManagerFactory;
+	
+	@PersistenceContext(unitName="lemursportal")
+	protected EntityManager em;
+	
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.repository.authentication.AuthenticationRepository#findUserByLogin(java.lang.String)
 	 */
 	@Override
-	public UserInfo findUserByLogin(String login) {
-		UserInfo userInfo;
-		/*CriteriaBuilder criteriaBuilder = sessionFactory.getCriteriaBuilder();
-		CriteriaQuery<UserInfo> criteria = criteriaBuilder.createQuery(UserInfo.class);
-		Root<UserInfo> root = criteria.from(UserInfo.class);
-		criteria.select(root);
-		criteria.where(criteriaBuilder.and(
-				criteriaBuilder.equal(root.get("login"), login), 
-				criteriaBuilder.equal(root.get("enabled"), Boolean.TRUE)));
-		userInfo = sessionFactory.createEntityManager().createQuery(criteria).getSingleResult();
-		*/
-		try{
-			Query<UserInfo> query = sessionFactory.getCurrentSession()
-						.createQuery("from UserInfo as u where u.login=:login and u.enabled=:enabled", UserInfo.class);
-			query.setParameter("login", login);
-			query.setParameter("enabled", Boolean.TRUE);
-			userInfo = query.getSingleResult();
-			LOGGER.info(String.format("One user found for login '%s'", login));
-		}catch(NoResultException e){
-			userInfo = null;
-			LOGGER.debug(String.format("No user found for login '%s'", login));
-		}/*catch(NonUniqueResultException e){
-			userInfo = null;
-		}*/
+	public UserInfo findUserByLogin(String login) throws NoResultException {
+//		EntityManager em = entityManagerFactory.createEntityManager();
+		UserInfo userInfo = null;
+		Query query = em.createQuery("from UserInfo as u where u.login=:login and u.enabled=:enabled", UserInfo.class);
+		query.setParameter("login", login);
+		query.setParameter("enabled", Boolean.TRUE);
+		userInfo = (UserInfo)query.getSingleResult();
 		return userInfo;
 	}
 
@@ -67,24 +54,21 @@ public class UserRepositoryImpl implements UserRepository{
 	 */
 	@Override
 	public void update(UserInfo user) {
-		sessionFactory.getCurrentSession().update(user);
-	}
-	
-
-
-	@Override
-	public void merge(UserInfo user) {
-		sessionFactory.getCurrentSession().merge(user);
+//		EntityManager em = entityManagerFactory.createEntityManager();
+		em.merge(user);
 	}
 
 	@Override
 	public void insert(UserInfo user) {
-		sessionFactory.getCurrentSession().persist(user);
+//		EntityManager em = entityManagerFactory.createEntityManager();
+		em.persist(user);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<UserInfo> findAll() {
-		Query<UserInfo> query = sessionFactory.getCurrentSession().createQuery("select u from UserInfo u where u.enabled=:enabled", UserInfo.class);
+//		EntityManager em = entityManagerFactory.createEntityManager();
+		Query query = em.createQuery("from UserInfo as u where u.enabled=:enabled");
 		query.setParameter("enabled", Boolean.TRUE);
 		List<UserInfo> users = query.getResultList();
 		return users;
@@ -92,13 +76,21 @@ public class UserRepositoryImpl implements UserRepository{
 
 	@Override
 	public boolean isLoginExist(String login) {
-		
-		return false;
+//		EntityManager em = entityManagerFactory.createEntityManager();
+		CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+		Root<UserInfo> root = criteriaQuery.from(UserInfo.class);
+		criteriaQuery.select(criteriaBuilder.count(root));
+//		criteriaQuery.select(Projections.rowCount());
+		criteriaQuery.where(criteriaBuilder.equal(root.get("login") , login));
+		Long count = em.createQuery(criteriaQuery).getSingleResult();
+		return count != null && count > 0L;
 	}
 
 	@Override
 	public UserInfo findById(Integer id) {
-		UserInfo userInfo = sessionFactory.getCurrentSession().load(UserInfo.class, id);
+//		EntityManager em = entityManagerFactory.createEntityManager();
+		UserInfo userInfo = em.find(UserInfo.class, id);
 		return userInfo;
 	}
 

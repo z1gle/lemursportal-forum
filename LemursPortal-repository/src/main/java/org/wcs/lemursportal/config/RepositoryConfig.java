@@ -2,6 +2,8 @@ package org.wcs.lemursportal.config;
 
 import java.util.Properties;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +12,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -30,24 +37,56 @@ public class RepositoryConfig {
 	@Autowired
 	private DataSource dataSource;//on injecte la datasource pour qu'on puisse utiliser un autre datasource pour les test
 	
+//	@Bean
+//	public LocalSessionFactoryBean sessionFactory(){
+//		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+//		sessionFactory.setDataSource(dataSource);
+//		sessionFactory.setPackagesToScan("org.wcs.lemursportal.model");
+//		Properties hibeProperties = new Properties();
+//		hibeProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
+//		hibeProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+//		hibeProperties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
+//		sessionFactory.setHibernateProperties(hibeProperties);
+//
+//		return sessionFactory;
+//	}
+	
 	@Bean
-	public LocalSessionFactoryBean sessionFactory(){
-		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-		sessionFactory.setDataSource(dataSource);
-		sessionFactory.setPackagesToScan("org.wcs.lemursportal.model");
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
+		LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+		emf.setDataSource(dataSource);
+		emf.setPackagesToScan("org.wcs.lemursportal.model");
+		emf.setPersistenceUnitName("lemursportalPUnit");
+		//Hibernate vendor
+	    JpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
+	    emf.setJpaVendorAdapter(jpaVendorAdapter);
 		Properties hibeProperties = new Properties();
 		hibeProperties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
 		hibeProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
 		hibeProperties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
-		sessionFactory.setHibernateProperties(hibeProperties);
-
-		return sessionFactory;
+		emf.setJpaProperties(hibeProperties);
+		  
+	    return emf;
 	}
 	
+	
+//    @Bean
+//    public HibernateTransactionManager transactionManager(){
+//    	HibernateTransactionManager txManager = new HibernateTransactionManager();
+//    	txManager.setSessionFactory(sessionFactory().getObject());
+//    	return txManager;
+//    }
+    
     @Bean
-    public HibernateTransactionManager transactionManager(){
-    	HibernateTransactionManager txManager = new HibernateTransactionManager();
-    	txManager.setSessionFactory(sessionFactory().getObject());
-    	return txManager;
+    public PlatformTransactionManager transactionManager(){
+       JpaTransactionManager transactionManager = new JpaTransactionManager();
+       transactionManager.setEntityManagerFactory(entityManagerFactory().getNativeEntityManagerFactory());
+
+       return transactionManager;
+    }
+    
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+       return new PersistenceExceptionTranslationPostProcessor();
     }
 }

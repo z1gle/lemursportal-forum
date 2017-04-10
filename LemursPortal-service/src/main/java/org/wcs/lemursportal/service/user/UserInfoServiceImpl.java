@@ -6,6 +6,8 @@ package org.wcs.lemursportal.service.user;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.NoResultException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +56,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 			user.getRoles().add(UserRole.SIMPLE_USER.getUserType());
 		}
 		//On verifie que le login n'existe pas encore en bdd
-		UserInfo userInfo = userRepository.findUserByLogin(user.getLogin());
-		if(userInfo != null){
+		boolean loginExist = userRepository.isLoginExist(user.getLogin());
+		if(loginExist){
 			throw new RegistrationException(RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION);
 		}
 		String cryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
@@ -99,7 +101,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		persistUser.setNom(user.getNom());
 		persistUser.setPrenom(user.getPrenom());
 //		persistUser.setLogin(user.getLogin());
-		userRepository.merge(persistUser);
+		userRepository.update(persistUser);
 	}
 
 

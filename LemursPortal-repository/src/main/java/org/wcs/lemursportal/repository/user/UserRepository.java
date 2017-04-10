@@ -2,6 +2,8 @@ package org.wcs.lemursportal.repository.user;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.wcs.lemursportal.model.user.UserInfo;
 
 /**
@@ -26,7 +28,7 @@ public interface UserRepository /*extends JpaRepository<UserInfo, Integer>*/{
 	 * @param login
 	 * @return
 	 */
-	UserInfo findUserByLogin(String login);
+	UserInfo findUserByLogin(String login) throws NoResultException;
 	
 	/**
 	 * 
@@ -34,11 +36,6 @@ public interface UserRepository /*extends JpaRepository<UserInfo, Integer>*/{
 	 */
 	void update(UserInfo user);
 	
-	/**
-	 * 
-	 * @param user
-	 */
-	void merge(UserInfo user);
 	/**
 	 * 
 	 * @param user

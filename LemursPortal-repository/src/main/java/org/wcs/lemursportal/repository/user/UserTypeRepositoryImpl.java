@@ -5,6 +5,9 @@ package org.wcs.lemursportal.repository.user;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.hibernate.SessionFactory;
@@ -21,22 +24,27 @@ import org.wcs.lemursportal.model.user.UserType;
 @Repository
 public class UserTypeRepositoryImpl implements UserTypeRepository {
 	
-	@Autowired
-	private SessionFactory sessionFactory;
+	@PersistenceContext(unitName="lemursportalPUnit")
+	protected EntityManager em;
+	
+//	@Autowired
+//	private EntityManagerFactory entityManagerFactory;
 
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.repository.user.UserTypeRepository#insert(org.wcs.lemursportal.data.user.UserType)
 	 */
 	@Override
 	public void insert(UserType userType) {
-		sessionFactory.getCurrentSession().saveOrUpdate(userType);
+//		EntityManager em = entityManagerFactory.createEntityManager();
+		em.persist(userType);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly=true)
 	public List<UserType> findAll() {
-		Query query = sessionFactory.getCurrentSession().createQuery("from UserType");
+//		EntityManager em = entityManagerFactory.createEntityManager();
+		Query query = em.createQuery("from UserType");
 		List<UserType> results = query.getResultList();
 		return results;
 	}
