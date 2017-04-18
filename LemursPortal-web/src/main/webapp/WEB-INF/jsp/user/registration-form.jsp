@@ -4,63 +4,54 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<c:url value="/resources" var="resourcesPath"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><spring:message code="signup.title"></spring:message></title>
+<link href="${resourcesPath}/css/styles.css" rel="stylesheet">
+<link href="${resourcesPath}/bootstrap/bootstrap.css" rel="stylesheet">
+<script src="${resourcesPath}/js/script.js"></script>
+<script src="${resourcesPath}/bootstrap/bootstrap.js"></script>
 </head>
+
 <body>
-<div style="width:300px; float:right;">
-		 <a href="?lang=mg">Malagasy</a> | <a href="?lang=en">English </a> | <a href="?lang=fr">Français</a>
-	</div>
-	<c:url var="userInfoFormAction" value="/signup"/>
-	<form:form modelAttribute="registrationForm" method="POST" action="${userInfoFormAction}">
-		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-		<form:hidden path="id"/>
-		<div>
-			<label><spring:message code="message.label.nom"/>:</label>
-			<span><form:input path="nom" /></span>
-			<span><form:errors path="nom"/></span>
-		</div>
-		<div>
-			<label><spring:message code="message.label.prenom"/>:</label>
-			<span><form:input path="prenom" /></span>
-			<span><form:errors path="prenom"/></span>
-		</div>
-		<div>
-			<label><spring:message code="message.label.email"/>:</label>
-			<span><form:input path="email" /></span>
-			<span><form:errors path="email"/></span>
-		</div>
-		<div>
-			<label><spring:message code="message.label.datenaissance"/>:</label>
-			<span><form:input path="dateNaissance" /><i>(<spring:message code="date.format"/>)</i></span>
-			<span><form:errors path="dateNaissance"/></span>
-		</div>
-		<div>
-			<label><spring:message code="message.label.login"/>:</label>
-			<span><form:input path="login" /></span>
-			<span><form:errors path="login"/></span>
-		</div>
-		<div>
-			<label><spring:message code="message.label.motdepasse"/>:</label>
-			<span><form:password path="password" /></span>
-			<span><form:errors path="password"/></span>
-		</div>
-		<div>
-			<label><spring:message code="message.label.motdepasse.confirmation"/>:</label>
-			<span><form:password path="passwordConfirm" /></span>
-			<span><form:errors path="passwordConfirm"/></span>
-		</div>
-		<div>
-			<label><spring:message code="message.label.biographie"/>:</label>
-			<span><form:textarea path="biographie" /></span>
-			<span><form:errors path="biographie"/></span>
-		</div>
-		<div>
-			<form:button value="signup"><spring:message code="message.label.sinscrire"/></form:button>
-		</div>
-	</form:form>
+    <div class="container">
+    	<jsp:include page="../inc/lang-chooser.jsp"/>
+        <div class="clear"></div>
+    	<div class="row">
+            <div class="inscript-page" align="center">
+              <img class="img-responsive" src="${resourcesPath}/images/logo-lemursportal.png" border="0">
+              <p class="connexion-rs"><spring:message code="login.connect.with"/> :</p>
+              <a href="#"><img src="${resourcesPath}/images/icon-fb.png" border="0"></a>
+              <a href="#"><img src="${resourcesPath}/images/icon-tw.png" border="0"></a>
+              <a href="#"><img src="${resourcesPath}/images/icon-gplus.png" border="0"></a>
+              <a href="#"><img src="${resourcesPath}/images/icon-yahoo.png" border="0"></a>
+              <div class="form">
+              <c:url var="userInfoFormAction" value="/signup"/>
+				<form:form modelAttribute="registrationForm" cssClass="register-form" method="POST" action="${userInfoFormAction}">
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+					<form:hidden path="id"/>
+						<spring:message code="signup.name.placeholder" var="namePlaceholder"/>
+	              		<form:input path="nom" placeholder="${namePlaceholder}" cssErrorClass="error"/><form:errors path="nom"/>
+	              		<spring:message code="signup.surname.placeholder" var="surnamePlaceholder"/>
+	              		<form:input path="prenom" placeholder="${surnamePlaceholder}" cssErrorClass="error"/><form:errors path="prenom"/>
+	              		<spring:message code="signup.dateofbirth.placeholder" var="dobPlaceholder"/>
+	              		<form:input path="dateNaissance" placeholder="${dobPlaceholder}" cssErrorClass="error"/><form:errors path="dateNaissance"/>
+	              		<spring:message code="signup.email.placeholder" var="emailPlaceholder"/>
+	              		<form:input path="email" placeholder="${emailPlaceholder}" cssErrorClass="error"/><form:errors path="email"/>
+	              		<spring:message code="signup.login.placeholder" var="loginPlaceholder"/>
+	              		<form:input path="login" placeholder="${loginPlaceholder}" cssErrorClass="error"/><form:errors path="login"/>
+	              		<spring:message code="signup.password.placeholder" var="passwordPlaceholder"/>
+	              		<form:password path="password"  placeholder="${passwordPlaceholder}" cssErrorClass="error"/><form:errors path="password"/>
+	              		<spring:message code="signup.confirmpassword.placeholder" var="confirmPwdPlaceholder"/>
+	              		<form:password path="passwordConfirm"  placeholder="${confirmPwdPlaceholder}" cssErrorClass="error"/><form:errors path="passwordConfirm"/>
+	              		<button type="submit"><spring:message code="signup.btn.signup" /></button>
+              	</form:form>
+              </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

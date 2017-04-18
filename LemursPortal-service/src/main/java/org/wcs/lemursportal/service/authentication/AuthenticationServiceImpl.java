@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.user.UserRepository;
@@ -63,9 +64,9 @@ public class AuthenticationServiceImpl extends
 //	}
 
 	@Override
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void autoLogin(String login, String password, HttpServletRequest request) {
 		UserDetails userDetails = this.loadUserByUsername(login);
-		LOGGER.debug("MIKAJY - " + password);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
         request.getSession();//créer une session si ce n'est pas déjà fait
         usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetails(request));

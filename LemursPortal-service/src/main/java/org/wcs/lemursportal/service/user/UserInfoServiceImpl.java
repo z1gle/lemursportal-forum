@@ -6,13 +6,9 @@ package org.wcs.lemursportal.service.user;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.NoResultException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,11 +86,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	/**
 	 * Modifier un utilisateur.
-	 * S'assurer bien qu'on ne modifie que les champs modifiable.
 	 */
 	@Override
 	public void update(UserInfo user) {
 		UserInfo persistUser = getById(user.getId());
+		//bien s'assurer qu'on ne modifie que les champs modifiable.
 		persistUser.setBiographie(user.getBiographie());
 		persistUser.setDateNaissance(user.getDateNaissance());
 		persistUser.setEmail(user.getEmail());

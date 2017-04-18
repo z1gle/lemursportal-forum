@@ -32,7 +32,7 @@ public class UserRepositoryImpl implements UserRepository{
 //	@Autowired
 //	private EntityManagerFactory entityManagerFactory;
 	
-	@PersistenceContext(unitName="lemursportal")
+	@PersistenceContext(unitName="lemursportalPUnit")
 	protected EntityManager em;
 	
 	/* (non-Javadoc)
@@ -81,7 +81,6 @@ public class UserRepositoryImpl implements UserRepository{
 		CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
 		Root<UserInfo> root = criteriaQuery.from(UserInfo.class);
 		criteriaQuery.select(criteriaBuilder.count(root));
-//		criteriaQuery.select(Projections.rowCount());
 		criteriaQuery.where(criteriaBuilder.equal(root.get("login") , login));
 		Long count = em.createQuery(criteriaQuery).getSingleResult();
 		return count != null && count > 0L;
