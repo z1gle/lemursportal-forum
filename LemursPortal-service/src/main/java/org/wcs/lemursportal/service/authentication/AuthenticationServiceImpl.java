@@ -64,7 +64,6 @@ public class AuthenticationServiceImpl extends
 //	}
 
 	@Override
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public void autoLogin(String login, String password, HttpServletRequest request) {
 		UserDetails userDetails = this.loadUserByUsername(login);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());

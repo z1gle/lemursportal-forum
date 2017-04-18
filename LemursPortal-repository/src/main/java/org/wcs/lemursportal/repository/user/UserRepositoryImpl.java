@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.model.user.UserInfo;
@@ -24,7 +25,7 @@ import org.wcs.lemursportal.model.user.UserInfo;
  *
  */
 @Repository
-@Transactional(propagation=Propagation.REQUIRED)
+@Transactional
 public class UserRepositoryImpl implements UserRepository{
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryImpl.class);
@@ -56,12 +57,14 @@ public class UserRepositoryImpl implements UserRepository{
 	public void update(UserInfo user) {
 //		EntityManager em = entityManagerFactory.createEntityManager();
 		em.merge(user);
+		em.flush();
 	}
 
 	@Override
 	public void insert(UserInfo user) {
 //		EntityManager em = entityManagerFactory.createEntityManager();
 		em.persist(user);
+		em.flush();
 	}
 
 	@SuppressWarnings("unchecked")

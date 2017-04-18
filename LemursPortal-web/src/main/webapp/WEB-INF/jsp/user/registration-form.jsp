@@ -4,6 +4,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
+<spring:message code="date.format" var="dateFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -22,12 +23,12 @@
         <div class="clear"></div>
     	<div class="row">
             <div class="inscript-page" align="center">
-              <img class="img-responsive" src="${resourcesPath}/images/logo-lemursportal.png" border="0">
+              <img class="img-responsive" src="${resourcesPath}/images/logo-lemursportal.png" border="0"/>
               <p class="connexion-rs"><spring:message code="login.connect.with"/> :</p>
-              <a href="#"><img src="${resourcesPath}/images/icon-fb.png" border="0"></a>
-              <a href="#"><img src="${resourcesPath}/images/icon-tw.png" border="0"></a>
-              <a href="#"><img src="${resourcesPath}/images/icon-gplus.png" border="0"></a>
-              <a href="#"><img src="${resourcesPath}/images/icon-yahoo.png" border="0"></a>
+              <a href="#"><img src="${resourcesPath}/images/icon-fb.png" border="0"/></a>
+              <a href="#"><img src="${resourcesPath}/images/icon-tw.png" border="0"/></a>
+              <a href="#"><img src="${resourcesPath}/images/icon-gplus.png" border="0"/></a>
+              <a href="#"><img src="${resourcesPath}/images/icon-yahoo.png" border="0"/></a>
               <div class="form">
               <c:url var="userInfoFormAction" value="/signup"/>
 				<form:form modelAttribute="registrationForm" cssClass="register-form" method="POST" action="${userInfoFormAction}">
@@ -38,7 +39,7 @@
 	              		<spring:message code="signup.surname.placeholder" var="surnamePlaceholder"/>
 	              		<form:input path="prenom" placeholder="${surnamePlaceholder}" cssErrorClass="error"/><form:errors path="prenom"/>
 	              		<spring:message code="signup.dateofbirth.placeholder" var="dobPlaceholder"/>
-	              		<form:input path="dateNaissance" placeholder="${dobPlaceholder}" cssErrorClass="error"/><form:errors path="dateNaissance"/>
+	              		<form:input path="dateNaissance" placeholder="${dobPlaceholder} (${dateFormat})" cssErrorClass="error"/><form:errors path="dateNaissance"/>
 	              		<spring:message code="signup.email.placeholder" var="emailPlaceholder"/>
 	              		<form:input path="email" placeholder="${emailPlaceholder}" cssErrorClass="error"/><form:errors path="email"/>
 	              		<spring:message code="signup.login.placeholder" var="loginPlaceholder"/>

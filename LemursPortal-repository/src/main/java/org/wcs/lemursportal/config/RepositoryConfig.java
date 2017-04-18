@@ -2,7 +2,6 @@ package org.wcs.lemursportal.config;
 
 import java.util.Properties;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
@@ -13,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -77,11 +75,11 @@ public class RepositoryConfig {
 //    	return txManager;
 //    }
     
-    @Bean
-    public PlatformTransactionManager transactionManager(){
+    @Bean(name="transactionManager")
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
        JpaTransactionManager transactionManager = new JpaTransactionManager();
-       transactionManager.setEntityManagerFactory(entityManagerFactory().getNativeEntityManagerFactory());
-
+       transactionManager.setEntityManagerFactory(emf);
+       transactionManager.setDataSource(dataSource);
        return transactionManager;
     }
     

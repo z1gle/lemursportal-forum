@@ -3,6 +3,7 @@ package org.wcs.lemursportal.config;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /**
@@ -12,7 +13,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration 
 @ComponentScan("org.wcs.lemursportal") 
 @EnableWebMvc   
-@Import({ WebAppConfigurer.class, SecurityConfig.class, MailConfig.class })
+@EnableTransactionManagement
+@Import({ WebAppConfigurer.class, SecurityConfig.class, MailConfig.class, RepositoryConfig.class })
 public class ApplicationConfig{
 
 }
