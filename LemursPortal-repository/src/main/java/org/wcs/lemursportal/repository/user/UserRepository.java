@@ -1,51 +1,21 @@
 package org.wcs.lemursportal.repository.user;
 
-import java.util.List;
-
-import javax.persistence.NoResultException;
-
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.model.user.UserInfo;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>
  *
  */
-public interface UserRepository /*extends JpaRepository<UserInfo, Integer>*/{
+@Transactional
+@Repository
+public interface UserRepository extends JpaRepository<UserInfo, Integer>{
 	
-	/**
-	 * 
-	 * @param login
-	 * @return
-	 */
-	public boolean isLoginExist(String login);
-	/**
-	 * 
-	 * @return
-	 */
-	List<UserInfo> findAll();
-	/**
-	 * 
-	 * @param login
-	 * @return
-	 */
-	UserInfo findUserByLogin(String login) throws NoResultException;
+	//@Query("select u from UserInfo as u where u.login=?1")
+	UserInfo findByLogin(String login);
 	
-	/**
-	 * 
-	 * @param user
-	 */
-	void update(UserInfo user);
-	
-	/**
-	 * 
-	 * @param user
-	 */
-	void insert(UserInfo user);
-	
-	/**
-	 * 
-	 * @param id
-	 * @return
-	 */
-	UserInfo findById(Integer id);
+	//@Query("select u from UserInfo as u where u.login=?1 and u.enabled=?2")
+	UserInfo findByLoginAndEnabled(String login, boolean enabled);
 }

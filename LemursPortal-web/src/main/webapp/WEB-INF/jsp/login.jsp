@@ -18,7 +18,7 @@
         <div class="clear"></div>
     	<div class="row">
             <div class="login-page" align="center">
-              <img class="img-responsive" src="${resourcesPath}/images/logo-lemursportal.png" border="0">
+              <img class="img-responsive" src="${resourcesPath}/images/logo-lemursportal.png" border="0"/>
               <p class="connexion-rs"><spring:message code="login.connect.with"/> :</p>
               <a href="#"><img src="${resourcesPath}/images/icon-fb.png" border="0"></a>
               <a href="#"><img src="${resourcesPath}/images/icon-tw.png" border="0"></a>
@@ -26,14 +26,15 @@
               <a href="#"><img src="${resourcesPath}/images/icon-yahoo.png" border="0"></a>
               <div class="form">
                 <form class="login-form" name="loginForm" action="<c:url value='/authenticate' />" method="POST">
-                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                   <spring:message code="login.login.placeholder" var="loginPlaceholder"/>
                   <spring:message code="login.password.placeholder" var="pwdPlaceholder"/>
                   <input class="email" type="text" name="login" placeholder="${loginPlaceholder}"/>
                   <input class="pwd" type="password" name="password" placeholder="${pwdPlaceholder}"/>
                   <button type="submit"><spring:message code="login.btn.connect"/></button>
                   <p class="message">
-                  <a href="#" class="left"><spring:message code="login.signup"/> ?</a> 
+                  <c:url value="/signup" var="signupUrl"/>
+                  <a href="${signupUrl}" class="left"><spring:message code="login.signup"/> ?</a> 
                   <a href="#" class="right"><spring:message code="login.forgot.password"/> ?</a></p>
                 </form>
               </div>

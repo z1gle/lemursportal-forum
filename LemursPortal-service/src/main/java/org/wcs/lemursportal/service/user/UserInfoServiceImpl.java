@@ -9,6 +9,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,13 +53,15 @@ public class UserInfoServiceImpl implements UserInfoService {
 			user.getRoles().add(UserRole.SIMPLE_USER.getUserType());
 		}
 		//On verifie que le login n'existe pas encore en bdd
-		boolean loginExist = userRepository.isLoginExist(user.getLogin());
+		UserInfo userLoginExample = new UserInfo();
+		userLoginExample.setLogin(user.getLogin());
+		boolean loginExist = userRepository.exists(Example.of(userLoginExample));
 		if(loginExist){
 			throw new RegistrationException(RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION);
 		}
 		String cryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
 		user.setPassword(cryptedPassword);
-		userRepository.insert(user);
+		userRepository.save(user);
 	}
 
 	
@@ -72,7 +75,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Override @Transactional(readOnly=true)
 	public UserInfo getById(Integer id) {
-		UserInfo user = userRepository.findById(id);
+		UserInfo user = userRepository.findOne(id);
 		return user;
 	}
 
@@ -81,7 +84,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public void updateUserRoles(Integer userId, Set<UserType> roles) {
 		UserInfo user = getById(userId);
 		user.setRoles(roles);
-		userRepository.update(user);
+		userRepository.save(user);
 	}
 
 	/**
@@ -97,13 +100,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 		persistUser.setNom(user.getNom());
 		persistUser.setPrenom(user.getPrenom());
 //		persistUser.setLogin(user.getLogin());
-		userRepository.update(persistUser);
+		userRepository.save(persistUser);
 	}
 
 
 	@Override
 	public UserInfo getByLogin(String login) {
-		return userRepository.findUserByLogin(login);
+		return userRepository.findByLoginAndEnabled(login, Boolean.TRUE);
 	}
 
 }

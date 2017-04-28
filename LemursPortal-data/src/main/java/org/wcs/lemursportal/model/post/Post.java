@@ -1,0 +1,157 @@
+package org.wcs.lemursportal.model.post;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.wcs.lemursportal.model.user.UserInfo;
+
+/**
+ * @author Mikajy <mikajy401@gmail.com>
+ *
+ */
+@Entity
+@Table(name="message")
+public class Post implements Serializable {
+	
+	private static final long serialVersionUID = -1722178560929257653L;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id")
+	private Integer id;
+	
+	@Column(name="title", nullable=false)
+	private String title;
+	
+	@Column(name="contenu", nullable=true)
+	private String body;
+	
+	@Column(name="date_creation", nullable=false)
+	private Date creationDate;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	private UserInfo owner;
+	
+	@ManyToOne(optional=true)
+	@JoinColumn(columnDefinition="integer", name="parent_id", nullable=true)
+	private Post parent = null;
+	
+	@OneToMany(mappedBy="parent")
+	private List<Post> children;
+	
+	@ManyToOne(cascade=CascadeType.REMOVE)
+	private Thematique thematique;
+	
+	@Column(name="censored", nullable=true)
+	private Boolean censored;
+	
+	@Column(name="censored_date", nullable=true)
+	private Date censoredDate;
+	
+	@ManyToOne(optional=true, fetch=FetchType.LAZY)
+	@JoinColumn(columnDefinition="integer", name="censored_by", nullable=true)
+	private UserInfo censoredBy;//l'utilisateur(moderateur) qui a bloqué ce POST
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public Post getParent() {
+		return parent;
+	}
+
+	public void setParent(Post parent) {
+		this.parent = parent;
+	}
+
+	public Thematique getThematique() {
+		return thematique;
+	}
+
+	public void setThematique(Thematique thematique) {
+		this.thematique = thematique;
+	}
+
+	public UserInfo getOwner() {
+		return owner;
+	}
+
+	public void setOwner(UserInfo owner) {
+		this.owner = owner;
+	}
+
+	public Boolean getCensored() {
+		return censored;
+	}
+
+	public void setCensored(Boolean censored) {
+		this.censored = censored;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Date getCensoredDate() {
+		return censoredDate;
+	}
+
+	public void setCensoredDate(Date censoredDate) {
+		this.censoredDate = censoredDate;
+	}
+
+	public UserInfo getCensoredBy() {
+		return censoredBy;
+	}
+
+	public void setCensoredBy(UserInfo censoredBy) {
+		this.censoredBy = censoredBy;
+	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	public List<Post> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<Post> children) {
+		this.children = children;
+	}
+	
+
+}

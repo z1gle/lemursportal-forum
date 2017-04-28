@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.user.UserRepository;
@@ -35,7 +34,7 @@ public class AuthenticationServiceImpl extends
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired
-	private UserRepository userInfoRepository; 
+	private UserRepository userRepository; 
 
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.service.authentication.AbstractUserDetailsService#findUserByLogin(java.lang.String)
@@ -44,11 +43,11 @@ public class AuthenticationServiceImpl extends
 	protected UserInfo findUserByLogin(String login) 
 			throws UsernameNotFoundException {
 		//k123 = "21a4ed0a0cf607e77e93bf7604e2bb1ad07757c5"
-		UserInfo userInfo = userInfoRepository.findUserByLogin(login);
+		UserInfo userInfo = userRepository.findByLoginAndEnabled(login, Boolean.TRUE);
 		if(userInfo != null){
 			userInfo.setLastAccessDate(Calendar.getInstance().getTime());
 			//update user to save lastAccessDate
-			userInfoRepository.update(userInfo);
+			userRepository.save(userInfo);
 		}
 		return userInfo;
 	}

@@ -15,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.wcs.lemursportal.model.authentication.IUserInfo;
+import org.wcs.lemursportal.model.post.Thematique;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>
@@ -63,6 +64,9 @@ public class UserInfo implements IUserInfo {
 		inverseJoinColumns= {@JoinColumn(name = "idtypeuser", referencedColumnName = "id")}
 	)
 	private Set<UserType> roles;
+	
+	@ManyToMany(mappedBy="managers")
+	private Set<Thematique> managedThematiques;
 	
 	public String getLogin() {
 		return login;
@@ -129,6 +133,12 @@ public class UserInfo implements IUserInfo {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public Set<Thematique> getManagedThematiques() {
+		return managedThematiques;
+	}
+	public void setManagedThematiques(Set<Thematique> managedThematiques) {
+		this.managedThematiques = managedThematiques;
 	}
 	
 }

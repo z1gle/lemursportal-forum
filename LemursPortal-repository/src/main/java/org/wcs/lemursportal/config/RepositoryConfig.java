@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
+@EnableJpaRepositories("org.wcs.lemursportal")
 @ComponentScan({ "org.wcs.lemursportal" })
 @PropertySource("classpath:database.properties")
 public class RepositoryConfig {
@@ -50,7 +52,7 @@ public class RepositoryConfig {
 //	}
 	
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
+	public EntityManagerFactory entityManagerFactory(){
 		LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
 		emf.setDataSource(dataSource);
 		emf.setPackagesToScan("org.wcs.lemursportal.model");
@@ -63,8 +65,8 @@ public class RepositoryConfig {
 		hibeProperties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
 		hibeProperties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
 		emf.setJpaProperties(hibeProperties);
-		  
-	    return emf;
+		emf.afterPropertiesSet();
+	    return emf.getObject();
 	}
 	
 	
