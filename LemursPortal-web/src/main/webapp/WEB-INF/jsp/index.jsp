@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Lemurs Portal - Home</title>
+<title><spring:message code="home.title"/></title>
 <link href="${resourcesPath}/css/styles.css" rel="stylesheet"/>
 <link href="${resourcesPath}/bootstrap/css/bootstrap.css" rel="stylesheet"/>
 <script src="${resourcesPath}/js/jquery-1.12.4.min.js"></script>
@@ -26,7 +26,7 @@
             <!-- D menu mobile  -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
+                    <span class="sr-only"><spring:message code="home.togglenavigation"/></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -39,11 +39,11 @@
                 <ul class="nav navbar-nav top-nav navbar-right">
                 	<c:if test="${isAuthenticated}">
                 		<li>
-	                        <a href="#"><img class="img-circle" src="${resourcesPath}/images/user1.png"/> Mon profil</a>
+	                        <a href="#"><img class="img-circle" src="${resourcesPath}/images/user1.png"/><spring:message code="home.monprofile"/></a>
 	                    </li>
                 	</c:if>
                     <li class="dropdown">
-                        <a href="#" class="notif dropdown-toggle" data-toggle="dropdown">Notifications<span class="rond">12</span></a>
+                        <a href="#" class="notif dropdown-toggle" data-toggle="dropdown"><spring:message code="home.notification"/><span class="rond">12</span></a>
                         <ul class="dropdown-menu" role="menu">
                         	<li>Vous avez 1 réponse(s)</li>
                             <li>Vous êtes maintenant devenu modérateur</li>
@@ -60,7 +60,7 @@
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a class="notif dropdown-toggle" data-toggle="dropdown" href="#">Messages<span class="rond">3</span></a>
+                        <a class="notif dropdown-toggle" data-toggle="dropdown" href="#"><spring:message code="home.messages"/><span class="rond">3</span></a>
                         <ul class="dropdown-menu" role="menu">
                         	<li><a href="#">Bonjour, je suis...</a></li>
                             <li><a href="#">Veuillez marquer votre sujet...</a></li>
@@ -70,11 +70,11 @@
                     <li>
                     <c:choose>
                     	<c:when test="${isAuthenticated}">
-                    		<a href="#">Se deconnecter</a>
+                    		<a href="#"><spring:message code="home.logout"/></a>
                     	</c:when>
                     	<c:otherwise>
                     		<c:url value="/login" var="loginUrl"/>
-                    		<a href="${loginUrl}">Login</a>
+                    		<a href="${loginUrl}"><spring:message code="home.login"/></a>
                     	</c:otherwise>
                     </c:choose>
                     </li>
@@ -87,25 +87,26 @@
                 
                 <ul class="nav navbar-nav navbar-left">
                 	<li>
-                        <a href="#">Questions</a>
+                        <a href="#"><spring:message code="home.menu.questions"/></a>
                     </li>
                     <li>
-                        <a href="#">Documents</a>
+                        <a href="#"><spring:message code="home.menu.documents"/></a>
                     </li>
                     <li>
-                        <a href="#">Experts</a>
+                        <a href="#"><spring:message code="home.menu.experts"/></a>
                     </li>
                     <li>
-                        <a href="#">Formations</a>
+                        <a href="#"><spring:message code="home.menu.formations"/></a>
                     </li>
                 </ul>
                 
                 <ul class="nav navbar-nav navbar-right">
                 	<li>
                         <div class="input-group">
-                          <input type="text" class="form-control" placeholder="Rechercher..."/>
+                        <spring:message code="home.search.placeholder" var="searchPlaceholder"/>
+                          <input type="text" class="form-control" placeholder="${searchPlaceholder}"/>
                           	<span class="input-group-btn">
-                            <button class="btn btn-default" type="button">Go!</button>
+                            <button class="btn btn-default" type="button"><spring:message code="home.search.btn" /></button>
                           </span>
                         </div>
                     </li>
@@ -127,9 +128,9 @@
     
                     <div class="forum-title">
                         <div class="pull-right forum-desc">
-                            <a class="add-quest">Poser une question</a>
+                            <a class="add-quest"><spring:message code="home.ask.question"/></a>
                         </div>
-                        <h2>Top questions</h2>
+                        <h2><spring:message code="home.topquestions"/></h2>
                     </div>
     				<!-- D Sujet -->
     				<c:forEach items="${topQuestions}" var="topQuestion">
@@ -151,7 +152,7 @@
 	                                    <c:out value="${topQuestion.nbReponse}"/>
 	                                </span>
 	                                <div class="vue">
-	                                    <small><c:out value="${topQuestion.nbVue}"/> vues</small>
+	                                    <small><c:out value="${topQuestion.nbVue}"/> <spring:message code="home.topquestions.vues"/></small>
 	                                </div>
 	                            </div>
 	                            <div class="col-md-3 forum-user-info">
@@ -184,7 +185,7 @@
         
             <!-- D Thematiques -->
             <div class="sidebar-title">
-                <h2 class="thema">Thematiques</h2>
+                <h2 class="thema"><spring:message code="home.thematiques"/></h2>
             </div>
             <div class="list-group people-group thematique">
             	<c:forEach items="${topThematiques}" var="topThematique">
@@ -204,7 +205,7 @@
             
             <!-- D Questions -->
             <div class="sidebar-title">
-                <h2 class="last-quest">Dernières questions</h2>
+                <h2 class="last-quest"><spring:message code="home.latestquestions"/></h2>
             </div>
             <div class="list-group people-group thematique">
             	<c:forEach items="${lastestPosts}" var="post">
@@ -224,7 +225,7 @@
 			
             <!-- D Membres -->
             <div class="sidebar-title">
-                <h2 class="users-connect">Membres connectés</h2>
+                <h2 class="users-connect"><spring:message code="home.membreconnectes"/></h2>
             </div>
             <div class="membres-connectes">
 
@@ -339,16 +340,16 @@
             
             <!-- D Video -->
             <div class="sidebar-title">
-                <h2 class="vidaka">Photos / Vidéos</h2>
+                <h2 class="vidaka"><spring:message code="home.photovideos.title"/></h2>
             </div>
             <div class="list-group people-group photos-videos">
                 <div class="popup-gallery">
-                    <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""></a>
-                    <a href="#"><div class="video"></div><img src="${resourcesPath}/images/lem.png" alt=""></a>
-                    <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""></a>
-                    <a href="#"><div class="video"></div><img src="${resourcesPath}/images/lem.png" alt=""></a>
-                    <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""></a>
-                    <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""></a>
+                    <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""/></a>
+                    <a href="#"><div class="video"></div><img src="${resourcesPath}/images/lem.png" alt=""/></a>
+                    <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""/></a>
+                    <a href="#"><div class="video"></div><img src="${resourcesPath}/images/lem.png" alt=""/></a>
+                    <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""/></a>
+                    <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""/></a>
                 </div>
             </div>
             <!-- F Video -->
@@ -368,18 +369,18 @@
                 </div>
                 <div class="col-xs-5">
                     <ul>
-                    	<li><a href="#">Accueil</a></li>
-                        <li><a href="#">Questions</a></li>
-                        <li><a href="#">Documents</a></li>
-                        <li><a href="#">Experts</a></li>
+                    	<li><a href="#"><spring:message code="home.menu.accueil"/></a></li>
+                        <li><a href="#"><spring:message code="home.menu.questions"/></a></li>
+                        <li><a href="#"><spring:message code="home.menu.documents"/></a></li>
+                        <li><a href="#"><spring:message code="home.menu.experts"/></a></li>
                     </ul>
                 </div>
                 <div class="col-xs-5">
                     <ul>
-                    	<li><a href="#">Formations</a></li>
-                        <li><a href="#">Aide</a></li>
-                        <li><a href="#">Mentions légales</a></li>
-                        <li><a href="#">Contact</a></li>
+                    	<li><a href="#"><spring:message code="home.menu.formations"/></a></li>
+                        <li><a href="#"><spring:message code="home.menu.aide"/></a></li>
+                        <li><a href="#"><spring:message code="home.menu.mentionslegales"/></a></li>
+                        <li><a href="#"><spring:message code="home.menu.contact"/></a></li>
                     </ul>
                 </div>
             </div>
