@@ -93,9 +93,9 @@ public class PostRepositoryImpl implements PostRepository {
 
 	private void populateNbResponseAndLastResponse(Map<Integer, TopQuestion> topQuestionMap) {
 		StringBuilder jpql = new StringBuilder("select p.parentId, count(p.id) as nbResponse, lastResponse ")
-				.append(" from Post p, Post lastResponse inner join fetch lastResponse.owner ")
+				.append(" from Post p, Post lastResponse inner join fetch lastResponse.owner o ")
 				.append(" where p.parentId is not null and p.parentId in (:parentIds) ")
-				.append(" group by p.parentId, lastResponse.id having lastResponse.id=max(p.id) ");
+				.append(" group by p.parentId, lastResponse.id, o.id having lastResponse.id=max(p.id) ");
 		TypedQuery<Object[]> typedQuery = em.createQuery(jpql.toString(), Object[].class);
 		typedQuery.setParameter("parentIds", topQuestionMap.keySet());
 		List<Object[]> results = typedQuery.getResultList();
