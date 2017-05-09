@@ -42,11 +42,18 @@ public class Post implements Serializable {
 	@Column(name="date_creation", nullable=false)
 	private Date creationDate;
 	
+	@Column(name="owner_id", insertable=true, updatable=true)
+	private Integer ownerId;
+	
+	@Column(name="parent_id", insertable=true, updatable=true, nullable=true)
+	private Integer parentId;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="owner_id", insertable=false, updatable=false)
 	private UserInfo owner;
 	
-	@ManyToOne(optional=true)
-	@JoinColumn(columnDefinition="integer", name="parent_id", nullable=true)
+	@ManyToOne(fetch=FetchType.LAZY, optional=true)
+	@JoinColumn(name="parent_id", insertable=false, updatable=false)
 	private Post parent = null;
 	
 	@OneToMany(mappedBy="parent")
@@ -151,6 +158,22 @@ public class Post implements Serializable {
 
 	public void setChildren(List<Post> children) {
 		this.children = children;
+	}
+
+	public Integer getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(Integer ownerId) {
+		this.ownerId = ownerId;
+	}
+
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
 	}
 	
 

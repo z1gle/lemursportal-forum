@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,9 +33,10 @@ import org.wcs.lemursportal.service.user.UserInfoService;
 @Transactional
 public class DataTestController {
 	
-	private static final int NB_THEMATIQUE_MAX = 20;
-	private static final int NB_POST_MAX = 80;
-	private static final int NB_POST_VIEW_MAX = 100;
+	private static final int NB_THEMATIQUE_MAX = 15;
+	private static final int NB_QUESTION_MAX = 20;
+	private static final int NB_RESPONSE_MAX = 50;
+	private static final int NB_POST_VIEW_MAX = 80;
 	private final Random random = new Random();
 	@Autowired UserInfoService userInfoService;
 	@Autowired UserRepository userRepository;
@@ -43,13 +45,16 @@ public class DataTestController {
 	@Autowired PostViewCrudRepository postViewCrudRepository;
 	
 	@GetMapping(value="/admin/generate_topicsandpost")
+	@Transactional(isolation=Isolation.READ_UNCOMMITTED)
 	public @ResponseBody String generateDataForTest(Authentication authentication, HttpServletRequest request){
 		UserInfo currentUser = userInfoService.getByLogin(authentication.getName());
 		List<Thematique> thematiques = generateThematique(currentUser);
 		StringBuilder sb = new StringBuilder("<h2>Recap : </h2>");
 		sb.append(thematiques.size() + " générés dont : <ul>");
+		List<Post> thematiquePosts = new ArrayList<>();
 		for(Thematique thematique: thematiques){
-			List<Post> thematiquePosts = generatePosts(thematique, currentUser);
+			thematiquePosts = generatePosts(thematique, currentUser);
+			generateResponses(thematiquePosts);
 			for(Post post: thematiquePosts){
 				List<PostView> postViews = simulatePostView(thematique, post, currentUser);
 				postViewCrudRepository.save(postViews);
@@ -79,13 +84,45 @@ public class DataTestController {
 		return thematiques;
 	}
 	
+	private List<Post> generateResponses(List<Post> questions){
+		List<Post> posts = new ArrayList<>();
+		
+		for(Post question: questions){
+			int nbMessage = -1;
+			while(nbMessage < 0){
+				nbMessage = random.nextInt(NB_RESPONSE_MAX);
+			}
+			Calendar calendar = Calendar.getInstance();
+			int maxMonth = calendar.get(Calendar.MONTH);
+			for(int i=0, calendarMonth = -1; i< nbMessage; i++ ){
+				Post message = new Post();
+				while(calendarMonth <  0 ){
+					calendarMonth = random.nextInt(maxMonth);
+				}
+				calendar.set(Calendar.MONTH, calendarMonth);
+				Date creationDate = calendar.getTime();
+				message.setCreationDate(creationDate);
+				message.setTitle("Response numéro " + i + " de la question " + question.getTitle());
+				message.setBody("Description lavalava ihany ho an'i Message numéro " + i + " La Juve, le pire tirage pour Monaco ? Un derby madrilène explosif !");
+				message.setOwnerId(question.getOwnerId());
+				message.setParentId(question.getId());
+				message.setParent(question);
+				message.setThematique(question.getThematique());
+				posts.add(message);
+			}
+		}
+		
+		postCrudRepository.save(posts);
+		return posts;
+	}
+	
 	private List<Post> generatePosts(Thematique thematique, UserInfo user){
 		List<Post> posts = new ArrayList<>();
 		//Test: création de post pour le nouveau thématique
 		int nbMessage = -1;
 		boolean randomBoolean = false;
 		while(nbMessage < 0){
-			nbMessage = random.nextInt(NB_POST_MAX);
+			nbMessage = random.nextInt(NB_QUESTION_MAX);
 		}
 		
 		
@@ -100,15 +137,10 @@ public class DataTestController {
 			calendar.set(Calendar.MONTH, calendarMonth);
 			Date creationDate = calendar.getTime();
 			message.setCreationDate(creationDate);
-			message.setTitle("Message numéro " + i + " de " + thematique.getLibelle());
+			message.setTitle("Question numéro " + i + " de " + thematique.getLibelle());
 			message.setBody("Description lavalava ihany ho an'i Message numéro " + i + " La Juve, le pire tirage pour Monaco ? Un derby madrilène explosif !");
+			message.setOwnerId(user.getId());
 			message.setOwner(user);
-			if(randomBoolean && posts.size() > 1){
-				int index = random.nextInt(posts.size() - 1);
-				if(index > 0){
-					message.setParent(posts.get(index));
-				}
-			}
 			randomBoolean = random.nextBoolean();
 			message.setThematique(thematique);
 			posts.add(message);
