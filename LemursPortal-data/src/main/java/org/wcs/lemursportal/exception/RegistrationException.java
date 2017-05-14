@@ -10,6 +10,7 @@ package org.wcs.lemursportal.exception;
 public class RegistrationException extends RuntimeException {
 	public static final int LOGIN_ALREADY_EXIST_EXCEPTION=1;
 	public static final int DATABASE_NOT_READY_EXCEPTION=2;
+	public static final int THEMATIQUE_ALREADY_EXIST_EXCEPTION=3;
 	/**
 	 * 
 	 */

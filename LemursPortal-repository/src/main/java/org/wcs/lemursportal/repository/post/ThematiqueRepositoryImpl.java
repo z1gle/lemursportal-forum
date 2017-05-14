@@ -26,6 +26,7 @@ public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.repository.post.ThematiqueRepository#findTopThematique(int)
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<TopThematique> findTopThematique(Integer size) {
 		StringBuilder qlBuild = new StringBuilder("select t, count(p) as nbPost from Post as p ");
@@ -36,7 +37,7 @@ public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 		if(size != null && size > 0){
 			query.setMaxResults(size);
 		}
-		List<Object[]> results = query.getResultList();
+		final List<Object[]> results = query.getResultList();
 		List<TopThematique> topThematiques = new ArrayList<>();
 		for(Object[] result: results){
 			Thematique thematique = (Thematique)result[0];

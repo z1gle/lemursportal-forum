@@ -299,8 +299,12 @@ li .lang {
 	background:url(../images/sepa.png) right center no-repeat;
 }
 
+.top-nav li:nth-child(4) {
+	background:none!important;
+}
+
 .top-nav li:last-child {
-	background-image:none!important;
+	background:none!important;
 }
 
 .top-nav .img-circle {
@@ -400,7 +404,8 @@ li .lang {
   font-size: 66px;
 }
 
-.forum-item {
+.forum-item,
+.cadre {
   margin: 10px 0;
   padding: 15px 20px;
   border: 1px solid #d7d7d7;
@@ -832,6 +837,7 @@ a.forum-item-title:hover {
 footer {
 	background:#282727;
 	padding:30px 0 0 0;
+	margin-top: 15px;
 }
 
 footer li {
@@ -844,6 +850,11 @@ footer a {
 	text-decoration:none!important;
 }
 
+footer a:hover {
+	color:#a38000!important;
+	text-decoration:none!important;
+}
+
 footer .copy {
 	text-align:center;
 	padding:15px 0;
@@ -852,6 +863,262 @@ footer .copy {
 	font-size:12px;
 	color:#282727;
 }
+
+
+
+/* Liste question */
+.liste-quest .forum-title h2 {
+	background:url(../images/icon-thema.png) no-repeat scroll left center;
+}
+
+.liste-quest .forum-title h2 span {
+	color:#282727;
+}
+
+/* Ajouter question */
+.int input[type=text],
+.int input[type=password],
+.int input[type=email],
+.int input[type=tel],
+.int textarea,
+.int select {
+	border:1px solid #ccc!important;
+}
+
+.int .form {
+	width:auto!important;
+	max-width:100%!important;
+	padding:2%;
+	margin-bottom:0;
+}
+
+.int .form button {
+  padding:10px 15px;
+}
+
+.int .create-quest-form button {
+	float:right;
+}
+
+.int .form label {
+	text-align:left;
+	float:left;
+	margin-top:10px;
+}
+
+.int .form textarea {
+	width:100%;
+	padding:15px;
+	margin: 0 0 15px;
+}
+
+.int .form select {
+	width:100%;
+	padding:10px 15px;
+	margin: 0 0 15px;
+}
+
+/* Profil */
+.profil-info .image {
+    position: relative
+}
+
+.profil-info .image .editImage {
+    position: absolute;
+    bottom: -27px;
+    right: 20px;
+    background: #fe5621;
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+    font-size: 1.8rem;
+    width: 54px;
+    height: 54px;
+    line-height: 54px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box
+}
+
+.profil-info .image .editImage:hover {
+    background: #fe693a
+}
+
+.profil-info .box {
+    padding: 0
+}
+
+.profil-info .box .info,
+.profil-info .box .name,
+.profil-info .box .socialIcons {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e6e7ed
+}
+
+.profil-info .box .socialIcons {
+    border: 0
+}
+
+.profil-info .box .info>span {
+    margin: 10px 0;
+    display: block;
+    padding: 0 0 0 35px;
+    position: relative
+}
+
+.profil-info .box .info>span .fa {
+    position: absolute;
+    left: 5px;
+    top: 4px;
+    color: #9da2a6
+}
+
+.boxTitle {
+    font-size: 14px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0 0 25px 0
+}
+
+.bgTitle {
+    background: url(../../img/bg-sharpen.jpg) no-repeat;
+    background-size: 100% 100%
+}
+
+.bgTitle .boxTitle {
+    margin: 0;
+    padding: 22px 30px;
+    color: #fff
+}
+
+.box {
+    background: #fff;
+    padding: 30px;
+    margin: 0 0 24px 0
+}
+
+.box .table-responsive {
+    width: auto
+}
+
+.box .panel-group:last-of-type {
+    margin-bottom: 0
+}
+
+
+.simpleListings {
+    padding: 0;
+    margin: 0
+}
+
+.simpleListings li {
+    list-style-type: none;
+    padding: 0 0 20px 0;
+    margin: 20px 0 0 0;
+    border-bottom: 1px solid #e6e7ed;
+    position: relative
+}
+
+.simpleListings li:first-child {
+    margin-top: 0
+}
+
+.simpleListings li:only-child {
+    border-bottom: 0
+}
+
+.simpleListings li .title {
+    font-size: 14px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0 0 2px 0
+}
+
+.simpleListings li .title span {
+    font-weight: 400;
+    text-transform: none
+}
+
+.simpleListings li .title a:hover {
+    color: #fe5621
+}
+
+.simpleListings li .info {
+    color: #919599;
+    font-style: italic
+}
+
+.simpleListings li p {
+    margin: 7px 0 0 0
+}
+
+.simpleListings li img {
+    margin: 20px 0
+}
+
+.box .info {
+	margin-top:0;
+}
+
+.profil-activite {
+    margin-bottom: 25px
+}
+
+.profil-activite+.showMore {
+    margin: 0 0 0 70px
+}
+
+.profil-activite .i {
+    margin-top: 25px;
+    position: relative
+}
+
+.profil-activite .i:first-child {
+    margin-top: 0
+}
+
+.profil-activite .i .image {
+    position: absolute;
+    top: 20px;
+    left: 0
+}
+
+.profil-activite ul {
+    padding: 20px 25px
+}
+
+.profil-activite ul li .title {
+    font-size: 16px;
+    font-size: 1.6rem;
+    text-transform: none
+}
+
+.profil-activite .status li {
+    padding-bottom: 0
+}
+
+.profil-activite .status li .share a .fa {
+    color: #9da2a6;
+    margin: 0 3px 0 0;
+    -webkit-transition: color .3s ease;
+    -moz-transition: color .3s ease;
+    -ms-transition: color .3s ease;
+    -o-transition: color .3s ease
+}
+
+.profil-activite .status li .share a:hover .fa {
+    color: #fe5621
+}
+
+.fa-camera::before {
+    line-height: 55px;
+}
+
 
 /* Responsive */
 
@@ -864,6 +1131,10 @@ footer .copy {
 		margin: 15px 0 10px 0;
 		display: none;
 	  }
+	  
+	.profil-info .image img {
+		width: 100%;
+	}
 }
 
 @media(max-width:767px) {

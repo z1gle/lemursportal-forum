@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.model.post.Post;
+import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.post.TopQuestion;
 
 /**
@@ -107,8 +108,40 @@ public class PostRepositoryImpl implements PostRepository {
 			topQuestionMap.get(parentId).setNbReponse(nbResponse);
 		}
 	}
-
-
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Page<TopQuestion> getPostByThematique(Pageable pageable,Integer idThematique) {
+		StringBuilder jpql = new StringBuilder("select p, count(v.id) as nbVue from PostView as v");
+		jpql.append(" inner join v.post as p ");
+		jpql.append(" inner join fetch p.owner u ");
+		jpql.append(" inner join fetch p.thematique t ");
+		jpql.append(" where t.id = "+idThematique);
+		jpql.append(" group by p.id , t.id , u.id");
+		jpql.append(" order by nbVue desc");
+		Query query = em.createQuery(jpql.toString());
+		if(pageable != null){
+			query.setFirstResult(pageable.getOffset());
+			query.setMaxResults(pageable.getPageSize());
+		}
+		final List<Object[]> results = query.getResultList();
+		final Map<Integer, TopQuestion> mostViewedPostMap = new HashMap<>();
+		List<TopQuestion> mostViewedPost = new ArrayList<>();
+		for(Object[] array: results){
+			Post p = (Post)array[0];
+			//p.getOwner().getNom();//juste pour s'assurer qu'on a bien l'objet owner
+			Long nbVue = (Long)array[1];
+			TopQuestion topQuestion = new TopQuestion();
+			topQuestion.setQuestion(p);
+			topQuestion.setNbVue(nbVue);
+			topQuestion.setResponsable(p.getOwner());
+			mostViewedPost.add(topQuestion);
+			mostViewedPostMap.put(p.getId(), topQuestion);
+		}
+		populateNbResponseAndLastResponse(mostViewedPostMap);
+		return new PageImpl<>(mostViewedPost);
+	}
+	
 	
 
 }

@@ -68,7 +68,8 @@ public class HomeController {
 	
 	@ModelAttribute("topThematiques")
 	public List<TopThematique> getTopThematiques(){
-		return thematiqueRepository.findTopThematique(10);
+		List<TopThematique> t = thematiqueRepository.findTopThematique(10);
+		return t;
 	}
 	
 	@ModelAttribute("lastestPosts")

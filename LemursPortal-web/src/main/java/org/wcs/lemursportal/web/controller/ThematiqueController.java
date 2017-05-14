@@ -1,7 +1,10 @@
 package org.wcs.lemursportal.web.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -14,7 +17,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.wcs.lemursportal.exception.RegistrationException;
+import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
+import org.wcs.lemursportal.model.post.TopQuestion;
+import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
 import org.wcs.lemursportal.service.post.ThematiqueService;
 
@@ -28,6 +37,7 @@ public class ThematiqueController {
 	
 	@Autowired
 	private ThematiqueService thematiqueService;
+	@Autowired private PostRepository postRepository;
 	
 
 	@Autowired
@@ -70,7 +80,30 @@ public class ThematiqueController {
 		if(results.hasErrors()){
 			return "forward:post/thematique-form";
 		}
-		thematiqueService.saveOrUpdate(authentication.getName(), thematique);
+		try{
+			thematiqueService.saveOrUpdate(authentication.getName(), thematique);
+		}catch(RegistrationException e){
+			if(e.getCode() == RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION){
+				results.rejectValue("login", "validation.thematique.exist");
+				return "forward:post/thematique-form";
+			}else{
+				return "forward:post/thematique-form";
+			}
+		}
+		
 		return "redirect:/secured/thematique/list";
 	}
+	
+	@RequestMapping(value="/postsParThematique/{idThematique}",method=RequestMethod.GET)
+	public String listPostsByThematique(@PathVariable(name="idThematique", required=false) Integer idThematique, Model model){
+		if(idThematique == null){
+			return "redirect:post/thematique-list";
+		}
+		Thematique thematique = thematiqueService.findById(idThematique);
+		model.addAttribute(thematique);
+		model.addAttribute("postsBythematique", postRepository.getPostByThematique(new PageRequest(0, 10),idThematique).getContent());
+		return "post/posts-thematique";
+	}
+	
+	
 }

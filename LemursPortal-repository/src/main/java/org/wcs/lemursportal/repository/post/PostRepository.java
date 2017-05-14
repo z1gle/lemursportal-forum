@@ -24,4 +24,9 @@ public interface PostRepository {
 	 * @return
 	 */
 	 Page<TopQuestion> getMostViewedPosts(Pageable pageable);
+	 
+	 
+	
+	 
+	 Page<TopQuestion> getPostByThematique (Pageable pageable, Integer idThematique);
 }
