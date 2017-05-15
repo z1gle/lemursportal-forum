@@ -24,4 +24,6 @@ public interface PostRepository {
 	 * @return
 	 */
 	 Page<TopQuestion> getMostViewedPosts(Pageable pageable);
+	 
+	 void insert(Post post);
 }

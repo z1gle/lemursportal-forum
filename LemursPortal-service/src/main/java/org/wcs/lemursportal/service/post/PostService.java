@@ -2,6 +2,7 @@ package org.wcs.lemursportal.service.post;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.TopQuestion;
 
 /**
@@ -15,4 +16,6 @@ public interface PostService {
 	 * @return
 	 */
 	public Page<TopQuestion> getTopQuestions(Pageable pageable);
+	
+	public void insert(Post post);
 }

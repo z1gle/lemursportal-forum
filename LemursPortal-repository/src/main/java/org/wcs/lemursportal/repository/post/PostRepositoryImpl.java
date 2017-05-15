@@ -81,4 +81,7 @@ public class PostRepositoryImpl implements PostRepository {
 		return new PageImpl<TopQuestion>(mostViewedPost);
 	}
 
+	public void insert(Post p){
+		em.persist(p);
+	}
 }
