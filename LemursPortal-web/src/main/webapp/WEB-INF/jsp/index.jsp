@@ -157,7 +157,13 @@
 	                            </div>
 	                            <div class="col-md-3 forum-user-info">
 	                               <a href="#"><img class="img-circle" src="${resourcesPath}/images/user2.png" alt=""/></a>
-	                               <div class="reponse-user"><a href="#">Lucas Artigo</a><br/>27.02.2017  15h23<br/><i>Visiteur</i></div>
+	                               <div class="reponse-user"><a href="#">
+	                               <c:out value="${topQuestion.derniereReponse.owner.nom}"/> <c:out value="${topQuestion.derniereReponse.owner.prenom}"/>
+	                               </a><br/><fmt:formatDate pattern="${datetimeFormat}" value="${topQuestion.derniereReponse.creationDate}"/><br/>
+	                               	<c:forEach items="${topQuestion.derniereReponse.owner.roles}" var="role">    
+									    <i><c:out value="${role.libelle}"/></i><br/>
+									</c:forEach>
+	                               </div>
 	                            </div>
 	                            
 	                        </div>
@@ -166,15 +172,15 @@
                     <!-- F Sujet -->
                     
                     <!-- D Pagination -->
-                    <ul class="pagination">
-                        <li class="disabled"><a href="#">&laquo;</a></li>
-                        <li class="active"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">&raquo;</a></li>
-                    </ul>
+<!--                     <ul class="pagination"> -->
+<!--                         <li class="disabled"><a href="#">&laquo;</a></li> -->
+<!--                         <li class="active"><a href="#">1</a></li> -->
+<!--                         <li><a href="#">2</a></li> -->
+<!--                         <li><a href="#">3</a></li> -->
+<!--                         <li><a href="#">4</a></li> -->
+<!--                         <li><a href="#">5</a></li> -->
+<!--                         <li><a href="#">&raquo;</a></li> -->
+<!--                     </ul> -->
                     <!-- F Pagination -->
                     
                 </div>

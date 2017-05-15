@@ -1,7 +1,9 @@
 package org.wcs.lemursportal.repository.post;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,6 +13,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +32,8 @@ public class PostRepositoryImpl implements PostRepository {
 	
 	@PersistenceContext(unitName="lemursportalPUnit")
 	protected EntityManager em;
+	
+	@Autowired private PostCrudRepository postCrudRepository;
 
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.repository.post.PostRepository#getLastOrphanPosts(java.lang.Integer)
@@ -67,7 +72,8 @@ public class PostRepositoryImpl implements PostRepository {
 			query.setFirstResult(pageable.getOffset());
 			query.setMaxResults(pageable.getPageSize());
 		}
-		List<Object[]> results = query.getResultList();
+		final List<Object[]> results = query.getResultList();
+		final Map<Integer, TopQuestion> mostViewedPostMap = new HashMap<>();
 		List<TopQuestion> mostViewedPost = new ArrayList<>();
 		for(Object[] array: results){
 			Post p = (Post)array[0];
@@ -76,12 +82,35 @@ public class PostRepositoryImpl implements PostRepository {
 			TopQuestion topQuestion = new TopQuestion();
 			topQuestion.setQuestion(p);
 			topQuestion.setNbVue(nbVue);
+			topQuestion.setResponsable(p.getOwner());
 			mostViewedPost.add(topQuestion);
+			mostViewedPostMap.put(p.getId(), topQuestion);
 		}
-		return new PageImpl<TopQuestion>(mostViewedPost);
+		populateNbResponseAndLastResponse(mostViewedPostMap);
+		return new PageImpl<>(mostViewedPost);
 	}
 
-	public void insert(Post p){
+
+	private void populateNbResponseAndLastResponse(Map<Integer, TopQuestion> topQuestionMap) {
+		StringBuilder jpql = new StringBuilder("select p.parentId, count(p.id) as nbResponse, lastResponse ")
+				.append(" from Post p, Post lastResponse inner join fetch lastResponse.owner o ")
+				.append(" where p.parentId is not null and p.parentId in (:parentIds) ")
+				.append(" group by p.parentId, lastResponse.id, o.id having lastResponse.id=max(p.id) ");
+		TypedQuery<Object[]> typedQuery = em.createQuery(jpql.toString(), Object[].class);
+		typedQuery.setParameter("parentIds", topQuestionMap.keySet());
+		List<Object[]> results = typedQuery.getResultList();
+		for(Object[] array: results){
+			Integer parentId = (Integer)array[0];
+			Long nbResponse = (Long)array[1];
+			Post lastResponse = (Post)array[2];
+			topQuestionMap.get(parentId).setDerniereReponse(lastResponse);
+			topQuestionMap.get(parentId).setNbReponse(nbResponse);
+		}
+	}
+
+public void insert(Post p){
 		em.persist(p);
 	}
+	
+
 }
