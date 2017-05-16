@@ -15,4 +15,5 @@ public interface ThematiqueRepository {
 	 * @return
 	 */
 	List<TopThematique> findTopThematique(Integer size);
+	List<TopThematique> findAllThematique();
 }
