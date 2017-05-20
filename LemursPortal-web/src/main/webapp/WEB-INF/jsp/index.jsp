@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
 <spring:message code="datetime.format" var="datetimeFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -45,18 +46,18 @@
                     <li class="dropdown">
                         <a href="#" class="notif dropdown-toggle" data-toggle="dropdown"><spring:message code="home.notification"/><span class="rond">12</span></a>
                         <ul class="dropdown-menu" role="menu">
-                        	<li>Vous avez 1 rÃ©ponse(s)</li>
-                            <li>Vous Ãªtes maintenant devenu modÃ©rateur</li>
+                        	<li>Vous avez 1 réponse(s)</li>
+                            <li>Vous êtes maintenant devenu modérateur</li>
                             <li>3 lecture(s) de votre question</li>
-                            <li>Votre question a Ã©tÃ© validÃ©e</li>
-                            <li>Vous avez 36 rÃ©ponse(s)</li>
-                            <li>Vous Ãªtes maintenant devenu modÃ©rateur</li>
+                            <li>Votre question a été validée</li>
+                            <li>Vous avez 36 réponse(s)</li>
+                            <li>Vous êtes maintenant devenu modérateur</li>
                             <li>8 lecture(s) de votre question</li>
-                            <li>Votre question a Ã©tÃ© validÃ©e</li>
-                            <li>Vous avez 11 rÃ©ponse(s)</li>
-                            <li>Vous Ãªtes maintenant devenu modÃ©rateur</li>
+                            <li>Votre question a été validée</li>
+                            <li>Vous avez 11 réponse(s)</li>
+                            <li>Vous êtes maintenant devenu modérateur</li>
                             <li>45 lecture(s) de votre question</li>
-                            <li>Votre question a Ã©tÃ© validÃ©e</li>
+                            <li>Votre question a été validée</li>
                         </ul>
                     </li>
                     <li class="dropdown">
@@ -64,7 +65,7 @@
                         <ul class="dropdown-menu" role="menu">
                         	<li><a href="#">Bonjour, je suis...</a></li>
                             <li><a href="#">Veuillez marquer votre sujet...</a></li>
-                            <li><a href="#">Madame, suite Ã  votre visite...</a></li>
+                            <li><a href="#">Madame, suite à votre visite...</a></li>
                         </ul>
                     </li>
                     <li>
@@ -102,13 +103,17 @@
                 
                 <ul class="nav navbar-nav navbar-right">
                 	<li>
+                	 <c:url value="/post/search" var="formAction"></c:url>
+                	<form  class="create-quest-form"  action="${formAction}"  method="POST"   >
+                	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                         <div class="input-group">
                         <spring:message code="home.search.placeholder" var="searchPlaceholder"/>
-                          <input type="text" class="form-control" placeholder="${searchPlaceholder}"/>
+                          <input type="text" name="pattern" class="form-control" placeholder="${searchPlaceholder}"/>
                           	<span class="input-group-btn">
-                            <button class="btn btn-default" type="button"><spring:message code="home.search.btn" /></button>
+                            <button class="btn btn-default" type="submit"><spring:message code="home.search.btn" /></button>
                           </span>
                         </div>
+                    </form>
                     </li>
                 </ul>
                
@@ -128,7 +133,7 @@
     
                     <div class="forum-title">
                         <div class="pull-right forum-desc">
-                            <a class="add-quest"><spring:message code="home.ask.question"/></a>
+                            <a class="add-quest" href="secured/post/create"><spring:message code="home.ask.question"/></a>
                         </div>
                         <h2><spring:message code="home.topquestions"/></h2>
                     </div>
@@ -195,7 +200,8 @@
             </div>
             <div class="list-group people-group thematique">
             	<c:forEach items="${topThematiques}" var="topThematique">
-            		<a href="#" class="list-group-item">
+            	<c:url value="/postsParThematique/${topThematique.thematique.id}" var="postsBythematiqueUrl"/>
+            		<a href="${postsBythematiqueUrl}"" class="list-group-item">
 	                    <div class="media">
 	                        <div class="pull-left">
 	                            <c:out value="${topThematique.thematique.libelle}"/>

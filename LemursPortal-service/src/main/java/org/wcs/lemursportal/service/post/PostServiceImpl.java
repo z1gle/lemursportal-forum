@@ -1,5 +1,7 @@
 package org.wcs.lemursportal.service.post;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +34,14 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public void insert(Post post) {
+		post.setCreationDate(new Date());
+		System.out.println(post.toString());
 		postRepository.insert(post);
+	}
+
+	@Override
+	public Page<Post> search(Pageable pageable, String pattern) {
+		return postRepository.search(pageable, pattern);
 	}
 
 }

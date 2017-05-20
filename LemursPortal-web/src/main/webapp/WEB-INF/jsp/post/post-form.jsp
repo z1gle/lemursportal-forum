@@ -3,17 +3,18 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
+<c:url value="/resources" var="resourcesPath"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Lemurs Portal - Poser Question</title>
-<link href="css/styles.css" rel="stylesheet">
-<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-<script src="js/script.js"></script>
-<script src="bootstrap/js/bootstrap.js"></script>
-<script src="http://code.jquery.com/jquery-1.12.3.min.js"></script>
-<script src="js/jquery.showmore.js"></script>
+<link href="${resourcesPath}/css/styles.css" rel="stylesheet"/>
+<link href="${resourcesPath}/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+<script src="${resourcesPath}/js/jquery-1.12.4.min.js"></script>
+<script src="${resourcesPath}/js/script.js"></script>
+<script src="${resourcesPath}/bootstrap/js/bootstrap.js"></script>
+<script src="${resourcesPath}/js/jquery.showmore.js"></script>
 
 </head>
 
@@ -31,14 +32,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><img class="img-responsive" src="images/logo-lemurs.png" alt="Lemurs Portal"></a>
+                <a class="navbar-brand" href="#"><img class="img-responsive" src="${resourcesPath}/images/logo-lemurs.png" alt="Lemurs Portal"></a>
             </div>
             <!-- F menu mobile  -->
             
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav top-nav navbar-right">
                 	<li>
-                        <a href="#"><img class="img-circle" src="images/user1.png"> Mon profil</a>
+                        <a href="#"><img class="img-circle" src="${resourcesPath}/images/user1.png"> Mon profil</a>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="notif dropdown-toggle" data-toggle="dropdown">Notifications<span class="rond">12</span></a>
@@ -129,41 +130,44 @@
                     </div>
     				<!-- D Poser quest -->
                     <div class="cadre">
+                    <c:url value="/secured/post/" var="formAction"></c:url>
                    	  <div class="form">
-                        	<form class="create-quest-form">
+                        	<form:form  class="create-quest-form" modelAttribute="post" action="${formAction}"  method="POST"   >
+                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+	
                             <div class="row">
                             	<!-- D Ne S'affiche uniquement que pour le moderateur -->
+                            	<!--
                                 <div class="col-md-6" style="display:block;">
-                                  <label>Titre du thématique</label>
-                                  <input type="text" />
-                                  
+                                  <label>Titre du thématique</label>                                 
+                                  <form:input path="title"/>
                                   <label>Description du thématique</label>
                                   <textarea></textarea>
                                 </div>
+                                -->
                                 <!-- F Ne S'affiche uniquement que pour le moderateur -->
                                 
                                 <div class="col-md-6">
                                   <label>Choisir un thématique <sup>*</sup></label>
-                                  <select>                                  	
+                                  <form:select path="thematique">                                  	
                                     <c:forEach items="${listeThematique}" var="item">
 							         <option value="<c:out value = "${item.id}"/>"><c:out value = "${item.libelle}"/></option>
 							      </c:forEach>
-                                  </select>
+                                  </form:select>
                                   
                                   
                                   <label>Titre de la question <sup>*</sup></label>
-                                  <input type="text" />
+                                  <form:input path="title"/>
                                   
                                   <label>Ajouter un fichier (photos, documents, videos, audios...)</label>
                                   <input type="file" class="fisie" />
                                   
-                                  <label>Votre question <sup>*</sup></label>
-                                  <textarea></textarea>
-                                  
-                                  <button>Poster</button>
+                                  <label>Votre question <sup>*</sup></label>                                  
+                                  <form:textarea path="body"/>
+                                  <form:button value="save">Poster</form:button>
                                </div>
                             </div>
-                            </form>
+                            </form:form> 
                         </div>
                     </div>
                     <!-- F Poser quest -->
@@ -180,7 +184,7 @@
         <div class="col-md-6">
         	<div class="row">
                 <div class="col-xs-2">
-                    <img src="images/logo-footer.png" alt="">
+                    <img src="${resourcesPath}/images/logo-footer.png" alt="">
                 </div>
                 <div class="col-xs-5">
                     <ul>
@@ -204,19 +208,19 @@
         <div class="col-md-6">
         	<div class="row">
                 <div class="col-xs-2">
-                    <a href="#"><img src="images/part1.png" alt=""></a>
+                    <a href="#"><img src="${resourcesPath}/images/part1.png" alt=""></a>
                 </div>
                 <div class="col-xs-2">
-                    <a href="#"><img  src="images/part2.png" alt=""></a>
+                    <a href="#"><img  src="${resourcesPath}/images/part2.png" alt=""></a>
                 </div>
                 <div class="col-xs-2">
-                    <a href="#"><img  src="images/part3.png" alt=""></a>
+                    <a href="#"><img  src="${resourcesPath}/images/part3.png" alt=""></a>
                 </div>
                 <div class="col-xs-2">
-                    <a href="#"><img src="images/part4.png" alt=""></a>
+                    <a href="#"><img src="${resourcesPath}/images/part4.png" alt=""></a>
                 </div>
                 <div class="col-xs-2">
-                    <a href="#"><img src="images/part5.png" alt=""></a>
+                    <a href="#"><img src="${resourcesPath}/images/part5.png" alt=""></a>
                 </div>
             </div>
         </div>

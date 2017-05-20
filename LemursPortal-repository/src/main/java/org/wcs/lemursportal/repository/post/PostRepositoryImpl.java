@@ -89,6 +89,24 @@ public class PostRepositoryImpl implements PostRepository {
 		populateNbResponseAndLastResponse(mostViewedPostMap);
 		return new PageImpl<>(mostViewedPost);
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.wcs.lemursportal.repository.post.PostRepository#getMostViewedPost(org.springframework.data.domain.Pageable)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Page<Post> search(Pageable pageable,String pattern) {
+		StringBuilder jpql = new StringBuilder("select p ")
+		.append(" from Post p  inner join fetch p.owner u ")
+		.append(" where ( p.body LIKE '%"+ pattern +"%' "
+				+ " OR p.title LIKE '%" +pattern+"%'  " 
+				+ " OR p.thematique.description LIKE '%" +pattern+"%'  " 
+				+ "    ) ");
+		//System.out.println(jpql.toString());
+		TypedQuery<Post> typedQuery = em.createQuery(jpql.toString(), Post.class).setFirstResult(pageable.getOffset()).setMaxResults(pageable.getPageSize());
+		return new PageImpl<>( typedQuery.getResultList());
+	}
+
 
 
 	private void populateNbResponseAndLastResponse(Map<Integer, TopQuestion> topQuestionMap) {
@@ -110,6 +128,39 @@ public class PostRepositoryImpl implements PostRepository {
 
 public void insert(Post p){
 		em.persist(p);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Page<TopQuestion> getPostByThematique(Pageable pageable,Integer idThematique) {
+		StringBuilder jpql = new StringBuilder("select p, count(v.id) as nbVue from PostView as v");
+		jpql.append(" inner join v.post as p ");
+		jpql.append(" inner join fetch p.owner u ");
+		jpql.append(" inner join fetch p.thematique t ");
+		jpql.append(" where t.id = "+idThematique);
+		jpql.append(" group by p.id , t.id , u.id");
+		jpql.append(" order by nbVue desc");
+		Query query = em.createQuery(jpql.toString());
+		if(pageable != null){
+			query.setFirstResult(pageable.getOffset());
+			query.setMaxResults(pageable.getPageSize());
+		}
+		final List<Object[]> results = query.getResultList();
+		final Map<Integer, TopQuestion> mostViewedPostMap = new HashMap<>();
+		List<TopQuestion> mostViewedPost = new ArrayList<>();
+		for(Object[] array: results){
+			Post p = (Post)array[0];
+			//p.getOwner().getNom();//juste pour s'assurer qu'on a bien l'objet owner
+			Long nbVue = (Long)array[1];
+			TopQuestion topQuestion = new TopQuestion();
+			topQuestion.setQuestion(p);
+			topQuestion.setNbVue(nbVue);
+			topQuestion.setResponsable(p.getOwner());
+			mostViewedPost.add(topQuestion);
+			mostViewedPostMap.put(p.getId(), topQuestion);
+		}
+		populateNbResponseAndLastResponse(mostViewedPostMap);
+		return new PageImpl<>(mostViewedPost);
 	}
 	
 

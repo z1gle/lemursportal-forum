@@ -18,4 +18,6 @@ public interface PostService {
 	public Page<TopQuestion> getTopQuestions(Pageable pageable);
 	
 	public void insert(Post post);
+	
+	Page<Post> search(Pageable pageable, String pattern);
 }
