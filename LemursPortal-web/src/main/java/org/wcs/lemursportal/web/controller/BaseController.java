@@ -31,7 +31,7 @@ public class BaseController {
 
 	@ModelAttribute("topQuestionsPage")
 	public Page<TopQuestion> getTopQuestions(){
-		Page<TopQuestion> page = postService.getTopQuestions(new PageRequest(0, 200));
+		Page<TopQuestion> page = postService.getTopQuestions(new PageRequest(0, 20));
 		return page;
 	}
 	
