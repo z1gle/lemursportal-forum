@@ -67,7 +67,7 @@ public class ThematiqueController {
 		return "post/thematique-form";
 	}
 	
-	@GetMapping(value={"/secured/thematique", "/secured/thematique/list", "/thematique/list"})
+	@GetMapping(value={"/thematique/list"})
 	public String list(Model model){
 		List<TopThematique>  listThematiques = thematiqueRepository.findAllThematique();
 		//Page<Thematique> page = thematiqueService.findAll(pageable);
@@ -109,7 +109,7 @@ public class ThematiqueController {
 		}
 		model.addAttribute(thematique);
 		model.addAttribute("postsBythematique", postRepository.getPostByThematique(new PageRequest(0, 10),idThematique).getContent());
-		return "post/posts-thematique";
+		return "postsbythematique";
 	}
 	
 	@ModelAttribute("topQuestions")

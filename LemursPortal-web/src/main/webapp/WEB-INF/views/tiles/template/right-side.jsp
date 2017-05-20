@@ -11,7 +11,8 @@
 </div>
 <div class="list-group people-group thematique">
 	<c:forEach items="${topThematiques}" var="topThematique">
-		<a href="#" class="list-group-item">
+	<c:url var="postsParThematique" value="/postsParThematique/${topThematique.thematique.id}"></c:url>
+		<a href="${postsParThematique}" class="list-group-item">
          <div class="media">
              <div class="pull-left">
                  <c:out value="${topThematique.thematique.libelle}"/>
