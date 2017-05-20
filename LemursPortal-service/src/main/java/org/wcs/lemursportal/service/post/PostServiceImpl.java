@@ -24,7 +24,7 @@ public class PostServiceImpl implements PostService {
 	 */
 	@Override
 	public Page<TopQuestion> getTopQuestions(Pageable pageable) {
-		Page<TopQuestion> page = postRepository.getMostViewedPosts(pageable);
+		Page<TopQuestion> page = postRepository.getTopQuestions(pageable);
 		//TODO recuperer le nombre de reponse de chaque post (=> remplir les informations de chaque TopQuestion)
 		return page;
 	}

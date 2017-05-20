@@ -15,11 +15,12 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
+import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
+import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 import org.wcs.lemursportal.web.formatter.DefaultDateFormatter;
 
 /**
@@ -39,15 +40,35 @@ public class WebAppConfigurer extends WebMvcConfigurerAdapter {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
-
+	
+	/**
+     * Configure TilesConfigurer.
+     */
 	@Bean
-	public InternalResourceViewResolver viewResolver() {
-		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-		viewResolver.setViewClass(JstlView.class);
-		viewResolver.setPrefix("/WEB-INF/jsp/");
-		viewResolver.setSuffix(".jsp");
-		return viewResolver;
+	public TilesConfigurer tilesConfigurer(){
+	    TilesConfigurer tilesConfigurer = new TilesConfigurer();
+	    tilesConfigurer.setDefinitions(new String[] {"/WEB-INF/views/**/tiles.xml"});
+	    tilesConfigurer.setCheckRefresh(true);
+	    return tilesConfigurer;
 	}
+	
+	/**
+     * Configure ViewResolvers to deliver preferred views.
+     */
+	@Override
+	public void configureViewResolvers(ViewResolverRegistry registry) {
+		TilesViewResolver viewResolver = new TilesViewResolver();
+		registry.viewResolver(viewResolver);
+	}
+
+//	@Bean
+//	public InternalResourceViewResolver viewResolver() {
+//		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+//		viewResolver.setViewClass(JstlView.class);
+//		viewResolver.setPrefix("/WEB-INF/jsp/");
+//		viewResolver.setSuffix(".jsp");
+//		return viewResolver;
+//	}
 
 	@Bean(name = "messageSource")
 	public MessageSource messageSource() {

@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,7 +23,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.model.post.Post;
-import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.post.TopQuestion;
 
 /**
@@ -54,41 +56,6 @@ public class PostRepositoryImpl implements PostRepository {
 		}
 		List<Post> posts = typedQuery.getResultList();
 		return new PageImpl<Post>(posts);
-	}
-
-
-	/* (non-Javadoc)
-	 * @see org.wcs.lemursportal.repository.post.PostRepository#getMostViewedPost(org.springframework.data.domain.Pageable)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public Page<TopQuestion> getMostViewedPosts(Pageable pageable) {
-		StringBuilder jpql = new StringBuilder("select p, count(v.id) as nbVue from PostView as v");
-		jpql.append(" inner join v.post as p ");
-		jpql.append(" inner join fetch p.owner u ");
-		jpql.append(" group by p.id, u.id");
-		jpql.append(" order by nbVue desc");
-		Query query = em.createQuery(jpql.toString());
-		if(pageable != null){
-			query.setFirstResult(pageable.getOffset());
-			query.setMaxResults(pageable.getPageSize());
-		}
-		final List<Object[]> results = query.getResultList();
-		final Map<Integer, TopQuestion> mostViewedPostMap = new HashMap<>();
-		List<TopQuestion> mostViewedPost = new ArrayList<>();
-		for(Object[] array: results){
-			Post p = (Post)array[0];
-			//p.getOwner().getNom();//juste pour s'assurer qu'on a bien l'objet owner
-			Long nbVue = (Long)array[1];
-			TopQuestion topQuestion = new TopQuestion();
-			topQuestion.setQuestion(p);
-			topQuestion.setNbVue(nbVue);
-			topQuestion.setResponsable(p.getOwner());
-			mostViewedPost.add(topQuestion);
-			mostViewedPostMap.put(p.getId(), topQuestion);
-		}
-		populateNbResponseAndLastResponse(mostViewedPostMap);
-		return new PageImpl<>(mostViewedPost);
 	}
 
 
@@ -140,6 +107,108 @@ public class PostRepositoryImpl implements PostRepository {
 		}
 		populateNbResponseAndLastResponse(mostViewedPostMap);
 		return new PageImpl<>(mostViewedPost);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see org.wcs.lemursportal.repository.post.PostRepository#countQuestion()
+	 */
+	@Override
+	public Long countQuestions() {
+		Query query = em.createQuery("select count(p.id) from Post p where p.parentId is null and (p.censored is null or p.censored != :censored)", Long.class);
+		query.setParameter("censored", Boolean.TRUE);
+		Long count = (Long)query.getSingleResult();
+		return count;
+	}
+
+
+
+
+	/* (non-Javadoc)
+	 * @see org.wcs.lemursportal.repository.post.PostRepository#getMostRespondedPosts(org.springframework.data.domain.Pageable)
+	 */
+	@Override
+	public Page<TopQuestion> getTopQuestions(Pageable pageable) {
+		Long total = countQuestions();
+		StringBuilder jpql = new StringBuilder("select max(p.id) as lastResponseId, count(p.id) as nbResponse, p.parentId as questionId ")
+				.append(" from Post p where p.parentId is not null and (p.censored is null or p.censored != :censored) ")
+				.append(" group by p.parentId order by nbResponse desc ");
+		TypedQuery<Tuple> typedQuery = em.createQuery(jpql.toString(), Tuple.class);
+		typedQuery.setParameter("censored", Boolean.TRUE);
+		if(pageable != null){
+			typedQuery.setFirstResult(pageable.getOffset());
+			typedQuery.setMaxResults(pageable.getPageSize());
+		}
+		List<TopQuestion> topQuestions = new ArrayList<>();//pour garder l'ordre des resultats
+		Map<Integer, TopQuestion> topQuestionMap = new TreeMap<>();
+		Map<Integer, TopQuestion> lastResponseMap = new TreeMap<>();
+		List<Tuple> results = typedQuery.getResultList();
+		for(Tuple tuple: results){
+			Integer lastResponseId = (Integer)tuple.get(0);
+			Long nbResponse = (Long)tuple.get(1);
+			Integer questionId = (Integer)tuple.get(2);
+			TopQuestion topQuestion = new TopQuestion();
+			topQuestion.setIdDerniereReponse(lastResponseId);
+			topQuestion.setIdQuestion(questionId);
+			topQuestion.setNbReponse(nbResponse);
+			topQuestionMap.put(questionId, topQuestion);
+			lastResponseMap.put(lastResponseId, topQuestion);
+			topQuestions.add(topQuestion);
+		}
+		//On recupère les nombre de vue de chaque reponse
+		populateNombreDeVue(topQuestionMap);
+		//On recupère les informations sur les question et sur leurs dernieres reponse respective
+		Set<Integer> questionAndResponseIds = new java.util.HashSet<>(topQuestionMap.keySet());
+		questionAndResponseIds.addAll(lastResponseMap.keySet());
+		List<Post> lastResponsePosts = getPostsAndFetchOwner(questionAndResponseIds);
+		for(Post post: lastResponsePosts){
+			if(lastResponseMap.containsKey(post.getId())){
+				lastResponseMap.get(post.getId()).setDerniereReponse(post);
+			}else{
+				topQuestionMap.get(post.getId()).setQuestion(post);
+				topQuestionMap.get(post.getId()).setResponsable(post.getOwner());
+			}
+			
+		}
+		return new PageImpl<>(topQuestions, pageable, total);
+	}
+	
+	private List<Post> getPostsAndFetchOwner(Set<Integer> postIds){
+		List<Post> posts = new ArrayList<>();
+		if(postIds != null && !postIds.isEmpty()){
+			StringBuilder jpql = new StringBuilder("select p from Post p ")
+				.append("inner join fetch p.owner ")
+				.append(" where p.id in (:ids)");
+			TypedQuery<Post> query = em.createQuery(jpql.toString(), Post.class);
+			query.setParameter("ids", postIds);
+			posts = query.getResultList();
+		}
+		return posts;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.wcs.lemursportal.repository.post.PostRepository#getMostViewedPost(org.springframework.data.domain.Pageable)
+	 */
+	private void populateNombreDeVue(Map<Integer, TopQuestion> topQuestionMap) {
+		if(topQuestionMap == null || topQuestionMap.isEmpty()) return;
+		StringBuilder jpql = new StringBuilder("select v.postId, count(v.id) as nbVue from PostView as v ")
+//		.append(" inner join v.post as p ")
+//		.append(" inner join fetch p.owner u ")
+		.append("where v.postId in (:questions) ")
+		.append(" group by v.postId ");
+		TypedQuery<Tuple> typedQuery = em.createQuery(jpql.toString(), Tuple.class);
+		typedQuery.setParameter("questions", topQuestionMap.keySet());
+		final List<Tuple> results = typedQuery.getResultList();
+		final Map<Integer, TopQuestion> mostViewedPostMap = new HashMap<>();
+		List<TopQuestion> mostViewedPost = new ArrayList<>();
+		for(Tuple tuple: results){
+			Integer questionId = (Integer)tuple.get(0);
+			Long nbVue = (Long)tuple.get(1);
+			TopQuestion topQuestion = topQuestionMap.get(questionId);
+			topQuestion.setNbVue(nbVue);
+			mostViewedPost.add(topQuestion);
+			mostViewedPostMap.put(questionId, topQuestion);
+		}
 	}
 	
 	
