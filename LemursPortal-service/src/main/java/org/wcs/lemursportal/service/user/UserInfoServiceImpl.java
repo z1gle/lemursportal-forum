@@ -3,6 +3,7 @@
  */
 package org.wcs.lemursportal.service.user;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
@@ -61,6 +62,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 		String cryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
 		user.setPassword(cryptedPassword);
+		user.setDateInscription(Calendar.getInstance().getTime());
 		userRepository.save(user);
 	}
 
@@ -99,6 +101,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 		persistUser.setEmail(user.getEmail());
 		persistUser.setNom(user.getNom());
 		persistUser.setPrenom(user.getPrenom());
+		persistUser.setInstitution(user.getInstitution());
+		persistUser.setPostOccupe(user.getPostOccupe());
 //		persistUser.setLogin(user.getLogin());
 		userRepository.save(persistUser);
 	}

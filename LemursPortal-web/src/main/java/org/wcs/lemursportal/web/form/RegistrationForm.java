@@ -21,6 +21,8 @@ public class RegistrationForm {
 	private String nom;
 	private String prenom;
 	private Date dateNaissance;
+	private String institution;
+	private String postOccupe;
 	private String login;
 	private String password;
 	private String passwordConfirm;
@@ -101,6 +103,18 @@ public class RegistrationForm {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	public String getPostOccupe() {
+		return postOccupe;
+	}
+	public void setPostOccupe(String postOccupe) {
+		this.postOccupe = postOccupe;
+	}
+	public String getInstitution() {
+		return institution;
+	}
+	public void setInstitution(String institution) {
+		this.institution = institution;
 	}
 	
 }

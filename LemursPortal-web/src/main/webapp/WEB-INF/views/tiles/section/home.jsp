@@ -11,7 +11,7 @@
 
 			<div class="forum-title">
 				<div class="pull-right forum-desc">
-					<a class="add-quest"><spring:message code="home.ask.question" /></a>
+					<a class="add-quest" href="secured/post/create"><spring:message code="home.ask.question"/></a>
 				</div>
 				<h2>
 					<spring:message code="home.topquestions" />

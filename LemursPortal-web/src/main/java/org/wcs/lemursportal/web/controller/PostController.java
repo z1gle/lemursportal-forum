@@ -39,7 +39,7 @@ public class PostController {
 		List<Thematique> listethematique = thematiqueService.findAll();
 		model.addAttribute("listeThematique", listethematique);
 		model.addAttribute(new Post());
-		return "post/post-form";
+		return "getFormPost";
 	}
 	
 	@PostMapping(value="/secured/post")
@@ -60,9 +60,10 @@ public class PostController {
 	
 	@PostMapping(value="/post/search")	
 	public String search(@RequestParam(name="pattern", required=false) String pattern, Model model){
-		
+		Page<Post> p = postService.search(new PageRequest(0, 10), pattern);
 		model.addAttribute("posts", postService.search(new PageRequest(0, 10), pattern));
-		return "post/result";
+		//System.out.println("*************** " + pattern + "  " +p.getSize());
+		return "results";
 	}
 	
 }

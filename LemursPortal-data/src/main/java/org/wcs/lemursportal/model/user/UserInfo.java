@@ -41,6 +41,14 @@ public class UserInfo implements IUserInfo {
 	@Column(name="date_naissance")
 	private Date dateNaissance;
 	
+	@Column(name="date_inscription")
+	private Date dateInscription;
+	
+	private String institution;
+	
+	@Column(name="post_occupe")
+	private String postOccupe;
+	
 	@Column(name = "login", nullable=false, unique=true)
 	private String login;
 	
@@ -55,6 +63,7 @@ public class UserInfo implements IUserInfo {
 	
 	private String email;
 	
+	@Column(name = "biographie", columnDefinition = "text")
 	private String biographie;
 	
 	@ManyToMany(fetch=FetchType.EAGER)
@@ -139,6 +148,24 @@ public class UserInfo implements IUserInfo {
 	}
 	public void setManagedThematiques(Set<Thematique> managedThematiques) {
 		this.managedThematiques = managedThematiques;
+	}
+	public Date getDateInscription() {
+		return dateInscription;
+	}
+	public void setDateInscription(Date dateInscription) {
+		this.dateInscription = dateInscription;
+	}
+	public String getInstitution() {
+		return institution;
+	}
+	public void setInstitution(String institution) {
+		this.institution = institution;
+	}
+	public String getPostOccupe() {
+		return postOccupe;
+	}
+	public void setPostOccupe(String postOccupe) {
+		this.postOccupe = postOccupe;
 	}
 	
 }

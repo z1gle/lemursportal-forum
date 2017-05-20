@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+﻿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
@@ -25,8 +24,9 @@
             
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav top-nav navbar-right">
+                    <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
                     <c:choose>
-                    	<c:when test="${isAuthenticated}">
+                    	<c:when test="${isLoggedInUser}">
 	                    	<li>
 	                    		<c:url var="viewProfilUrl" value="/user/profil"></c:url>
 		                        <a href="${viewProfilUrl}"><img class="img-circle" src="${resourcesPath}/images/user1.png"/><spring:message code="home.monprofile"/></a>
@@ -95,13 +95,17 @@
                 
                 <ul class="nav navbar-nav navbar-right">
                 	<li>
+                        <c:url value="/post/search" var="formAction"></c:url>
+                	<form  class="create-quest-form"  action="${formAction}"  method="POST"   >
+                	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                         <div class="input-group">
                         <spring:message code="home.search.placeholder" var="searchPlaceholder"/>
-                          <input type="text" class="form-control" placeholder="${searchPlaceholder}"/>
+                          <input type="text" name="pattern" class="form-control" placeholder="${searchPlaceholder}"/>
                           	<span class="input-group-btn">
-                            <button class="btn btn-default" type="button"><spring:message code="home.search.btn" /></button>
+                            <button class="btn btn-default" type="submit"><spring:message code="home.search.btn" /></button>
                           </span>
                         </div>
+                    </form>
                     </li>
                 </ul>
                

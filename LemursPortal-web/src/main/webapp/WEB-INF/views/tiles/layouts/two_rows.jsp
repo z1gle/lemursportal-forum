@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
-<tiles:insertAttribute name="slider" />
 <div class="container lemurs-page">
 	 <div class="row">
 	 	<div class="col-md-9">
-			<tiles:insertAttribute name="body" />
+			<tiles:insertAttribute name="left" />
 		</div>
 		<div class="col-md-3">
-			<tiles:insertAttribute name="rightside" />
+			<tiles:insertAttribute name="right" />
 		</div> 
 	 </div>
 </div>
