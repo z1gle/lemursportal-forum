@@ -72,6 +72,12 @@ public class Post implements Serializable {
 	@JoinColumn(columnDefinition="integer", name="censored_by", nullable=true)
 	private UserInfo censoredBy;//l'utilisateur(moderateur) qui a bloqué ce POST
 
+	public String toString(){
+		if(getThematique()==null)
+			setThematique(new Thematique());
+		return "Title : " + getTitle() + "\n " + " Body: "+getBody() + " \n " + " Thematique :  " + getThematique().getId() + " - " + getThematique().getLibelle();
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -175,6 +181,7 @@ public class Post implements Serializable {
 	public void setParentId(Integer parentId) {
 		this.parentId = parentId;
 	}
+	
 	
 
 }
