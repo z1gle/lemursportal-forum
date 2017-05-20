@@ -32,6 +32,10 @@
    		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/login.jsp" />
    </definition>
    
+   <!-- Registration form -->
+   <definition name="registration" extends="page-entier">  
+   		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/registration-form.jsp" />
+   </definition>
    <!-- Edit profile -->
    <definition name="profil.edit.page" extends="base-definition">  
        <put-attribute name="title" value="Edit profil" />  

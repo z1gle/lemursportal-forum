@@ -59,7 +59,7 @@ public class RegistrationController extends BaseController {
 	public String signupForm(Model model){
 		RegistrationForm registrationForm = new RegistrationForm();
 		model.addAttribute("registrationForm", registrationForm);
-		return "user/registration-form";
+		return "registration";
 	}	
 	/**
 	 * Validation du formulaire d'inscription de l'utilisateur
