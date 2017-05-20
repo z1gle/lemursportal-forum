@@ -54,4 +54,14 @@
        </put-attribute>
    </definition>
    
+   <definition name="postsbythematique" extends="base-definition">  
+       <put-attribute name="title" value="Les messages par thématique" />  
+       <put-attribute name="body" value="postsbythematique.body" />
+   </definition>
+   <definition name="postsbythematique.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+	  <put-attribute name="left" value="/WEB-INF/views/tiles/pages/postsbythematique.jsp" />
+	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+	</definition>
+   
 </tiles-definitions>
