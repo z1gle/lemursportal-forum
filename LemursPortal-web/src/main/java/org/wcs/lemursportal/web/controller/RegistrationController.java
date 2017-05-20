@@ -103,12 +103,10 @@ public class RegistrationController extends BaseController {
 	 * @return
 	 */
 	@GetMapping(value="/user/profil")
-	@PreAuthorize("hasRole('USER')")
-	public String edit(Authentication authentication, Model model){
+	public String viewProfil(Authentication authentication, Model model){
 		String login = authentication.getName();
 		UserInfo userInfo = userInfoService.getByLogin(login);
-		RegistrationForm registrationForm = UserInfoFactory.toForm(userInfo);
-		model.addAttribute("registrationForm", registrationForm);
+		model.addAttribute("userInfo", userInfo);
 		return "profil.view.page";
 	}
 	/**
@@ -118,8 +116,7 @@ public class RegistrationController extends BaseController {
 	 * @return
 	 */
 	@GetMapping(value="/user/profil/edit")
-	@PreAuthorize("hasRole('USER')")
-	public String viewProfil(Authentication authentication, Model model){
+	public String editProfil(Authentication authentication, Model model){
 		String login = authentication.getName();
 		UserInfo userInfo = userInfoService.getByLogin(login);
 		RegistrationForm registrationForm = UserInfoFactory.toForm(userInfo);
@@ -128,19 +125,18 @@ public class RegistrationController extends BaseController {
 	}
 	
 	@PostMapping(value="/user/profil/edit")
-	@PreAuthorize("hasRole('USER')")
 	public String editSubmit(Locale locale, Model model, 
 			@ModelAttribute RegistrationForm registrationForm, 
 			BindingResult results)
 	{
 		registrationFormValidator.validate(registrationForm, results);
 		if(results.hasErrors()){
-			return "user/registration-form";
+			return "profil.edit.page";
 		}
 		UserInfo user = UserInfoFactory.toEntity(registrationForm);
 		userInfoService.update(user);
 		model.addAttribute("successMessage", messageSource.getMessage("message.edit.successMessage",new Object[]{} ,locale));
-		return "redirect:/";
+		return "redirect:/user/profil";
 	}
 
 }

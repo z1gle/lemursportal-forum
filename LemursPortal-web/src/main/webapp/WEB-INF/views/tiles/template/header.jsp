@@ -25,8 +25,9 @@
             
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav top-nav navbar-right">
+                    <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
                     <c:choose>
-                    	<c:when test="${isAuthenticated}">
+                    	<c:when test="${isLoggedInUser}">
 	                    	<li>
 	                    		<c:url var="viewProfilUrl" value="/user/profil"></c:url>
 		                        <a href="${viewProfilUrl}"><img class="img-circle" src="${resourcesPath}/images/user1.png"/><spring:message code="home.monprofile"/></a>

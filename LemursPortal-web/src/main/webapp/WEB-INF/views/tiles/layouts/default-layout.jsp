@@ -14,7 +14,8 @@
 	<title><tiles:getAsString name="title" /></title>
 	<link href="${resourcesPath}/css/styles.css" rel="stylesheet"/>
 	<link href="${resourcesPath}/bootstrap/css/bootstrap.css" rel="stylesheet"/>
-	<script src="${resourcesPath}/js/jquery-1.12.4.min.js"></script>
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-1.12.3.min.js"></script>
 	<script src="${resourcesPath}/js/script.js"></script>
 	<script src="${resourcesPath}/bootstrap/js/bootstrap.js"></script>
 	<script src="${resourcesPath}/js/jquery.showmore.js"></script>

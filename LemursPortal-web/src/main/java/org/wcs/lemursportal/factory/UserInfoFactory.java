@@ -27,6 +27,8 @@ public abstract class UserInfoFactory {
 			form.setLogin(user.getLogin());
 			form.setNom(user.getNom());
 //			form.setPassword(user.getP);
+			form.setInstitution(user.getInstitution());
+			form.setPostOccupe(user.getPostOccupe());
 			form.setPrenom(user.getPrenom());
 			form.setUserTypeIds(new ArrayList<Integer>());
 			for(UserType role: user.getRoles()){
@@ -50,6 +52,8 @@ public abstract class UserInfoFactory {
 			entity.setPassword(form.getPassword());
 			entity.setPrenom(form.getPrenom());
 			entity.setNom(form.getNom());
+			entity.setInstitution(form.getInstitution());
+			entity.setPostOccupe(form.getPostOccupe());
 			//entity.setRoles(form.get);
 			
 		}
