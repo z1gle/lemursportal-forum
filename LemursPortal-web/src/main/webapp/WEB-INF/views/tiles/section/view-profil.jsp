@@ -96,8 +96,8 @@
                                     
                                     <div class="col-md-6">
                                     
-                                        <p><span><span>Inscrit(e) le (${dateFormat}):</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.dateInscription}" /></span></p>
-                                        <p><span><span>Dernière activité le(${dateFormat}):</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.lastAccessDate}" /></span></p>
+                                        <p><span><span>Inscrit(e) le:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.dateInscription}" /></span></p>
+                                        <p><span><span>Dernière activité le:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.lastAccessDate}" /></span></p>
 <!--                                         <p><span><span>Nombre de questions :</span><br />18</span></p> -->
 <!--                                         <p><span><span>Nombre de réponses :</span><br />45</span></p> -->
                                     </div>
