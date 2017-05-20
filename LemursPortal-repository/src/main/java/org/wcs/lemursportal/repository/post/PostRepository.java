@@ -19,12 +19,26 @@ public interface PostRepository {
 	 */
 	Page<Post> getLastestPosts(Pageable pageable);
 	
-	/**
-	 * 
-	 * @param pageable
-	 * @return
-	 */
-	 Page<TopQuestion> getMostViewedPosts(Pageable pageable);
+	 /**
+	  * 
+	  * @param pageable
+	  * @param idThematique
+	  * @return
+	  */
+	 Page<TopQuestion> getPostByThematique (Pageable pageable, Integer idThematique);
+	 
+	 /**
+	  * 
+	  * @param pageable
+	  * @return
+	  */
+	 Page<TopQuestion> getTopQuestions(Pageable pageable);
+	 
+	 /**
+	  * 
+	  * @return
+	  */
+	 Long countQuestions();
 	 
 	 void insert(Post post);
 	 

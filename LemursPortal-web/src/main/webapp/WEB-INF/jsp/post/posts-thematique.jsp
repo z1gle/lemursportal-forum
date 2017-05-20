@@ -130,40 +130,37 @@
                         <div class="pull-right forum-desc">
                             <a class="add-quest"><spring:message code="home.ask.question"/></a>
                         </div>
-                      </div>
-                      <c:forEach items="${allThematiques}" var="parThematique">
-                      <div class="forum-title">   
-                        <h2><span>Thématique :</span><c:out value="${parThematique.thematique.libelle}"/></h2>
+                        <h2><span>Thématique :</span><c:out value="${thematique.libelle}"/></h2>
                     </div>
     				<!-- D Sujet -->
-    				
+    				 <c:forEach items="${postsBythematique}" var="QuestionParTheme">
     					<div class="forum-item">
 	                        <div class="row">
 	                            <div class="col-md-8">
 	                                <div class="forum-profil">
 	                                  <a href="#"><img class="img-circle" src="${resourcesPath}/images/user1.png" alt=""/></a>
-	                                  <div class="reponse-user"><a href="#"><c:out value=""/> <c:out value=""/></a><br/><i><c:out value=""/></i></div>
+	                                  <div class="reponse-user"><a href="#"><c:out value="${QuestionParTheme.question.owner.nom}"/> <c:out value="${QuestionParTheme.question.owner.prenom}"/></a><br/><i><c:out value="${question.role}"/></i></div>
 	                                </div>
-	                                <a href="forum_post.html" class="forum-item-title"><c:out value="${parThematique.thematique.libelle}" /></a>
+	                                <a href="forum_post.html" class="forum-item-title"><c:out value="${QuestionParTheme.question.title}" /></a>
 	                                <div class="forum-sub-title">
-	                                	<c:out value="${parThematique.thematique.description}" escapeXml="true" />
-	                                    <p class="forum-date"><fmt:formatDate pattern="${datetimeFormat}" value="${parThematique.thematique.creationDate}"/></p>
+	                                	<c:out value="${QuestionParTheme.question.body}" escapeXml="true" />
+	                                    <p class="forum-date"><fmt:formatDate pattern="${datetimeFormat}" value="${QuestionParTheme.question.creationDate}"/></p>
 	                                </div>
 	                            </div>
 	                            <div class="col-md-1 forum-info">
 	                                <span class="views-number">
-	                                    <c:out value="${parThematique.nombreThreads}"/>
+	                                    <c:out value="${QuestionParTheme.nbReponse}"/>
 	                                </span>
 	                                <div class="vue">
-	                                    <small><c:out value="${parThematique.nombreMessage}"/> <spring:message code="thematique.questions"/></small>
+	                                    <small><c:out value="${QuestionParTheme.nbVue}"/> <spring:message code="home.topquestions.vues"/></small>
 	                                </div>
 	                            </div>
 	                            <div class="col-md-3 forum-user-info">
 	                               <a href="#"><img class="img-circle" src="${resourcesPath}/images/user2.png" alt=""/></a>
 	                               <div class="reponse-user"><a href="#">
-	                               <c:out value="${parThematique.latestPost.owner.nom}"/> <c:out value="${parThematique.latestPost.owner.prenom}"/>
-	                               </a><br/><fmt:formatDate pattern="${datetimeFormat}" value="${parThematique.latestPost.creationDate}"/><br/>
-	                               	<c:forEach items="${parThematique.latestPost.owner.roles}" var="role">    
+	                               <c:out value="${QuestionParTheme.derniereReponse.owner.nom}"/> <c:out value="${QuestionParTheme.derniereReponse.owner.prenom}"/>
+	                               </a><br/><fmt:formatDate pattern="${datetimeFormat}" value="${QuestionParTheme.derniereReponse.creationDate}"/><br/>
+	                               	<c:forEach items="${QuestionParTheme.derniereReponse.owner.roles}" var="role">    
 									    <i><c:out value="${role.libelle}"/></i><br/>
 									</c:forEach>
 	                               </div>
@@ -171,7 +168,7 @@
 	                            
 	                        </div>
 	                    </div>
-    				
+    				</c:forEach>
                     <!-- F Sujet -->
                     
                     <!-- D Pagination -->
@@ -187,7 +184,6 @@
                     <!-- F Pagination -->
                     
                 </div>
-                </c:forEach>
             </div>
         </div>
         

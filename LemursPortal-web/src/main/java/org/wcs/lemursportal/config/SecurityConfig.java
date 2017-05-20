@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.expressionHandler(defaultWebSecurityExpressionHandler())
 			.antMatchers("/", "/favicon.ico", "/resources/**", "/signup", "/registration").permitAll()
-			.antMatchers("/admin/**").hasRole("USER")
+			.antMatchers("/admin/**").hasRole("ADMIN")
 			.antMatchers("/secure/**").hasAnyRole("ADMIN", "USER")
 			.anyRequest().authenticated()
 			.and().formLogin()

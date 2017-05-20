@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.wcs.lemursportal.model.post.Post;
@@ -30,13 +28,13 @@ import org.wcs.lemursportal.service.user.UserInfoService;
  *
  */
 @Controller
-@Transactional
+//@Transactional
 public class DataTestController {
 	
-	private static final int NB_THEMATIQUE_MAX = 15;
-	private static final int NB_QUESTION_MAX = 20;
-	private static final int NB_RESPONSE_MAX = 50;
-	private static final int NB_POST_VIEW_MAX = 80;
+	private static final int NB_THEMATIQUE_MAX = 20;
+	private static final int NB_QUESTION_MAX = 100;
+	private static final int NB_RESPONSE_MAX = 900;
+	private static final int NB_POST_VIEW_MAX = 1000;
 	private final Random random = new Random();
 	@Autowired UserInfoService userInfoService;
 	@Autowired UserRepository userRepository;
@@ -45,7 +43,6 @@ public class DataTestController {
 	@Autowired PostViewCrudRepository postViewCrudRepository;
 	
 	@GetMapping(value="/admin/generate_topicsandpost")
-	@Transactional(isolation=Isolation.READ_UNCOMMITTED)
 	public @ResponseBody String generateDataForTest(Authentication authentication, HttpServletRequest request){
 		UserInfo currentUser = userInfoService.getByLogin(authentication.getName());
 		List<Thematique> thematiques = generateThematique(currentUser);
@@ -86,20 +83,17 @@ public class DataTestController {
 	
 	private List<Post> generateResponses(List<Post> questions){
 		List<Post> posts = new ArrayList<>();
-		
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, -1);
 		for(Post question: questions){
 			int nbMessage = -1;
 			while(nbMessage < 0){
 				nbMessage = random.nextInt(NB_RESPONSE_MAX);
 			}
-			Calendar calendar = Calendar.getInstance();
-			int maxMonth = calendar.get(Calendar.MONTH);
-			for(int i=0, calendarMonth = -1; i< nbMessage; i++ ){
+			for(int i=0; i< nbMessage; i++ ){
 				Post message = new Post();
-				while(calendarMonth <  0 ){
-					calendarMonth = random.nextInt(maxMonth);
-				}
-				calendar.set(Calendar.MONTH, calendarMonth);
+				calendar.add(Calendar.MINUTE, i);
 				Date creationDate = calendar.getTime();
 				message.setCreationDate(creationDate);
 				message.setTitle("Response numéro " + i + " de la question " + question.getTitle());

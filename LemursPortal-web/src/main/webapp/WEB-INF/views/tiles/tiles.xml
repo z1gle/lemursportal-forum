@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+
+<tiles-definitions>  
+   <!-- Base Definition -->
+   <definition name="base-definition" template="/WEB-INF/views/tiles/layouts/default-layout.jsp">  
+       <put-attribute name="title" value="" />  
+       <put-attribute name="header" value="/WEB-INF/views/tiles/template/header.jsp" /> 
+       <put-attribute name="body" value="" /> 
+       <put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />  
+   </definition>
+   
+   <definition name="page-entier" template="/WEB-INF/views/tiles/layouts/blank-layout.jsp">
+       <put-attribute name="page" value="" />
+   </definition>
+   
+   
+   <!-- Home Page -->
+   <definition name="homepage.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+	  <put-attribute name="left" value="/WEB-INF/views/tiles/section/home.jsp" />
+	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+	</definition>
+   <definition name="home" extends="base-definition">  
+       <put-attribute name="title" value="Welcome" />  
+       <put-attribute name="body" value="homepage.body" />
+   </definition>
+   
+   <!-- Login page -->
+   <definition name="login" extends="page-entier">  
+   		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/login.jsp" />
+   </definition>
+   
+   <!-- Edit profile -->
+   <definition name="profil.edit.page" extends="base-definition">  
+       <put-attribute name="title" value="Edit profil" />  
+       <put-attribute name="body">
+			<definition template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+			  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/edit-profil.jsp" />
+			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+			</definition>           
+       </put-attribute>
+   </definition>
+   <!-- View profile -->
+   <definition name="profil.view.page" extends="base-definition">  
+       <put-attribute name="title" value="Edit profil" />  
+       <put-attribute name="body">
+			<definition template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+			  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/view-profil.jsp" />
+			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+			</definition>           
+       </put-attribute>
+   </definition>
+   
+   <definition name="postsbythematique" extends="base-definition">  
+       <put-attribute name="title" value="Les messages par thématique" />  
+       <put-attribute name="body" value="postsbythematique.body" />
+   </definition>
+   <definition name="postsbythematique.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+	  <put-attribute name="left" value="/WEB-INF/views/tiles/pages/postsbythematique.jsp" />
+	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+	</definition>
+   
+</tiles-definitions>

@@ -36,7 +36,7 @@ import org.wcs.lemursportal.web.validator.RegistrationFormValidator;
  */
 @Transactional
 @Controller
-public class RegistrationController {
+public class RegistrationController extends BaseController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
 	
@@ -102,17 +102,33 @@ public class RegistrationController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping(value="/user/edit")
+	@GetMapping(value="/user/profil")
 	@PreAuthorize("hasRole('USER')")
 	public String edit(Authentication authentication, Model model){
 		String login = authentication.getName();
 		UserInfo userInfo = userInfoService.getByLogin(login);
 		RegistrationForm registrationForm = UserInfoFactory.toForm(userInfo);
 		model.addAttribute("registrationForm", registrationForm);
-		return "user/edit-form";
+		return "profil.view.page";
+	}
+	/**
+	 * 
+	 * @param userId
+	 * @param model
+	 * @return
+	 */
+	@GetMapping(value="/user/profil/edit")
+	@PreAuthorize("hasRole('USER')")
+	public String viewProfil(Authentication authentication, Model model){
+		String login = authentication.getName();
+		UserInfo userInfo = userInfoService.getByLogin(login);
+		RegistrationForm registrationForm = UserInfoFactory.toForm(userInfo);
+		model.addAttribute("registrationForm", registrationForm);
+		return "profil.edit.page";
 	}
 	
-	@PostMapping(value="/user/edit")
+	@PostMapping(value="/user/profil/edit")
+	@PreAuthorize("hasRole('USER')")
 	public String editSubmit(Locale locale, Model model, 
 			@ModelAttribute RegistrationForm registrationForm, 
 			BindingResult results)

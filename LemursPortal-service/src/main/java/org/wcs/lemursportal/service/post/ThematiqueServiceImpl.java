@@ -5,10 +5,12 @@ import java.util.Date;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wcs.lemursportal.exception.RegistrationException;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.post.ThematiqueCrudRepository;
@@ -65,6 +67,12 @@ public class ThematiqueServiceImpl extends
 			//Création
 			thematique.setCreatedBy(currentUser);
 			thematique.setCreationDate(now);
+			Thematique thematiqueExample = new Thematique();
+			thematiqueExample.setLibelle(thematique.getLibelle());
+			boolean thematiqueExist = thematiqueCrudRepository.exists(Example.of(thematiqueExample));
+			if(thematiqueExist){
+				throw new RegistrationException(RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION);
+			}
 			thematiqueCrudRepository.save(thematique);
 			return thematique;
 		}

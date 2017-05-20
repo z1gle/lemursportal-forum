@@ -2,6 +2,7 @@ package org.wcs.lemursportal.model.post;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -118,4 +119,21 @@ public class Thematique implements Serializable {
 //	public void setPosts(List<Post> posts) {
 //		this.posts = posts;
 //	}
+	 @Override
+	    public boolean equals(Object o) {
+
+	        if (o == this) return true;
+	        if (!(o instanceof Thematique)) {
+	            return false;
+	        }
+
+	        Thematique thematique = (Thematique) o;
+	        return Objects.equals(id, thematique.id);
+	       
+	    }
+	 
+	 @Override
+	    public int hashCode() {
+	        return Objects.hash(id);
+	    }
 }
