@@ -1529,6 +1529,11 @@ a.btn:hover {
  margin-top:130px;
 }
 
+.h {
+ background:#fff!important;
+ background-image:none;
+}
+
 /* Responsive */
 
 @media(max-width:992px) {
