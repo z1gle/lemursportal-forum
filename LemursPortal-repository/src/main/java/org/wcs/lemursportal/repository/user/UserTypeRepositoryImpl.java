@@ -11,7 +11,9 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.wcs.lemursportal.model.authentication.UserRole;
 import org.wcs.lemursportal.model.user.UserType;
+import org.wcs.lemursportal.model.user.UserInfo;
 
 /**
  * @author mikajy.hery
@@ -43,6 +45,16 @@ public class UserTypeRepositoryImpl implements UserTypeRepository {
 //		EntityManager em = entityManagerFactory.createEntityManager();
 		Query query = em.createQuery("from UserType");
 		List<UserType> results = query.getResultList();
+		return results;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(readOnly=true)
+	public List<UserInfo> findUsers(UserRole userRole) {
+		Query query = em.createQuery("Select t.users from  UserType t where  t.id=:usertype", Object[].class);
+		query.setParameter("usertype", userRole.getId());
+		List<UserInfo> results = query.getResultList();
 		return results;
 	}
 

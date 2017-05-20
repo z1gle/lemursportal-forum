@@ -4,6 +4,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <spring:message code="datetime.format" var="datetimeFormat" />
+<c:url value="/resources" var="resourcesPath" />
 <div class="wrapper wrapper-content animated fadeInRight">
     
                 <div class="forum-container">

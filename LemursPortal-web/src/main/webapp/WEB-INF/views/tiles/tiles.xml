@@ -62,5 +62,27 @@
 	  <put-attribute name="left" value="/WEB-INF/views/tiles/pages/postsbythematique.jsp" />
 	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
 	</definition>
+	
+	 <definition name="experts" extends="base-definition">  
+       <put-attribute name="title" value="Les experts" />  
+       <put-attribute name="body" value="experts.body" />
+   </definition>
+   
+	<definition name="experts.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+	  <put-attribute name="left" value="/WEB-INF/views/tiles/pages/experts.jsp" />
+	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+	</definition>
+	
+	<definition name="expertdetail" extends="base-definition">  
+       <put-attribute name="title" value="Expert Detail" />  
+       <put-attribute name="body">
+			<definition template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
+			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/other-profil.jsp" />
+			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+			</definition>           
+       </put-attribute>
+   </definition>
+   
    
 </tiles-definitions>

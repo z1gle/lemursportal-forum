@@ -100,8 +100,9 @@
                     <li>
                         <a href="#"><spring:message code="home.menu.documents"/></a>
                     </li>
-                    <li>
-                        <a href="#"><spring:message code="home.menu.experts"/></a>
+                     <li>
+                    <c:url value="/experts" var="expertsUrl"/>
+                        <a href="${expertsUrl}"><spring:message code="home.menu.experts"/></a>
                     </li>
                     <li>
                         <a href="#"><spring:message code="home.menu.formations"/></a>
