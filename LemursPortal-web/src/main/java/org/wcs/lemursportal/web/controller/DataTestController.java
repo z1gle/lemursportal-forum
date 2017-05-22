@@ -96,7 +96,7 @@ public class DataTestController {
 				calendar.add(Calendar.MINUTE, i);
 				Date creationDate = calendar.getTime();
 				message.setCreationDate(creationDate);
-				message.setTitle("Response numéro " + i + " de la question " + question.getTitle());
+				message.setTitle("Response " + i + " de question " + question.getTitle());
 				message.setBody("Description lavalava ihany ho an'i Message numéro " + i + " La Juve, le pire tirage pour Monaco ? Un derby madrilène explosif !");
 				message.setOwnerId(question.getOwnerId());
 				message.setParentId(question.getId());
@@ -131,7 +131,7 @@ public class DataTestController {
 			calendar.set(Calendar.MONTH, calendarMonth);
 			Date creationDate = calendar.getTime();
 			message.setCreationDate(creationDate);
-			message.setTitle("Question numéro " + i + " de " + thematique.getLibelle());
+			message.setTitle("Question " + i + " " + thematique.getLibelle());
 			message.setBody("Description lavalava ihany ho an'i Message numéro " + i + " La Juve, le pire tirage pour Monaco ? Un derby madrilène explosif !");
 			message.setOwnerId(user.getId());
 			message.setOwner(user);

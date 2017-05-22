@@ -21,7 +21,7 @@
 	<script src="${resourcesPath}/js/jquery.showmore.js"></script>
 </head>
  
-<body>
+<body class="h">
 	<header id="header">
 		<tiles:insertAttribute name="header" />
 	</header>

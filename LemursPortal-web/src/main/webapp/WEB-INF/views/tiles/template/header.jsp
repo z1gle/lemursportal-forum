@@ -56,7 +56,21 @@
 		                            <li><a href="#">Madame, suite à votre visite...</a></li>
 		                        </ul>
 		                    </li>
-                    		<li><a href="#"><spring:message code="home.logout"/></a></li>
+                    		<li>
+                    			<span style="display:none;">
+                    			<c:url value="/logout" var="logoutUrl" />
+								<form action="${logoutUrl}" method="post" id="logoutForm">
+									<input type="hidden" name="${_csrf.parameterName}"
+										value="${_csrf.token}" />
+								</form>
+								<script>
+									function formSubmit() {
+										document.getElementById("logoutForm").submit();
+									}
+								</script>
+								</span>
+                    			<a href="javascript:formSubmit();"><spring:message code="home.logout"/></a>
+                    		</li>
                     	</c:when>
                     	<c:otherwise>
                     		<c:url value="/signup" var="signupUrl"/>
@@ -85,8 +99,9 @@
                     <li>
                         <a href="#"><spring:message code="home.menu.documents"/></a>
                     </li>
-                    <li>
-                        <a href="#"><spring:message code="home.menu.experts"/></a>
+                     <li>
+                    <c:url value="/experts" var="expertsUrl"/>
+                        <a href="${expertsUrl}"><spring:message code="home.menu.experts"/></a>
                     </li>
                     <li>
                         <a href="#"><spring:message code="home.menu.formations"/></a>
