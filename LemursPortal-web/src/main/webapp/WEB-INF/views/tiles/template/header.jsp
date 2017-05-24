@@ -1,4 +1,4 @@
-ï»¿<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
@@ -34,18 +34,18 @@
                     		<li class="dropdown">
 		                        <a href="#" class="notif dropdown-toggle" data-toggle="dropdown"><spring:message code="home.notification"/><span class="rond">12</span></a>
 		                        <ul class="dropdown-menu" role="menu">
-		                        	<li>Vous avez 1 rÃ©ponse(s)</li>
-		                            <li>Vous Ãªtes maintenant devenu modÃ©rateur</li>
+		                        	<li>Vous avez 1 réponse(s)</li>
+		                            <li>Vous êtes maintenant devenu modérateur</li>
 		                            <li>3 lecture(s) de votre question</li>
-		                            <li>Votre question a Ã©tÃ© validÃ©e</li>
-		                            <li>Vous avez 36 rÃ©ponse(s)</li>
-		                            <li>Vous Ãªtes maintenant devenu modÃ©rateur</li>
+		                            <li>Votre question a été validée</li>
+		                            <li>Vous avez 36 réponse(s)</li>
+		                            <li>Vous êtes maintenant devenu modérateur</li>
 		                            <li>8 lecture(s) de votre question</li>
-		                            <li>Votre question a Ã©tÃ© validÃ©e</li>
-		                            <li>Vous avez 11 rÃ©ponse(s)</li>
-		                            <li>Vous Ãªtes maintenant devenu modÃ©rateur</li>
+		                            <li>Votre question a été validée</li>
+		                            <li>Vous avez 11 réponse(s)</li>
+		                            <li>Vous êtes maintenant devenu modérateur</li>
 		                            <li>45 lecture(s) de votre question</li>
-		                            <li>Votre question a Ã©tÃ© validÃ©e</li>
+		                            <li>Votre question a été validée</li>
 		                        </ul>
 		                    </li>
 		                    <li class="dropdown">
@@ -53,7 +53,7 @@
 		                        <ul class="dropdown-menu" role="menu">
 		                        	<li><a href="#">Bonjour, je suis...</a></li>
 		                            <li><a href="#">Veuillez marquer votre sujet...</a></li>
-		                            <li><a href="#">Madame, suite Ã  votre visite...</a></li>
+		                            <li><a href="#">Madame, suite à votre visite...</a></li>
 		                        </ul>
 		                    </li>
                     		<li>
@@ -106,6 +106,12 @@
                     <li>
                         <a href="#"><spring:message code="home.menu.formations"/></a>
                     </li>
+                    <sec:authorize access="hasRole('ADMIN')">
+                    <li>
+                    	<c:url value="/admin/user/list" var="userAdminitrationUrl"/>
+                        <a href="${userAdminitrationUrl}">Roles des Utilisateurs</a>
+                    </li>
+                    </sec:authorize>
                 </ul>
                 
                 <ul class="nav navbar-nav navbar-right">

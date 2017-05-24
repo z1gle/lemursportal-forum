@@ -104,6 +104,12 @@
 	  <put-attribute name="left" value="/WEB-INF/views/tiles/pages/post-form.jsp" />
 	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
 	</definition>
+	
+   <!-- Admin - assigner roles -->
+   <definition name="admin.user.roles" extends="base-definition">
+        <put-attribute name="title" value="Assign Authorities" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/section/edit-users-roles.jsp"/>
+   </definition>
    
    
 </tiles-definitions>

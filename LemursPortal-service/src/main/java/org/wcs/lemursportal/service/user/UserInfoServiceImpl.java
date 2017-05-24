@@ -7,10 +7,14 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,15 +70,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 		userRepository.save(user);
 	}
 
-	
-	@Override @Transactional(readOnly=true)
-	public PaginationResponse<UserInfo> findByPagination(PaginationRequest<UserInfo> request) {
-		//TODO - En attendant l'implementation d'une reherche avec pagination coté repository, on appel le findAll()
-		final List<UserInfo> results = userRepository.findAll();
-		return new PaginationResponse<UserInfo>(results, request.getPageNum(), request.getPageSize(), request.getPageSize());
-	}
-
-
 	@Override @Transactional(readOnly=true)
 	public UserInfo getById(Integer id) {
 		UserInfo user = userRepository.findOne(id);
@@ -111,6 +106,26 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Override
 	public UserInfo getByLogin(String login) {
 		return userRepository.findByLoginAndEnabled(login, Boolean.TRUE);
+	}
+
+
+	/* (non-Javadoc)
+	 * @see org.wcs.lemursportal.service.user.UserInfoService#findByPagination(org.springframework.data.domain.Example, org.springframework.data.domain.Pageable)
+	 */
+	@Override
+	public Page<UserInfo> findByPagination(Example<UserInfo> example,
+			Pageable pageable) {
+		throw new NotImplementedException();
+	}
+
+
+	/* (non-Javadoc)
+	 * @see org.wcs.lemursportal.service.user.UserInfoService#findByPagination(org.springframework.data.domain.Pageable)
+	 */
+	@Override
+	public Page<UserInfo> findByPagination(Pageable pageable) {
+		final List<UserInfo> results = userRepository.findAll();
+		return new PageImpl<>(results, pageable, results.size());
 	}
 
 }

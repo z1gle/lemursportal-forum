@@ -17,10 +17,12 @@ public class UserRoleEditForm {
 	
 	private Integer userId;
 	private List<Integer> roles;
+	private UserInfo user;
 	
 	public UserRoleEditForm(){}
 	
 	public UserRoleEditForm(UserInfo user){
+		this.user = user;
 		this.userId = user.getId();
 		roles = new ArrayList<Integer>();
 		if(user.getRoles() != null){
@@ -41,6 +43,10 @@ public class UserRoleEditForm {
 	}
 	public void setRoles(List<Integer> roles) {
 		this.roles = roles;
+	}
+
+	public UserInfo getUser() {
+		return user;
 	}
 	
 }

@@ -49,10 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.sessionManagement().sessionFixation().none();//on veut garder la même session pour le basculement des pages http<->https
 		http.authorizeRequests()
 			.expressionHandler(defaultWebSecurityExpressionHandler())
-			.antMatchers("/", "/favicon.ico", "/resources/**", "/signup", "/registration").permitAll()
+			//.antMatchers("/", "/favicon.ico", "/resources/**", "/signup", "/registration").permitAll()
 			.antMatchers("/admin/**").hasRole("ADMIN")
-			.antMatchers("/secure/**", "/user/**").hasAnyRole("ADMIN", "MODERATEUR", "EXPERT", "USER")
-			.anyRequest().authenticated()
+			.antMatchers("/secure/**", "/user/**", "/logout/**").hasAnyRole("ADMIN", "MODERATEUR", "EXPERT", "USER")
+			.anyRequest().permitAll()
 			.and().formLogin()
 						.loginPage("/login").permitAll()
 						.usernameParameter("login").passwordParameter("password")

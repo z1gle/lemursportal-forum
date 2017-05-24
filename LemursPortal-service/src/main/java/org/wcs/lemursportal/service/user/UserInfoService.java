@@ -5,6 +5,9 @@ package org.wcs.lemursportal.service.user;
 
 import java.util.Set;
 
+import org.hibernate.criterion.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.wcs.lemursportal.helper.pagination.PaginationRequest;
@@ -60,5 +63,13 @@ public interface UserInfoService {
 	 * @return
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN', 'MODERATEUR')")
-	PaginationResponse<UserInfo> findByPagination(PaginationRequest<UserInfo> request);
+	Page<UserInfo> findByPagination(org.springframework.data.domain.Example<UserInfo> example, Pageable pageable);
+	
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@PreAuthorize("hasAnyRole('ADMIN', 'MODERATEUR')")
+	Page<UserInfo> findByPagination(Pageable pageable);
 }

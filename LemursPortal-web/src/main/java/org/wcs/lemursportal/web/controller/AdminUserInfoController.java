@@ -3,6 +3,7 @@
  */
 package org.wcs.lemursportal.web.controller;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,6 +11,9 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +24,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.wcs.lemursportal.helper.pagination.PaginationRequest;
-import org.wcs.lemursportal.helper.pagination.PaginationResponse;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.model.user.UserType;
 import org.wcs.lemursportal.repository.user.UserTypeRepository;
@@ -45,10 +48,17 @@ public class AdminUserInfoController {
 	@GetMapping(value="/admin/user/list")
 	@PreAuthorize("hasRole('ADMIN')")
 	public String list(HttpServletRequest request, Model model){
-		PaginationRequest<UserInfo> paginationRequest = new PaginationRequest<>(1, 50);
-		PaginationResponse<UserInfo> paginationResponse = userInfoService.findByPagination(paginationRequest);
-		model.addAttribute("paginationResponse", paginationResponse);
-		return "user/list";
+		Pageable pageable = new PageRequest(0, 20);
+		List<UserRoleEditForm> userRoleEditForms = new ArrayList<>();
+		Page<UserInfo> page = userInfoService.findByPagination(pageable);
+		for(UserInfo user: page.getContent()){
+			UserRoleEditForm form = new UserRoleEditForm(user);
+			model.addAttribute("userRoleEditForm_" + user.getId(), form);
+			userRoleEditForms.add(form);
+		}
+		model.addAttribute("page", page);
+		model.addAttribute("userRoleEditForms", userRoleEditForms);
+		return "admin.user.roles";
 	}
 	
 	@GetMapping(value="/admin/roles/user/{userId}")
