@@ -32,7 +32,7 @@
 									<i><c:out value="${question.role}" /></i>
 								</div>
 							</div>
-							<a href="forum_post.html" class="forum-item-title"><c:out
+							<a href="/lemursPortal/post/show/${topQuestion.question.id}" class="forum-item-title"><c:out
 									value="${topQuestion.question.title}" /></a>
 							<div class="forum-sub-title">
 								<c:out value="${topQuestion.question.body}" escapeXml="true" />
