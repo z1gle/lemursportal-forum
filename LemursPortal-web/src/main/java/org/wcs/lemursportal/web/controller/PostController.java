@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
@@ -66,4 +68,31 @@ public class PostController {
 		return "results";
 	}
 	
+	@GetMapping(value="/post/show/{idPost}")	
+	public String showPost(@PathVariable(name="idPost", required=true) Integer idPost, Model model){
+		Post p = postService.findPostById(idPost);
+		System.out.println(p.getId() + " " + p.getTitle() + " " + p.getBody());
+		model.addAttribute("post", p);		
+		return "showPost";
+	}
+	 
+	
+	@PostMapping(value="/secured/post/reponse")
+	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
+	public String submitReponse(Authentication authentication, Model model, 
+			@ModelAttribute Post post, 
+			BindingResult results){		
+		//ValidationUtils.rejectIfEmptyOrWhitespace(results, "libelle", "validation.mandatory");
+		if(results.hasErrors()){
+			return "forward:post/post-form";
+		}
+		
+		Post parent = new Post();
+		parent.setId(post.getId());
+		post.setId(null);
+		post.setParentId(parent.getId());
+		post.setTitle("");
+		postService.insert(post);
+		return "redirect:/post/show/"+parent.getId();
+	}
 }

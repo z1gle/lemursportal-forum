@@ -105,6 +105,15 @@
 	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
 	</definition>
 	
+	<definition name="showPost" extends="base-definition">  
+       <put-attribute name="title" value="show Post" />  
+       <put-attribute name="body" value="showPost.body" />
+   </definition>
+   <definition name="showPost.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+	  <put-attribute name="left" value="/WEB-INF/views/tiles/pages/details-post.jsp" />
+	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+	</definition>
    <!-- Admin - assigner roles -->
    <definition name="admin.user.roles" extends="base-definition">
         <put-attribute name="title" value="Assign Authorities" />  

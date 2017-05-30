@@ -20,4 +20,6 @@ public interface PostService {
 	public void insert(Post post);
 	
 	Page<Post> search(Pageable pageable, String pattern);
+	
+	Post findPostById(Integer id);
 }

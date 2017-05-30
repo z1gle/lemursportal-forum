@@ -173,7 +173,7 @@ public class PostRepositoryImpl implements PostRepository {
 		return new PageImpl<>(topQuestions, pageable, total);
 	}
 	
-	private List<Post> getPostsAndFetchOwner(Set<Integer> postIds){
+	public List<Post> getPostsAndFetchOwner(Set<Integer> postIds){
 		List<Post> posts = new ArrayList<>();
 		if(postIds != null && !postIds.isEmpty()){
 			StringBuilder jpql = new StringBuilder("select p from Post p ")
@@ -184,7 +184,21 @@ public class PostRepositoryImpl implements PostRepository {
 			posts = query.getResultList();
 		}
 		return posts;
-	}
+	} 
+	
+	
+	public List<Post> getResponsesAndFetchOwner(Integer parentId){
+		List<Post> posts = new ArrayList<>();
+		
+		StringBuilder jpql = new StringBuilder("select p from Post p ")
+			.append("left join fetch p.owner ")
+			.append(" where p.parentId = :id)");
+		TypedQuery<Post> query = em.createQuery(jpql.toString(), Post.class);
+		query.setParameter("id", parentId);
+		posts = query.getResultList();
+		System.out.println("zanany : " +posts.size());
+		return posts;
+	} 
 	
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.repository.post.PostRepository#getMostViewedPost(org.springframework.data.domain.Pageable)

@@ -30,7 +30,7 @@
 	                                  <a href="#"><img class="img-circle" src="${resourcesPath}/images/user1.png" alt=""/></a>
 	                                  <div class="reponse-user"><a href="#"><c:out value="${post.owner.nom}"/> <c:out value="${post.owner.prenom}"/></a><br/><i></i></div>
 	                                </div>
-	                                <a href="forum_post.html" class="forum-item-title"><c:out value="${post.title}" /></a>
+	                                <a href="/lemursPortal/post/show/${post.id}" class="forum-item-title"><c:out value="${post.title}" /></a>
 	                                <div class="forum-sub-title">
 	                                	<c:out value="${post.body}" escapeXml="true" />
 	                                    <p class="forum-date"><fmt:formatDate pattern="${datetimeFormat}" value="${post.creationDate}"/></p>

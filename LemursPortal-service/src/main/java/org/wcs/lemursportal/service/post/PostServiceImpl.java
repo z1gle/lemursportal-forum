@@ -1,6 +1,9 @@
 package org.wcs.lemursportal.service.post;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,13 +38,26 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public void insert(Post post) {
 		post.setCreationDate(new Date());
-		System.out.println(post.toString());
+		//System.out.println(post.toString());
 		postRepository.insert(post);
 	}
 
 	@Override
 	public Page<Post> search(Pageable pageable, String pattern) {
 		return postRepository.search(pageable, pattern);
+	}
+
+	@Override
+	public Post findPostById(Integer id) {
+		Set<Integer> sets = new HashSet<Integer>();
+		sets.add(id);
+		List<Post> lst = postRepository.getPostsAndFetchOwner(sets);
+		if(lst!=null && lst.size()==1){
+			Post p = lst.get(0);
+			p.setChildren(postRepository.getResponsesAndFetchOwner(p.getId()));
+			return p;
+		}
+		return null;
 	}
 
 }
