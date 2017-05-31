@@ -24,7 +24,8 @@
 	                                  <a href="#"><img class="img-circle" src="${resourcesPath}/images/user1.png" alt=""/></a>
 	                                  <div class="reponse-user"><a href="#"><c:out value="${QuestionParTheme.question.owner.nom}"/> <c:out value="${QuestionParTheme.question.owner.prenom}"/></a><br/><i><c:out value="${question.role}"/></i></div>
 	                                </div>
-	                                <a href="forum_post.html" class="forum-item-title"><c:out value="${QuestionParTheme.question.title}" /></a>
+	                                <c:url value="/post/show/${QuestionParTheme.question.id}" var="questionPageUrl"/>
+	                                <a href="${questionPageUrl}" class="forum-item-title"><c:out value="${QuestionParTheme.question.title}" /></a>
 	                                <div class="forum-sub-title">
 	                                	<c:out value="${QuestionParTheme.question.body}" escapeXml="true" />
 	                                    <p class="forum-date"><fmt:formatDate pattern="${datetimeFormat}" value="${QuestionParTheme.question.creationDate}"/></p>

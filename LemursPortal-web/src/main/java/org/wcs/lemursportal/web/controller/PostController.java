@@ -11,13 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
@@ -26,7 +23,7 @@ import org.wcs.lemursportal.service.post.ThematiqueService;
 
 @Controller
 @Transactional
-public class PostController {
+public class PostController extends BaseController{
 
 	@Autowired
 	private PostService postService;
@@ -71,7 +68,6 @@ public class PostController {
 	@GetMapping(value="/post/show/{idPost}")	
 	public String showPost(@PathVariable(name="idPost", required=true) Integer idPost, Model model){
 		Post p = postService.findPostById(idPost);
-		System.out.println(p.getId() + " " + p.getTitle() + " " + p.getBody());
 		model.addAttribute("post", p);		
 		return "showPost";
 	}

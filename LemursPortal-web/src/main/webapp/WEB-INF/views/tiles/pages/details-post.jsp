@@ -4,14 +4,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
 <c:url value="/resources" var="resourcesPath"/>
-
-<body class="int">
-<header>
-
-
-<div class="container lemurs-page">
-    <div class="row">
-        <div class="col-md-9">
             <div class="wrapper wrapper-content animated fadeInRight">
     			<!-- D Question/Reponse -->
                 <div class="forum-container reponse-quest">
@@ -24,10 +16,10 @@
                         <div class="row">
                             <div class="col-md-11">
                                 <div class="forum-profil">
-                                  <a href="#"><img class="img-circle" src="{resourcesPath}/images/user1.png" alt=""></a>
+                                  <a href="#"><img class="img-circle" src="${resourcesPath}/images/user1.png" alt=""></a>
                                   <div class="reponse-user"><a href="#">Vero Rama</a><br/><i>Expert</i></div>
                                 </div>
-                                <a href="forum_post.html" class="forum-item-title"><c:out value="${post.title}" /></a>
+                                <a href="#" class="forum-item-title"><c:out value="${post.title}" /></a>
                                 <div class="forum-sub-title">
                                 	<c:out value="${post.body}" />
                                     <p class="forum-date"><fmt:formatDate pattern="${datetimeFormat}" value="${post.creationDate}"/></p>
@@ -69,7 +61,7 @@
 
                           <div class="media">
                             <div class="media-heading col-md-3 forum-user-info">
-                               <a href="#" class="left"><img class="img-circle" src="{resourcesPath}/images/user2.png" alt=""></a>
+                               <a href="#" class="left"><img class="img-circle" src="${resourcesPath}/images/user2.png" alt=""></a>
                                <div class="reponse-user"><a href="#"><c:out value="${child.owner.nom}"/> <c:out value="${child.owner.prenom}"/></a><br/><i>Visiteur</i><br/><br/><fmt:formatDate pattern="${datetimeFormat}" value="${child.creationDate}"/></div>
                             </div>
                     
@@ -92,10 +84,4 @@
                 
             </div>
         </div>
-        
-        
-        
-        
-    </div>
-</div>
 
