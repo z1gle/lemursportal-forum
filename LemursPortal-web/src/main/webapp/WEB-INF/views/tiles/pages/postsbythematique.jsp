@@ -16,7 +16,7 @@
                         <h2><span>Thématique :</span><c:out value="${thematique.libelle}"/></h2>
                     </div>
     				<!-- D Sujet -->
-    				 <c:forEach items="${postsBythematique}" var="QuestionParTheme">
+    				 <c:forEach items="${postsBythematiquePage.content}" var="QuestionParTheme">
     					<div class="forum-item">
 	                        <div class="row">
 	                            <div class="col-md-8">
@@ -54,18 +54,45 @@
 	                    </div>
     				</c:forEach>
                     <!-- F Sujet -->
-                    
-                    <!-- D Pagination -->
-<!--                     <ul class="pagination"> -->
-<!--                         <li class="disabled"><a href="#">&laquo;</a></li> -->
-<!--                         <li class="active"><a href="#">1</a></li> -->
-<!--                         <li><a href="#">2</a></li> -->
-<!--                         <li><a href="#">3</a></li> -->
-<!--                         <li><a href="#">4</a></li> -->
-<!--                         <li><a href="#">5</a></li> -->
-<!--                         <li><a href="#">&raquo;</a></li> -->
-<!--                     </ul> -->
-                    <!-- F Pagination -->
+                    <!-- 			D Pagination -->
+                <c:url var="currentBaseUrl" value="/postsParThematique/${thematique.id}"/>
+                <c:set var="firstUrl" value="${currentBaseUrl}?page=1"/>
+                <c:set var="lastUrl" value="${currentBaseUrl}?page=${postsBythematiquePage.totalPages}"/>
+                <c:set var="prevUrl" value="${currentBaseUrl}?page=${paginationCurrent - 1}"/>
+                <c:set var="nextUrl" value="${currentBaseUrl}?page=${paginationCurrent + 1}"/>
+				    <ul class="pagination">
+				        <c:choose>
+				            <c:when test="${paginationCurrent == 1}">
+				                <li class="disabled"><a href="#">&lt;&lt;</a></li>
+				                <li class="disabled"><a href="#">&lt;</a></li>
+				            </c:when>
+				            <c:otherwise>
+				                <li><a href="${firstUrl}">&lt;&lt;</a></li>
+				                <li><a href="${prevUrl}">&lt;</a></li>
+				            </c:otherwise>
+				        </c:choose>
+				        <c:forEach var="i" begin="${paginationBegin}" end="${paginationEnd}">
+				            <c:set var="pageUrl" value="${currentBaseUrl}?page=${i}"/>
+				            <c:choose>
+				                <c:when test="${i == paginationCurrent}">
+				                    <li class="active"><a href="${pageUrl}"><c:out value="${i}" /></a></li>
+				                </c:when>
+				                <c:otherwise>
+				                    <li><a href="${pageUrl}"><c:out value="${i}" /></a></li>
+				                </c:otherwise>
+				            </c:choose>
+				        </c:forEach>
+				        <c:choose>
+				            <c:when test="${paginationCurrent == postsBythematiquePage.totalPages}">
+				                <li class="disabled"><a href="#">&gt;</a></li>
+				                <li class="disabled"><a href="#">&gt;&gt;</a></li>
+				            </c:when>
+				            <c:otherwise>
+				                <li><a href="${nextUrl}">&gt;</a></li>
+				                <li><a href="${lastUrl}">&gt;&gt;</a></li>
+				            </c:otherwise>
+				        </c:choose>
+				    </ul>
                     
                 </div>
             </div>

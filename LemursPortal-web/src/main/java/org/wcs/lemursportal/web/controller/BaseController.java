@@ -31,33 +31,41 @@ public class BaseController {
 	@Autowired PostRepository postRepository;
 	@Autowired PostService postService;
 	
+	public static final int TOP_QUESTIONS_PAGE_SIZE = 20;
+	public static final int TOP_THEMATIQUES_PAGE_SIZE = 20;
+	public static final int DERNIERES_QUESTIONS_PAGE_SIZE = 20;
+	
+	public void setPagination(Integer page, Page<?> pageable, Model model){
+		int current = pageable.getNumber() + 1;
+	    int begin = Math.max(1, current - 3);
+	    int end = Math.min(begin + 6, pageable.getTotalPages());
+
+		model.addAttribute("paginationCurrent", current);
+		model.addAttribute("paginationBegin", begin);
+		model.addAttribute("paginationEnd", end);
+	}
+	
 	@ModelAttribute("topQuestionsPage")
-	public Page<TopQuestion> getTopQuestions(@RequestParam(required=false) Integer page, Model model){
+	public Page<TopQuestion> getTopQuestions(@RequestParam(required=false, defaultValue="0") Integer page, Model model){
 		if(page == null || page < 1){
 			page = 0;
 		}else{
 			page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
 		}
-		Page<TopQuestion> pageResult = postService.getTopQuestions(new PageRequest(page, 20));
-		int current = pageResult.getNumber() + 1;
-	    int begin = Math.max(1, current - 3);
-	    int end = Math.min(begin + 6, pageResult.getTotalPages());
-
-		model.addAttribute("paginationCurrent", current);
-		model.addAttribute("paginationBegin", begin);
-		model.addAttribute("paginationEnd", end);
+		Page<TopQuestion> pageResult = postService.getTopQuestions(new PageRequest(page, TOP_QUESTIONS_PAGE_SIZE));
+		setPagination(page, pageResult, model);
 		return pageResult;
 	}
 	
 	@ModelAttribute("topThematiques")
 	public List<TopThematique> getTopThematiques(){
-		List<TopThematique> t = thematiqueRepository.findTopThematique(10);
+		List<TopThematique> t = thematiqueRepository.findTopThematique(TOP_THEMATIQUES_PAGE_SIZE);
 		return t;
 	}
 	
 	@ModelAttribute("lastestPosts")
 	public List<Post> getLastestPosts(){
-		Page<Post> page = postRepository.getLastestPosts(new PageRequest(0, 10));//On ne prendra que les 10 premiers
+		Page<Post> page = postRepository.getLastestPosts(new PageRequest(0, DERNIERES_QUESTIONS_PAGE_SIZE));//On ne prendra que les 10 premiers
 		return page.getContent();
 	}
 }

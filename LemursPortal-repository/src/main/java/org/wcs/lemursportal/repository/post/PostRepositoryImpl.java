@@ -235,6 +235,33 @@ public class PostRepositoryImpl implements PostRepository {
 		TypedQuery<Post> typedQuery = em.createQuery(jpql.toString(), Post.class).setFirstResult(pageable.getOffset()).setMaxResults(pageable.getPageSize());
 		return new PageImpl<>( typedQuery.getResultList());
 	}
+
+
+	/* (non-Javadoc)
+	 * @see org.wcs.lemursportal.repository.post.PostRepository#getQuestionResponses(java.lang.Integer, org.springframework.data.domain.Pageable)
+	 */
+	@Override
+	public Page<Post> getQuestionResponses(Integer questionId, Pageable pageable) {
+		StringBuilder jpql = new StringBuilder("select p from Post p inner join fetch p.owner ");
+		StringBuilder jpqlCount = new StringBuilder("select count(p.id) from Post p ");
+		StringBuilder jpqlWhere = new StringBuilder("where (p.censored is null or p.censored != :censored) ")
+			.append("and p.parentId=:questionId ");
+		//Le nombe total des reponses
+		TypedQuery<Long> countQuery = em.createQuery(jpqlCount.append(jpqlWhere).toString(), Long.class);
+		countQuery.setParameter("censored", Boolean.TRUE);
+		countQuery.setParameter("questionId", questionId);
+		Long total = countQuery.getSingleResult();
+
+		TypedQuery<Post> query = em.createQuery(jpql.append(jpqlWhere).append(" order by p.creationDate asc ").toString(), Post.class);
+		query.setParameter("censored", Boolean.TRUE);
+		query.setParameter("questionId", questionId);
+		if(pageable != null){
+			query.setFirstResult(pageable.getOffset());
+			query.setMaxResults(pageable.getPageSize());
+		}
+		List<Post> responses = query.getResultList();
+		return new PageImpl<>(responses, pageable, total);
+	}
 	
 
 }

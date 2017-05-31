@@ -66,9 +66,17 @@ public class PostController extends BaseController{
 	}
 	
 	@GetMapping(value="/post/show/{idPost}")	
-	public String showPost(@PathVariable(name="idPost", required=true) Integer idPost, Model model){
+	public String showPost(@PathVariable(name="idPost", required=true) Integer idPost, @RequestParam(required=false, defaultValue="0") Integer page, Model model){
 		Post p = postService.findPostById(idPost);
-		model.addAttribute("post", p);		
+		if(page == null || page < 1){
+			page = 0;
+		}else{
+			page = page - 1;
+		}
+		Page<Post> responsesPage = postService.getQuestionResponses(idPost, new PageRequest(page, BaseController.DERNIERES_QUESTIONS_PAGE_SIZE));
+		model.addAttribute("post", p);
+		model.addAttribute("responsesPage", responsesPage);
+		setPagination(page, responsesPage, model);
 		return "showPost";
 	}
 	 

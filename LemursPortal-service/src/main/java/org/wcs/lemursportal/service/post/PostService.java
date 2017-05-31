@@ -22,4 +22,11 @@ public interface PostService {
 	Page<Post> search(Pageable pageable, String pattern);
 	
 	Post findPostById(Integer id);
+
+	/**
+	 * @param questionId
+	 * @param pageable
+	 * @return
+	 */
+	Page<Post> getQuestionResponses(Integer questionId, Pageable pageable);
 }

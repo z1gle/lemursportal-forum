@@ -44,4 +44,11 @@ public interface PostRepository {
 	 public List<Post> getResponsesAndFetchOwner(Integer id);
 	 
 	Page<Post> search(Pageable pageable, String pattern);
+
+	/**
+	 * @param questionId
+	 * @param pageable
+	 * @return
+	 */
+	Page<Post> getQuestionResponses(Integer questionId, Pageable pageable);
 }

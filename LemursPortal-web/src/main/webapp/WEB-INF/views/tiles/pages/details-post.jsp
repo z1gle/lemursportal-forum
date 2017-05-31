@@ -57,7 +57,7 @@
                         </div>
                     
                         <div class="row">
-                        <c:forEach items="${post.children}" var="child">
+                        <c:forEach items="${responsesPage.content}" var="child">
 
                           <div class="media">
                             <div class="media-heading col-md-3 forum-user-info">
@@ -80,7 +80,48 @@
                     
                 </div>
                 
-              <!-- F Question/Reponse -->  
+                    <span>Current page = ${paginationCurrent }</span>
+                
+              <!-- 			D Pagination -->
+                <c:url var="currentBaseUrl" value="/post/show/${post.id}"/>
+                <c:set var="firstUrl" value="${currentBaseUrl}?page=1"/>
+                <c:set var="lastUrl" value="${currentBaseUrl}?page=${responsesPage.totalPages}"/>
+                <c:set var="prevUrl" value="${currentBaseUrl}?page=${paginationCurrent - 1}"/>
+                <c:set var="nextUrl" value="${currentBaseUrl}?page=${paginationCurrent + 1}"/>
+				    <ul class="pagination">
+				        <c:choose>
+				            <c:when test="${paginationCurrent == 1}">
+				                <li class="disabled"><a href="#">&lt;&lt;</a></li>
+				                <li class="disabled"><a href="#">&lt;</a></li>
+				            </c:when>
+				            <c:otherwise>
+				                <li><a href="${firstUrl}">&lt;&lt;</a></li>
+				                <li><a href="${prevUrl}">&lt;</a></li>
+				            </c:otherwise>
+				        </c:choose>
+				        <c:forEach var="i" begin="${paginationBegin}" end="${paginationEnd}">
+				            <c:set var="pageUrl" value="${currentBaseUrl}?page=${i}"/>
+				            <c:choose>
+				                <c:when test="${i == paginationCurrent}">
+				                    <li class="active"><a href="${pageUrl}"><c:out value="${i}" /></a></li>
+				                </c:when>
+				                <c:otherwise>
+				                    <li><a href="${pageUrl}"><c:out value="${i}" /></a></li>
+				                </c:otherwise>
+				            </c:choose>
+				        </c:forEach>
+				        <c:choose>
+				            <c:when test="${paginationCurrent == responsesPage.totalPages}">
+				                <li class="disabled"><a href="#">&gt;</a></li>
+				                <li class="disabled"><a href="#">&gt;&gt;</a></li>
+				            </c:when>
+				            <c:otherwise>
+				                <li><a href="${nextUrl}">&gt;</a></li>
+				                <li><a href="${lastUrl}">&gt;&gt;</a></li>
+				            </c:otherwise>
+				        </c:choose>
+				    </ul>
+              
                 
             </div>
         </div>
