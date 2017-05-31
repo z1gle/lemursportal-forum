@@ -36,11 +36,6 @@ public interface PostRepository {
 	  */
 	 Page<TopQuestion> getTopQuestions(Pageable pageable);
 	 
-	 /**
-	  * 
-	  * @return
-	  */
-	 Long countQuestions();
 	 
 	 void insert(Post post);
 	 

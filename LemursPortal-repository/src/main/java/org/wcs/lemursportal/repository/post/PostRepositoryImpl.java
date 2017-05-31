@@ -87,10 +87,16 @@ public class PostRepositoryImpl implements PostRepository {
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.repository.post.PostRepository#countQuestion()
 	 */
-	@Override
-	public Long countQuestions() {
-		Query query = em.createQuery("select count(p.id) from Post p where p.parentId is null and (p.censored is null or p.censored != :censored)", Long.class);
+	private Long countQuestions(Integer idThematique) {
+		StringBuilder jpql = new StringBuilder("select count(p.id) from Post p where p.parentId is null and (p.censored is null or p.censored != :censored) ");
+		if(idThematique != null){
+			jpql.append("and p.thematique.id=:thematiqueId ");
+		}
+		Query query = em.createQuery(jpql.toString(), Long.class);
 		query.setParameter("censored", Boolean.TRUE);
+		if(idThematique != null){
+			query.setParameter("thematiqueId", idThematique);
+		}
 		Long count = (Long)query.getSingleResult();
 		return count;
 	}
@@ -105,7 +111,7 @@ public class PostRepositoryImpl implements PostRepository {
 
 
 	private Page<TopQuestion> getTopQuestions(Integer idThematique, Pageable pageable) {
-		Long total = countQuestions();
+		Long total = countQuestions(idThematique);
 		StringBuilder jpql = new StringBuilder("select max(p.id) as lastResponseId, count(p.id) as nbResponse, p.parentId as questionId ")
 				.append(" from Post p where p.parentId is not null and (p.censored is null or p.censored != :censored) ");
 		if(idThematique != null){

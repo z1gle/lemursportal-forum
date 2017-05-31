@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.TopQuestion;
 import org.wcs.lemursportal.model.post.TopThematique;
@@ -28,11 +30,23 @@ public class BaseController {
 	@Autowired ThematiqueRepository thematiqueRepository;
 	@Autowired PostRepository postRepository;
 	@Autowired PostService postService;
-
+	
 	@ModelAttribute("topQuestionsPage")
-	public Page<TopQuestion> getTopQuestions(){
-		Page<TopQuestion> page = postService.getTopQuestions(new PageRequest(0, 20));
-		return page;
+	public Page<TopQuestion> getTopQuestions(@RequestParam(required=false) Integer page, Model model){
+		if(page == null || page < 1){
+			page = 0;
+		}else{
+			page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+		}
+		Page<TopQuestion> pageResult = postService.getTopQuestions(new PageRequest(page, 20));
+		int current = pageResult.getNumber() + 1;
+	    int begin = Math.max(1, current - 3);
+	    int end = Math.min(begin + 6, pageResult.getTotalPages());
+
+		model.addAttribute("paginationCurrent", current);
+		model.addAttribute("paginationBegin", begin);
+		model.addAttribute("paginationEnd", end);
+		return pageResult;
 	}
 	
 	@ModelAttribute("topThematiques")
