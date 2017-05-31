@@ -80,8 +80,6 @@
                     
                 </div>
                 
-                    <span>Current page = ${paginationCurrent }</span>
-                
               <!-- 			D Pagination -->
                 <c:url var="currentBaseUrl" value="/post/show/${post.id}"/>
                 <c:set var="firstUrl" value="${currentBaseUrl}?page=1"/>
