@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
@@ -46,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//http.requiresChannel().anyRequest().requiresSecure();
 		//On securise les pages qui manipules des mots de passe
 		http.requiresChannel().antMatchers("/login**", "/authenticate**", "/signup**").requiresSecure();
-		http.sessionManagement().sessionFixation().none();//on veut garder la même session pour le basculement des pages http<->https
+		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).sessionFixation().none();//on veut garder la même session pour le basculement des pages http<->https
 		http.authorizeRequests()
 			.expressionHandler(defaultWebSecurityExpressionHandler())
 			//.antMatchers("/", "/favicon.ico", "/resources/**", "/signup", "/registration").permitAll()

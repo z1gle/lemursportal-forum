@@ -2,25 +2,27 @@ package org.wcs.lemursportal.web.controller;
 
 import java.util.List;
 
-import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.TopQuestion;
 import org.wcs.lemursportal.model.post.TopThematique;
+import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
 import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
-import org.wcs.lemursportal.web.validator.FileValidator;
+import org.wcs.lemursportal.service.user.UserInfoService;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>
@@ -35,7 +37,7 @@ public class BaseController {
 	@Autowired ThematiqueRepository thematiqueRepository;
 	@Autowired PostRepository postRepository;
 	@Autowired PostService postService;
-	@Autowired FileValidator fileValidator;
+	@Autowired UserInfoService userInfoService;
 	
 	public static final int TOP_QUESTIONS_PAGE_SIZE = 20;
 	public static final int TOP_THEMATIQUES_PAGE_SIZE = 20;
@@ -79,8 +81,13 @@ public class BaseController {
 		return page.getContent();
 	}
 	
-	@InitBinder("fileBucket")
-    protected void initBinderFileBucket(WebDataBinder binder) {
-       binder.setValidator(fileValidator);
-    }
+	@ModelAttribute("currentUser")
+	public UserInfo getCurrentUser(Authentication authentication){
+		UserInfo userInfo = new UserInfo();
+		if(authentication != null){
+			String login = authentication.getName();
+			userInfo = userInfoService.getByLogin(login);
+		}
+		return userInfo;
+	}
 }

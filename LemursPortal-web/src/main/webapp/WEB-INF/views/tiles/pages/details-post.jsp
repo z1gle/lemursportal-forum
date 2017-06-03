@@ -37,24 +37,26 @@
                     </div>
                     
                     <div class="post-comments">
+                        <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
+                        <c:if test="${isLoggedInUser}">
+                        	<div class="comment-meta">
+		                          <span>
+		                            <a class="btn" role="button" data-toggle="collapse" href="#replyCommentT" aria-expanded="true" aria-controls="collapseExample">Répondre</a>
+		                          </span>
+		                          <div class="collapse" id="replyCommentT">
+					<c:url value="/secured/post/reponse" var="formAction"></c:url>
+		                            <form:form  class="create-quest-form" modelAttribute="post" action="${formAction}"  method="POST"   >
+		                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+						<form:input type="hidden" path="id" value="${post.id}"/>
+		                              <div class="form-group">                                
+						<form:textarea path="body" class="editor form-control" rows="3"/>
+		                              </div>                             
+						<form:button value="save"  class="btn">Envoyer</form:button>
+		                            </form:form>
+		                          </div>
+		                        </div>
+                        </c:if>	
                         
-                        <div class="comment-meta">
-                          <span>
-                            <a class="btn" role="button" data-toggle="collapse" href="#replyCommentT" aria-expanded="true" aria-controls="collapseExample">Répondre</a>
-                          </span>
-                          <div class="collapse" id="replyCommentT">
-			<c:url value="/secured/post/reponse" var="formAction"></c:url>
-                            <form:form  class="create-quest-form" modelAttribute="post" action="${formAction}"  method="POST"   >
-                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-				<form:input type="hidden" path="id" value="${post.id}"/>
-                              <div class="form-group">                                
-				<form:textarea path="body" class="editor form-control" rows="3"/>
-                              </div>                             
-				<form:button value="save"  class="btn">Envoyer</form:button>
-                            </form:form>
-                          </div>
-                        </div>
-                    
                         <div class="row">
                         <c:forEach items="${responsesPage.content}" var="child">
 

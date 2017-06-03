@@ -19,7 +19,7 @@ import org.wcs.lemursportal.web.form.RegistrationForm;
 @Component
 public class RegistrationFormValidator implements Validator{
 	
-	@Autowired FileValidator fileValidator;
+	@Autowired ImageFileValidator fileValidator;
 
 	@Override
 	public boolean supports(Class<?> arg0) {

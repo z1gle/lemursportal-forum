@@ -33,7 +33,7 @@ public class PostController extends BaseController{
 	
 	
 	@GetMapping(value="/secured/post/create")
-	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('USER','EXPERT','MODERATEUR', 'ADMIN')")
 	public String create(Authentication authentication, Model model){
 		List<Thematique> listethematique = thematiqueService.findAll();
 		model.addAttribute("listeThematique", listethematique);
@@ -42,7 +42,7 @@ public class PostController extends BaseController{
 	}
 	
 	@PostMapping(value="/secured/post")
-	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('USER','EXPERT','MODERATEUR', 'ADMIN')")
 	public String submit(Authentication authentication, Model model, 
 			@ModelAttribute Post post, 
 			BindingResult results){		
@@ -82,7 +82,7 @@ public class PostController extends BaseController{
 	 
 	
 	@PostMapping(value="/secured/post/reponse")
-	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('USER', 'EXPERT','MODERATEUR', 'ADMIN')")
 	public String submitReponse(Authentication authentication, Model model, 
 			@ModelAttribute Post post, 
 			BindingResult results){		
