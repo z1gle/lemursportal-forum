@@ -3,6 +3,8 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
 <c:url value="/resources" var="resourcesPath"/>
             <div class="wrapper wrapper-content animated fadeInRight">
     			<!-- D Question/Reponse -->
@@ -15,10 +17,7 @@
                     <div class="forum-item">
                         <div class="row">
                             <div class="col-md-11">
-                                <div class="forum-profil">
-                                  <a href="#"><img class="img-circle" src="${resourcesPath}/images/user1.png" alt=""></a>
-                                  <div class="reponse-user"><a href="#">Vero Rama</a><br/><i>Expert</i></div>
-                                </div>
+                            	<user:forum-profil userInfo="${post.owner}"/>
                                 <a href="#" class="forum-item-title"><c:out value="${post.title}" /></a>
                                 <div class="forum-sub-title">
                                 	<c:out value="${post.body}" />
@@ -61,8 +60,9 @@
 
                           <div class="media">
                             <div class="media-heading col-md-3 forum-user-info">
-                               <a href="#" class="left"><img class="img-circle" src="${resourcesPath}/images/user2.png" alt=""></a>
-                               <div class="reponse-user"><a href="#"><c:out value="${child.owner.nom}"/> <c:out value="${child.owner.prenom}"/></a><br/><i>Visiteur</i><br/><br/><fmt:formatDate pattern="${datetimeFormat}" value="${child.creationDate}"/></div>
+                               <a href="#" class="left"><user:profilImage src="${child.owner.photoProfil}" cssClass="img-circle"/></a>
+                               <div class="reponse-user"><a href="#"><c:out value="${child.owner.nom}"/> <c:out value="${child.owner.prenom}"/>
+                               </a><br/><i>Visiteur</i><br/><br/><fmt:formatDate pattern="${datetimeFormat}" value="${child.creationDate}"/></div>
                             </div>
                     
                             <div class="panel-collapse collapse in col-md-9" id="collapseOne">

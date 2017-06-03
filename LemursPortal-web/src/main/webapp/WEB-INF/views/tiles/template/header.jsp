@@ -29,7 +29,7 @@
                     	<c:when test="${isLoggedInUser}">
 	                    	<li>
 	                    		<c:url var="viewProfilUrl" value="/user/profil"></c:url>
-		                        <a href="${viewProfilUrl}"><img class="img-circle" src="${resourcesPath}/images/user1.png"/><spring:message code="home.monprofile"/></a>
+		                        <a href="${viewProfilUrl}"><img class="img-circle" src="${resourcesPath}/profil/default.png"/><spring:message code="home.monprofile"/></a>
 		                    </li>
                     		<li class="dropdown">
 		                        <a href="#" class="notif dropdown-toggle" data-toggle="dropdown"><spring:message code="home.notification"/><span class="rond">12</span></a>

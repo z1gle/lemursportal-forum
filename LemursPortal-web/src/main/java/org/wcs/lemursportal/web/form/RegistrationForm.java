@@ -6,16 +6,11 @@ package org.wcs.lemursportal.web.form;
 import java.util.Date;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-
 /**
  * @author mikajy.hery
  *
  */
-public class RegistrationForm {
+public class RegistrationForm extends FileBucket {
 	
 	private Integer id;
 	private String nom;
@@ -31,6 +26,7 @@ public class RegistrationForm {
 	private Date lastAccessDate;
 	private String biographie;	
 	private List<Integer> userTypeIds;
+	private String photoProfil;
 	public Integer getId() {
 		return id;
 	}
@@ -115,6 +111,12 @@ public class RegistrationForm {
 	}
 	public void setInstitution(String institution) {
 		this.institution = institution;
+	}
+	public String getPhotoProfil() {
+		return photoProfil;
+	}
+	public void setPhotoProfil(String photoProfil) {
+		this.photoProfil = photoProfil;
 	}
 	
 }

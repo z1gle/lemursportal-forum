@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,6 +99,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 		persistUser.setPrenom(user.getPrenom());
 		persistUser.setInstitution(user.getInstitution());
 		persistUser.setPostOccupe(user.getPostOccupe());
+		if(StringUtils.isNotBlank(user.getPhotoProfil())){
+			persistUser.setPhotoProfil(user.getPhotoProfil());
+		}
 //		persistUser.setLogin(user.getLogin());
 		userRepository.save(persistUser);
 	}

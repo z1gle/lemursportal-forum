@@ -2,11 +2,15 @@ package org.wcs.lemursportal.web.controller;
 
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wcs.lemursportal.model.post.Post;
@@ -16,6 +20,7 @@ import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
 import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
+import org.wcs.lemursportal.web.validator.FileValidator;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>
@@ -30,10 +35,14 @@ public class BaseController {
 	@Autowired ThematiqueRepository thematiqueRepository;
 	@Autowired PostRepository postRepository;
 	@Autowired PostService postService;
+	@Autowired FileValidator fileValidator;
 	
 	public static final int TOP_QUESTIONS_PAGE_SIZE = 20;
 	public static final int TOP_THEMATIQUES_PAGE_SIZE = 20;
 	public static final int DERNIERES_QUESTIONS_PAGE_SIZE = 20;
+//	public static final String USER_PROFIL_IMAGE_RESOURCE_PATH = "/resources/profil/";
+	public static final String USER_PROFIL_IMAGE_RESOURCE_PATH = "/profil/";
+//	public static final String FILE_UPLOAD_LOCATION="G:/Rebioma/lemursPortal/workspaces/LemursPortal/LemursPortal-web/src/main/webapp/resources/" + USER_PROFIL_IMAGE_RESOURCE_PATH ;//TODO: à externaliser !
 	
 	public void setPagination(Integer page, Page<?> pageable, Model model){
 		int current = pageable.getNumber() + 1;
@@ -43,6 +52,7 @@ public class BaseController {
 		model.addAttribute("paginationCurrent", current);
 		model.addAttribute("paginationBegin", begin);
 		model.addAttribute("paginationEnd", end);
+		
 	}
 	
 	@ModelAttribute("topQuestionsPage")
@@ -65,7 +75,12 @@ public class BaseController {
 	
 	@ModelAttribute("lastestPosts")
 	public List<Post> getLastestPosts(){
-		Page<Post> page = postRepository.getLastestPosts(new PageRequest(0, DERNIERES_QUESTIONS_PAGE_SIZE));//On ne prendra que les 10 premiers
+		Page<Post> page = postRepository.getLastestPosts(new PageRequest(0, DERNIERES_QUESTIONS_PAGE_SIZE));//On ne prendra que les DERNIERES_QUESTIONS_PAGE_SIZE premiers
 		return page.getContent();
 	}
+	
+	@InitBinder("fileBucket")
+    protected void initBinderFileBucket(WebDataBinder binder) {
+       binder.setValidator(fileValidator);
+    }
 }

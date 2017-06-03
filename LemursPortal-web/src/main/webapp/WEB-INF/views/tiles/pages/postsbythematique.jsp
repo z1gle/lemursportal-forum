@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
 <spring:message code="datetime.format" var="datetimeFormat" />
 <c:url value="/resources" var="resourcesPath" />
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -21,7 +22,9 @@
 	                        <div class="row">
 	                            <div class="col-md-8">
 	                                <div class="forum-profil">
-	                                  <a href="#"><img class="img-circle" src="${resourcesPath}/images/user1.png" alt=""/></a>
+	                                  <a href="#">
+	                                  	<user:profilImage src="${QuestionParTheme.question.owner.photoProfil}" cssClass="img-circle"/>
+	                                  </a>
 	                                  <div class="reponse-user"><a href="#"><c:out value="${QuestionParTheme.question.owner.nom}"/> <c:out value="${QuestionParTheme.question.owner.prenom}"/></a><br/><i><c:out value="${question.role}"/></i></div>
 	                                </div>
 	                                <c:url value="/post/show/${QuestionParTheme.question.id}" var="questionPageUrl"/>
@@ -40,7 +43,9 @@
 	                                </div>
 	                            </div>
 	                            <div class="col-md-3 forum-user-info">
-	                               <a href="#"><img class="img-circle" src="${resourcesPath}/images/user2.png" alt=""/></a>
+	                               <a href="#">
+	                               <user:profilImage src="${QuestionParTheme.derniereReponse.owner.photoProfil}" cssClass="img-circle"/>
+	                               </a>
 	                               <div class="reponse-user"><a href="#">
 	                               <c:out value="${QuestionParTheme.derniereReponse.owner.nom}"/> <c:out value="${QuestionParTheme.derniereReponse.owner.prenom}"/>
 	                               </a><br/><fmt:formatDate pattern="${datetimeFormat}" value="${QuestionParTheme.derniereReponse.creationDate}"/><br/>

@@ -64,8 +64,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     		.and().rememberMe()
     					.rememberMeServices(rememberMeServices())
     					.key("remember-me-key");
-		http.csrf();
-//		http.csrf().disable();
+//		http.csrf();
+		http.csrf().disable();
 	}
 	
 	@Bean

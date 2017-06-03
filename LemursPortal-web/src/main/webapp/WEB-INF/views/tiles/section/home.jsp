@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
 <spring:message code="datetime.format" var="datetimeFormat" />
 <c:url value="/resources" var="resourcesPath" />
 	<div class="wrapper wrapper-content animated fadeInRight">
@@ -22,16 +23,7 @@
 				<div class="forum-item">
 					<div class="row">
 						<div class="col-md-8">
-							<div class="forum-profil">
-								<a href="#"><img class="img-circle"
-									src="${resourcesPath}/images/user1.png" alt="" /></a>
-								<div class="reponse-user">
-									<a href="#"><c:out
-											value="${topQuestion.question.owner.nom}" /> <c:out
-											value="${topQuestion.question.owner.prenom}" /></a><br />
-									<i><c:out value="${question.role}" /></i>
-								</div>
-							</div>
+							<user:forum-profil userInfo="${topQuestion.question.owner}"/>
 							<c:url value="/post/show/${topQuestion.question.id}" var="questionPageUrl"/>
 							<a href="${questionPageUrl}" class="forum-item-title"><c:out value="${topQuestion.question.title}" /></a>
 							<div class="forum-sub-title">
@@ -52,8 +44,7 @@
 							</div>
 						</div>
 						<div class="col-md-3 forum-user-info">
-							<a href="#"><img class="img-circle"
-								src="${resourcesPath}/images/user2.png" alt="" /></a>
+							<a href="#"><user:profilImage src="${topQuestion.derniereReponse.owner.photoProfil}" cssClass="img-circle"/></a>
 							<div class="reponse-user">
 								<a href="#"> <c:out
 										value="${topQuestion.derniereReponse.owner.nom}" /> <c:out
