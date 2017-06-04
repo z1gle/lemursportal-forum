@@ -12,10 +12,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.wcs.lemursportal.model.document.Document;
 import org.wcs.lemursportal.model.user.UserInfo;
 
 /**
@@ -71,12 +74,15 @@ public class Post implements Serializable {
 	@ManyToOne(optional=true, fetch=FetchType.LAZY)
 	@JoinColumn(columnDefinition="integer", name="censored_by", nullable=true)
 	private UserInfo censoredBy;//l'utilisateur(moderateur) qui a bloqué ce POST
+	
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+			name="message_document", 
+			joinColumns = {@JoinColumn(name="id_message", referencedColumnName = "id")},
+			inverseJoinColumns= {@JoinColumn(name = "id_document", referencedColumnName = "id")}
+		)
+	private List<Document> documents; //list of attachments
 
-	public String toString(){
-		if(getThematique()==null)
-			setThematique(new Thematique());
-		return "Title : " + getTitle() + "\n " + " Body: "+getBody() + " \n " + " Thematique :  " + getThematique().getId() + " - " + getThematique().getLibelle();
-	}
 	
 	public Integer getId() {
 		return id;
@@ -181,6 +187,13 @@ public class Post implements Serializable {
 	public void setParentId(Integer parentId) {
 		this.parentId = parentId;
 	}
+	
+	public String toString(){
+		if(getThematique()==null)
+			setThematique(new Thematique());
+		return "Title : " + getTitle() + "\n " + " Body: "+getBody() + " \n " + " Thematique :  " + getThematique().getId() + " - " + getThematique().getLibelle();
+	}
+	
 	
 	
 
