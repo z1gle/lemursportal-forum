@@ -57,10 +57,8 @@ public class PostController extends BaseController{
 		}
 		//thematiqueService.saveOrUpdate(authentication.getName(), thematique);
 		//post.set
-		UserInfo currentUser = userInfoService.getByLogin(authentication.getName());
-		post.setOwner(currentUser);
-		postService.insert(post);
-		return "redirect:/";
+		postService.insert(post, authentication.getName());
+		return "redirect:/post/show/" + post.getId();
 	}
 	
 	
@@ -109,7 +107,7 @@ public class PostController extends BaseController{
 		post.setId(null);
 		post.setParentId(parent.getId());
 		post.setTitle("");
-		postService.insert(post);
+		postService.insert(post, authentication.getName());
 		return "redirect:/post/show/"+parent.getId();
 	}
 }

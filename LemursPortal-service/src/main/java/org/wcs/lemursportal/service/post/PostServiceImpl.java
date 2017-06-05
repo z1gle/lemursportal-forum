@@ -15,10 +15,12 @@ import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.PostView;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.post.TopQuestion;
+import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.post.PostCrudRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.PostViewCrudRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
+import org.wcs.lemursportal.service.user.UserInfoService;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>
@@ -37,6 +39,8 @@ public class PostServiceImpl implements PostService {
 	PostViewCrudRepository postViewCrudRepository;
 	
 	@Autowired ThematiqueRepository thematiqueRepository;
+	
+	@Autowired UserInfoService userInfoService; 
 
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.service.post.ThematiqueService#getTopQuestions(org.springframework.data.domain.Pageable)
@@ -54,7 +58,11 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void insert(Post post) {
+	@Transactional(readOnly=false)
+	public void insert(Post post, String authorLogin) {
+		UserInfo currentUser = userInfoService.getByLogin(authorLogin);
+		post.setOwnerId(currentUser.getId());
+		post.setOwner(currentUser);
 		post.setCreationDate(new Date());
 		//System.out.println(post.toString());
 		postRepository.insert(post);

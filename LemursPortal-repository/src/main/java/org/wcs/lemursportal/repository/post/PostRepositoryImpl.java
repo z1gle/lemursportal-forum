@@ -112,14 +112,14 @@ public class PostRepositoryImpl implements PostRepository {
 
 	private Page<TopQuestion> getTopQuestions(Integer idThematique, Pageable pageable) {
 		Long total = countQuestions(idThematique);
-		StringBuilder jpql = new StringBuilder("select max(r.id) as lastResponseId, count(r.id) as nbResponse, q from Post as q ")
+		StringBuilder jpql = new StringBuilder("select max(r.id) as lastResponseId, count(r.id) as nbResponse, q.id from Post as q ")
 		.append("left join q.children as r ")
 		.append(" where q.parentId is null and (q.censored is null or q.censored != :censored) ");
 		if(idThematique != null){
 			jpql.append(" and q.thematique.id=:thematiqueId ");
 		}
-		jpql.append(" and (r.censored is null or r.censored != :censored) ")
-		.append(" group by q.id order by nbResponse desc ");
+//		jpql.append(" and (r.censored is null or r.censored != :censored) ")
+		jpql.append(" group by q.id order by nbResponse desc ");
 		
 //		StringBuilder jpql = new StringBuilder("select max(p.id) as lastResponseId, count(p.id) as nbResponse, p.parentId as questionId ")
 //				.append(" from Post p where p.parentId is not null and (p.censored is null or p.censored != :censored) ");
@@ -144,13 +144,12 @@ public class PostRepositoryImpl implements PostRepository {
 		for(Tuple tuple: results){
 			Integer lastResponseId = (Integer)tuple.get(0);
 			Long nbResponse = (Long)tuple.get(1);
-			Post question = (Post)tuple.get(2);
+			Integer questionId = (Integer)tuple.get(2);
 			TopQuestion topQuestion = new TopQuestion();
 			topQuestion.setIdDerniereReponse(lastResponseId);
-			topQuestion.setIdQuestion(question.getId());
-			topQuestion.setQuestion(question);
+			topQuestion.setIdQuestion(questionId);
 			topQuestion.setNbReponse(nbResponse);
-			topQuestionMap.put(question.getId(), topQuestion);
+			topQuestionMap.put(questionId, topQuestion);
 			if(lastResponseId != null){
 				lastResponseMap.put(lastResponseId, topQuestion);
 			}
@@ -178,7 +177,7 @@ public class PostRepositoryImpl implements PostRepository {
 		Post post = null;
 		if(postId != null){
 			StringBuilder jpql = new StringBuilder("select p from Post p ")
-				.append("inner join fetch p.owner ")
+				.append("left join fetch p.owner ")
 				.append(" where p.id = :postId");
 			TypedQuery<Post> query = em.createQuery(jpql.toString(), Post.class);
 			query.setParameter("postId", postId);
@@ -191,7 +190,7 @@ public class PostRepositoryImpl implements PostRepository {
 		List<Post> posts = new ArrayList<>();
 		if(postIds != null && !postIds.isEmpty()){
 			StringBuilder jpql = new StringBuilder("select p from Post p ")
-				.append("inner join fetch p.owner ")
+				.append("left join fetch p.owner ")
 				.append(" where p.id in (:ids)");
 			TypedQuery<Post> query = em.createQuery(jpql.toString(), Post.class);
 			query.setParameter("ids", postIds);
