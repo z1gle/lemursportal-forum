@@ -6,8 +6,6 @@
 <c:url value="/resources" var="resourcesPath"/>
 
 
-<body class="int">
-
 <div class="container lemurs-page">
     <div class="row">
     <!-- Début Ajouter Question -->
@@ -23,30 +21,18 @@
                     <div class="cadre">
                     <c:url value="/secured/post/" var="formAction"></c:url>
                    	  <div class="form">
-                        	<form:form  class="create-quest-form" modelAttribute="post" action="${formAction}"  method="POST"   >
-                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                        	<form:form  class="create-quest-form" modelAttribute="post" action="${formAction}" method="POST"   >
+                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	
                             <div class="row">
-                            	<!-- D Ne S'affiche uniquement que pour le moderateur -->
-                            	<!--
-                                <div class="col-md-6" style="display:block;">
-                                  <label>Titre du thématique</label>                                 
-                                  <form:input path="title"/>
-                                  <label>Description du thématique</label>
-                                  <textarea></textarea>
-                                </div>
-                                -->
-                                <!-- F Ne S'affiche uniquement que pour le moderateur -->
-                                
-                                <div class="col-md-6">
+                            	
                                   <label>Choisir un thématique <sup>*</sup></label>
-                                  <form:select path="thematique">                                  	
-                                    <c:forEach items="${listeThematique}" var="item">
-							         <option value="<c:out value = "${item.id}"/>"><c:out value = "${item.libelle}"/></option>
-							      </c:forEach>
+                                  <form:select path="thematique">  
+                                  	<form:options items="${listeThematique}" itemLabel="libelle" itemValue="id"/> 
                                   </form:select>
+                                  <form:errors path="thematique"/>
                                   
-                                  
+                                  <br/>
                                   <label>Titre de la question <sup>*</sup></label>
                                   <form:input path="title"/>
                                   
@@ -56,7 +42,6 @@
                                   <label>Votre question <sup>*</sup></label>                                  
                                   <form:textarea path="body"/>
                                   <form:button value="save">Poster</form:button>
-                               </div>
                             </div>
                             </form:form> 
                         </div>

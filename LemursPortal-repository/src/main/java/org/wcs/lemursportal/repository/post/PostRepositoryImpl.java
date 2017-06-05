@@ -112,12 +112,21 @@ public class PostRepositoryImpl implements PostRepository {
 
 	private Page<TopQuestion> getTopQuestions(Integer idThematique, Pageable pageable) {
 		Long total = countQuestions(idThematique);
-		StringBuilder jpql = new StringBuilder("select max(p.id) as lastResponseId, count(p.id) as nbResponse, p.parentId as questionId ")
-				.append(" from Post p where p.parentId is not null and (p.censored is null or p.censored != :censored) ");
+		StringBuilder jpql = new StringBuilder("select max(r.id) as lastResponseId, count(r.id) as nbResponse, q from Post as q ")
+		.append("left join q.children as r ")
+		.append(" where q.parentId is null and (q.censored is null or q.censored != :censored) ");
 		if(idThematique != null){
-			jpql.append("and p.thematique.id=:thematiqueId ");
+			jpql.append(" and q.thematique.id=:thematiqueId ");
 		}
-		jpql.append(" group by p.parentId order by nbResponse desc ");
+		jpql.append(" and (r.censored is null or r.censored != :censored) ")
+		.append(" group by q.id order by nbResponse desc ");
+		
+//		StringBuilder jpql = new StringBuilder("select max(p.id) as lastResponseId, count(p.id) as nbResponse, p.parentId as questionId ")
+//				.append(" from Post p where p.parentId is not null and (p.censored is null or p.censored != :censored) ");
+//		if(idThematique != null){
+//			jpql.append("and p.thematique.id=:thematiqueId ");
+//		}
+//		jpql.append(" group by p.parentId order by nbResponse desc ");
 		
 		TypedQuery<Tuple> typedQuery = em.createQuery(jpql.toString(), Tuple.class);
 		typedQuery.setParameter("censored", Boolean.TRUE);
@@ -135,13 +144,16 @@ public class PostRepositoryImpl implements PostRepository {
 		for(Tuple tuple: results){
 			Integer lastResponseId = (Integer)tuple.get(0);
 			Long nbResponse = (Long)tuple.get(1);
-			Integer questionId = (Integer)tuple.get(2);
+			Post question = (Post)tuple.get(2);
 			TopQuestion topQuestion = new TopQuestion();
 			topQuestion.setIdDerniereReponse(lastResponseId);
-			topQuestion.setIdQuestion(questionId);
+			topQuestion.setIdQuestion(question.getId());
+			topQuestion.setQuestion(question);
 			topQuestion.setNbReponse(nbResponse);
-			topQuestionMap.put(questionId, topQuestion);
-			lastResponseMap.put(lastResponseId, topQuestion);
+			topQuestionMap.put(question.getId(), topQuestion);
+			if(lastResponseId != null){
+				lastResponseMap.put(lastResponseId, topQuestion);
+			}
 			topQuestions.add(topQuestion);
 		}
 		//On recupère les nombre de vue de chaque reponse
@@ -161,6 +173,19 @@ public class PostRepositoryImpl implements PostRepository {
 		}
 		return new PageImpl<>(topQuestions, pageable, total);
 	}
+	
+	public Post getPostsAndFetchOwner(Integer postId){
+		Post post = null;
+		if(postId != null){
+			StringBuilder jpql = new StringBuilder("select p from Post p ")
+				.append("inner join fetch p.owner ")
+				.append(" where p.id = :postId");
+			TypedQuery<Post> query = em.createQuery(jpql.toString(), Post.class);
+			query.setParameter("postId", postId);
+			post = query.getSingleResult();
+		}
+		return post;
+	} 
 	
 	public List<Post> getPostsAndFetchOwner(Set<Integer> postIds){
 		List<Post> posts = new ArrayList<>();

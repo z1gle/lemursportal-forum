@@ -36,10 +36,10 @@ public class Post implements Serializable {
 	@Column(name="id")
 	private Integer id;
 	
-	@Column(name="title", nullable=false)
+	@Column(name="title"/*, nullable=false*/)
 	private String title;
 	
-	@Column(name="contenu", nullable=true)
+	@Column(name="contenu"/*, nullable=true*/)
 	private String body;
 	
 	@Column(name="date_creation", nullable=false)
@@ -63,6 +63,7 @@ public class Post implements Serializable {
 	private List<Post> children;
 	
 	@ManyToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="thematique_id", nullable=false)
 	private Thematique thematique;
 	
 	@Column(name="censored", nullable=true)

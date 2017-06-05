@@ -102,8 +102,8 @@
                 <ul class="nav navbar-nav navbar-right">
                 	<li>
                          <c:url value="/post/search" var="formAction"></c:url>
-                	<form  class="create-quest-form"  action="${formAction}"  method="POST"   >
-                	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                	<form  class="create-quest-form"  action="${formAction}"  method="post"   >
+                	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div class="input-group">
                         <spring:message code="home.search.placeholder" var="searchPlaceholder"/>
                           <input type="text" name="pattern" class="form-control" placeholder="${searchPlaceholder}"/>

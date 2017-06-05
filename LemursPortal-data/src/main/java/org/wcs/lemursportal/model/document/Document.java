@@ -6,7 +6,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -50,12 +51,11 @@ public class Document implements Serializable {
 	@Column(name="date_upload", nullable=false)
 	private Date dateUpload;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="doc_type_id")
-	private DocumentType type;
-	
 	@ManyToMany(mappedBy="documents")
 	private List<Post> posts;
+	
+	@Enumerated(EnumType.STRING)
+	private DocumentType type;
 
 	public Integer getId() {
 		return id;
@@ -105,6 +105,14 @@ public class Document implements Serializable {
 		this.dateUpload = dateUpload;
 	}
 
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+
 	public DocumentType getType() {
 		return type;
 	}
@@ -112,6 +120,5 @@ public class Document implements Serializable {
 	public void setType(DocumentType type) {
 		this.type = type;
 	}
-
 	
 }

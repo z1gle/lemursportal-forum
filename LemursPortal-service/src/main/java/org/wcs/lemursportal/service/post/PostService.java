@@ -3,6 +3,7 @@ package org.wcs.lemursportal.service.post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.wcs.lemursportal.model.post.Post;
+import org.wcs.lemursportal.model.post.PostView;
 import org.wcs.lemursportal.model.post.TopQuestion;
 
 /**
@@ -29,4 +30,11 @@ public interface PostService {
 	 * @return
 	 */
 	Page<Post> getQuestionResponses(Integer questionId, Pageable pageable);
+	
+	/**
+	 * 
+	 * @param question
+	 * @return
+	 */
+	PostView incrementerNbVue(Integer questionId, String user);
 }

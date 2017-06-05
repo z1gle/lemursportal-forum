@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.expressionHandler(defaultWebSecurityExpressionHandler())
 			//.antMatchers("/", "/favicon.ico", "/resources/**", "/signup", "/registration").permitAll()
 			.antMatchers("/admin/**").hasRole("ADMIN")
-			.antMatchers("/secure/**", "/user/**", "/logout/**").hasAnyRole("ADMIN", "MODERATEUR", "EXPERT", "USER")
+			.antMatchers("/secure/**", "/secured/**", "/user/**", "/logout/**").authenticated()
 			.anyRequest().permitAll()
 			.and().formLogin()
 						.loginPage("/login").permitAll()

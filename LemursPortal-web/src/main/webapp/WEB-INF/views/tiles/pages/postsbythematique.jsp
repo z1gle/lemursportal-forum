@@ -4,6 +4,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
+<%@ taglib prefix="page" tagdir="/WEB-INF/tags/page" %>
 <spring:message code="datetime.format" var="datetimeFormat" />
 <c:url value="/resources" var="resourcesPath" />
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -12,7 +13,8 @@
     
                     <div class="forum-title">
                         <div class="pull-right forum-desc">
-                            <a class="add-quest"><spring:message code="home.ask.question"/></a>
+					<c:url value="/secured/thematique-${thematique.id}/post/create" var="addQuestionUrl"/>
+                            <a href="${addQuestionUrl}" class="add-quest"><spring:message code="home.ask.question"/></a>
                         </div>
                         <h2><span>Thématique :</span><c:out value="${thematique.libelle}"/></h2>
                     </div>
@@ -60,44 +62,7 @@
     				</c:forEach>
                     <!-- F Sujet -->
                     <!-- 			D Pagination -->
-                <c:url var="currentBaseUrl" value="/postsParThematique/${thematique.id}"/>
-                <c:set var="firstUrl" value="${currentBaseUrl}?page=1"/>
-                <c:set var="lastUrl" value="${currentBaseUrl}?page=${postsBythematiquePage.totalPages}"/>
-                <c:set var="prevUrl" value="${currentBaseUrl}?page=${paginationCurrent - 1}"/>
-                <c:set var="nextUrl" value="${currentBaseUrl}?page=${paginationCurrent + 1}"/>
-				    <ul class="pagination">
-				        <c:choose>
-				            <c:when test="${paginationCurrent == 1}">
-				                <li class="disabled"><a href="#">&lt;&lt;</a></li>
-				                <li class="disabled"><a href="#">&lt;</a></li>
-				            </c:when>
-				            <c:otherwise>
-				                <li><a href="${firstUrl}">&lt;&lt;</a></li>
-				                <li><a href="${prevUrl}">&lt;</a></li>
-				            </c:otherwise>
-				        </c:choose>
-				        <c:forEach var="i" begin="${paginationBegin}" end="${paginationEnd}">
-				            <c:set var="pageUrl" value="${currentBaseUrl}?page=${i}"/>
-				            <c:choose>
-				                <c:when test="${i == paginationCurrent}">
-				                    <li class="active"><a href="${pageUrl}"><c:out value="${i}" /></a></li>
-				                </c:when>
-				                <c:otherwise>
-				                    <li><a href="${pageUrl}"><c:out value="${i}" /></a></li>
-				                </c:otherwise>
-				            </c:choose>
-				        </c:forEach>
-				        <c:choose>
-				            <c:when test="${paginationCurrent == postsBythematiquePage.totalPages}">
-				                <li class="disabled"><a href="#">&gt;</a></li>
-				                <li class="disabled"><a href="#">&gt;&gt;</a></li>
-				            </c:when>
-				            <c:otherwise>
-				                <li><a href="${nextUrl}">&gt;</a></li>
-				                <li><a href="${lastUrl}">&gt;&gt;</a></li>
-				            </c:otherwise>
-				        </c:choose>
-				    </ul>
-                    
+                	<c:url var="currentBaseUrl" value="/postsParThematique/${thematique.id}"/>
+                    <page:pagination currentPage="${postsBythematiquePage.number + 1}" totalPages="${postsBythematiquePage.totalPages}" pageBaseUrl="${currentBaseUrl}"/>
                 </div>
             </div>

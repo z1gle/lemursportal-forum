@@ -52,6 +52,22 @@
 			</definition>           
        </put-attribute>
    </definition>
+   <!-- Thematique -->
+   <definition name="thematique-form" extends="base-definition">  
+       <put-attribute name="title" value="Nouvel thematique" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/section/thematique-form.jsp" />
+   </definition>
+   
+   <!-- Thematique -->
+   <definition name="thematique-list" extends="base-definition">  
+       <put-attribute name="title" value="Nouvel thematique" />  
+       <put-attribute name="body">
+       		<definition template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
+			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/thematique-list.jsp" />
+			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+			</definition> 
+       </put-attribute>
+   </definition>
    
    <definition name="postsbythematique" extends="base-definition">  
        <put-attribute name="title" value="Les messages par thématique" />  
@@ -97,7 +113,7 @@
 	
     <definition name="getFormPost" extends="base-definition">  
        <put-attribute name="title" value="Create Post" />  
-       <put-attribute name="body" value="getFormPost.body" />
+       <put-attribute name="body" value="/WEB-INF/views/tiles/pages/post-form.jsp" />
    </definition>
    <definition name="getFormPost.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
 	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
