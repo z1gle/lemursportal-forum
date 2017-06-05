@@ -66,6 +66,9 @@ public class UserInfo implements IUserInfo {
 	@Column(name = "biographie", columnDefinition = "text")
 	private String biographie;
 	
+	@Column(name = "photo_profil")
+	private String photoProfil;
+	
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(
 		name="utilisateur_typeuser", 
@@ -166,6 +169,12 @@ public class UserInfo implements IUserInfo {
 	}
 	public void setPostOccupe(String postOccupe) {
 		this.postOccupe = postOccupe;
+	}
+	public String getPhotoProfil() {
+		return photoProfil;
+	}
+	public void setPhotoProfil(String photoProfil) {
+		this.photoProfil = photoProfil;
 	}
 	
 }

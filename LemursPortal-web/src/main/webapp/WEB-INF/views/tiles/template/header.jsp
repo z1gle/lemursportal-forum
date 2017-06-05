@@ -3,6 +3,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
 <spring:message code="datetime.format" var="datetimeFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
 
@@ -29,7 +30,9 @@
                     	<c:when test="${isLoggedInUser}">
 	                    	<li>
 	                    		<c:url var="viewProfilUrl" value="/user/profil"></c:url>
-		                        <a href="${viewProfilUrl}"><img class="img-circle" src="${resourcesPath}/images/user1.png"/><spring:message code="home.monprofile"/></a>
+		                        <a href="${viewProfilUrl}">
+		                        <user:profilImage src="${currentUser.photoProfil}" cssClass="img-circle"/>
+		                        <spring:message code="home.monprofile"/></a>
 		                    </li>
                     		<li class="dropdown">
 		                        <a href="#" class="notif dropdown-toggle" data-toggle="dropdown"><spring:message code="home.notification"/><span class="rond">12</span></a>

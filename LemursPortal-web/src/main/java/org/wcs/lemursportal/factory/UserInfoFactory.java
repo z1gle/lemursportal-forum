@@ -31,6 +31,7 @@ public abstract class UserInfoFactory {
 			form.setPostOccupe(user.getPostOccupe());
 			form.setPrenom(user.getPrenom());
 			form.setUserTypeIds(new ArrayList<Integer>());
+			form.setPhotoProfil(user.getPhotoProfil());
 			for(UserType role: user.getRoles()){
 				form.getUserTypeIds().add(role.getId());
 			}
@@ -54,6 +55,7 @@ public abstract class UserInfoFactory {
 			entity.setNom(form.getNom());
 			entity.setInstitution(form.getInstitution());
 			entity.setPostOccupe(form.getPostOccupe());
+			entity.setPhotoProfil(form.getPhotoProfil());
 			//entity.setRoles(form.get);
 			
 		}

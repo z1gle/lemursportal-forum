@@ -11,13 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
@@ -26,7 +23,7 @@ import org.wcs.lemursportal.service.post.ThematiqueService;
 
 @Controller
 @Transactional
-public class PostController {
+public class PostController extends BaseController{
 
 	@Autowired
 	private PostService postService;
@@ -36,7 +33,7 @@ public class PostController {
 	
 	
 	@GetMapping(value="/secured/post/create")
-	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('USER','EXPERT','MODERATEUR', 'ADMIN')")
 	public String create(Authentication authentication, Model model){
 		List<Thematique> listethematique = thematiqueService.findAll();
 		model.addAttribute("listeThematique", listethematique);
@@ -45,7 +42,7 @@ public class PostController {
 	}
 	
 	@PostMapping(value="/secured/post")
-	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('USER','EXPERT','MODERATEUR', 'ADMIN')")
 	public String submit(Authentication authentication, Model model, 
 			@ModelAttribute Post post, 
 			BindingResult results){		
@@ -69,16 +66,23 @@ public class PostController {
 	}
 	
 	@GetMapping(value="/post/show/{idPost}")	
-	public String showPost(@PathVariable(name="idPost", required=true) Integer idPost, Model model){
+	public String showPost(@PathVariable(name="idPost", required=true) Integer idPost, @RequestParam(required=false, defaultValue="0") Integer page, Model model){
 		Post p = postService.findPostById(idPost);
-		System.out.println(p.getId() + " " + p.getTitle() + " " + p.getBody());
-		model.addAttribute("post", p);		
+		if(page == null || page < 1){
+			page = 0;
+		}else{
+			page = page - 1;
+		}
+		Page<Post> responsesPage = postService.getQuestionResponses(idPost, new PageRequest(page, BaseController.DERNIERES_QUESTIONS_PAGE_SIZE));
+		model.addAttribute("post", p);
+		model.addAttribute("responsesPage", responsesPage);
+		setPagination(page, responsesPage, model);
 		return "showPost";
 	}
 	 
 	
 	@PostMapping(value="/secured/post/reponse")
-	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('USER', 'EXPERT','MODERATEUR', 'ADMIN')")
 	public String submitReponse(Authentication authentication, Model model, 
 			@ModelAttribute Post post, 
 			BindingResult results){		

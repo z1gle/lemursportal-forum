@@ -31,7 +31,12 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Page<TopQuestion> getTopQuestions(Pageable pageable) {
 		Page<TopQuestion> page = postRepository.getTopQuestions(pageable);
-		//TODO recuperer le nombre de reponse de chaque post (=> remplir les informations de chaque TopQuestion)
+		return page;
+	}
+	
+	@Override
+	public Page<Post> getQuestionResponses(Integer questionId, Pageable pageable) {
+		Page<Post> page = postRepository.getQuestionResponses(questionId, pageable);
 		return page;
 	}
 
@@ -54,7 +59,7 @@ public class PostServiceImpl implements PostService {
 		List<Post> lst = postRepository.getPostsAndFetchOwner(sets);
 		if(lst!=null && lst.size()==1){
 			Post p = lst.get(0);
-			p.setChildren(postRepository.getResponsesAndFetchOwner(p.getId()));
+			//p.setChildren(postRepository.getResponsesAndFetchOwner(p.getId()));
 			return p;
 		}
 		return null;

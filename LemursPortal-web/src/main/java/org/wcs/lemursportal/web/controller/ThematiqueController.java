@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.wcs.lemursportal.exception.RegistrationException;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
@@ -35,7 +36,7 @@ import org.wcs.lemursportal.service.post.ThematiqueService;
  */
 @Controller
 @Transactional
-public class ThematiqueController {
+public class ThematiqueController extends BaseController{
 	
 	@Autowired
 	private ThematiqueService thematiqueService;
@@ -99,36 +100,28 @@ public class ThematiqueController {
 	}
 	
 	@RequestMapping(value="/postsParThematique/{idThematique}",method=RequestMethod.GET)
-	public String listPostsByThematique(@PathVariable(name="idThematique", required=false) Integer idThematique, Model model){
+	public String listPostsByThematique(
+			@PathVariable(name="idThematique", required=false) Integer idThematique, 
+			@RequestParam(required=false, defaultValue="0") Integer page, 
+			Model model
+	){
 		if(idThematique == null){
 			return "redirect:/thematique/list";
 		}
 		Thematique thematique = thematiqueService.findById(idThematique);
-		if (null == thematique){
+		if (thematique == null){
 			return "redirect:/thematique/list";
 		}
+		if(page == null || page < 1){
+			page = 0;
+		}else{
+			page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+		}
+		Page<TopQuestion> questionPage = postRepository.getPostByThematique(new PageRequest(page, BaseController.TOP_QUESTIONS_PAGE_SIZE), idThematique);
 		model.addAttribute(thematique);
-		model.addAttribute("postsBythematique", postRepository.getPostByThematique(new PageRequest(0, 10),idThematique).getContent());
+//		model.addAttribute("postsBythematique", questionPage.getContent());
+		model.addAttribute("postsBythematiquePage", questionPage);
+		setPagination(page, questionPage, model);
 		return "postsbythematique";
 	}
-	
-	@ModelAttribute("topQuestions")
-	public List<TopQuestion> getTopQuestions(){
-		Page<TopQuestion> page = postService.getTopQuestions(new PageRequest(0, 10));
-		return page.getContent();
-	}
-	
-	@ModelAttribute("topThematiques")
-	public List<TopThematique> getTopThematiques(){
-		List<TopThematique> t = thematiqueRepository.findTopThematique(10);
-		return t;
-	}
-	
-	@ModelAttribute("lastestPosts")
-	public List<Post> getLastestPosts(){
-		Page<Post> page = postRepository.getLastestPosts(new PageRequest(0, 10));//On ne prendra que les 10 premiers
-		return page.getContent();
-	}
-	
-	
 }

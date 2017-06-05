@@ -5,6 +5,8 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
+
 <spring:message code="date.format" var="dateFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
 <!-- Début Ajouter Question -->
@@ -22,16 +24,17 @@
                     <div class="cadre">
                    	  <div class="form">
                    	  		<c:url value="/user/profil/edit" var="userFormAction"/>
-                            <form:form modelAttribute="registrationForm" action="${userFormAction}" method="POST" cssClass="edit-profil-form">
+                            <form:form modelAttribute="registrationForm" action="${userFormAction}" enctype="multipart/form-data" method="POST" cssClass="edit-profil-form">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             <div class="row">
                             	<div class="col-md-4">
                                   <div class="image text-center">
-                                    <img src="${resourcesPath}/images/user-profil.png" alt="#" class="img-responsive img-circle">
+                                  <user:profilImage src="${registrationForm.photoProfil}" cssClass="img-responsive img-circle"/>
                                   </div>
                                 
-<!--                                   <label>Changer mon photo de profil</label> -->
-<!--                                   <input type="file" class="pdp" /> -->
+                                  <label>Changer mon photo de profil</label>
+                                  <form:input type="file" path="file" class="pdp"/>
+                                  <form:errors path="file" class="error"/>
                                   
                                 </div>
                                 	<div class="col-md-4">

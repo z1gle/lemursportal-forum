@@ -51,7 +51,7 @@ public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 	@Override
 	public List<TopThematique> findAllThematique() {
 		StringBuilder qlBuild = new StringBuilder("SELECT DISTINCT f,   p, count(v), count(q) ");
-		qlBuild.append("FROM   Thematique             f ");
+		qlBuild.append("FROM   Thematique  f ");
 		qlBuild.append("left join Post v  on v.thematique.id = f.id ");
 		qlBuild.append("left join Post q  on q.thematique.id = f.id ");
 		qlBuild.append("LEFT   JOIN Post   p ON p.thematique.id = f.id ");

@@ -5,6 +5,7 @@ package org.wcs.lemursportal.web.validator;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -17,6 +18,8 @@ import org.wcs.lemursportal.web.form.RegistrationForm;
  */
 @Component
 public class RegistrationFormValidator implements Validator{
+	
+	@Autowired ImageFileValidator fileValidator;
 
 	@Override
 	public boolean supports(Class<?> arg0) {
@@ -45,7 +48,7 @@ public class RegistrationFormValidator implements Validator{
 		if(StringUtils.isNotEmpty(user.getEmail()) && !EmailValidator.getInstance().isValid(user.getEmail())){
 			errors.rejectValue("email", "validation.email.format.invalid", "Invalid email");
 		}
-		
+		fileValidator.validate(target, errors);
 		
 	}
 

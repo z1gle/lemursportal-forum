@@ -32,7 +32,8 @@
 </div>
 <div class="list-group people-group thematique">
 	<c:forEach items="${lastestPosts}" var="post">
-		<a href="#" class="list-group-item">
+		<c:url value="/post/show/${post.id}" var="questionPageUrl"/>
+		<a href="${questionPageUrl}" class="list-group-item">
          <div class="media">
              <div class="pull-left">
                  <c:out value="${post.title}"/>

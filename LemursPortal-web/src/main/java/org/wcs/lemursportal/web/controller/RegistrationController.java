@@ -3,25 +3,29 @@
  */
 package org.wcs.lemursportal.web.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Locale;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 import org.wcs.lemursportal.exception.RegistrationException;
 import org.wcs.lemursportal.factory.UserInfoFactory;
 import org.wcs.lemursportal.model.user.UserInfo;
@@ -46,6 +50,8 @@ public class RegistrationController extends BaseController {
 	private UserInfoService userInfoService;
 	@Autowired
 	private AuthenticationService authenticationService;
+	
+	@Autowired ServletContext context; 
 	
 	@Autowired
 	private MessageSource messageSource;
@@ -127,11 +133,21 @@ public class RegistrationController extends BaseController {
 	@PostMapping(value="/user/profil/edit")
 	public String editSubmit(Locale locale, Model model, 
 			@ModelAttribute RegistrationForm registrationForm, 
-			BindingResult results)
+			BindingResult results) throws IOException 
 	{
 		registrationFormValidator.validate(registrationForm, results);
 		if(results.hasErrors()){
 			return "profil.edit.page";
+		}
+		MultipartFile multipartFile = registrationForm.getFile();
+		if(multipartFile != null){
+
+			String fileUploadLocation = context.getRealPath("/resources/") + USER_PROFIL_IMAGE_RESOURCE_PATH;
+			FileCopyUtils.copy(multipartFile.getBytes(), new File(fileUploadLocation + multipartFile.getOriginalFilename()));
+			String imagePath = USER_PROFIL_IMAGE_RESOURCE_PATH.endsWith("/") ? USER_PROFIL_IMAGE_RESOURCE_PATH : USER_PROFIL_IMAGE_RESOURCE_PATH +"/"; 
+			registrationForm.setPhotoProfil(imagePath + multipartFile.getOriginalFilename());
+//            String fileName = multipartFile.getOriginalFilename();
+//            model.addAttribute("fileName", fileName);
 		}
 		UserInfo user = UserInfoFactory.toEntity(registrationForm);
 		userInfoService.update(user);

@@ -1,5 +1,6 @@
 package org.wcs.lemursportal.config;
 
+import java.io.IOException;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -35,6 +37,19 @@ public class WebAppConfigurer extends WebMvcConfigurerAdapter {
 
 	@Autowired
 	private Environment env;
+	
+	private static int FILE_MAX_UPLOAD_SIZE = 5 * 1024 * 1024; // 5MB
+	
+	@Bean(name="multipartResolver") 
+    public CommonsMultipartResolver getResolver() throws IOException{
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+         
+        //Set the maximum allowed size (in bytes) for each individual file.
+        resolver.setMaxUploadSizePerFile(FILE_MAX_UPLOAD_SIZE);//5MB
+        //You may also set other available properties.
+         
+        return resolver;
+    }
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
