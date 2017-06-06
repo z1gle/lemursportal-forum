@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.wcs.lemursportal.factory.PostFactory;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
-import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
+import org.wcs.lemursportal.web.form.FileBucket;
+import org.wcs.lemursportal.web.form.PostForm;
 
 @Controller
 @Transactional
@@ -37,26 +39,26 @@ public class PostController extends BaseController{
 	public String create(@PathVariable(required=false) Integer thematiqueId, Authentication authentication, Model model){
 		List<Thematique> listethematique = thematiqueService.findAll();
 		model.addAttribute("listeThematique", listethematique);
-		Post post = new Post();
+		PostForm postForm = new PostForm();
 		if(thematiqueId != null){
-			Thematique thematique = thematiqueService.findById(thematiqueId);
-			if(thematique != null) post.setThematique(thematique);
+			postForm.setThematiqueId(thematiqueId);
 		}
-		model.addAttribute(post);
+		model.addAttribute(postForm);
 		return "getFormPost";
 	}
 	
 	@PostMapping(value="/secured/post")
 	public String submit(Authentication authentication, Model model, 
-			@ModelAttribute Post post, 
+			@ModelAttribute PostForm postForm, 
 			BindingResult results){		
 		if(authentication == null) return "redirect:/login";
 		//ValidationUtils.rejectIfEmptyOrWhitespace(results, "libelle", "validation.mandatory");
 		if(results.hasErrors()){
-			return "forward:post/post-form";
+			return "forward:getFormPost";
 		}
 		//thematiqueService.saveOrUpdate(authentication.getName(), thematique);
 		//post.set
+		Post post = PostFactory.toEntity(postForm);
 		postService.insert(post, authentication.getName());
 		return "redirect:/post/show/" + post.getId();
 	}
@@ -87,6 +89,7 @@ public class PostController extends BaseController{
 		}
 		Page<Post> responsesPage = postService.getQuestionResponses(idPost, new PageRequest(page, BaseController.DERNIERES_QUESTIONS_PAGE_SIZE));
 		model.addAttribute("post", p);
+		model.addAttribute(new PostForm());
 		model.addAttribute("responsesPage", responsesPage);
 		return "showPost";
 	}
@@ -95,19 +98,15 @@ public class PostController extends BaseController{
 	@PostMapping(value="/secured/post/reponse")
 	@PreAuthorize("hasAnyRole('USER', 'EXPERT','MODERATEUR', 'ADMIN')")
 	public String submitReponse(Authentication authentication, Model model, 
-			@ModelAttribute Post post, 
+			@ModelAttribute PostForm postForm, 
 			BindingResult results){		
 		//ValidationUtils.rejectIfEmptyOrWhitespace(results, "libelle", "validation.mandatory");
 		if(results.hasErrors()){
-			return "forward:post/post-form";
+			return "forward:getFormPost";
 		}
 		
-		Post parent = new Post();
-		parent.setId(post.getId());
-		post.setId(null);
-		post.setParentId(parent.getId());
-		post.setTitle("");
+		Post post = PostFactory.toEntity(postForm);
 		postService.insert(post, authentication.getName());
-		return "redirect:/post/show/"+parent.getId();
+		return "redirect:/post/show/"+post.getId();
 	}
 }

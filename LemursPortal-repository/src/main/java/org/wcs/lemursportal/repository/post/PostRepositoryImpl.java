@@ -246,7 +246,6 @@ public class PostRepositoryImpl implements PostRepository {
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.repository.post.PostRepository#getMostViewedPost(org.springframework.data.domain.Pageable)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public Page<Post> search(Pageable pageable,String pattern) {
 		StringBuilder jpql = new StringBuilder("select p ")

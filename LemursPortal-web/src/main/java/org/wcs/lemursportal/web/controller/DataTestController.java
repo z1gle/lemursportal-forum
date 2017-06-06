@@ -74,7 +74,7 @@ public class DataTestController {
 			t.setCreatedBy(currentUser);
 			t.setCreationDate(Calendar.getInstance().getTime());
 			t.setDescription("Description du thematique_" + i);
-			t.setLibelle("Thematique_" + i);
+			t.setLibelle("Topic_" + i);
 			thematiques.add(t);
 		}
 		thematiqueCrudRepository.save(thematiques);

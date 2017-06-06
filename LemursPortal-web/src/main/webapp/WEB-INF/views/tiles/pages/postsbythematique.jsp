@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
 <%@ taglib prefix="page" tagdir="/WEB-INF/tags/page" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <spring:message code="datetime.format" var="datetimeFormat" />
 <c:url value="/resources" var="resourcesPath" />
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -12,10 +13,12 @@
                 <div class="forum-container">
     
                     <div class="forum-title">
+                    	<sec:authorize access="isAuthenticated()">
                         <div class="pull-right forum-desc">
-					<c:url value="/secured/thematique-${thematique.id}/post/create" var="addQuestionUrl"/>
+							<c:url value="/secured/thematique-${thematique.id}/post/create" var="addQuestionUrl"/>
                             <a href="${addQuestionUrl}" class="add-quest"><spring:message code="home.ask.question"/></a>
                         </div>
+                        </sec:authorize>
                         <h2><span>Thématique :</span><c:out value="${thematique.libelle}"/></h2>
                     </div>
     				<!-- D Sujet -->

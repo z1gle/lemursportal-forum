@@ -45,12 +45,12 @@
 		                            <a class="btn" role="button" data-toggle="collapse" href="#replyCommentT" aria-expanded="true" aria-controls="collapseExample">Répondre</a>
 		                          </span>
 		                          <div class="collapse" id="replyCommentT">
-					<c:url value="/secured/post/reponse" var="formAction"></c:url>
-		                            <form:form  class="create-quest-form" modelAttribute="post" action="${formAction}"  method="POST"   >
+									<c:url value="/secured/post/reponse" var="formAction"></c:url>
+		                            <form:form  class="create-quest-form" modelAttribute="postForm" action="${formAction}"  method="POST"   >
 		                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-						<form:input type="hidden" path="id" value="${post.id}"/>
+										<form:input type="hidden" path="id" value="${post.id}"/>
 		                              <div class="form-group">                                
-						<form:textarea path="body" class="editor form-control" rows="3"/>
+										<form:textarea path="body" class="editor form-control" rows="3"/>
 		                              </div>                             
 						<form:button value="save"  class="btn">Envoyer</form:button>
 		                            </form:form>

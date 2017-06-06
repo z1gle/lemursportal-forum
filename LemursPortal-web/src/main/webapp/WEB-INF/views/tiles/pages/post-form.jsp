@@ -21,23 +21,23 @@
                     <div class="cadre">
                     <c:url value="/secured/post/" var="formAction"></c:url>
                    	  <div class="form">
-                        	<form:form  class="create-quest-form" modelAttribute="post" action="${formAction}" method="POST"   >
+                        	<form:form  class="create-quest-form" modelAttribute="postForm" enctype="multipart/form-data" action="${formAction}" method="POST"   >
                         	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 	
                             <div class="row">
                             	
                                   <label>Choisir un thématique <sup>*</sup></label>
-                                  <form:select path="thematique">  
+                                  <form:select path="thematiqueId">  
                                   	<form:options items="${listeThematique}" itemLabel="libelle" itemValue="id"/> 
                                   </form:select>
-                                  <form:errors path="thematique"/>
+                                  <form:errors path="thematiqueId"/>
                                   
                                   <br/>
                                   <label>Titre de la question <sup>*</sup></label>
                                   <form:input path="title"/>
                                   
                                   <label>Ajouter un fichier (photos, documents, videos, audios...)</label>
-                                  <input type="file" class="fisie" />
+                                  <form:input path="file" type="file" />
                                   
                                   <label>Votre question <sup>*</sup></label>                                  
                                   <form:textarea path="body"/>

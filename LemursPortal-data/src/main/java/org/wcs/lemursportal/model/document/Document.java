@@ -38,7 +38,7 @@ public class Document implements Serializable {
 	@Column(name="name")
 	private String name;
 	
-	@Column(name="url", unique=true)
+	@Column(name="url", nullable=false, unique=true)
 	private String url;
 	
 	@Column(name="owner_id", nullable=false)

@@ -4,18 +4,22 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="page" tagdir="/WEB-INF/tags/page" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <spring:message code="datetime.format" var="datetimeFormat" />
 <c:url value="/resources" var="resourcesPath" />
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
 	<div class="forum-container">
-
+		
+		<sec:authorize access="hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')"> 
 		<div class="forum-title">
 			<div class="pull-right forum-desc">
-				<a class="add-quest"><spring:message code="home.ask.question" /></a>
+				<c:url value="/secured/thematique/create" var="createThematiqueUrl"/>
+				<a href="${createThematiqueUrl}" class="add-quest">Nouvelle Thématique</a>
 			</div>
 		</div>
+		 </sec:authorize>
 		<div class="forum-title">
 				<h2>
 					<span>Thématiques :</span>

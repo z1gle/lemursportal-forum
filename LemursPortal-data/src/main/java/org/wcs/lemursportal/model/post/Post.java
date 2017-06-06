@@ -194,6 +194,14 @@ public class Post implements Serializable {
 			setThematique(new Thematique());
 		return "Title : " + getTitle() + "\n " + " Body: "+getBody() + " \n " + " Thematique :  " + getThematique().getId() + " - " + getThematique().getLibelle();
 	}
+
+	public List<Document> getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(List<Document> documents) {
+		this.documents = documents;
+	}
 	
 	
 	
