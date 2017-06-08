@@ -23,7 +23,7 @@
                     <div class="cadre">
                     <c:url value="/secured/post/" var="formAction"></c:url>
                    	  <div class="form">
-                        	<form:form  class="create-quest-form" modelAttribute="post" action="${formAction}"  method="POST"   >
+                        	<form:form  class="create-quest-form" modelAttribute="post" action="${formAction}"  method="POST"  enctype="multipart/form-data"  >
                         	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 	
                             <div class="row">
@@ -51,7 +51,7 @@
                                   <form:input path="title"/>
                                   
                                   <label>Ajouter un fichier (photos, documents, videos, audios...)</label>
-                                  <input type="file" class="fisie" />
+                                  <input type="file" name="file" class="fisie" />
                                   
                                   <label>Votre question <sup>*</sup></label>                                  
                                   <form:textarea path="body"/>

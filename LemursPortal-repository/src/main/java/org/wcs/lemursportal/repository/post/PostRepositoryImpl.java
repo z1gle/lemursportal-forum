@@ -214,8 +214,12 @@ public class PostRepositoryImpl implements PostRepository {
 		}
 	}
 	
-	
+	@Transactional
 	public void insert(Post p){
+		if(p.getDocument()!=null){
+			em.persist(p.getDocument());
+			p.setDocumentId(p.getDocument().getId());
+		}		
 		em.persist(p);
 	}
 	
@@ -226,7 +230,7 @@ public class PostRepositoryImpl implements PostRepository {
 	@Override
 	public Page<Post> search(Pageable pageable,String pattern) {
 		StringBuilder jpql = new StringBuilder("select p ")
-		.append(" from Post p  inner join fetch p.owner u ")
+		.append(" from Post p  left join fetch p.owner u ")
 		.append(" where ( p.body LIKE '%"+ pattern +"%' "
 				+ " OR p.title LIKE '%" +pattern+"%'  " 
 				+ " OR p.thematique.description LIKE '%" +pattern+"%'  " 

@@ -1,6 +1,18 @@
 package org.wcs.lemursportal.web.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,8 +28,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.wcs.lemursportal.model.post.Document;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
+import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
 
@@ -25,6 +40,9 @@ import org.wcs.lemursportal.service.post.ThematiqueService;
 @Transactional
 public class PostController extends BaseController{
 
+	@Autowired
+	ServletContext context; 
+	
 	@Autowired
 	private PostService postService;
 	
@@ -44,14 +62,54 @@ public class PostController extends BaseController{
 	@PostMapping(value="/secured/post")
 	@PreAuthorize("hasAnyRole('USER','EXPERT','MODERATEUR', 'ADMIN')")
 	public String submit(Authentication authentication, Model model, 
-			@ModelAttribute Post post, 
+			@ModelAttribute Post post, @RequestParam("file") MultipartFile file,
 			BindingResult results){		
 		//ValidationUtils.rejectIfEmptyOrWhitespace(results, "libelle", "validation.mandatory");
 		if(results.hasErrors()){
 			return "forward:post/post-form";
 		}
 		//thematiqueService.saveOrUpdate(authentication.getName(), thematique);
-		//post.set
+		UserInfo currentUser = userInfoService.getByLogin(authentication.getName());
+		Date now = Calendar.getInstance().getTime();
+		
+		//handle file upload
+		
+		 if (!file.isEmpty()) {
+			 String filename = file.getOriginalFilename();
+			System.out.println("filename " + filename);
+			 String path = context.getRealPath("/")+ File.separator +  "resources" + File.separator + "upload" + File.separator +  filename;
+			 if(!Files.exists(  Paths.get(context.getRealPath("/"), File.separator ,  "resources" , File.separator , "upload"), LinkOption.NOFOLLOW_LINKS)  ){
+				 try {
+					Files.createDirectories(Paths.get(context.getRealPath("/"), File.separator ,  "resources" , File.separator , "upload"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			 }
+	            try {
+	                byte[] bytes = file.getBytes();
+	                BufferedOutputStream stream =
+	                        new BufferedOutputStream(new FileOutputStream(new File(path)));
+	                stream.write(bytes);
+	                stream.close();
+	                Document doc  = new Document();
+	                doc.setAuthor(currentUser);
+	                doc.setCreationDate(now);
+	                doc.setUrl("/" + "resources" + "/" + "upload"+ "/" + filename);
+	                doc.setAuthorId(currentUser.getId());
+	                post.setDocument(doc);
+	               // System.out.println("filefile : " + context.getRealPath("/")+ File.separator +filename);
+	            } catch (Exception e) {
+	                return "You failed to upload " + filename + " => " + e.getMessage();
+	            }
+	        } else {
+	            //
+	        }
+		
+		//
+		
+		post.setCreationDate(now);
+		post.setOwnerId(currentUser.getId());
 		postService.insert(post);
 		return "redirect:/";
 	}

@@ -48,6 +48,13 @@ public class Post implements Serializable {
 	@Column(name="parent_id", insertable=true, updatable=true, nullable=true)
 	private Integer parentId;
 	
+	@Column(name="document_id", insertable=true, updatable=true, nullable=true)
+	private Integer documentId;
+	
+	@ManyToOne(fetch=FetchType.LAZY, optional=true)
+	@JoinColumn(name="document_id", insertable=false, updatable=false)
+	private Document document = null;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="owner_id", insertable=false, updatable=false)
 	private UserInfo owner;
@@ -60,7 +67,7 @@ public class Post implements Serializable {
 	private List<Post> children;
 	
 	@ManyToOne(cascade=CascadeType.REMOVE)
-	private Thematique thematique;
+	private Thematique thematique;	
 	
 	@Column(name="censored", nullable=true)
 	private Boolean censored;
@@ -75,7 +82,7 @@ public class Post implements Serializable {
 	public String toString(){
 		if(getThematique()==null)
 			setThematique(new Thematique());
-		return "Title : " + getTitle() + "\n " + " Body: "+getBody() + " \n " + " Thematique :  " + getThematique().getId() + " - " + getThematique().getLibelle();
+		return "Title : " + getTitle() + "\n " + " Body: "+getBody() + " \n " + " Thematique :  " + getThematique().getId() + " - " + getThematique().getLibelle() + " Creation date " + getCreationDate();
 	}
 	
 	public Integer getId() {
@@ -180,6 +187,22 @@ public class Post implements Serializable {
 
 	public void setParentId(Integer parentId) {
 		this.parentId = parentId;
+	}
+
+	public Integer getDocumentId() {
+		return documentId;
+	}
+
+	public void setDocumentId(Integer documentId) {
+		this.documentId = documentId;
+	}
+
+	public Document getDocument() {
+		return document;
+	}
+
+	public void setDocument(Document document) {
+		this.document = document;
 	}
 	
 	
