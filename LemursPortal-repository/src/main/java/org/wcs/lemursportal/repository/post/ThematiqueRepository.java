@@ -2,6 +2,9 @@ package org.wcs.lemursportal.repository.post;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.post.TopThematique;
 
 /**
@@ -14,6 +17,17 @@ public interface ThematiqueRepository {
 	 * @param size
 	 * @return
 	 */
-	List<TopThematique> findTopThematique(Integer size);
+	Page<TopThematique> findTopThematique(Pageable pageable);
+	/**
+	 * 
+	 * @return
+	 */
 	List<TopThematique> findAllThematique();
+	
+	/**
+	 * 
+	 * @param questionId
+	 * @return
+	 */
+	Thematique findByQuestionId(Integer questionId);
 }

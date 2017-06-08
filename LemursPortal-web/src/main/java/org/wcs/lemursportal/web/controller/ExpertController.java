@@ -31,7 +31,7 @@ import org.wcs.lemursportal.service.user.UserInfoService;
  */
 @Controller
 @Transactional
-public class ExpertController {
+public class ExpertController extends BaseController {
 	
 	@Autowired
 	private UserTypeRepository userTypeRepository;
@@ -67,25 +67,4 @@ public class ExpertController {
 		model.addAttribute("userInfo",userInfo);
 		return "expertdetail";
 	}
-	
-	@ModelAttribute("topQuestions")
-	public List<TopQuestion> getTopQuestions(){
-		Page<TopQuestion> page = postService.getTopQuestions(new PageRequest(0, 10));
-		return page.getContent();
-	}
-	
-	@ModelAttribute("topThematiques")
-	public List<TopThematique> getTopThematiques(){
-		List<TopThematique> t = thematiqueRepository.findTopThematique(10);
-		return t;
-	}
-	
-	@ModelAttribute("lastestPosts")
-	public List<Post> getLastestPosts(){
-		Page<Post> page = postRepository.getLastestPosts(new PageRequest(0, 10));//On ne prendra que les 10 premiers
-		return page.getContent();
-	}
-	
-	
-	
 }

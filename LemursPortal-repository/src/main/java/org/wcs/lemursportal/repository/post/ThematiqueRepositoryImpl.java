@@ -1,12 +1,21 @@
 package org.wcs.lemursportal.repository.post;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.Tuple;
+import javax.persistence.TypedQuery;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.model.post.Post;
@@ -21,31 +30,55 @@ import org.wcs.lemursportal.model.post.TopThematique;
 @Transactional(readOnly=true)
 public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 	
+	@Autowired ThematiqueCrudRepository thematiqueCrudRepository;
+	
 	@PersistenceContext(unitName="lemursportalPUnit")
 	protected EntityManager em;
 	
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.repository.post.ThematiqueRepository#findTopThematique(int)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<TopThematique> findTopThematique(Integer size) {
-		StringBuilder qlBuild = new StringBuilder("select t, count(p) as nbPost from Post as p ");
-		qlBuild.append("inner join p.thematique t ");
-		//qlBuild.append("group by t.id order by nbPost desc ");
-		qlBuild.append("group by t.id order by t.creationDate desc ");
-		Query query = em.createQuery(qlBuild.toString());
-		if(size != null && size > 0){
-			query.setMaxResults(size);
+	public Page<TopThematique> findTopThematique(Pageable pageable) {
+//		StringBuilder qlBuild = new StringBuilder("select t, count(p) as nbPost from Post as p ");
+//		qlBuild.append("inner join p.thematique t ");
+//		qlBuild.append("group by t.id order by t.creationDate desc ");
+		TypedQuery<Long> countQuery = em.createQuery("select count(t) from Thematique as t", Long.class);
+		Long total = countQuery.getSingleResult();
+		StringBuilder jpqlBuilder = new StringBuilder("select t, count(q) as nbQuestions from Thematique t ")
+			.append("left join t.questions as q ")
+			.append("where q.parentId is null and (q.censored is null or q.censored != :censored) ")
+			.append("group by t.id ")
+			.append("order by nbQuestions desc ");
+		
+		
+		/*StringBuilder jpqlBuilder = new StringBuilder("select p.thematique.id, count(p.id) as nbQuestions from Post as p ")
+			.append("where p.parentId is null and (p.censored is null or p.censored != :censored) ")
+			.append("group by p.thematique.id ")
+			.append("order by nbQuestions desc ");*/
+		TypedQuery<Tuple> query = em.createQuery(jpqlBuilder.toString(), Tuple.class);
+		query.setParameter("censored", true);
+		if(pageable != null){
+			query.setFirstResult(pageable.getOffset());
+			query.setMaxResults(pageable.getPageSize());
 		}
-		final List<Object[]> results = query.getResultList();
+//		Map<Integer, TopThematique> topThematiqueMap = new HashMap<>();
+		final List<Tuple> tuples = query.getResultList();
 		List<TopThematique> topThematiques = new ArrayList<>();
-		for(Object[] result: results){
-			Thematique thematique = (Thematique)result[0];
-			Long postCount = (Long)result[1];
-			topThematiques.add(new TopThematique(thematique, postCount,(long) 0,null));
+		for(Tuple tuple: tuples){
+			Thematique thematique = (Thematique)tuple.get(0);
+			Long postCount = (Long)tuple.get(1);
+			TopThematique top = new TopThematique();
+			top.setNombreQuestion(postCount);
+			top.setThematique(thematique);
+//			topThematiqueMap.put(thematiqueId, top);
+			topThematiques.add(top);
 		}
-		return topThematiques;
+//		List<Thematique> thematiques = thematiqueCrudRepository.findAll(topThematiqueMap.keySet());
+//		for(Thematique t: thematiques){
+//			topThematiqueMap.get(t.getId()).setThematique(t);
+//		}
+		return new PageImpl<>(topThematiques, pageable, total);
 	}
 
 	@Override
@@ -73,6 +106,17 @@ public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 			topThematiques.add(new TopThematique(thematique, postCount, threadsCount,latestPost));
 		}
 		return topThematiques;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.wcs.lemursportal.repository.post.ThematiqueRepository#findByQuestionId(java.lang.Integer)
+	 */
+	@Override
+	public Thematique findByQuestionId(Integer questionId) {
+		TypedQuery<Thematique> query = em.createQuery("select t from Post p inner join fetch p.thematique t where p.id=:questionId", Thematique.class);
+		query.setParameter("questionId", questionId);
+		Thematique thematique = query.getSingleResult();
+		return thematique;
 	}
 
 }

@@ -14,7 +14,7 @@ public class TopThematique implements Serializable {
 	 */
 	private static final long serialVersionUID = -1202980249240053758L;
 	private Thematique thematique;
-	private Long nombreMessage;
+	private Long nombreQuestion;
 	private Long nombreThreads;
 	private Post latestPost;
 	
@@ -25,7 +25,7 @@ public class TopThematique implements Serializable {
 	public TopThematique(Thematique thematique, Long nombreMessage, Long nbThreads, Post latestPost) {
 		super();
 		this.thematique = thematique;
-		this.nombreMessage = nombreMessage;
+		this.nombreQuestion = nombreMessage;
 		this.nombreThreads = nbThreads;
 		this.latestPost = latestPost;
 	}
@@ -37,12 +37,12 @@ public class TopThematique implements Serializable {
 		this.thematique = thematique;
 	}
 
-	public Long getNombreMessage() {
-		return nombreMessage;
+	public Long getNombreQuestion() {
+		return nombreQuestion;
 	}
 
-	public void setNombreMessage(Long nombreMessage) {
-		this.nombreMessage = nombreMessage;
+	public void setNombreQuestion(Long nombreQuestion) {
+		this.nombreQuestion = nombreQuestion;
 	}
 
 	public Long getNombreThreads() {

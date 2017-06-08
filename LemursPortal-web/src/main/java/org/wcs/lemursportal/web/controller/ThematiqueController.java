@@ -1,7 +1,5 @@
 package org.wcs.lemursportal.web.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wcs.lemursportal.exception.RegistrationException;
-import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.post.TopQuestion;
 import org.wcs.lemursportal.model.post.TopThematique;
@@ -54,7 +51,7 @@ public class ThematiqueController extends BaseController{
 	public String create(Authentication authentication, Model model){
 		Thematique thematique = new Thematique();	
 		model.addAttribute(thematique);
-		return "post/thematique-form";
+		return "thematique-form";
 	}
 	
 	@GetMapping(value="/secured/thematique/{idThematique}")
@@ -65,15 +62,21 @@ public class ThematiqueController extends BaseController{
 		}
 		Thematique thematique = thematiqueService.findById(idThematique);
 		model.addAttribute(thematique);
-		return "post/thematique-form";
+		return "thematique-form";
 	}
 	
 	@GetMapping(value={"/thematique/list"})
-	public String list(Model model){
-		List<TopThematique>  listThematiques = thematiqueRepository.findAllThematique();
+	public String list(@RequestParam(required=false, defaultValue="0") Integer page, Model model){
+		if(page == null || page < 1){
+			page = 0;
+		}else{
+			page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+		}
+		Pageable pageable = new PageRequest(page, TOP_THEMATIQUES_PAGE_SIZE);
+		Page<TopThematique> topThematiquePage = thematiqueRepository.findTopThematique(pageable);
 		//Page<Thematique> page = thematiqueService.findAll(pageable);
-		model.addAttribute("allThematiques", listThematiques);
-		return "post/thematique-list";
+		model.addAttribute("topThematiquePage", topThematiquePage);
+		return "thematique-list";
 	}
 	
 	@PostMapping(value="/secured/thematique")
@@ -83,20 +86,21 @@ public class ThematiqueController extends BaseController{
 			BindingResult results){
 		ValidationUtils.rejectIfEmptyOrWhitespace(results, "libelle", "validation.mandatory");
 		if(results.hasErrors()){
-			return "forward:post/thematique-form";
+			return "forward:thematique-form";
 		}
+		Thematique savedThematique = null;
 		try{
-			thematiqueService.saveOrUpdate(authentication.getName(), thematique);
+			savedThematique = thematiqueService.saveOrUpdate(authentication.getName(), thematique);
 		}catch(RegistrationException e){
 			if(e.getCode() == RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION){
 				results.rejectValue("login", "validation.thematique.exist");
-				return "forward:post/thematique-form";
+				return "forward:thematique-form";
 			}else{
-				return "forward:post/thematique-form";
+				return "forward:thematique-form";
 			}
 		}
 		
-		return "redirect:/secured/thematique/list";
+		return "redirect:/postsParThematique/" + savedThematique.getId();
 	}
 	
 	@RequestMapping(value="/postsParThematique/{idThematique}",method=RequestMethod.GET)
@@ -121,7 +125,6 @@ public class ThematiqueController extends BaseController{
 		model.addAttribute(thematique);
 //		model.addAttribute("postsBythematique", questionPage.getContent());
 		model.addAttribute("postsBythematiquePage", questionPage);
-		setPagination(page, questionPage, model);
 		return "postsbythematique";
 	}
 }

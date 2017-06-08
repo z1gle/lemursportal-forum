@@ -7,7 +7,8 @@
 
 <!-- D Thematiques -->
 <div class="sidebar-title">
-    <h2 class="thema"><spring:message code="home.thematiques"/></h2>
+	<c:url value="/thematique/list" var="listThematiqueUrl"/>
+    <h2 class="thema"><a href="${listThematiqueUrl}"><spring:message code="home.thematiques"/></a></h2>
 </div>
 <div class="list-group people-group thematique">
 	<c:forEach items="${topThematiques}" var="topThematique">
@@ -18,7 +19,7 @@
                  <c:out value="${topThematique.thematique.libelle}"/>
              </div>
              <div class="pull-right">
-                 <c:out value="${topThematique.nombreMessage}"/>
+                 <c:out value="${topThematique.nombreQuestion}"/>
              </div>
          </div>
      </a>

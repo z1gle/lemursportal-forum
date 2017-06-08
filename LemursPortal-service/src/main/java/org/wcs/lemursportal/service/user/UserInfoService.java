@@ -5,13 +5,10 @@ package org.wcs.lemursportal.service.user;
 
 import java.util.Set;
 
-import org.hibernate.criterion.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.wcs.lemursportal.helper.pagination.PaginationRequest;
-import org.wcs.lemursportal.helper.pagination.PaginationResponse;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.model.user.UserType;
 

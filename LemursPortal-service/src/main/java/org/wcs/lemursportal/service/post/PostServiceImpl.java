@@ -1,5 +1,6 @@
 package org.wcs.lemursportal.service.post;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -12,8 +13,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.model.post.DocumentType;
 import org.wcs.lemursportal.model.post.Post;
+import org.wcs.lemursportal.model.post.PostView;
+import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.post.TopQuestion;
+import org.wcs.lemursportal.model.user.UserInfo;
+import org.wcs.lemursportal.repository.post.PostCrudRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
+import org.wcs.lemursportal.repository.post.PostViewCrudRepository;
+import org.wcs.lemursportal.repository.post.ThematiqueRepository;
+import org.wcs.lemursportal.service.user.UserInfoService;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>
@@ -25,6 +33,15 @@ public class PostServiceImpl implements PostService {
 
 	@Autowired 
 	private PostRepository postRepository;
+	
+	@Autowired PostCrudRepository postCrudRepository;
+	
+	@Autowired 
+	PostViewCrudRepository postViewCrudRepository;
+	
+	@Autowired ThematiqueRepository thematiqueRepository;
+	
+	@Autowired UserInfoService userInfoService; 
 
 	private enum PHOTOEXT {
 		png, jpg, gif
@@ -61,7 +78,11 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void insert(Post post) {
+	@Transactional(readOnly=false)
+	public void insert(Post post, String authorLogin) {
+		UserInfo currentUser = userInfoService.getByLogin(authorLogin);
+		post.setOwnerId(currentUser.getId());
+		post.setOwner(currentUser);
 		post.setCreationDate(new Date());
 		if(post.getDocument()!=null){
 			DocumentType type = new DocumentType();
@@ -103,15 +124,24 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public Post findPostById(Integer id) {
-		Set<Integer> sets = new HashSet<Integer>();
-		sets.add(id);
-		List<Post> lst = postRepository.getPostsAndFetchOwner(sets);
-		if(lst!=null && lst.size()==1){
-			Post p = lst.get(0);
-			//p.setChildren(postRepository.getResponsesAndFetchOwner(p.getId()));
-			return p;
-		}
-		return null;
+		Post post = postRepository.getPostsAndFetchOwner(id);
+		return post;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.wcs.lemursportal.service.post.PostService#incrementerNbVue(org.wcs.lemursportal.model.post.Post, java.lang.String)
+	 */
+	@Transactional(readOnly=false)
+	@Override
+	public PostView incrementerNbVue(Integer questionId, String user) {
+		PostView postView = new PostView();
+		postView.setPostId(questionId);
+//		Thematique thematique = thematiqueRepository.findByQuestionId(questionId);
+//		postView.setThematiqueId(thematique.getId());
+		postView.setViewBy(user);
+		postView.setViewDate(Calendar.getInstance().getTime());
+		postViewCrudRepository.save(postView);
+		return postView;
 	}
 
 }
