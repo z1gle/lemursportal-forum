@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,14 +30,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.wcs.lemursportal.model.post.Document;
-import org.wcs.lemursportal.factory.PostFactory;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
-import org.wcs.lemursportal.web.form.FileBucket;
-import org.wcs.lemursportal.web.form.PostForm;
 
 @Controller
 @Transactional
@@ -60,7 +56,7 @@ public class PostController extends BaseController{
 		model.addAttribute("listeThematique", listethematique);
 		Post post = new Post();
 		if(thematiqueId != null){
-//			post.setThematiqueId(thematiqueId);
+			post.setThematiqueId(thematiqueId);
 		}
 		model.addAttribute(post);
 		return "getFormPost";

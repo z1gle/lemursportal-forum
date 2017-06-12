@@ -25,7 +25,7 @@ import org.wcs.lemursportal.repository.post.ThematiqueRepository;
  *
  */
 @Service
-@Transactional(propagation=Propagation.REQUIRES_NEW)
+@Transactional
 public class NotificationServiceImpl implements NotificationService {
 	
 	@Autowired NotificationRepository notificationRepository;
@@ -77,6 +77,20 @@ public class NotificationServiceImpl implements NotificationService {
 //			notifications.add(notification);
 		}
 
+	}
+
+	/* (non-Javadoc)
+	 * @see org.wcs.lemursportal.service.notification.NotificationService#savePostNotification(org.wcs.lemursportal.model.post.Post)
+	 */
+	@Override
+	public void savePostNotification(Post post) {
+		if(post == null) return;
+		if(post.getParentId() == null){
+			saveNotificationNouvelleQuestion(post);
+		}else{
+			saveNotificationNouveauCommentaire(post);
+		}
+		
 	}
 
 }

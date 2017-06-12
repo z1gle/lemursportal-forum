@@ -36,7 +36,8 @@
 		                        <spring:message code="home.monprofile"/></a>
 		                    </li>
                     		<li class="dropdown">
-		                        <a href="#" class="notif dropdown-toggle" data-toggle="dropdown"><spring:message code="home.notification"/><span class="rond">
+                    			<c:set value="/secured/notification/list" var="notificationListUrl"/>
+		                        <a href="${notificationListUrl}" class="notif dropdown-toggle" data-toggle="dropdown"><spring:message code="home.notification"/><span class="rond">
 		                        <c:out value="${nombreNotification}"></c:out></span></a>
 		                        <ul class="dropdown-menu" role="menu">
 		                        	<li>Vous avez 1 réponse(s)</li>
@@ -53,6 +54,7 @@
 		                            <li>Votre question a été validée</li>
 		                        </ul>
 		                    </li>
+		                    <%--
 		                    <li class="dropdown">
 		                        <a class="notif dropdown-toggle" data-toggle="dropdown" href="#"><spring:message code="home.messages"/><span class="rond">3</span></a>
 		                        <ul class="dropdown-menu" role="menu">
@@ -61,6 +63,7 @@
 		                            <li><a href="#">Madame, suite à votre visite...</a></li>
 		                        </ul>
 		                    </li>
+		                   	 --%>
                     		<li>
                     			<span style="display:none;">
                     			<c:url value="/logout" var="logoutUrl" />

@@ -9,6 +9,11 @@ import org.wcs.lemursportal.model.post.Post;
 public interface NotificationService {
 	/**
 	 * 
+	 * @param post
+	 */
+	void savePostNotification(Post post);
+	/**
+	 * 
 	 * @param question
 	 */
 	void saveNotificationNouvelleQuestion(Post question);

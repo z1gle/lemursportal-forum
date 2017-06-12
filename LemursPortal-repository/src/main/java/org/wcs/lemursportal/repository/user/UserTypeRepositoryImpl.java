@@ -3,11 +3,13 @@
  */
 package org.wcs.lemursportal.repository.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,14 +50,13 @@ public class UserTypeRepositoryImpl implements UserTypeRepository {
 		return results;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional(readOnly=true)
 	public List<UserInfo> findUsers(UserRole userRole) {
-		Query query = em.createQuery("Select t.users from  UserType t where  t.id=:usertype", Object[].class);
+		TypedQuery<UserType> query = em.createQuery("Select t from  UserType t left join fetch t.users where t.id=:usertype", UserType.class);
 		query.setParameter("usertype", userRole.getId());
-		List<UserInfo> results = query.getResultList();
-		return results;
+		UserType type = query.getSingleResult();
+		return new ArrayList<>(type.getUsers());
 	}
 
 }

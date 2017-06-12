@@ -110,11 +110,9 @@ public class PostServiceImpl implements PostService {
 			}
 		}
 		postRepository.insert(post);
-//		if(post.getParentId() == null){
-//			notificationService.saveNotificationNouvelleQuestion(post);
-//		}else{
-//			notificationService.saveNotificationNouveauCommentaire(post);
-//		}
+		
+		/* Notification */
+		notificationService.savePostNotification(post);
 	}
 	
 	private  String getExtension(String fileName) {		

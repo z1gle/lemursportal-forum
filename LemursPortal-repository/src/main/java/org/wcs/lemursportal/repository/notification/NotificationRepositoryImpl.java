@@ -41,15 +41,21 @@ public class NotificationRepositoryImpl implements NotificationRepository {
 	 */
 	@Override
 	public List<Notification> findAllByUser(Integer userId) {
-		CriteriaBuilder builder = em.getCriteriaBuilder();
+		/*CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<Notification> select = builder.createQuery(Notification.class);
 		Root<Notification> from = select.from(Notification.class);
 		select.select(from);
 		select.where(builder.equal(from.get("userId"), userId));
 		select.orderBy(builder.desc(from.get("date")));
 		TypedQuery<Notification> typedQuery = em.createQuery(select);
-		List<Notification> posts = typedQuery.getResultList();
-		return posts;
+		List<Notification> notifications = typedQuery.getResultList();*/
+		StringBuilder sb = new StringBuilder("select n from Notification n ")
+			.append("left join fetch n.thematique left join fetch n.question ")
+			.append("where n.userId=:userId order by n.date desc ");
+		TypedQuery<Notification> query = em.createQuery(sb.toString(), Notification.class);
+		query.setParameter("userId", userId);
+		List<Notification> notifications = query.getResultList();
+		return notifications;
 	}
 
 	/* (non-Javadoc)
@@ -66,6 +72,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.repository.notification.NotificationRepository#deleteByUser(java.lang.Integer)
 	 */
+	@Transactional(readOnly=false)
 	@Override
 	public int deleteByUser(Integer userId) {
 		CriteriaBuilder builder = em.getCriteriaBuilder();
