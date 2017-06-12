@@ -42,7 +42,7 @@
 	                                	<form:hidden path="id"/>
 	                                  	<label><spring:message code="signup.name.placeholder"/><sup>*</sup></label>
 	                                  	<form:input path="nom"/><form:errors path="nom"/>
-	                                  	<label><spring:message code="signup.surname.placeholderPrénoms"/><sup>*</sup></label>
+	                                  	<label><spring:message code="signup.surname.placeholder"/><sup>*</sup></label>
 	                                  	<form:input path="prenom"/><form:errors path="prenom"/>
 	                                  	<label><spring:message code="signup.dateofbirth.placeholder"/> (<c:out value="${dateFormat}"/>)</label>
 	                                  	<form:input path="dateNaissance"/><form:errors path="dateNaissance"/>

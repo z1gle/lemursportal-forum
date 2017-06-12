@@ -97,7 +97,7 @@
                                     
                                     <div class="col-md-6">
                                     
-                                        <p><span><span><spring:message code="profil.lable.inscritle"/>:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.dateInscription}" /></span></p>
+                                        <p><span><span><spring:message code="profil.label.inscritle"/>:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.dateInscription}" /></span></p>
                                         <p><span><span><spring:message code="profil.label.derniereactivite"/>:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.lastAccessDate}" /></span></p>
 <!--                                         <p><span><span>Nombre de questions :</span><br />18</span></p> -->
 <!--                                         <p><span><span>Nombre de réponses :</span><br />45</span></p> -->
