@@ -57,11 +57,11 @@ public class PostController extends BaseController{
 	public String create(@PathVariable(required=false) Integer thematiqueId, Authentication authentication, Model model){
 		List<Thematique> listethematique = thematiqueService.findAll();
 		model.addAttribute("listeThematique", listethematique);
-		PostForm postForm = new PostForm();
+		Post post = new Post();
 		if(thematiqueId != null){
-			postForm.setThematiqueId(thematiqueId);
+//			post.setThematiqueId(thematiqueId);
 		}
-		model.addAttribute(postForm);
+		model.addAttribute(post);
 		return "getFormPost";
 	}
 	
@@ -147,7 +147,7 @@ public class PostController extends BaseController{
 		}
 		Page<Post> responsesPage = postService.getQuestionResponses(idPost, new PageRequest(page, BaseController.DERNIERES_QUESTIONS_PAGE_SIZE));
 		model.addAttribute("post", p);
-		model.addAttribute(new PostForm());
+//		model.addAttribute(new PostForm());
 		model.addAttribute("responsesPage", responsesPage);
 		return "showPost";
 	}
