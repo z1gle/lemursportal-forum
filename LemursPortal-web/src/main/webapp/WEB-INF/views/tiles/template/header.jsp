@@ -107,7 +107,8 @@
                         <a href="${expertsUrl}"><spring:message code="home.menu.experts"/></a>
                     </li>
                     <li>
-                        <a href="#"><spring:message code="home.menu.formations"/></a>
+                        <c:url value="/formation/" var="formationsUrl"/>
+                        <a href="${formationsUrl}"><spring:message code="home.menu.formations"/></a>
                     </li>
                     <sec:authorize access="hasRole('ADMIN')">
                     <li>

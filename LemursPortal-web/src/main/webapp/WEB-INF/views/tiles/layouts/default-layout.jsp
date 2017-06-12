@@ -7,6 +7,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <spring:message code="datetime.format" var="datetimeFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -19,6 +20,9 @@
 	<script src="${resourcesPath}/js/script.js"></script>
 	<script src="${resourcesPath}/bootstrap/js/bootstrap.js"></script>
 	<script src="${resourcesPath}/js/jquery.showmore.js"></script>
+	
+	<tiles:insertAttribute name="head" />
+	
 </head>
  
 <body class="int">

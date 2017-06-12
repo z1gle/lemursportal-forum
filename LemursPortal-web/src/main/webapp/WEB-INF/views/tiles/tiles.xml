@@ -5,6 +5,7 @@
    <!-- Base Definition -->
    <definition name="base-definition" template="/WEB-INF/views/tiles/layouts/default-layout.jsp">  
        <put-attribute name="title" value="" />  
+       <put-attribute name="head" value="" />  
        <put-attribute name="header" value="/WEB-INF/views/tiles/template/header.jsp" /> 
        <put-attribute name="body" value="" /> 
        <put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />  
@@ -119,5 +120,48 @@
        <put-attribute name="body" value="/WEB-INF/views/tiles/section/edit-users-roles.jsp"/>
    </definition>
    
+   <!-- formation -->
+   <definition name="formation" extends="base-definition">  
+       <put-attribute name="title" value="Liste des Formations" />  
+       <put-attribute name="body" value="formation.body" />
+   </definition>
+   <definition name="formation.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+	  <put-attribute name="left" value="/WEB-INF/views/tiles/formation/list.jsp" />
+	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+	</definition>
    
+   <!-- new-formation -->
+   <definition name="edit-formation" extends="base-definition">  
+       <put-attribute name="title" value="Liste des Formations" />    
+       <put-attribute name="head" value="/WEB-INF/views/tiles/formation/tinymce.jsp" />  
+       <put-attribute name="body" value="editFormation.body" />
+   </definition>
+   <definition name="editFormation.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+	  <put-attribute name="left" value="/WEB-INF/views/tiles/formation/edit.jsp" />
+	  <put-attribute name="right" value="" />
+	</definition>
+	
+   <!-- view-formation -->
+   <definition name="view-formation" extends="base-definition">  
+       <put-attribute name="title" value="Liste des Formations" />  
+       <put-attribute name="body" value="viewFormation.body" />
+   </definition>
+   <definition name="viewFormation.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+	  <put-attribute name="left" value="/WEB-INF/views/tiles/formation/view.jsp" />
+	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+	</definition>
+	
+   <!-- delete-success -->
+   <definition name="success" extends="base-definition">  
+       <put-attribute name="title" value="Action success" />  
+       <put-attribute name="body" value="success.body" />
+   </definition>
+   <definition name="success.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+	  <put-attribute name="slider" value="" />
+	  <put-attribute name="left" value="/WEB-INF/views/tiles/formation/success.jsp" />
+	  <put-attribute name="right" value="" />
+	</definition>
 </tiles-definitions>

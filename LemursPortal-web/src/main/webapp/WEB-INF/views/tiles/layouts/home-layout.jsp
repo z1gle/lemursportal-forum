@@ -7,6 +7,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <spring:message code="datetime.format" var="datetimeFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
+<!DOCTYPE html>
 <html>
 
 <head>
