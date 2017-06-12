@@ -3,6 +3,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <c:url value="/resources" var="resourcesPath"/>
 
 
@@ -11,11 +12,9 @@
     <!-- Début Ajouter Question -->
         <div class="full-width">
             <div class="wrapper wrapper-content animated fadeInRight">
-    
                 <div class="forum-container create-quest">
-    
                     <div class="forum-title">
-                        <h2>Nouvelle Thematique</h2>
+                        <h2><spring:message code="thematique.nouvelle"/></h2>
                     </div>
     				<!-- D Poser quest -->
                     <div class="cadre">
@@ -29,17 +28,17 @@
 											value="${_csrf.token}">
 										<form:hidden path="id" />
 										<div>
-											Libelle:
+											<spring:message code="thematique.label.libelle"/>:
 											<form:input path="libelle" />
 											<form:errors path="libelle" />
 										</div>
 										<div>
-											Description:
+											<spring:message code="thematique.label.description"/>:
 											<form:textarea path="description" />
 											<form:errors path="description" />
 										</div>
 										<div>
-											<form:button value="save">Enregistrer</form:button>
+											<form:button value="save"><spring:message code="thematique.label.enregistrer"/></form:button>
 										</div>
 									</form:form>
 								</div>

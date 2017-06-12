@@ -2,9 +2,6 @@ package org.wcs.lemursportal.service.post;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -106,7 +103,6 @@ public class PostServiceImpl implements PostService {
 					break;
 				}
 			}
-			post.getDocument().setTypeId(type.getId());
 		}
 		postRepository.insert(post);
 	}
@@ -133,12 +129,21 @@ public class PostServiceImpl implements PostService {
 	 */
 	@Transactional(readOnly=false)
 	@Override
-	public PostView incrementerNbVue(Integer questionId, String user) {
+	public PostView incrementerNbVue(Post post, String user) {
+		
 		PostView postView = new PostView();
-		postView.setPostId(questionId);
-//		Thematique thematique = thematiqueRepository.findByQuestionId(questionId);
-//		postView.setThematiqueId(thematique.getId());
-		postView.setViewBy(user);
+		postView.setPostId(post.getId());
+		if(post.getThematique() != null){
+			postView.setThematiqueId(post.getThematique().getId());
+		}else{
+			Thematique thematique = thematiqueRepository.findByQuestionId(post.getId());
+			postView.setThematiqueId(thematique.getId());
+		}
+		if(user != null){
+			UserInfo currentUser = null;
+			currentUser = userInfoService.getByLogin(user);
+			postView.setViewBy(currentUser.getId());
+		}
 		postView.setViewDate(Calendar.getInstance().getTime());
 		postViewCrudRepository.save(postView);
 		return postView;

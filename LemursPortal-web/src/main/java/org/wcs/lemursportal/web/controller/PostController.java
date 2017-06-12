@@ -103,7 +103,7 @@ public class PostController extends BaseController{
 	                doc.setCreationDate(now);
 	                doc.setUrl("/" + "resources" + "/" + "upload"+ "/" + filename);
 	                doc.setAuthorId(currentUser.getId());
-	                post.setDocument(doc);
+//	                post.setDocument(doc);
 	               // System.out.println("filefile : " + context.getRealPath("/")+ File.separator +filename);
 	            } catch (Exception e) {
 	                return "You failed to upload " + filename + " => " + e.getMessage();
@@ -116,7 +116,7 @@ public class PostController extends BaseController{
 		
 		post.setCreationDate(now);
 		post.setOwnerId(currentUser.getId());
-		Post post = PostFactory.toEntity(postForm);
+//		Post post = PostFactory.toEntity(postForm);
 		postService.insert(post, authentication.getName());
 		return "redirect:/post/show/" + post.getId();
 	}
@@ -137,7 +137,7 @@ public class PostController extends BaseController{
 	){
 		Post p = postService.findPostById(idPost);
 		if(p != null){
-			postService.incrementerNbVue(idPost, authentication == null ? "anonymous" : authentication.getName());
+			postService.incrementerNbVue(p, authentication == null ? null : authentication.getName());
 		}
 
 		if(page == null || page < 1){

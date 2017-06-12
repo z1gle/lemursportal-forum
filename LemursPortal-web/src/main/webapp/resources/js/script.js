@@ -39,3 +39,10 @@ $('[data-toggle="collapse"]').on('click', function() {
 
 });
 
+$('.lang-chooser select').change(function(value){
+	var currentUrl = document.location.href;
+	var langCurrentUrl = currentUrl.indexOf("?") == -1 ? currentUrl+"?" : currentUrl+"&";
+	langCurrentUrl = langCurrentUrl + "lang=" + this.value;
+	document.location.href = langCurrentUrl;
+});
+

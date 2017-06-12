@@ -114,7 +114,6 @@ public class DataTestController {
 		List<Post> posts = new ArrayList<>();
 		//Test: création de post pour le nouveau thématique
 		int nbMessage = -1;
-		boolean randomBoolean = false;
 		while(nbMessage < 0){
 			nbMessage = random.nextInt(NB_QUESTION_MAX);
 		}
@@ -135,7 +134,6 @@ public class DataTestController {
 			message.setBody("Description lavalava ihany ho an'i Message numéro " + i + " La Juve, le pire tirage pour Monaco ? Un derby madrilène explosif !");
 			message.setOwnerId(user.getId());
 			message.setOwner(user);
-			randomBoolean = random.nextBoolean();
 			message.setThematique(thematique);
 			posts.add(message);
 		}
@@ -153,7 +151,7 @@ public class DataTestController {
 			PostView postView = new PostView();
 			postView.setPostId(post.getId());
 			postView.setThematiqueId(thematique.getId());
-			postView.setViewBy(user.getLogin());
+			postView.setViewBy(user.getId());
 			postView.setViewDate(Calendar.getInstance().getTime());
 			postViews.add(postView);
 		}

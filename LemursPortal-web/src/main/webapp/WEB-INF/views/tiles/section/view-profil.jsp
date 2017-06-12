@@ -13,7 +13,7 @@
 <div class="forum-container page-profil">
         <div class="row">
         	<div class="page-title">
-        		<h2 class="profil">Profil</h2>
+        		<h2 class="profil"><spring:message code="profil.label.profil"/></h2>
             </div>
             <div class="col-xs-12 col-md-4 col-lg-3">
                 <div class="profil-info">
@@ -60,7 +60,7 @@
                         <div class="info">
                             <!-- D S'affiche si l'utilisateur lui-même est connecté -->
                             <c:url value="/user/profil/edit" var="userProfilUrl"/>
-                            <a href="${userProfilUrl}" class="btn left">Modifier mon profil</a>
+                            <a href="${userProfilUrl}" class="btn left"><spring:message code="profil.label.modifiermonprofil"/></a>
                             <!-- F S'affiche si l'utilisateur lui-même est connecté -->
                         </div>
                     </div>
@@ -83,22 +83,22 @@
                             <div class="txt-content">
                                 <div class="info">
                                 	<div class="col-md-6">
-                                        <p><span><span>Rôle:</span><br />
+                                        <p><span><span><spring:message code="profil.role"/>:</span><br />
                                         	<!-- Roles display -->
 											<sec:authentication property="authorities" var="roles" scope="page" />
 											    <c:forEach var="role" items="${roles}">
 											    	${role} 
 											    </c:forEach>
                                         </span></p>
-                                        <p><span><span>Institution:</span><br /><c:out value="${userInfo.institution}"/></span></p>
-                                        <p><span><span>Poste occupé:</span><br /><c:out value="${userInfo.postOccupe}"/></span></p>
-                                        <p><span><span>Email:</span><br /><a href="#" title="#"><c:out value="${userInfo.email}"/></a></span></p>
+                                        <p><span><span><spring:message code="profil.edit.institution"/>:</span><br /><c:out value="${userInfo.institution}"/></span></p>
+                                        <p><span><span><spring:message code="profil.edit.postoccupe"/>:</span><br /><c:out value="${userInfo.postOccupe}"/></span></p>
+                                        <p><span><span><spring:message code="signup.email.placeholder"/>:</span><br /><a href="#" title="#"><c:out value="${userInfo.email}"/></a></span></p>
                                     </div>
                                     
                                     <div class="col-md-6">
                                     
-                                        <p><span><span>Inscrit(e) le:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.dateInscription}" /></span></p>
-                                        <p><span><span>Dernière activité le:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.lastAccessDate}" /></span></p>
+                                        <p><span><span><spring:message code="profil.lable.inscritle"/>:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.dateInscription}" /></span></p>
+                                        <p><span><span><spring:message code="profil.label.derniereactivite"/>:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.lastAccessDate}" /></span></p>
 <!--                                         <p><span><span>Nombre de questions :</span><br />18</span></p> -->
 <!--                                         <p><span><span>Nombre de réponses :</span><br />45</span></p> -->
                                     </div>

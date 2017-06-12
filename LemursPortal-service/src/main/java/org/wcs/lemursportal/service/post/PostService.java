@@ -36,5 +36,5 @@ public interface PostService {
 	 * @param question
 	 * @return
 	 */
-	PostView incrementerNbVue(Integer questionId, String user);
+	PostView incrementerNbVue(Post question, String user);
 }

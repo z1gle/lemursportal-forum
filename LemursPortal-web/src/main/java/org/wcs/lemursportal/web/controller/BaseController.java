@@ -17,6 +17,7 @@ import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.TopQuestion;
 import org.wcs.lemursportal.model.post.TopThematique;
 import org.wcs.lemursportal.model.user.UserInfo;
+import org.wcs.lemursportal.repository.notification.NotificationRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
 import org.wcs.lemursportal.service.post.PostService;
@@ -39,6 +40,7 @@ public class BaseController {
 	@Autowired UserInfoService userInfoService;
 	@Autowired
 	private SessionRegistry sessionRegistry;
+	@Autowired NotificationRepository notificationRepository;
 	
 	public static final int TOP_QUESTIONS_PAGE_SIZE = 20;
 	public static final int TOP_THEMATIQUES_PAGE_SIZE = 20;
@@ -95,4 +97,16 @@ public class BaseController {
 		}
 		return userInfo;
 	}
+	
+	@ModelAttribute("nombreNotification")
+	public Long getNombreNotification(Authentication authentication){
+		Long nbNotification = 0L;
+		if(authentication != null){
+			String login = authentication.getName();
+			UserInfo userInfo = userInfoService.getByLogin(login);
+			nbNotification = notificationRepository.countByUser(userInfo.getId());
+		}
+		return nbNotification;
+	}
+	
 }

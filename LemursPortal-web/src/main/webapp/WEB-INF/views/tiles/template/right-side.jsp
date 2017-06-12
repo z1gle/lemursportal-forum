@@ -49,6 +49,7 @@
 <!-- F Questions  -->
 
 <!-- D Membres -->
+<%--
 <div class="sidebar-title">
     <h2 class="users-connect"><spring:message code="home.membreconnectes"/></h2>
 </div>
@@ -162,7 +163,7 @@
 </div>
 </div>
 <!-- F Membres -->
-
+ --%>
 <!-- D Video -->
 <div class="sidebar-title">
     <h2 class="vidaka"><spring:message code="home.photovideos.title"/></h2>
