@@ -119,4 +119,12 @@ public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 		return thematique;
 	}
 
+	@Override
+	public Thematique findByIdAndFetchManagers(Integer thematiqueId) {
+		TypedQuery<Thematique> query = em.createQuery("select t from Thematique t inner join fetch t.managers where t.id=:thematiqueId", Thematique.class);
+		query.setParameter("thematiqueId", thematiqueId);
+		Thematique thematique = query.getSingleResult();
+		return thematique;
+	}
+
 }

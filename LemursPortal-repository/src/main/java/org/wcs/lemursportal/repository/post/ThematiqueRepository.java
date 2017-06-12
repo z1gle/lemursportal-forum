@@ -30,4 +30,11 @@ public interface ThematiqueRepository {
 	 * @return
 	 */
 	Thematique findByQuestionId(Integer questionId);
+	
+	/**
+	 * 
+	 * @param thematiqueId
+	 * @return
+	 */
+	Thematique findByIdAndFetchManagers(Integer thematiqueId);
 }

@@ -243,7 +243,7 @@ public class PostRepositoryImpl implements PostRepository {
 		if(p.getDocument()!=null){
 			em.persist(p.getDocument());
 			p.setDocumentId(p.getDocument().getId());
-		}		
+		}	
 		em.persist(p);
 	}
 	

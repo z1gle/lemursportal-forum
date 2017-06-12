@@ -69,8 +69,11 @@ public class Post implements Serializable {
 	@OneToMany(mappedBy="parent")
 	private List<Post> children;
 	
+	@Column(name="thematique_id", nullable=false)
+	private Integer thematiqueId;
+	
 	@ManyToOne(cascade=CascadeType.REMOVE)
-	@JoinColumn(name="thematique_id", nullable=false)
+	@JoinColumn(name="thematique_id", insertable=false, updatable=false)
 	private Thematique thematique;
 	
 	@Column(name="censored", nullable=true)
@@ -215,7 +218,7 @@ public class Post implements Serializable {
 	public String toString(){
 		if(getThematique()==null)
 			setThematique(new Thematique());
-		return "Title : " + getTitle() + "\n " + " Body: "+getBody() + " \n " + " Thematique :  " + getThematique().getId() + " - " + getThematique().getLibelle();
+		return "Title : " + getTitle() + "\n " + " Body: "+getBody() + " \n " + " Thematique :  " + getThematiqueId() + " - " + getThematique().getLibelle();
 	}
 
 	public List<Document> getDocuments() {
@@ -224,6 +227,14 @@ public class Post implements Serializable {
 
 	public void setDocuments(List<Document> documents) {
 		this.documents = documents;
+	}
+
+	public Integer getThematiqueId() {
+		return thematiqueId;
+	}
+
+	public void setThematiqueId(Integer thematiqueId) {
+		this.thematiqueId = thematiqueId;
 	}
 	
 	

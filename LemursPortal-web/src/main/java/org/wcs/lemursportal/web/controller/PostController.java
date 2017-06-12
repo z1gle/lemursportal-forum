@@ -23,6 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -71,6 +72,7 @@ public class PostController extends BaseController{
 			BindingResult results){		
 		if(authentication == null) return "redirect:/login";
 		//ValidationUtils.rejectIfEmptyOrWhitespace(results, "libelle", "validation.mandatory");
+		ValidationUtils.rejectIfEmptyOrWhitespace(results, "thematiqueId", "validation.mandatory");
 		if(results.hasErrors()){
 			return "forward:getFormPost";
 		}
@@ -82,7 +84,7 @@ public class PostController extends BaseController{
 		
 		 if (!file.isEmpty()) {
 			 String filename = file.getOriginalFilename();
-			System.out.println("filename " + filename);
+//			System.out.println("filename " + filename);
 			 String path = context.getRealPath("/")+ File.separator +  "resources" + File.separator + "upload" + File.separator +  filename;
 			 if(!Files.exists(  Paths.get(context.getRealPath("/"), File.separator ,  "resources" , File.separator , "upload"), LinkOption.NOFOLLOW_LINKS)  ){
 				 try {
@@ -116,7 +118,6 @@ public class PostController extends BaseController{
 		
 		post.setCreationDate(now);
 		post.setOwnerId(currentUser.getId());
-//		Post post = PostFactory.toEntity(postForm);
 		postService.insert(post, authentication.getName());
 		return "redirect:/post/show/" + post.getId();
 	}
@@ -156,14 +157,12 @@ public class PostController extends BaseController{
 	@PostMapping(value="/secured/post/reponse")
 	@PreAuthorize("hasAnyRole('USER', 'EXPERT','MODERATEUR', 'ADMIN')")
 	public String submitReponse(Authentication authentication, Model model, 
-			@ModelAttribute PostForm postForm, 
+			@ModelAttribute Post post, 
 			BindingResult results){		
 		//ValidationUtils.rejectIfEmptyOrWhitespace(results, "libelle", "validation.mandatory");
 		if(results.hasErrors()){
 			return "forward:getFormPost";
 		}
-		
-		Post post = PostFactory.toEntity(postForm);
 		postService.insert(post, authentication.getName());
 		return "redirect:/post/show/"+post.getId();
 	}

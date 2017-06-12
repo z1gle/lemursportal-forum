@@ -5,5 +5,5 @@ package org.wcs.lemursportal.model.notification;
  *
  */
 public enum NotificationType {
-	NB_REPONSE, VALIDATION_QUESTION, NOUVELLE_QUESTION, PROMOTION;
+	NOUVEAU_COMMENTAIRE, NOUVELLE_QUESTION;
 }

@@ -101,7 +101,8 @@ public class DataTestController {
 				message.setOwnerId(question.getOwnerId());
 				message.setParentId(question.getId());
 				message.setParent(question);
-				message.setThematique(question.getThematique());
+				message.setThematiqueId(question.getThematique().getId());
+//				message.setThematique(question.getThematique());
 				posts.add(message);
 			}
 		}
@@ -134,7 +135,8 @@ public class DataTestController {
 			message.setBody("Description lavalava ihany ho an'i Message numéro " + i + " La Juve, le pire tirage pour Monaco ? Un derby madrilène explosif !");
 			message.setOwnerId(user.getId());
 			message.setOwner(user);
-			message.setThematique(thematique);
+			message.setThematiqueId(thematique.getId());
+//			message.setThematique(thematique);
 			posts.add(message);
 		}
 		postCrudRepository.save(posts);

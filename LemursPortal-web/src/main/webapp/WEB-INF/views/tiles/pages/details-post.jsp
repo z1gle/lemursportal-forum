@@ -46,7 +46,7 @@
 		                          </span>
 		                          <div class="collapse" id="replyCommentT">
 									<c:url value="/secured/post/reponse" var="formAction"></c:url>
-		                            <form:form  class="create-quest-form" modelAttribute="postForm" action="${formAction}"  method="POST"   >
+		                            <form:form  class="create-quest-form" modelAttribute="post" action="${formAction}"  method="POST"   >
 		                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 										<form:input type="hidden" path="id" value="${post.id}"/>
 		                              <div class="form-group">                                

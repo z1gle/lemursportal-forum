@@ -48,6 +48,9 @@ public class Notification implements Serializable {
 	@Column(name="date", nullable=true)
 	private Date date;
 	
+	/**
+	 * 
+	 */
 	@Enumerated(value=EnumType.STRING)
 	private NotificationType notificationType;
 	
@@ -120,6 +123,14 @@ public class Notification implements Serializable {
 	}
 	public void setResponse(Post response) {
 		this.response = response;
+	}
+
+	public NotificationType getNotificationType() {
+		return notificationType;
+	}
+
+	public void setNotificationType(NotificationType notificationType) {
+		this.notificationType = notificationType;
 	}
 	
 	

@@ -27,10 +27,10 @@
                             <div class="row">
                             	
                                   <label>Choisir un thématique <sup>*</sup></label>
-                                  <form:select path="thematique.id">  
+                                  <form:select path="thematiqueId">  
                                   	<form:options items="${listeThematique}" itemLabel="libelle" itemValue="id"/> 
                                   </form:select>
-                                  <form:errors path="thematique.id"/>
+                                  <form:errors path="thematiqueId"/>
                                   <br/>
                                   <label>Titre de la question <sup>*</sup></label>
                                   <form:input path="title"/>

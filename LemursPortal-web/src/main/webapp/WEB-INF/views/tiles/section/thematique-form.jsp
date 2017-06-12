@@ -37,6 +37,12 @@
 											<form:textarea path="description" />
 											<form:errors path="description" />
 										</div>
+										
+										<div>
+										<form:select path="managers">
+		                        			<form:options items="${experts}" itemValue="id" itemLabel="label"/>
+		                        		</form:select>
+		                        		</div>
 										<div>
 											<form:button value="save"><spring:message code="thematique.label.enregistrer"/></form:button>
 										</div>
