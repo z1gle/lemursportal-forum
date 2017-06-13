@@ -12,7 +12,6 @@
                         <div class="row">
                         	<div class="page-title">
                         		<h2 class="doc">Liste des documents</h2>
-                                <a href="#" class="btn btn-primary btn-xs pull-right">Ajouter un media</a>
                             </div>
                             <div class="col-xs-12 col-md-12">
                                 <div class="box">
@@ -31,42 +30,24 @@
                                                
                                                <div class="col-md-offset custyle">
                                                     <table class="table table-striped custab">
+                                                    <c:forEach items="${docIMAGE}" var="pic">
+                                            		 
                                                         <tr>
-                                                            <td><a href="#"><img src="images/lem.png" alt=""></a></td>
-                                                            <td>Sifaka</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
+                                                        	<td><img src="${resourcesPath}/images/lem.png" alt=""></td>
+                                                            <td><c:out	value="${pic.filename}" /></td>
+                                                            <td class="text-center">
+                                                            <c:url var="picPageUrl" value="/files/${pic.id}"/>
+                                                            <a class='btn btn-info btn-xs' href="${picPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
                                                         </tr>
-                                                        <tr>
-                                                            <td><a href="#"><img src="images/lem.png" alt=""></a></td>
-                                                            <td>Lemuriens</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><a href="#"><img src="images/lem.png" alt=""></a></td>
-                                                            <td>Madagascar</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><a href="#"><img src="images/lem.png" alt=""></a></td>
-                                                            <td>Lorem ipsum dolor not</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><a href="#"><img src="images/lem.png" alt=""></a></td>
-                                                            <td>Plage de Madagascar</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
-                                                        </tr>
+                                                        </c:forEach>
+                                                       
                                                     </table>
                                                     
                                                     <!-- D Pagination -->
                                                     <ul class="pagination">
                                                         <li class="disabled"><a href="#">&laquo;</a></li>
                                                         <li class="active"><a href="#">1</a></li>
-                                                        <li><a href="#">2</a></li>
-                                                        <li><a href="#">3</a></li>
-                                                        <li><a href="#">4</a></li>
-                                                        <li><a href="#">5</a></li>
-                                                        <li><a href="#">&raquo;</a></li>
+                                              
                                                     </ul>
                                                     <!-- F Pagination -->
                                                 </div>
@@ -79,42 +60,22 @@
                                             
                                             <div class="col-md-offset custyle">
                                                     <table class="table table-striped custab">
+                                                    <c:forEach items="${docVIDEO}" var="video">
+                                            		 
                                                         <tr>
-                                                        	<td><img src="images/icon-video-document.png" width="40" alt=""></td>
-                                                            <td>Sifaka</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Voir la video</a></td>
+                                                        	<td><img src="${resourcesPath}/images/icon-video-document.png" alt=""></td>
+                                                            <td><c:out	value="${video.filename}" /></td>
+                                                            <td class="text-center">
+                                                            <c:url var="videoPageUrl" value="/files/${video.id}"/>
+                                                            <a class='btn btn-info btn-xs' href="${videoPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
                                                         </tr>
-                                                        <tr>
-                                                        	<td><img src="images/icon-video-document.png" width="40" alt=""></td>
-                                                            <td>Lemuriens</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Voir la video</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                        	<td><img src="images/icon-video-document.png" width="40" alt=""></td>
-                                                            <td>Madagascar</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Voir la video</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                        	<td><img src="images/icon-video-document.png" width="40" alt=""></td>
-                                                            <td>Lorem ipsum dolor not</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Voir la video</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                        	<td><img src="images/icon-video-document.png" width="40" alt=""></td>
-                                                            <td>Plage de Madagascar</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Voir la video</a></td>
-                                                        </tr>
+                                                        </c:forEach>
                                                     </table>
                                                     
                                                     <!-- D Pagination -->
                                                     <ul class="pagination">
                                                         <li class="disabled"><a href="#">&laquo;</a></li>
                                                         <li class="active"><a href="#">1</a></li>
-                                                        <li><a href="#">2</a></li>
-                                                        <li><a href="#">3</a></li>
-                                                        <li><a href="#">4</a></li>
-                                                        <li><a href="#">5</a></li>
-                                                        <li><a href="#">&raquo;</a></li>
                                                     </ul>
                                                     <!-- F Pagination -->
                                                 </div>
@@ -126,42 +87,23 @@
                                             <div class="txt-content">
                                                <div class="col-md-offset custyle">
                                                 	<table class="table table-striped custab">
+                                                	 <c:forEach items="${docAUDIO}" var="audio">
+                                            		 
                                                         <tr>
-                                                        	<td><img src="images/icon-audio.png" alt=""></td>
-                                                            <td>Sifaka</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
+                                                        	<td><img src="${resourcesPath}/images/icon-audio.png" alt=""></td>
+                                                            <td><c:out	value="${audio.filename}" /></td>
+                                                            <td class="text-center">
+                                                            <c:url var="audioPageUrl" value="/files/${audio.id}"/>
+                                                            <a class='btn btn-info btn-xs' href="${audioPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
                                                         </tr>
-                                                        <tr>
-                                                        	<td><img src="images/icon-audio.png" alt=""></td>
-                                                            <td>Lemuriens</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                        	<td><img src="images/icon-audio.png" alt=""></td>
-                                                            <td>Madagascar</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                        	<td><img src="images/icon-audio.png" alt=""></td>
-                                                            <td>Lorem ipsum dolor not</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                        	<td><img src="images/icon-audio.png" alt=""></td>
-                                                            <td>Plage de Madagascar</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
-                                                        </tr>
+                                                        </c:forEach>
+                                                        
                                                     </table>
                                                     
                                                     <!-- D Pagination -->
                                                     <ul class="pagination">
                                                         <li class="disabled"><a href="#">&laquo;</a></li>
                                                         <li class="active"><a href="#">1</a></li>
-                                                        <li><a href="#">2</a></li>
-                                                        <li><a href="#">3</a></li>
-                                                        <li><a href="#">4</a></li>
-                                                        <li><a href="#">5</a></li>
-                                                        <li><a href="#">&raquo;</a></li>
                                                     </ul>
                                                     <!-- F Pagination -->
                                                 </div>
@@ -174,24 +116,21 @@
                                     			<div class="col-md-offset custyle">
                                             		<table class="table table-striped custab">
                                             		 <c:forEach items="${docAUTRES}" var="publication">
-                                            		 </c:forEach>
+                                            		 
                                                         <tr>
+                                                        	<td><img src="${resourcesPath}/images/icon-thema.png" alt=""></td>
                                                             <td><c:out	value="${publication.filename}" /></td>
                                                             <td class="text-center">
-                                                            <c:url var="publicationPageUrl" value="/files/${publication.filename}"/>
+                                                            <c:url var="publicationPageUrl" value="/files/${publication.id}"/>
                                                             <a class='btn btn-info btn-xs' href="${publicationPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
                                                         </tr>
+                                                        </c:forEach>
                                                     </table>
                                                     
                                                     <!-- D Pagination -->
                                                     <ul class="pagination">
                                                         <li class="disabled"><a href="#">&laquo;</a></li>
                                                         <li class="active"><a href="#">1</a></li>
-                                                        <li><a href="#">2</a></li>
-                                                        <li><a href="#">3</a></li>
-                                                        <li><a href="#">4</a></li>
-                                                        <li><a href="#">5</a></li>
-                                                        <li><a href="#">&raquo;</a></li>
                                                     </ul>
                                                     <!-- F Pagination -->
                                                 </div>
