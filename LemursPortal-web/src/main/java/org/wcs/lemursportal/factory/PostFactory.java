@@ -28,13 +28,13 @@ public abstract class PostFactory {
 			form.setParentId(post.getParentId());
 			form.setTitle(post.getTitle());
 //			form.set
-			if(post.getDocuments() != null){
-				List<String> attachments = new ArrayList<>();
-				for(Document doc: post.getDocuments()){
-					attachments.add(doc.getUrl());
-				}
-				form.setAttachments(attachments);
-			}
+//			if(post.getDocuments() != null){
+//				List<String> attachments = new ArrayList<>();
+//				for(Document doc: post.getDocuments()){
+//					attachments.add(doc.getUrl());
+//				}
+//				form.setAttachments(attachments);
+//			}
 		}
 		return form;
 	}
@@ -60,7 +60,7 @@ public abstract class PostFactory {
 //					doc.setType(type);
 					docs.add(doc);
 				}
-				entity.setDocuments(docs);
+				//entity.setDocuments(docs);
 			}
 		}
 		return entity;

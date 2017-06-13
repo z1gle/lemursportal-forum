@@ -108,7 +108,10 @@ public class PostServiceImpl implements PostService {
 					break;
 				}
 			}
+			post.getDocument().setType(type);
+			post.getDocument().setTypeId(type.getId());
 		}
+		post.setId(null);
 		postRepository.insert(post);
 		
 		/* Notification */

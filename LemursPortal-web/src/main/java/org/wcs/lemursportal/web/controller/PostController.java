@@ -101,13 +101,13 @@ public class PostController extends BaseController{
 	                doc.setCreationDate(now);
 	                doc.setUrl("/" + "resources" + "/" + "upload"+ "/" + filename);
 	                doc.setAuthorId(currentUser.getId());
-//	                post.setDocument(doc);
+	                post.setDocument(doc);
 	               // System.out.println("filefile : " + context.getRealPath("/")+ File.separator +filename);
 	            } catch (Exception e) {
 	                return "You failed to upload " + filename + " => " + e.getMessage();
 	            }
 	        } else {
-	            //
+	            System.out.println("filefile empty");
 	        }
 		
 		//
@@ -159,7 +159,10 @@ public class PostController extends BaseController{
 		if(results.hasErrors()){
 			return "forward:getFormPost";
 		}
+		Integer id = post.getId();
+		post.setParentId(id);
+		post.setTitle("");
 		postService.insert(post, authentication.getName());
-		return "redirect:/post/show/"+post.getId();
+		return "redirect:/post/show/"+id;
 	}
 }

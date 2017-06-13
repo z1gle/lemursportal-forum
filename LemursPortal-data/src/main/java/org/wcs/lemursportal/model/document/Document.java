@@ -23,8 +23,8 @@ import org.wcs.lemursportal.model.user.UserInfo;
  * @author Mikajy <mikajy401@gmail.com>
  *
  */
-@Entity
-@Table(name="document")
+/*@Entity
+@Table(name="document")*/
 public class Document implements Serializable {
 	/**
 	 * 

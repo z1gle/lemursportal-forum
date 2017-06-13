@@ -48,7 +48,7 @@
 									<c:url value="/secured/post/reponse" var="formAction"></c:url>
 		                            <form:form  class="create-quest-form" modelAttribute="post" action="${formAction}"  method="POST"   >
 		                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-										<form:input type="hidden" path="id" value="${post.id}"/>
+										<form:input type="hidden" path="id" value="${post.id}"/> <form:input type="hidden" path="thematiqueId" value="${post.thematiqueId}"/>
 		                              <div class="form-group">                                
 										<form:textarea path="body" class="editor form-control" rows="3"/>
 		                              </div>                             
