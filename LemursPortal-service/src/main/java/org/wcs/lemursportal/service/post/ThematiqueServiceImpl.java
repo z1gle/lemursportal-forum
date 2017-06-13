@@ -15,6 +15,7 @@ import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.post.ThematiqueCrudRepository;
 import org.wcs.lemursportal.service.common.GenericCRUDServiceImpl;
+import org.wcs.lemursportal.service.notification.NotificationService;
 import org.wcs.lemursportal.service.user.UserInfoService;
 
 /**
@@ -31,6 +32,8 @@ public class ThematiqueServiceImpl extends
 	private ThematiqueCrudRepository thematiqueCrudRepository;
 	@Autowired
 	private UserInfoService userInfoService;
+	@Autowired 
+	NotificationService notificationService;	 
 
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.service.common.GenericCRUDServiceImpl#getJpaRepository()
@@ -62,6 +65,7 @@ public class ThematiqueServiceImpl extends
 			persistentEntity.setLibelle(thematique.getLibelle());
 			persistentEntity.setDescription(thematique.getDescription());
 			this.thematiqueCrudRepository.save(persistentEntity);
+//			notificationService.saveThematiqueNotification(thematique);
 			return persistentEntity;
 		}else{
 			//Création
@@ -74,6 +78,7 @@ public class ThematiqueServiceImpl extends
 				throw new RegistrationException(RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION);
 			}
 			thematiqueCrudRepository.save(thematique);
+			notificationService.saveThematiqueNotification(thematique);
 			return thematique;
 		}
 	}

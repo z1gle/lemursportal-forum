@@ -54,7 +54,7 @@ public class ExpertController extends BaseController {
 		if(idExpert == null){
 			return "redirect:/experts";
 		}
-		UserInfo userInfo = userInfoService.getById(idExpert);
+		UserInfo userInfo = userInfoService.getExpertById(idExpert);
 		if(userInfo == null){
 			return "redirect:/experts";
 		}

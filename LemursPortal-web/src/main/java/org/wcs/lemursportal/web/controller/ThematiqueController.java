@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +30,7 @@ import org.wcs.lemursportal.repository.post.ThematiqueRepository;
 import org.wcs.lemursportal.repository.user.UserTypeRepository;
 import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
+import org.wcs.lemursportal.web.validator.ThematiqueValidator;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>
@@ -46,6 +46,8 @@ public class ThematiqueController extends BaseController{
 	@Autowired private PostService postService;
 	@Autowired
 	private UserTypeRepository userTypeRepository;
+	@Autowired
+	ThematiqueValidator thematiqueValidator;
 	
 
 	@Autowired
@@ -90,8 +92,9 @@ public class ThematiqueController extends BaseController{
 	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
 	public String submit(Authentication authentication, Model model, 
 			@ModelAttribute Thematique thematique, 
-			BindingResult results){
-		ValidationUtils.rejectIfEmptyOrWhitespace(results, "libelle", "validation.mandatory");
+			BindingResult results)
+	{
+		thematiqueValidator.validate(thematique, results);
 		if(results.hasErrors()){
 			return "forward:thematique-form";
 		}

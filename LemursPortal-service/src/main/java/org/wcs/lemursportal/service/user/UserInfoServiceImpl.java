@@ -130,4 +130,14 @@ public class UserInfoServiceImpl implements UserInfoService {
 		return new PageImpl<>(results, pageable, results.size());
 	}
 
+	/* (non-Javadoc)
+	 * @see org.wcs.lemursportal.service.user.UserInfoService#getExpertById(java.lang.Integer)
+	 */
+	@Override
+	@Transactional(readOnly=true)
+	public UserInfo getExpertById(Integer id) {
+		UserInfo user = userRepository.findOne(id);
+		return user;
+	}
+
 }

@@ -119,7 +119,7 @@ public class PostServiceImpl implements PostService {
 		postRepository.insert(post);
 		
 		/* Notification */
-		//notificationService.savePostNotification(post);
+		notificationService.savePostNotification(post);
 	}
 	
 	private  String getExtension(String fileName) {		

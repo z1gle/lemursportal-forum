@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.wcs.lemursportal.model.notification.Notification;
 import org.wcs.lemursportal.model.user.UserInfo;
-import org.wcs.lemursportal.repository.notification.NotificationRepository;
+import org.wcs.lemursportal.service.notification.NotificationService;
 import org.wcs.lemursportal.service.user.UserInfoService;
 
 /**
@@ -20,12 +20,13 @@ import org.wcs.lemursportal.service.user.UserInfoService;
 public class NotificationController extends BaseController{
 	
 	@Autowired UserInfoService userInfoService;
-	@Autowired NotificationRepository notificationRepository;
+//	@Autowired NotificationRepository notificationRepository;
+	@Autowired NotificationService notificationService;
 	
 	@GetMapping(value="/secured/notification/list")
 	public String list(Model model, Authentication authentication){
 		UserInfo currentUser = userInfoService.getByLogin(authentication.getName());
-		List<Notification> notifications = 	notificationRepository.findAllByUser(currentUser.getId());
+		List<Notification> notifications = 	notificationService.getUserNotifications(currentUser.getId());
 		model.addAttribute("notifications", notifications);
 //		int nbDeleted = notificationRepository.deleteByUser(currentUser.getId());
 		return "notification-list";

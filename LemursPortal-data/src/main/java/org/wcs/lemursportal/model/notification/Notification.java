@@ -48,6 +48,9 @@ public class Notification implements Serializable {
 	@Column(name="date", nullable=true)
 	private Date date;
 	
+	@Column(name="has_bean_read")
+	private Boolean hasBeenRead;
+	
 	/**
 	 * 
 	 */
@@ -131,6 +134,14 @@ public class Notification implements Serializable {
 
 	public void setNotificationType(NotificationType notificationType) {
 		this.notificationType = notificationType;
+	}
+
+	public Boolean getHasBeenRead() {
+		return hasBeenRead;
+	}
+
+	public void setHasBeenRead(Boolean hasBeenRead) {
+		this.hasBeenRead = hasBeenRead;
 	}
 	
 	

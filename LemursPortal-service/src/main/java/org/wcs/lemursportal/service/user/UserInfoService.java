@@ -42,6 +42,9 @@ public interface UserInfoService {
 	UserInfo getById(Integer id);
 	
 	
+	UserInfo getExpertById(Integer id);
+	
+	
 	/**
 	 * 
 	 * @param user

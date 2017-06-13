@@ -19,9 +19,27 @@
 			<!-- D Sujet -->
 			<div class="forum-item">
 				<div class="row">
-					<c:url value="/post/show/${notification.questionId}" var="questionUrl"/>
-					<c:url value="/postsParThematique/${notification.thematiqueId}" var="thematiqueUrl"/>
-					<a href="${questionUrl}">Une nouvelle question</a> a été ajouté dans le Thematique <a href="${thematiqueUrl}">${notification.thematique.libelle}</a> 
+				<c:choose>
+					<c:when test="${notification.responseId != null}">
+						<c:url value="/post/show/${notification.questionId}" var="questionUrl"/>
+						<c:url value="/postsParThematique/${notification.thematiqueId}" var="thematiqueUrl"/>
+							<fmt:formatDate pattern="${datetimeFormat}" value="${notification.date}" />: 
+							On a répondu à la question <a href="${questionUrl}">${notification.question.title}</a> dans le Thematique <a href="${thematiqueUrl}">${notification.thematique.libelle}</a>
+					</c:when>
+					<c:when test="${notification.questionId != null}">
+						<c:url value="/post/show/${notification.questionId}" var="questionUrl"/>
+						<c:url value="/postsParThematique/${notification.thematiqueId}" var="thematiqueUrl"/>
+						<fmt:formatDate pattern="${datetimeFormat}" value="${notification.date}" />:
+						<a href="${questionUrl}">Une nouvelle question</a> a été ajouté dans le Thematique <a href="${thematiqueUrl}">${notification.thematique.libelle}</a>
+					</c:when>
+					<c:when test="${notification.thematiqueId != null}">
+						<fmt:formatDate pattern="${datetimeFormat}" value="${notification.date}" />:
+						La thematique <a href="">${notification.thematique.libelle}</a> à été créée !
+					</c:when>
+					<c:otherwise>
+						
+					</c:otherwise>
+				</c:choose>	 
 				</div>
 			</div>
 			<!-- F Sujet -->

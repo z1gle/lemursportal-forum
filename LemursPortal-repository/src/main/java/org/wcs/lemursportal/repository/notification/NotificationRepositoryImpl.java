@@ -51,9 +51,10 @@ public class NotificationRepositoryImpl implements NotificationRepository {
 		List<Notification> notifications = typedQuery.getResultList();*/
 		StringBuilder sb = new StringBuilder("select n from Notification n ")
 			.append("left join fetch n.thematique left join fetch n.question ")
-			.append("where n.userId=:userId order by n.date desc ");
+			.append("where n.userId=:userId and (n.hasBeenRead is null or n.hasBeenRead =:notRead) order by n.date desc ");
 		TypedQuery<Notification> query = em.createQuery(sb.toString(), Notification.class);
 		query.setParameter("userId", userId);
+		query.setParameter("notRead", false);
 		List<Notification> notifications = query.getResultList();
 		return notifications;
 	}
@@ -63,8 +64,9 @@ public class NotificationRepositoryImpl implements NotificationRepository {
 	 */
 	@Override
 	public Long countByUser(Integer userId) {
-		TypedQuery<Long> query = em.createQuery("select count(n.id) from Notification n where n.userId=:userId", Long.class);
+		TypedQuery<Long> query = em.createQuery("select count(n.id) from Notification n where n.userId=:userId and (n.hasBeenRead is null or n.hasBeenRead =:notRead)", Long.class);
 		query.setParameter("userId", userId);
+		query.setParameter("notRead", false);
 		Long count = query.getSingleResult();
 		return count;
 	}
