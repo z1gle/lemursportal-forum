@@ -99,6 +99,7 @@ public class PostController extends BaseController{
 	                Document doc  = new Document();
 	                doc.setAuthor(currentUser);
 	                doc.setCreationDate(now);
+	                doc.setFilename(filename);
 	                doc.setUrl("/" + "resources" + "/" + "upload"+ "/" + filename);
 	                doc.setAuthorId(currentUser.getId());
 	                post.setDocument(doc);

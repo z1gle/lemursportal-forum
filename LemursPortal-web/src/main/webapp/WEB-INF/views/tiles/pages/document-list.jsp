@@ -173,25 +173,13 @@
                                             <div class="txt-content">
                                     			<div class="col-md-offset custyle">
                                             		<table class="table table-striped custab">
+                                            		 <c:forEach items="${docAUTRES}" var="publication">
+                                            		 </c:forEach>
                                                         <tr>
-                                                            <td>Sifaka-de-Madagascar.pdf</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Tout-savoir-sur-les-Lemuriens.docx</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Madagascariens-tome-3.docx</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Statistique-lemuriens.xls</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Plage-de-Madagascar2017-avril-05.pdf</td>
-                                                            <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Télécharger</a></td>
+                                                            <td><c:out	value="${publication.filename}" /></td>
+                                                            <td class="text-center">
+                                                            <c:url var="publicationPageUrl" value="/files/${publication.filename}"/>
+                                                            <a class='btn btn-info btn-xs' href="${publicationPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
                                                         </tr>
                                                     </table>
                                                     

@@ -31,6 +31,9 @@ public class Document {
 	@Column(name="url")
 	private String url; 
 	
+	@Column(name="filename")
+	private String filename; 
+	
 	@Column(name="date_creation", nullable=false)
 	private Date creationDate;
 
@@ -95,6 +98,14 @@ public class Document {
 
 	public void setType(DocumentType type) {
 		this.type = type;
+	}
+	
+	public String getFilename() {
+		return filename;
+	}
+	
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 	
 	

@@ -62,6 +62,10 @@ public class PostServiceImpl implements PostService {
 		private DOCTYPE(int value) {
 			this.value = value;
 		}
+		
+		public int getValue() {
+			return value;
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -115,7 +119,7 @@ public class PostServiceImpl implements PostService {
 		postRepository.insert(post);
 		
 		/* Notification */
-		notificationService.savePostNotification(post);
+		//notificationService.savePostNotification(post);
 	}
 	
 	private  String getExtension(String fileName) {		

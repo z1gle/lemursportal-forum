@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.wcs.lemursportal.model.document.Document;
+import org.wcs.lemursportal.model.post.Document;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.web.form.PostForm;
 
@@ -53,7 +53,7 @@ public abstract class PostFactory {
 				for(String url: form.getAttachments()){
 					Document doc = new Document();
 					doc.setUrl(url);
-					doc.setDateUpload(new Date());
+					//doc.setDateUpload(new Date());
 //					doc.setOwnerId(currentUser.getId());
 //					doc.setOwner(currentUser);
 //					if(form.getFile() != null && form.getFile().getContentType())
