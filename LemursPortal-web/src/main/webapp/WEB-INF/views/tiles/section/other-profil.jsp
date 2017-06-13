@@ -5,6 +5,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
 <spring:message code="date.format" var="dateFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -47,7 +48,7 @@
                     
                 
                     <div class="image text-center">
-                        <img src="${resourcesPath}/images/user-profil.png" alt="#" class="img-responsive img-circle">
+                    <user:profilImageGrand src="${userInfo.photoProfil}" cssClass="img-responsive img-circle"/>
                         <!-- D S'affiche si un autre utilisateur visualise son profil -->
                         <a href="#envoi-msg" class="send" role="button" class="btn btn-custom" data-toggle="modal" title="Envoyer un message">
                                 <i class="fa fa-envelope"></i>
