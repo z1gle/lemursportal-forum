@@ -35,17 +35,17 @@
                                   <label><!-- spring:message code="formation.description"/-->Déscription<sup>*</sup></label>
                                   <textarea rows="5" name="description">${formation.description}</textarea>
                                   
-                                  <label>Ajouter un fichier</label>
-                                  <input type="file" class="fichier-formation" />
-                                  
+<!--                                   <label>Ajouter un fichier</label> -->
+<!--                                   <input type="file" class="fichier-formation" /> -->
+<!--                                   <label>Contenu de la formation<sup>*</sup></label><br /> -->
                                 </div>
                                 
                                 <div class="forma-style">
                                   
-<!--                                   <label>Contenu de la formation<sup>*</sup></label> -->
+                                  
                                   <textarea class="editor" name="body" rows="9">${formation.body}</textarea>
                                   </div><div>
-                                  <button type="submit" class="right">Ajouter</button>
+                                  <button type="submit" class="right">Enregistrer</button>
                                </div>
                             </div>
 		              	</form:form>

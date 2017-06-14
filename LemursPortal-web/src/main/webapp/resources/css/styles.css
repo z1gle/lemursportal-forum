@@ -69,6 +69,12 @@ body.int {
   text-align:center;
 }
 
+/* editor debug */
+div.note-editable {
+  text-align:left;
+  background-color:#fff!important;
+}
+
 .form input {
   font-family: 'montserratregular';
   outline:0;

@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,9 +31,11 @@ import org.wcs.lemursportal.web.constants.URL;
 public class FileUploadController {
 
 	
-	private static final String FORMATION_IMAGES_PATH = "D:/Dossier/lemursPortal-master/LemursPortal-web/src/main/webapp/resources/images/upload/";
+	private static final String FORMATION_IMAGES_PATH = "images/upload/";
 	private static final String JPG_CONTENT_TYPE = "image/jpeg";
 	private static final String PNG_CONTENT_TYPE = "image/png";
+	
+	@Autowired ServletContext context;
 
 	/**
 	 * Upload image
@@ -52,7 +56,8 @@ public class FileUploadController {
 				throw new UnacceptableFileFormatException();
 			}
 
-			File file = new File(FORMATION_IMAGES_PATH + imageName);
+			String fileLocation = context.getRealPath("/resources/") + FORMATION_IMAGES_PATH;
+			File file = new File(fileLocation + imageName);
 			FileUtils.writeByteArrayToFile(file, image.getBytes());
 		}
 
@@ -66,8 +71,8 @@ public class FileUploadController {
 	public void showImg(@PathVariable("name") String imageName,
 			@PathVariable("type") String type, HttpServletResponse response)
 			throws IOException {
-		
-		try (InputStream in = new FileInputStream(FORMATION_IMAGES_PATH
+		String fileLocation = context.getRealPath("/resources/") + FORMATION_IMAGES_PATH;
+		try (InputStream in = new FileInputStream(fileLocation
 				+ imageName + "." + type)) {
 			FileCopyUtils.copy(in, response.getOutputStream());
 		}

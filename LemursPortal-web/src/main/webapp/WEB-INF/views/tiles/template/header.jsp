@@ -32,7 +32,9 @@
 	                    		<c:url var="viewProfilUrl" value="/user/profil"></c:url>
 		                        <a href="${viewProfilUrl}">
 		                        <user:profilImage src="${currentUser.photoProfil}" cssClass="img-circle"/>
-		                        <spring:message code="home.monprofile"/></a>
+<%-- 		                        <spring:message code="home.monprofile"/> --%>
+		                        <sec:authentication property="principal.username" />
+		                        </a>
 		                    </li>
                     		<li class="dropdown">
 		                        <a href="#" class="notif dropdown-toggle" data-toggle="dropdown"><spring:message code="home.notification"/><span class="rond">12</span></a>
