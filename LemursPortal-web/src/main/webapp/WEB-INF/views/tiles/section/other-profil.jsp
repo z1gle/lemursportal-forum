@@ -48,7 +48,7 @@
                     
                 
                     <div class="image text-center">
-                    <user:profilImageGrand src="${userInfo.photoProfil}" cssClass="img-responsive img-circle"/>
+                    <user:profilImage src="${userInfo.photoProfil}" cssClass="img-responsive img-circle"/>
                         <!-- D S'affiche si un autre utilisateur visualise son profil -->
                         <a href="#envoi-msg" class="send" role="button" class="btn btn-custom" data-toggle="modal" title="Envoyer un message">
                                 <i class="fa fa-envelope"></i>

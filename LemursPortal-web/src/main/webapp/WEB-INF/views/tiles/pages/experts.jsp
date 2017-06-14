@@ -46,7 +46,7 @@
                             <div class="col-md-3">
                                 <div class="expert-sidebar">
                                     <div class="image expert-userpic">
-                                    <user:profilImageGrand src="${expert.photoProfil}" cssClass="img-responsive"/>
+                                    <user:profilImage src="${expert.photoProfil}" cssClass="img-responsive"/>
                           
                                         <a href="#envoi-msg" class="send" role="button" class="btn btn-custom" data-toggle="modal" title="Envoyer un message">
                                             <i class="fa fa-envelope"></i>
