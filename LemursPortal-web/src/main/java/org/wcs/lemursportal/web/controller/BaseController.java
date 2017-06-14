@@ -1,23 +1,23 @@
 package org.wcs.lemursportal.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.TopQuestion;
 import org.wcs.lemursportal.model.post.TopThematique;
 import org.wcs.lemursportal.model.user.UserInfo;
+import org.wcs.lemursportal.repository.notification.NotificationRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
 import org.wcs.lemursportal.service.post.PostService;
@@ -38,23 +38,32 @@ public class BaseController {
 	@Autowired PostRepository postRepository;
 	@Autowired PostService postService;
 	@Autowired UserInfoService userInfoService;
+	@Autowired
+	private SessionRegistry sessionRegistry;
+	@Autowired NotificationRepository notificationRepository;
 	
 	public static final int TOP_QUESTIONS_PAGE_SIZE = 20;
 	public static final int TOP_THEMATIQUES_PAGE_SIZE = 20;
+	public static final int TOP_DOCUMENT_PAGE_SIZE = 20;
 	public static final int DERNIERES_QUESTIONS_PAGE_SIZE = 20;
 //	public static final String USER_PROFIL_IMAGE_RESOURCE_PATH = "/resources/profil/";
 	public static final String USER_PROFIL_IMAGE_RESOURCE_PATH = "/profil/";
 //	public static final String FILE_UPLOAD_LOCATION="G:/Rebioma/lemursPortal/workspaces/LemursPortal/LemursPortal-web/src/main/webapp/resources/" + USER_PROFIL_IMAGE_RESOURCE_PATH ;//TODO: à externaliser !
 	
-	public void setPagination(Integer page, Page<?> pageable, Model model){
-		int current = pageable.getNumber() + 1;
-	    int begin = Math.max(1, current - 3);
-	    int end = Math.min(begin + 6, pageable.getTotalPages());
+	
+	@ModelAttribute("allLogedUsers")
+	public List<String> getUsersFromSessionRegistry() {
+		List<Object> principals = sessionRegistry.getAllPrincipals();
+		List<String> usersNamesList = new ArrayList<String>();
 
-		model.addAttribute("paginationCurrent", current);
-		model.addAttribute("paginationBegin", begin);
-		model.addAttribute("paginationEnd", end);
-		
+		for (Object principal: principals) {
+		    if (principal instanceof User) {
+		        usersNamesList.add(((User) principal).getUsername());
+		    }else{
+		    	usersNamesList.add((String)principal);
+		    }
+		}
+		return usersNamesList;
 	}
 	
 	@ModelAttribute("topQuestionsPage")
@@ -65,14 +74,13 @@ public class BaseController {
 			page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
 		}
 		Page<TopQuestion> pageResult = postService.getTopQuestions(new PageRequest(page, TOP_QUESTIONS_PAGE_SIZE));
-		setPagination(page, pageResult, model);
 		return pageResult;
 	}
 	
 	@ModelAttribute("topThematiques")
 	public List<TopThematique> getTopThematiques(){
-		List<TopThematique> t = thematiqueRepository.findTopThematique(TOP_THEMATIQUES_PAGE_SIZE);
-		return t;
+		Page<TopThematique> page = thematiqueRepository.findTopThematique(new PageRequest(0, TOP_THEMATIQUES_PAGE_SIZE));
+		return page.getContent();
 	}
 	
 	@ModelAttribute("lastestPosts")
@@ -90,4 +98,16 @@ public class BaseController {
 		}
 		return userInfo;
 	}
+	
+	@ModelAttribute("nombreNotification")
+	public Long getNombreNotification(Authentication authentication){
+		Long nbNotification = 0L;
+		if(authentication != null){
+			String login = authentication.getName();
+			UserInfo userInfo = userInfoService.getByLogin(login);
+			nbNotification = notificationRepository.countByUser(userInfo.getId());
+		}
+		return nbNotification;
+	}
+	
 }

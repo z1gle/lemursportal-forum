@@ -53,6 +53,33 @@
 			</definition>           
        </put-attribute>
    </definition>
+   <!-- Thematique -->
+   <definition name="thematique-form" extends="base-definition">  
+       <put-attribute name="title" value="Nouvel thematique" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/section/thematique-form.jsp" />
+   </definition>
+   
+   <!-- Thematique -->
+   <definition name="thematique-list" extends="base-definition">  
+       <put-attribute name="title" value="Nouvel thematique" />  
+       <put-attribute name="body">
+       		<definition template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
+			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/thematique-list.jsp" />
+			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+			</definition> 
+       </put-attribute>
+   </definition>
+   
+   <!-- Notification -->
+   <definition name="notification-list" extends="base-definition">
+       <put-attribute name="title" value="List des notifications" />  
+       <put-attribute name="body">
+       		<definition template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
+			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/notification-list.jsp" />
+			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+			</definition> 
+       </put-attribute>
+   </definition>
    
    <definition name="postsbythematique" extends="base-definition">  
        <put-attribute name="title" value="Les messages par thématique" />  
@@ -98,7 +125,7 @@
 	
     <definition name="getFormPost" extends="base-definition">  
        <put-attribute name="title" value="Create Post" />  
-       <put-attribute name="body" value="getFormPost.body" />
+       <put-attribute name="body" value="/WEB-INF/views/tiles/pages/post-form.jsp" />
    </definition>
    <definition name="getFormPost.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
 	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
@@ -120,7 +147,20 @@
        <put-attribute name="body" value="/WEB-INF/views/tiles/section/edit-users-roles.jsp"/>
    </definition>
    
-   <!-- formation -->
+   <!-- DOCUMENT -->
+    <definition name="document-list" extends="base-definition">  
+       <put-attribute name="title" value="Documents" />  
+       <put-attribute name="body" value="document.body" />
+   </definition>
+   
+	<definition name="document.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+	  <put-attribute name="left" value="/WEB-INF/views/tiles/pages/document-list.jsp" />
+	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+	</definition>
+   
+   
+      <!-- formation -->
    <definition name="formation" extends="base-definition">  
        <put-attribute name="title" value="Liste des Formations" />  
        <put-attribute name="body" value="formation.body" />
@@ -130,7 +170,7 @@
 	  <put-attribute name="left" value="/WEB-INF/views/tiles/formation/list.jsp" />
 	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
 	</definition>
-   
+
    <!-- new-formation -->
    <definition name="edit-formation" extends="base-definition">  
        <put-attribute name="title" value="Liste des Formations" />    

@@ -2,6 +2,7 @@ package org.wcs.lemursportal.model.post;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.wcs.lemursportal.model.user.UserInfo;
@@ -54,8 +56,8 @@ public class Thematique implements Serializable {
 	@JoinColumn(columnDefinition="integer", name="modified_by", nullable=true)
 	private UserInfo modifiedBy;
 	
-//	@OneToMany(mappedBy="thematique")
-//	private List<Post> posts;
+	@OneToMany(mappedBy="thematique")
+	private List<Post> questions;
 	
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
@@ -136,4 +138,10 @@ public class Thematique implements Serializable {
 	    public int hashCode() {
 	        return Objects.hash(id);
 	    }
+	public List<Post> getQuestions() {
+		return questions;
+	}
+	public void setQuestions(List<Post> questions) {
+		this.questions = questions;
+	}
 }

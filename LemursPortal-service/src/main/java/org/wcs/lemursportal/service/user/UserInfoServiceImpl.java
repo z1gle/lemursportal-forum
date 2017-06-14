@@ -20,8 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.exception.RegistrationException;
-import org.wcs.lemursportal.helper.pagination.PaginationRequest;
-import org.wcs.lemursportal.helper.pagination.PaginationResponse;
 import org.wcs.lemursportal.model.authentication.UserRole;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.model.user.UserType;
@@ -130,6 +128,16 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public Page<UserInfo> findByPagination(Pageable pageable) {
 		final List<UserInfo> results = userRepository.findAll();
 		return new PageImpl<>(results, pageable, results.size());
+	}
+
+	/* (non-Javadoc)
+	 * @see org.wcs.lemursportal.service.user.UserInfoService#getExpertById(java.lang.Integer)
+	 */
+	@Override
+	@Transactional(readOnly=true)
+	public UserInfo getExpertById(Integer id) {
+		UserInfo user = userRepository.findOne(id);
+		return user;
 	}
 
 }

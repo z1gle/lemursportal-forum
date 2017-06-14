@@ -33,25 +33,25 @@ public class PostView implements Serializable {
 	@Column(name="id")
 	private Long id;
 	
-	@Column(name="post_id", insertable=true, updatable=true)
+	@Column(name="post_id", nullable=false, insertable=true, updatable=true)
 	private Integer postId;
 	
-	@ManyToOne(cascade=CascadeType.REMOVE)
-	@JoinColumn(name="post_id", insertable=false, updatable=false)
-	private Post post;
-	
-	@Column(name="thematique_id")
+	@Column(name="thematique_id", nullable=false)
 	private Integer thematiqueId;
-	
-	@ManyToOne(cascade=CascadeType.REMOVE)
-	@JoinColumn(name="thematique_id", insertable=false, updatable=false)
-	private Thematique thematique;
 
 	@Column(name="view_date", nullable=false)
 	private Date viewDate;
 	
-	@Column(name="view_by", nullable=false)
-	private String viewBy;
+	@Column(name="view_by", nullable=true)
+	private Integer viewBy;
+	
+	@ManyToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="post_id", nullable=false, insertable=false, updatable=false)
+	private Post post;
+	
+	@ManyToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="thematique_id", insertable=false, updatable=false)
+	private Thematique thematique;
 	
 	public Long getId() {
 		return id;
@@ -77,11 +77,23 @@ public class PostView implements Serializable {
 	public void setViewDate(Date viewDate) {
 		this.viewDate = viewDate;
 	}
-	public String getViewBy() {
+	public Integer getViewBy() {
 		return viewBy;
 	}
-	public void setViewBy(String viewBy) {
+	public void setViewBy(Integer viewBy) {
 		this.viewBy = viewBy;
+	}
+	public Post getPost() {
+		return post;
+	}
+	public void setPost(Post post) {
+		this.post = post;
+	}
+	public Thematique getThematique() {
+		return thematique;
+	}
+	public void setThematique(Thematique thematique) {
+		this.thematique = thematique;
 	}
 	
 }

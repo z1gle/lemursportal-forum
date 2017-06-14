@@ -38,8 +38,8 @@
                         			<c:out value="${role.libelle}"/> 
                         		</c:forEach>
                         	</i></td>
-                        <td>1564</td>
-                        <td>8975</td>
+                        <td></td>
+                        <td></td>
                         <td><fmt:formatDate pattern="${dateFormat}" value="${user.dateInscription}" /></td>
                         <td>
                         		<form:hidden path="userId"/>
@@ -47,7 +47,8 @@
                         			<form:options items="${userTypes}" itemValue="id" itemLabel="libelle"/>
                         		</form:select>	
                         </td>
-                        <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span><form:button value="valider">Valider</form:button></a> <a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Supprimer ce membre</a></td>
+                        <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span><form:button value="valider">Valider</form:button></a> 
+                        <!-- <a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Supprimer ce membre</a> --></td>
                     </tr>
                     
                         	</form:form>

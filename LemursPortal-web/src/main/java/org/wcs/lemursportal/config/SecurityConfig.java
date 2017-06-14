@@ -18,6 +18,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
@@ -47,12 +49,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//http.requiresChannel().anyRequest().requiresSecure();
 		//On securise les pages qui manipules des mots de passe
 		http.requiresChannel().antMatchers("/login**", "/**", "/formation**", "/authenticate**", "/signup**").requiresSecure();
-		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).sessionFixation().none();//on veut garder la même session pour le basculement des pages http<->https
+		http.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).sessionFixation().none() //on veut garder la même session pour le basculement des pages http<->https
+			.maximumSessions(1).sessionRegistry(sessionRegistry());
 		http.authorizeRequests()
 			.expressionHandler(defaultWebSecurityExpressionHandler())
 			//.antMatchers("/", "/favicon.ico", "/resources/**", "/signup", "/registration").permitAll()
 			.antMatchers("/admin/**").hasRole("ADMIN")
-			.antMatchers("/secure/**", "/user/**", "/logout/**").hasAnyRole("ADMIN", "MODERATEUR", "EXPERT", "USER")
+			.antMatchers("/secure/**", "/secured/**", "/user/**", "/logout/**").authenticated()
 			.anyRequest().permitAll()
 			.and().formLogin()
 						.loginPage("/login").permitAll()
@@ -67,6 +71,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     					.key("remember-me-key");
 //		http.csrf();
 		http.csrf().disable();
+	}
+	
+	@Bean
+	public SessionRegistry sessionRegistry() {
+	    return new SessionRegistryImpl();
 	}
 	
 	@Bean

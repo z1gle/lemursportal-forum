@@ -177,4 +177,10 @@ public class UserInfo implements IUserInfo {
 		this.photoProfil = photoProfil;
 	}
 	
+	public String getLabel(){
+		StringBuilder sb = new StringBuilder();
+		sb.append(getPrenom()).append(" ").append(getNom());
+		return sb.toString();
+	}
+	
 }

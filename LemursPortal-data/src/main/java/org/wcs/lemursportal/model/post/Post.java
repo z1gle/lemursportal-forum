@@ -33,10 +33,10 @@ public class Post implements Serializable {
 	@Column(name="id")
 	private Integer id;
 	
-	@Column(name="title", nullable=false)
+	@Column(name="title"/*, nullable=false*/)
 	private String title;
 	
-	@Column(name="contenu", nullable=true)
+	@Column(name="contenu"/*, nullable=true*/)
 	private String body;
 	
 	@Column(name="date_creation", nullable=false)
@@ -47,6 +47,13 @@ public class Post implements Serializable {
 	
 	@Column(name="parent_id", insertable=true, updatable=true, nullable=true)
 	private Integer parentId;
+	
+	@Column(name="document_id", insertable=true, updatable=true, nullable=true)
+	private Integer documentId;
+	
+	@ManyToOne(fetch=FetchType.LAZY, optional=true)
+	@JoinColumn(name="document_id", insertable=false, updatable=false)
+	private Document document = null;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="owner_id", insertable=false, updatable=false)
@@ -59,7 +66,11 @@ public class Post implements Serializable {
 	@OneToMany(mappedBy="parent")
 	private List<Post> children;
 	
+	@Column(name="thematique_id", nullable=false)
+	private Integer thematiqueId;
+	
 	@ManyToOne(cascade=CascadeType.REMOVE)
+	@JoinColumn(name="thematique_id", insertable=false, updatable=false)
 	private Thematique thematique;
 	
 	@Column(name="censored", nullable=true)
@@ -71,12 +82,15 @@ public class Post implements Serializable {
 	@ManyToOne(optional=true, fetch=FetchType.LAZY)
 	@JoinColumn(columnDefinition="integer", name="censored_by", nullable=true)
 	private UserInfo censoredBy;//l'utilisateur(moderateur) qui a bloqué ce POST
+	
+//	@ManyToMany(fetch=FetchType.EAGER)
+//	@JoinTable(
+//			name="message_document", 
+//			joinColumns = {@JoinColumn(name="id_message", referencedColumnName = "id")},
+//			inverseJoinColumns= {@JoinColumn(name = "id_document", referencedColumnName = "id")}
+//		)
+//	private List<Document> documents; //list of attachments
 
-	public String toString(){
-		if(getThematique()==null)
-			setThematique(new Thematique());
-		return "Title : " + getTitle() + "\n " + " Body: "+getBody() + " \n " + " Thematique :  " + getThematique().getId() + " - " + getThematique().getLibelle();
-	}
 	
 	public Integer getId() {
 		return id;
@@ -181,6 +195,45 @@ public class Post implements Serializable {
 	public void setParentId(Integer parentId) {
 		this.parentId = parentId;
 	}
+
+	public Integer getDocumentId() {
+		return documentId;
+	}
+
+	public void setDocumentId(Integer documentId) {
+		this.documentId = documentId;
+	}
+
+	public Document getDocument() {
+		return document;
+	}
+
+	public void setDocument(Document document) {
+		this.document = document;
+	}
+	
+	public String toString(){
+		if(getThematique()==null)
+			setThematique(new Thematique());
+		return "Title : " + getTitle() + "\n " + " Body: "+getBody() + " \n " + " Thematique :  " + getThematiqueId() + " - " + getThematique().getLibelle();
+	}
+
+//	public List<Document> getDocuments() {
+//		return documents;
+//	}
+//
+//	public void setDocuments(List<Document> documents) {
+//		this.documents = documents;
+//	}
+
+	public Integer getThematiqueId() {
+		return thematiqueId;
+	}
+
+	public void setThematiqueId(Integer thematiqueId) {
+		this.thematiqueId = thematiqueId;
+	}
+	
 	
 	
 

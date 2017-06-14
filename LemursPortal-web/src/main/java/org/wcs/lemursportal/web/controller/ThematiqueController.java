@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,14 +20,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wcs.lemursportal.exception.RegistrationException;
-import org.wcs.lemursportal.model.post.Post;
+import org.wcs.lemursportal.model.authentication.UserRole;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.post.TopQuestion;
 import org.wcs.lemursportal.model.post.TopThematique;
+import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
+import org.wcs.lemursportal.repository.user.UserTypeRepository;
 import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
+import org.wcs.lemursportal.web.validator.ThematiqueValidator;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>
@@ -42,6 +44,10 @@ public class ThematiqueController extends BaseController{
 	private ThematiqueService thematiqueService;
 	@Autowired private PostRepository postRepository;
 	@Autowired private PostService postService;
+	@Autowired
+	private UserTypeRepository userTypeRepository;
+	@Autowired
+	ThematiqueValidator thematiqueValidator;
 	
 
 	@Autowired
@@ -54,7 +60,7 @@ public class ThematiqueController extends BaseController{
 	public String create(Authentication authentication, Model model){
 		Thematique thematique = new Thematique();	
 		model.addAttribute(thematique);
-		return "post/thematique-form";
+		return "thematique-form";
 	}
 	
 	@GetMapping(value="/secured/thematique/{idThematique}")
@@ -65,38 +71,46 @@ public class ThematiqueController extends BaseController{
 		}
 		Thematique thematique = thematiqueService.findById(idThematique);
 		model.addAttribute(thematique);
-		return "post/thematique-form";
+		return "thematique-form";
 	}
 	
 	@GetMapping(value={"/thematique/list"})
-	public String list(Model model){
-		List<TopThematique>  listThematiques = thematiqueRepository.findAllThematique();
+	public String list(@RequestParam(required=false, defaultValue="0") Integer page, Model model){
+		if(page == null || page < 1){
+			page = 0;
+		}else{
+			page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+		}
+		Pageable pageable = new PageRequest(page, TOP_THEMATIQUES_PAGE_SIZE);
+		Page<TopThematique> topThematiquePage = thematiqueRepository.findTopThematique(pageable);
 		//Page<Thematique> page = thematiqueService.findAll(pageable);
-		model.addAttribute("allThematiques", listThematiques);
-		return "post/thematique-list";
+		model.addAttribute("topThematiquePage", topThematiquePage);
+		return "thematique-list";
 	}
 	
 	@PostMapping(value="/secured/thematique")
 	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
 	public String submit(Authentication authentication, Model model, 
 			@ModelAttribute Thematique thematique, 
-			BindingResult results){
-		ValidationUtils.rejectIfEmptyOrWhitespace(results, "libelle", "validation.mandatory");
+			BindingResult results)
+	{
+		thematiqueValidator.validate(thematique, results);
 		if(results.hasErrors()){
-			return "forward:post/thematique-form";
+			return "forward:thematique-form";
 		}
+		Thematique savedThematique = null;
 		try{
-			thematiqueService.saveOrUpdate(authentication.getName(), thematique);
+			savedThematique = thematiqueService.saveOrUpdate(authentication.getName(), thematique);
 		}catch(RegistrationException e){
 			if(e.getCode() == RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION){
 				results.rejectValue("login", "validation.thematique.exist");
-				return "forward:post/thematique-form";
+				return "forward:thematique-form";
 			}else{
-				return "forward:post/thematique-form";
+				return "forward:thematique-form";
 			}
 		}
 		
-		return "redirect:/secured/thematique/list";
+		return "redirect:/postsParThematique/" + savedThematique.getId();
 	}
 	
 	@RequestMapping(value="/postsParThematique/{idThematique}",method=RequestMethod.GET)
@@ -121,7 +135,12 @@ public class ThematiqueController extends BaseController{
 		model.addAttribute(thematique);
 //		model.addAttribute("postsBythematique", questionPage.getContent());
 		model.addAttribute("postsBythematiquePage", questionPage);
-		setPagination(page, questionPage, model);
 		return "postsbythematique";
+	}
+	
+	@ModelAttribute("experts")
+	public List<UserInfo> getListExperts(){
+		List<UserInfo> experts = userTypeRepository.findUsers(UserRole.EXPERT);
+		return experts;
 	}
 }

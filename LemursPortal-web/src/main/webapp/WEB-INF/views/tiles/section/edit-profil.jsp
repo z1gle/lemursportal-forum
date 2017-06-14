@@ -6,6 +6,7 @@
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <spring:message code="date.format" var="dateFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
@@ -18,7 +19,7 @@
                 <div class="forum-container page-profil">
     
                     <div class="page-title">
-                        <h2 class="profil">Edition Profil</h2>
+                        <h2 class="profil"><spring:message code="profil.edit.title"/></h2>
                     </div>
     				<!-- D Poser quest -->
                     <div class="cadre">
@@ -32,35 +33,35 @@
                                   <user:profilImage src="${registrationForm.photoProfil}" cssClass="img-responsive img-circle"/>
                                   </div>
                                 
-                                  <label>Changer mon photo de profil</label>
+                                  <label><spring:message code="profil.edit.change.photo"/></label>
                                   <form:input type="file" path="file" class="pdp"/>
                                   <form:errors path="file" class="error"/>
                                   
                                 </div>
                                 	<div class="col-md-4">
 	                                	<form:hidden path="id"/>
-	                                  	<label>Nom<sup>*</sup></label>
+	                                  	<label><spring:message code="signup.name.placeholder"/><sup>*</sup></label>
 	                                  	<form:input path="nom"/><form:errors path="nom"/>
-	                                  	<label>Prénoms<sup>*</sup></label>
+	                                  	<label><spring:message code="signup.surname.placeholder"/><sup>*</sup></label>
 	                                  	<form:input path="prenom"/><form:errors path="prenom"/>
-	                                  	<label>Date de naissance (<c:out value="${dateFormat}"/>)</label>
+	                                  	<label><spring:message code="signup.dateofbirth.placeholder"/> (<c:out value="${dateFormat}"/>)</label>
 	                                  	<form:input path="dateNaissance"/><form:errors path="dateNaissance"/>
-	                                  	<label>Adresse email<sup>*</sup></label>
+	                                  	<label><spring:message code="signup.email.placeholder"/><sup>*</sup></label>
 	                                  	<form:input path="email"/><form:errors path="email"/>
                                   	</div>
                                   	<div class="col-md-4">
-                                  		<label>Rôle<sup>*</sup></label>
+                                  		<label><spring:message code="profil.role"/><sup>*</sup></label>
                                   		<sec:authentication property="authorities" var="roles" scope="page" />
 										<c:forEach var="role" items="${roles}">
 										  <c:out value="${role}"/> 
 										</c:forEach><br/>
-                                  		<label>Institution</label>
+                                  		<label><spring:message code="profil.edit.institution"/></label>
                                   		<form:input path="institution"/><form:errors path="institution"/>
-                                  		<label>Poste occupé</label>
+                                  		<label><spring:message code="profil.edit.postoccupe"/></label>
                                   		<form:input path="postOccupe"/><form:errors path="postOccupe"/>
-                                  		<label>Biographie<sup>*</sup></label>
+                                  		<label><spring:message code="profil.edit.biographie"/><sup>*</sup></label>
                                   		<form:textarea path="biographie" rows="9"/><form:errors path="biographie"/>
-                                  		<form:button value="Mettre à jour" class="right">Mettre à jour</form:button>
+                                  		<form:button value="Mettre à jour" class="right"><spring:message code="profil.edit.maj.btn"/></form:button>
                                   	</div>
                             </div>
                            </form:form>

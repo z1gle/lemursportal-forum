@@ -5,6 +5,7 @@
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
+<%@ taglib prefix="page" tagdir="/WEB-INF/tags/page" %>
 <c:url value="/resources" var="resourcesPath"/>
             <div class="wrapper wrapper-content animated fadeInRight">
     			<!-- D Question/Reponse -->
@@ -26,10 +27,10 @@
                             </div>
                             <div class="col-md-1 forum-info">
                                 <span class="views-number">
-                                    1216
+                                    ${responsesPage.totalElements }
                                 </span>
                                 <div class="vue">
-                                    <small>1459 vues</small>
+                                    <small>Commentaires</small>
                                 </div>
                             </div>
                            
@@ -44,12 +45,12 @@
 		                            <a class="btn" role="button" data-toggle="collapse" href="#replyCommentT" aria-expanded="true" aria-controls="collapseExample">Répondre</a>
 		                          </span>
 		                          <div class="collapse" id="replyCommentT">
-					<c:url value="/secured/post/reponse" var="formAction"></c:url>
+									<c:url value="/secured/post/reponse" var="formAction"></c:url>
 		                            <form:form  class="create-quest-form" modelAttribute="post" action="${formAction}"  method="POST"   >
 		                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-						<form:input type="hidden" path="id" value="${post.id}"/>
+										<form:input type="hidden" path="id" value="${post.id}"/> <form:input type="hidden" path="thematiqueId" value="${post.thematiqueId}"/>
 		                              <div class="form-group">                                
-						<form:textarea path="body" class="editor form-control" rows="3"/>
+										<form:textarea path="body" class="editor form-control" rows="3"/>
 		                              </div>                             
 						<form:button value="save"  class="btn">Envoyer</form:button>
 		                            </form:form>
@@ -81,48 +82,9 @@
                     
                     
                 </div>
-                
-              <!-- 			D Pagination -->
+                <!-- 			D Pagination -->
                 <c:url var="currentBaseUrl" value="/post/show/${post.id}"/>
-                <c:set var="firstUrl" value="${currentBaseUrl}?page=1"/>
-                <c:set var="lastUrl" value="${currentBaseUrl}?page=${responsesPage.totalPages}"/>
-                <c:set var="prevUrl" value="${currentBaseUrl}?page=${paginationCurrent - 1}"/>
-                <c:set var="nextUrl" value="${currentBaseUrl}?page=${paginationCurrent + 1}"/>
-				    <ul class="pagination">
-				        <c:choose>
-				            <c:when test="${paginationCurrent == 1}">
-				                <li class="disabled"><a href="#">&lt;&lt;</a></li>
-				                <li class="disabled"><a href="#">&lt;</a></li>
-				            </c:when>
-				            <c:otherwise>
-				                <li><a href="${firstUrl}">&lt;&lt;</a></li>
-				                <li><a href="${prevUrl}">&lt;</a></li>
-				            </c:otherwise>
-				        </c:choose>
-				        <c:forEach var="i" begin="${paginationBegin}" end="${paginationEnd}">
-				            <c:set var="pageUrl" value="${currentBaseUrl}?page=${i}"/>
-				            <c:choose>
-				                <c:when test="${i == paginationCurrent}">
-				                    <li class="active"><a href="${pageUrl}"><c:out value="${i}" /></a></li>
-				                </c:when>
-				                <c:otherwise>
-				                    <li><a href="${pageUrl}"><c:out value="${i}" /></a></li>
-				                </c:otherwise>
-				            </c:choose>
-				        </c:forEach>
-				        <c:choose>
-				            <c:when test="${paginationCurrent == responsesPage.totalPages}">
-				                <li class="disabled"><a href="#">&gt;</a></li>
-				                <li class="disabled"><a href="#">&gt;&gt;</a></li>
-				            </c:when>
-				            <c:otherwise>
-				                <li><a href="${nextUrl}">&gt;</a></li>
-				                <li><a href="${lastUrl}">&gt;&gt;</a></li>
-				            </c:otherwise>
-				        </c:choose>
-				    </ul>
-              
-                
+                <page:pagination currentPage="${responsesPage.number + 1}" totalPages="${responsesPage.totalPages}" pageBaseUrl="${currentBaseUrl}"/>
             </div>
         </div>
 

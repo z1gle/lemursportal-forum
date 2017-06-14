@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
 <spring:message code="datetime.format" var="datetimeFormat" />
 <c:url value="/resources" var="resourcesPath" />
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -45,7 +46,8 @@
                             <div class="col-md-3">
                                 <div class="expert-sidebar">
                                     <div class="image expert-userpic">
-                                        <img src="${resourcesPath}/images/user-profil.png" class="img-responsive" alt="">
+                                    <user:profilImage src="${expert.photoProfil}" cssClass="img-responsive"/>
+                          
                                         <a href="#envoi-msg" class="send" role="button" class="btn btn-custom" data-toggle="modal" title="Envoyer un message">
                                             <i class="fa fa-envelope"></i>
                                         </a>
