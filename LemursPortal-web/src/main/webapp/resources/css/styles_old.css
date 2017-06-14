@@ -307,12 +307,10 @@ li .lang {
 	z-index:3;
 }
 
-/*
 .top-nav li:first-child {
 	margin-top:-3px;
 	background:url(../images/sepa-profil.png) right center no-repeat;
 }
-*/
 
 .top-nav li {
 	background:url(../images/sepa.png) right center no-repeat;
@@ -696,12 +694,6 @@ a.forum-item-title:hover {
 	text-transform:uppercase;
 	font-size:14px;
 	padding:10px 0 10px 40px;
-}
-
-.sidebar-title h2 a,
-.sidebar-title h2 a:hover {
-	color:#000!important;
-	text-decoration:none!important;
 }
 
 .sidebar-title h2.users-connect {
@@ -1204,8 +1196,7 @@ form sup {
 	color:#F00;
 }
 
-a.btn,
-a.btn:focus {
+a.btn {
     background: #a38000 none repeat scroll 0 0;
     border: 0 none;
     color: #ffffff;
@@ -1610,9 +1601,6 @@ a.btn:hover {
 .page-document .txt-content {
 	padding:0;
 }
-
-/* zoom */
-
 
 /* Responsive */
 
