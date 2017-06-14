@@ -31,7 +31,7 @@ import org.wcs.lemursportal.web.constants.URL;
 public class FileUploadController {
 
 	
-	private static final String FORMATION_IMAGES_PATH = "images/upload/";
+	private static final String FORMATION_IMAGES_PATH = "/images/upload/";
 	private static final String JPG_CONTENT_TYPE = "image/jpeg";
 	private static final String PNG_CONTENT_TYPE = "image/png";
 	
