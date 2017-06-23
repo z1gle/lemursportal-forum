@@ -79,7 +79,8 @@ public class BaseController {
 	
 	@ModelAttribute("topThematiques")
 	public List<TopThematique> getTopThematiques(){
-		Page<TopThematique> page = thematiqueRepository.findTopThematique(new PageRequest(0, TOP_THEMATIQUES_PAGE_SIZE));
+//		Page<TopThematique> page = thematiqueRepository.findTopThematique(new PageRequest(0, TOP_THEMATIQUES_PAGE_SIZE));
+		Page<TopThematique> page = thematiqueRepository.findTopThematique((PageRequest)null);
 		return page.getContent();
 	}
 	
