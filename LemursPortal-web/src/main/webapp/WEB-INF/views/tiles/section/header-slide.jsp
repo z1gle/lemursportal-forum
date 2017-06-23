@@ -10,7 +10,7 @@
 <spring:message code="date.format" var="dateFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
 <div class="slider-top">
-<%--	
+	
 <div id="myCarousel" class="carousel slide" data-ride="carousel"> 
   <!-- Indicators -->
   
@@ -40,6 +40,6 @@
     </div>
   </div>
   <a class="left carousel-control" href="#slider-lemurs" data-slide="prev"><span class="glyphicon glyphicon-menu-left"></span></a> <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-menu-right"></span></a> </div>
- --%>
+
 
 </div>
