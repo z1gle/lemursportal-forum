@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 import org.wcs.lemursportal.model.user.UserInfo;
 
@@ -78,6 +79,9 @@ public class Post implements Serializable {
 	
 	@Column(name="censored_date", nullable=true)
 	private Date censoredDate;
+	
+	@Column(name="uriYoutube")
+	private String uriYoutube;
 	
 	@ManyToOne(optional=true, fetch=FetchType.LAZY)
 	@JoinColumn(columnDefinition="integer", name="censored_by", nullable=true)
@@ -232,6 +236,14 @@ public class Post implements Serializable {
 
 	public void setThematiqueId(Integer thematiqueId) {
 		this.thematiqueId = thematiqueId;
+	}
+	
+	public String getUriYoutube() {
+		return uriYoutube;
+	}
+	
+	public void setUriYoutube(String uriYoutube) {
+		this.uriYoutube = uriYoutube;
 	}
 	
 	

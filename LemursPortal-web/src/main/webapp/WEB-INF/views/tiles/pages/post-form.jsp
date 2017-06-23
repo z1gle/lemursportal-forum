@@ -38,6 +38,9 @@
                                   <label>Ajouter un fichier (photos, documents, videos, audios...)</label>
                                   <input type="file" name="file" class="fisie" />
                                   
+                                   <label>Url youtube  <span class="rouge"><c:out value="${errors}" /></span></label>  
+                                  <form:input path="uriYoutube"/>
+                                  
                                   <label>Votre question <sup>*</sup></label>                                  
                                   <form:textarea path="body"/>
                                   <form:button value="save">Poster</form:button>

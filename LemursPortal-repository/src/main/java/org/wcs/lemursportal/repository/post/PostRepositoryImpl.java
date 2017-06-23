@@ -289,6 +289,23 @@ public class PostRepositoryImpl implements PostRepository {
 		List<Post> responses = query.getResultList();
 		return new PageImpl<>(responses, pageable, total);
 	}
+
+
+	@Override
+	public Page<Post> getYoutubeVideo(Pageable pageable) {
+		StringBuilder jpql = new StringBuilder("select p from Post p where p.uriYoutube is not null order by p.creationDate asc");
+		StringBuilder jpqlCount = new StringBuilder("select count(p.id) from Post p where uriYoutube is not null ");
+		TypedQuery<Post> query = em.createQuery(jpql.toString(),Post.class);
+		TypedQuery<Long> countQuery = em.createQuery(jpqlCount.toString(), Long.class);
+		Long total = countQuery.getSingleResult();
+		if(pageable != null){
+			query.setFirstResult(pageable.getOffset());
+			query.setMaxResults(pageable.getPageSize());
+		}
+		
+		List<Post> responses = query.getResultList();
+		return new PageImpl<>(responses, pageable, total);
+	}
 	
 
 }

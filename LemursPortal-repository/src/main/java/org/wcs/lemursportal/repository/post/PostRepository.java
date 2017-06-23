@@ -46,6 +46,8 @@ public interface PostRepository {
 	 public List<Post> getResponsesAndFetchOwner(Integer id);
 	 
 	Page<Post> search(Pageable pageable, String pattern);
+	
+	Page<Post> getYoutubeVideo(Pageable pageable);
 
 	/**
 	 * @param questionId

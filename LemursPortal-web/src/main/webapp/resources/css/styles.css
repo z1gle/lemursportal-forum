@@ -1231,6 +1231,11 @@ form sup {
 	color:#F00;
 }
 
+.rouge {
+	color:red;
+	font-size:11px;
+}
+
 a.btn,
 a.btn:focus {
     background: #a38000 none repeat scroll 0 0;

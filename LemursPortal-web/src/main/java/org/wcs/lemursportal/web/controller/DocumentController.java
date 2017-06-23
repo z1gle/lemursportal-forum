@@ -27,7 +27,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wcs.lemursportal.model.post.Document;
+import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.repository.post.DocumentRepository;
+import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.service.post.DocumentService;
 import org.wcs.lemursportal.service.post.PostServiceImpl.DOCTYPE;
 
@@ -42,6 +44,7 @@ public class DocumentController extends BaseController{
 	@Autowired ServletContext context;
 	@Autowired DocumentRepository documentRepository;
 	@Autowired DocumentService documentService;
+	@Autowired PostRepository postRepository;
 	
 	private static final int BUFFER_SIZE = 4096;
 	
@@ -71,6 +74,21 @@ public class DocumentController extends BaseController{
 		if(null != pageDocuments) return pageDocuments.getContent();
 		return null;
 	}
+	
+	@ModelAttribute("youtubeFiles")
+	public List<Post> listYoutubeFile(Integer page, Model model,DOCTYPE docType ){
+		if(page == null || page < 1){
+			page = 0;
+		}else{
+			page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+		}
+		Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
+		Page<Post> pageYoutubes = postRepository.getYoutubeVideo(pageable);
+		if(null != pageYoutubes) return pageYoutubes.getContent();
+		return null;
+	}
+	
+	
 	
 	
 	

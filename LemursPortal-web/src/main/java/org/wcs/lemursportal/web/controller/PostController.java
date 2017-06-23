@@ -7,9 +7,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 
@@ -22,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -49,6 +53,8 @@ public class PostController extends BaseController{
 	@Autowired
 	private ThematiqueService thematiqueService;
 	
+	public static final String URL_YOUTUBE_PATTERN = "^((?:https?:)?\\/\\/)?((?:www|m)\\.)?((?:youtube\\.com|youtu.be))(\\/(?:[\\w\\-]+\\?v=|embed\\/|v\\/)?)([\\w\\-]+)(\\S+)?$";
+	
 	
 	@GetMapping(value={"/secured/post/create", "/secured/thematique-{thematiqueId}/post/create"})
 	public String create(@PathVariable(required=false) Integer thematiqueId, Authentication authentication, Model model){
@@ -69,12 +75,34 @@ public class PostController extends BaseController{
 		if(authentication == null) return "redirect:/login";
 		//ValidationUtils.rejectIfEmptyOrWhitespace(results, "libelle", "validation.mandatory");
 		ValidationUtils.rejectIfEmptyOrWhitespace(results, "thematiqueId", "validation.mandatory");
+		
+		//validate url youtube video
+		if(null!=post.getUriYoutube()&& !post.getUriYoutube().isEmpty()){
+			Pattern pattern =  Pattern.compile(URL_YOUTUBE_PATTERN);  
+			Matcher matcher = pattern.matcher(post.getUriYoutube().trim());  
+			if (!matcher.matches()) {  
+				model.addAttribute("errors","invalid url youtube");
+				List<Thematique> listethematique = thematiqueService.findAll();
+				model.addAttribute("listeThematique", listethematique);
+				model.addAttribute(post);
+				return "getFormPost";
+			}
+		}
 		if(results.hasErrors()){
+			List<String> errors = new ArrayList<>();
+			for(FieldError fieldError:results.getFieldErrors()){
+				errors.add(fieldError.getCode());
+			}
+			model.addAttribute("errors",errors);
 			return "forward:getFormPost";
 		}
 		//thematiqueService.saveOrUpdate(authentication.getName(), thematique);
 		UserInfo currentUser = userInfoService.getByLogin(authentication.getName());
 		Date now = Calendar.getInstance().getTime();
+		
+		if(null!= post.getUriYoutube()){
+			String urIYoutube = post.getUriYoutube().trim();
+		}
 		
 		//handle file upload
 		
