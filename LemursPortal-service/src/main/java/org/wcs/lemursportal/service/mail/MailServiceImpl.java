@@ -55,12 +55,12 @@ public class MailServiceImpl implements MailService {
 	}
 
 	private void sendMail(MimeMessagePreparator mimeMessagePreparator) {
-		try {
+		/*try {
 			mailSender.send(mimeMessagePreparator);
 			System.out.println("Message has been sent.............................");
 		} catch (MailException ex) {
 			System.err.println(ex.getMessage());
-		}
+		}*/
 	}
 
 	private MimeMessagePreparator getMessagePreparator(final Thematique thematique) {
