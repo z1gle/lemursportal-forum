@@ -15,6 +15,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.wcs.lemursportal.model.post.Post;
@@ -39,12 +40,14 @@ public class MailServiceImpl implements MailService {
 	Configuration freemarkerConfiguration;
 
 	@Override
+	@Async
 	public void sendMail(Thematique thematique, List<UserInfo> destinataires) {
 		MimeMessagePreparator preparator = getMessagePreparator(thematique);
 		sendMail(preparator);
 	}
 
 	@Override
+	@Async
 	public void sendMail(Post question, UserInfo owner, List<UserInfo> thematiqueManager) {
 		MimeMessagePreparator preparator = getMessagePreparator(question);
 		sendMail(preparator);
@@ -74,7 +77,7 @@ public class MailServiceImpl implements MailService {
 				Map<String, Object> model = new HashMap<String, Object>();
 				model.put("thematique", thematique);
 
-				String text = geFreeMarkerTemplateContent(model);// Use
+				String text = geFreeMarkerQuestionTemplateContent(model);// Use
 																	// Freemarker
 																	// or
 																	// Velocity
@@ -106,7 +109,7 @@ public class MailServiceImpl implements MailService {
 				Map<String, Object> model = new HashMap<String, Object>();
 				model.put("question", question);
 
-				String text = geFreeMarkerTemplateContent(model);// Use
+				String text = geFreeMarkerThematiqueTemplateContent(model);// Use
 																	// Freemarker
 																	// or
 																	// Velocity
@@ -124,11 +127,25 @@ public class MailServiceImpl implements MailService {
 		return preparator;
 	}
 
-	public String geFreeMarkerTemplateContent(Map<String, Object> model) {
+	public String geFreeMarkerThematiqueTemplateContent(Map<String, Object> model) {
 		StringBuffer content = new StringBuffer();
 		try {
 			content.append(FreeMarkerTemplateUtils
-					.processTemplateIntoString(freemarkerConfiguration.getTemplate("fm_mailTemplate.txt"), model));
+					.processTemplateIntoString(freemarkerConfiguration.getTemplate("fm_questionMailTemplate.txt"), model));
+			return content.toString();
+		} catch (Exception e) {
+			System.out.println("Exception occured while processing fmtemplate:" + e.getMessage());
+		}
+		return "";
+	}
+	
+
+
+	public String geFreeMarkerQuestionTemplateContent(Map<String, Object> model) {
+		StringBuffer content = new StringBuffer();
+		try {
+			content.append(FreeMarkerTemplateUtils
+					.processTemplateIntoString(freemarkerConfiguration.getTemplate("fm_thematiqueMailTemplate.txt"), model));
 			return content.toString();
 		} catch (Exception e) {
 			System.out.println("Exception occured while processing fmtemplate:" + e.getMessage());

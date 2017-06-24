@@ -1,0 +1,27 @@
+G#$KSrtp64
+localise-moi arkeupadmin/RETugK7!b2T2daUTdt
+
+192.168.1.13 : root / 3t3CHc0ns4lt1n9
+•	Gsell : host : gsell-db.host.addonline.fr [178.23.155.243]
+o	gsellMultisite (PROD : accès en lecture) 
+o	gsellRecette (RECETTE : accès en lecture/ecriture) 
+
+
+•	Mehari : host : smallplanet3.host.addonline.fr => ok
+o	m2cv (PROD : accès en lecture) 
+o	m2cv_preprod (RECETTE : accès en lecture/ecriture) 
+
+
+•	FCPE : host : fcpe.host.addonline.fr 
+o	fcpe_gestionadherents (PROD : accès en lecture) 
+o	fcpe_gestionadherents_preprod (RECETTE : accès en lecture/ecriture) 
+
+
+•	Cemavil : host : cemavil.host.addonline.fr 
+o	cemavil_prod  (PROD : accès en lecture) 
+o	thuir_prod (PROD : accès en lecture) 
+o	cemavil_preprod (RECETTE : accès en lecture/ecriture)
+
+
+username   => 'FohrekCgzG'
+password   => 'Jp6+8oxcNN’

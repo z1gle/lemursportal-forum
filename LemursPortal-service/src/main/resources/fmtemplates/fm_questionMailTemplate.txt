@@ -1,0 +1,12 @@
+<html>
+    <body>
+        <h3>Dear, thank you for placing order.</h3>
+ 
+        <div>
+            new question:
+            title is : ${question.title}.
+            body is : ${question.title}.
+        </div>
+        <span>Sent using FreeMarker Template</span>
+    </body>
+</html>

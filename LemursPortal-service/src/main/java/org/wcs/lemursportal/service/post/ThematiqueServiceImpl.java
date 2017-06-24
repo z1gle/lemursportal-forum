@@ -15,6 +15,7 @@ import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.post.ThematiqueCrudRepository;
 import org.wcs.lemursportal.service.common.GenericCRUDServiceImpl;
+import org.wcs.lemursportal.service.mail.MailService;
 import org.wcs.lemursportal.service.notification.NotificationService;
 import org.wcs.lemursportal.service.user.UserInfoService;
 
@@ -33,7 +34,9 @@ public class ThematiqueServiceImpl extends
 	@Autowired
 	private UserInfoService userInfoService;
 	@Autowired 
-	NotificationService notificationService;	 
+	NotificationService notificationService;
+	
+	@Autowired MailService mailService;
 
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.service.common.GenericCRUDServiceImpl#getJpaRepository()
@@ -79,6 +82,7 @@ public class ThematiqueServiceImpl extends
 			}
 			thematiqueCrudRepository.save(thematique);
 			notificationService.saveThematiqueNotification(thematique);
+			mailService.sendMail(thematique, null);
 			return thematique;
 		}
 	}

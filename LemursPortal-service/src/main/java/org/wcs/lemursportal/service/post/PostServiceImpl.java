@@ -19,6 +19,7 @@ import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.PostViewCrudRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueCrudRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
+import org.wcs.lemursportal.service.mail.MailService;
 import org.wcs.lemursportal.service.notification.NotificationService;
 import org.wcs.lemursportal.service.user.UserInfoService;
 
@@ -44,6 +45,7 @@ public class PostServiceImpl implements PostService {
 	
 	@Autowired UserInfoService userInfoService; 
 	@Autowired NotificationService notificationService;
+	@Autowired MailService mailService;
 
 	private enum PHOTOEXT {
 		png, jpg, gif
@@ -120,6 +122,8 @@ public class PostServiceImpl implements PostService {
 		
 		/* Notification */
 		notificationService.savePostNotification(post);
+		mailService.sendMail(post, post.getOwner(), null);
+		
 	}
 	
 	private  String getExtension(String fileName) {		
