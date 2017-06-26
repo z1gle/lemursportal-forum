@@ -141,7 +141,6 @@
                                         <div role="tabpanel" class="tab-pane fade" id="tab-item-5">
                                             <div class="txt-content">
                                     			<div class="col-md-offset custyle">
-                                    			<iframe src="//www.bing.com" width="350" height="250" name="youtube_iframe" frameborder ="2">test</iframe>
                                             		<table class="table table-striped custab">
                                             		 <c:forEach items="${youtubeFiles}" var="youtubFile">
                                             		 
@@ -150,7 +149,7 @@
                                                             <td><c:out	value="${youtubFile.title}" /></td>
                                                             <td class="text-center">
                                                             <c:url var="publicationPageUrl" value="${youtubFile.uriYoutube}"/>
-                                                            <a class='btn btn-info btn-xs' href="${publicationPageUrl}"  target="youtube_iframe"><span class="glyphicont"></span>Voir</a></td>
+                                                            <a class='btn btn-info btn-xs' href="${publicationPageUrl}"  target="_blank"><span class="glyphicont"></span>Voir</a></td>
                                                         </tr>
                                                         </c:forEach>
                                                     </table>

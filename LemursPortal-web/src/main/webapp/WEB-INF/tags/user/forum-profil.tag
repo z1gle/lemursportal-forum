@@ -13,8 +13,18 @@
 		<a href="#"><c:out
 				value="${userInfo.nom}" /> <c:out
 				value="${userInfo.prenom}" /></a><br />
+		<c:set var="idM" value="0" />
+		<c:set var="libelle" value =""/> 
 		<c:forEach items="${userInfo.roles}" var="role">
-			<i>${role.libelle}</i>
+			<c:if test="${role.id < 10001}"> 
+				<c:set var="idR" value="${role.id}" />
+			</c:if> 
+			<c:if test="${idR > idM }">
+				<c:set var="idM" value="${idR}" />
+				<c:set var="libelle" value="${role.libelle}" />
+			</c:if>
 		</c:forEach>
+		<i><c:out value="${libelle}" /></i>
+		<br />
 	</div>
 </div>
