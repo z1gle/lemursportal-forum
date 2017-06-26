@@ -30,20 +30,30 @@
                                             <div class="txt-content">
                                                
                                                <div class="col-md-offset custyle">
+                                               		<!-- The Modal -->
+														<div id="myModal" class="modal">
+														
+														  <!-- The Close Button -->
+														  <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
+														
+														  <!-- Modal Content (The Image) -->
+														  <img class="modal-content" id="img01">
+														
+														  <!-- Modal Caption (Image Text) -->
+														  <div id="caption"></div>
+														</div>
+														</br>
                                                     <table class="table table-striped custab">
                                                     <c:forEach items="${docIMAGE}" var="pic">
-                                            		 
-                                                        <tr>
-                                                        	<td><img src="${resourcesPath}/images/lem.png" alt=""></td>
-                                                            <td><c:out	value="${pic.filename}" /></td>
-                                                            <td class="text-center">
-                                                            <c:url var="picPageUrl" value="/files/${pic.id}"/>
-                                                            <a class='btn btn-info btn-xs' href="${picPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
-                                                        </tr>
-                                                        </c:forEach>
-                                                       
+                                                    	 <div class="col-md-3">
+                                							
+	                                    						
+	                                    							<img src="${resourcesPath}/upload/${pic.filename}" id="myImg" class="img-responsive" alt="${pic.filename}"/>
+	                                   							 
+                                							
+                            							</div>
+                                                     </c:forEach>
                                                     </table>
-                                                    
                                                     <!-- D Pagination -->
                                                     <ul class="pagination">
                                                         <li class="disabled"><a href="#">&laquo;</a></li>

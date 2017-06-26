@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Paths;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -107,7 +108,9 @@ public class PostController extends BaseController{
 		//handle file upload
 		
 		 if (!file.isEmpty()) {
-			 String filename = file.getOriginalFilename();
+			 String filename = file.getOriginalFilename().replaceAll("\\s+","");
+			 filename = Normalizer.normalize(filename, Normalizer.Form.NFD);
+			 filename = filename.replaceAll("[^\\p{ASCII}]", "");
 //			System.out.println("filename " + filename);
 			 String path = context.getRealPath("/")+ File.separator +  "resources" + File.separator + "upload" + File.separator +  filename;
 			 if(!Files.exists(  Paths.get(context.getRealPath("/"), File.separator ,  "resources" , File.separator , "upload"), LinkOption.NOFOLLOW_LINKS)  ){
