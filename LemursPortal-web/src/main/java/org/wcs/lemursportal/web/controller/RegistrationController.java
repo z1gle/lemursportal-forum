@@ -85,7 +85,7 @@ public class RegistrationController extends BaseController {
 	{
 		registrationFormValidator.validate(registrationForm, results);
 		if(results.hasErrors()){
-			return "user/registration-form";
+			return "registration";
 		}
 		UserInfo user = UserInfoFactory.toEntity(registrationForm);
 		try{
@@ -95,7 +95,7 @@ public class RegistrationController extends BaseController {
 		}catch(RegistrationException e){
 			if(e.getCode() == RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION){
 				results.rejectValue("login", "validation.login.exist");
-				return "user/registration-form";
+				return "registration";
 			}else{
 				throw e;//Erreur inconnu, on laisse passer en attendant d'identifier l'erreur
 			}
