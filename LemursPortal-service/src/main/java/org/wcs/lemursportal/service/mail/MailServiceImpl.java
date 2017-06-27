@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -30,11 +31,18 @@ import freemarker.template.Configuration;
  */
 @Service
 public class MailServiceImpl implements MailService {
+	
+	@Value("${mail.notification.question.subject:Nouvelle question}")
+	private String sujetThematique;
+	
+	@Value("${mail.notification.thematique.subject:Nouvelle thématique}")
+	private String sujetQuestion;
 
 	@Resource(name = "mailSender")
 	private JavaMailSender mailSender;
 
-	private String mailFrom = "no-reply@lemursportal-wcs.org";
+	@Value("${application.mail.from:no-reply@lemursportal-wcs.org}")
+	private String mailFrom;
 
 	@Autowired
 	Configuration freemarkerConfiguration;
@@ -55,12 +63,12 @@ public class MailServiceImpl implements MailService {
 	}
 
 	private void sendMail(MimeMessagePreparator mimeMessagePreparator) {
-		/*try {
+		try {
 			mailSender.send(mimeMessagePreparator);
 			System.out.println("Message has been sent.............................");
 		} catch (MailException ex) {
 			System.err.println(ex.getMessage());
-		}*/
+		}
 	}
 
 	private MimeMessagePreparator getMessagePreparator(final Thematique thematique) {
@@ -70,7 +78,7 @@ public class MailServiceImpl implements MailService {
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-				helper.setSubject("Teste notification mail de Lemurs Portals");
+				helper.setSubject(sujetThematique);
 				helper.setFrom(mailFrom);
 				helper.setTo("mikajy401@gmail.com");
 
@@ -81,8 +89,6 @@ public class MailServiceImpl implements MailService {
 																	// Freemarker
 																	// or
 																	// Velocity
-				System.out.println("Template content : " + text);
-
 				// use the true flag to indicate you need a multipart message
 				helper.setText(text, true);
 
@@ -102,8 +108,7 @@ public class MailServiceImpl implements MailService {
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-				helper.setSubject("Teste notification mail de Lemurs Portals");
-				helper.setFrom(mailFrom);
+				helper.setSubject(sujetQuestion);
 				helper.setTo("mikajy401@gmail.com");
 
 				Map<String, Object> model = new HashMap<String, Object>();
@@ -113,8 +118,6 @@ public class MailServiceImpl implements MailService {
 																	// Freemarker
 																	// or
 																	// Velocity
-				System.out.println("Template content : " + text);
-
 				// use the true flag to indicate you need a multipart message
 				helper.setText(text, true);
 
@@ -135,8 +138,9 @@ public class MailServiceImpl implements MailService {
 			return content.toString();
 		} catch (Exception e) {
 			System.out.println("Exception occured while processing fmtemplate:" + e.getMessage());
+			return e.getMessage();
 		}
-		return "";
+		
 	}
 	
 
@@ -149,8 +153,8 @@ public class MailServiceImpl implements MailService {
 			return content.toString();
 		} catch (Exception e) {
 			System.out.println("Exception occured while processing fmtemplate:" + e.getMessage());
+			return e.getMessage();
 		}
-		return "";
 	}
 
 }
