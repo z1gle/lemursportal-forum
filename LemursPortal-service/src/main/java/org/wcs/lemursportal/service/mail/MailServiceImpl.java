@@ -4,13 +4,16 @@
 package org.wcs.lemursportal.service.mail;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -30,11 +33,18 @@ import freemarker.template.Configuration;
  */
 @Service
 public class MailServiceImpl implements MailService {
+	
+	@Value("${mail.notification.question.subject:Nouvelle question}")
+	private String sujetThematique;
+	
+	@Value("${mail.notification.thematique.subject:Nouvelle thématique}")
+	private String sujetQuestion;
 
 	@Resource(name = "mailSender")
 	private JavaMailSender mailSender;
 
-	private String mailFrom = "no-reply@lemursportal-wcs.org";
+	@Value("${application.mail.from:no-reply@lemursportal-wcs.org}")
+	private String mailFrom;
 
 	@Autowired
 	Configuration freemarkerConfiguration;
@@ -42,38 +52,42 @@ public class MailServiceImpl implements MailService {
 	@Override
 	@Async
 	public void sendMail(Thematique thematique, List<UserInfo> destinataires) {
-		MimeMessagePreparator preparator = getMessagePreparator(thematique);
+		MimeMessagePreparator preparator = getMessagePreparator(thematique, destinataires);
 		sendMail(preparator);
 	}
 
 	@Override
 	@Async
-	public void sendMail(Post question, UserInfo owner, List<UserInfo> thematiqueManager) {
-		MimeMessagePreparator preparator = getMessagePreparator(question);
+	public void sendMail(Post question, UserInfo owner, List<UserInfo> destinataires) {
+		MimeMessagePreparator preparator = getMessagePreparator(question, destinataires);
 		sendMail(preparator);
 
 	}
 
 	private void sendMail(MimeMessagePreparator mimeMessagePreparator) {
-		/*try {
+		try {
 			mailSender.send(mimeMessagePreparator);
 			System.out.println("Message has been sent.............................");
 		} catch (MailException ex) {
 			System.err.println(ex.getMessage());
-		}*/
+		}
 	}
 
-	private MimeMessagePreparator getMessagePreparator(final Thematique thematique) {
+	private MimeMessagePreparator getMessagePreparator(final Thematique thematique, List<UserInfo> destinataires) {
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-				helper.setSubject("Teste notification mail de Lemurs Portals");
+				helper.setSubject(sujetThematique);
 				helper.setFrom(mailFrom);
-				helper.setTo("mikajy401@gmail.com");
-
+				//helper.setTo("mikajy401@gmail.com");
+				Set<String> tos = new HashSet<>();
+				for(UserInfo expert: thematique.getManagers()){
+					tos.add(expert.getEmail());
+				}
+				helper.setTo(tos.toArray(new String[0]));
 				Map<String, Object> model = new HashMap<String, Object>();
 				model.put("thematique", thematique);
 
@@ -81,8 +95,6 @@ public class MailServiceImpl implements MailService {
 																	// Freemarker
 																	// or
 																	// Velocity
-				System.out.println("Template content : " + text);
-
 				// use the true flag to indicate you need a multipart message
 				helper.setText(text, true);
 
@@ -95,16 +107,20 @@ public class MailServiceImpl implements MailService {
 		return preparator;
 	}
 
-	private MimeMessagePreparator getMessagePreparator(final Post question) {
+	private MimeMessagePreparator getMessagePreparator(final Post question, final List<UserInfo> destinataires) {
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-				helper.setSubject("Teste notification mail de Lemurs Portals");
-				helper.setFrom(mailFrom);
-				helper.setTo("mikajy401@gmail.com");
+				helper.setSubject(sujetQuestion);
+				Set<String> tos = new HashSet<>();
+				for(UserInfo expert: destinataires){
+					tos.add(expert.getEmail());
+				}
+				helper.setTo(tos.toArray(new String[0]));
+				helper.setCc(question.getOwner().getEmail());
 
 				Map<String, Object> model = new HashMap<String, Object>();
 				model.put("question", question);
@@ -113,8 +129,6 @@ public class MailServiceImpl implements MailService {
 																	// Freemarker
 																	// or
 																	// Velocity
-				System.out.println("Template content : " + text);
-
 				// use the true flag to indicate you need a multipart message
 				helper.setText(text, true);
 
@@ -135,8 +149,9 @@ public class MailServiceImpl implements MailService {
 			return content.toString();
 		} catch (Exception e) {
 			System.out.println("Exception occured while processing fmtemplate:" + e.getMessage());
+			return e.getMessage();
 		}
-		return "";
+		
 	}
 	
 
@@ -149,8 +164,8 @@ public class MailServiceImpl implements MailService {
 			return content.toString();
 		} catch (Exception e) {
 			System.out.println("Exception occured while processing fmtemplate:" + e.getMessage());
+			return e.getMessage();
 		}
-		return "";
 	}
 
 }
