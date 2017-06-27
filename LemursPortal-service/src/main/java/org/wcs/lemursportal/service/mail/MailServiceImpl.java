@@ -4,8 +4,10 @@
 package org.wcs.lemursportal.service.mail;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
@@ -50,14 +52,14 @@ public class MailServiceImpl implements MailService {
 	@Override
 	@Async
 	public void sendMail(Thematique thematique, List<UserInfo> destinataires) {
-		MimeMessagePreparator preparator = getMessagePreparator(thematique);
+		MimeMessagePreparator preparator = getMessagePreparator(thematique, destinataires);
 		sendMail(preparator);
 	}
 
 	@Override
 	@Async
-	public void sendMail(Post question, UserInfo owner, List<UserInfo> thematiqueManager) {
-		MimeMessagePreparator preparator = getMessagePreparator(question);
+	public void sendMail(Post question, UserInfo owner, List<UserInfo> destinataires) {
+		MimeMessagePreparator preparator = getMessagePreparator(question, destinataires);
 		sendMail(preparator);
 
 	}
@@ -71,7 +73,7 @@ public class MailServiceImpl implements MailService {
 		}
 	}
 
-	private MimeMessagePreparator getMessagePreparator(final Thematique thematique) {
+	private MimeMessagePreparator getMessagePreparator(final Thematique thematique, List<UserInfo> destinataires) {
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 
@@ -80,8 +82,12 @@ public class MailServiceImpl implements MailService {
 
 				helper.setSubject(sujetThematique);
 				helper.setFrom(mailFrom);
-				helper.setTo("mikajy401@gmail.com");
-
+				//helper.setTo("mikajy401@gmail.com");
+				Set<String> tos = new HashSet<>();
+				for(UserInfo expert: thematique.getManagers()){
+					tos.add(expert.getEmail());
+				}
+				helper.setTo(tos.toArray(new String[0]));
 				Map<String, Object> model = new HashMap<String, Object>();
 				model.put("thematique", thematique);
 
@@ -101,7 +107,7 @@ public class MailServiceImpl implements MailService {
 		return preparator;
 	}
 
-	private MimeMessagePreparator getMessagePreparator(final Post question) {
+	private MimeMessagePreparator getMessagePreparator(final Post question, final List<UserInfo> destinataires) {
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 
@@ -109,7 +115,12 @@ public class MailServiceImpl implements MailService {
 				MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
 				helper.setSubject(sujetQuestion);
-				helper.setTo("mikajy401@gmail.com");
+				Set<String> tos = new HashSet<>();
+				for(UserInfo expert: destinataires){
+					tos.add(expert.getEmail());
+				}
+				helper.setTo(tos.toArray(new String[0]));
+				helper.setCc(question.getOwner().getEmail());
 
 				Map<String, Object> model = new HashMap<String, Object>();
 				model.put("question", question);

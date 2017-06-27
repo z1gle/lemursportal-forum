@@ -45,7 +45,6 @@ public class PostServiceImpl implements PostService {
 	
 	@Autowired UserInfoService userInfoService; 
 	@Autowired NotificationService notificationService;
-	@Autowired MailService mailService;
 
 	private enum PHOTOEXT {
 		png, jpg, gif
@@ -122,7 +121,6 @@ public class PostServiceImpl implements PostService {
 		
 		/* Notification */
 		notificationService.savePostNotification(post);
-		mailService.sendMail(post, post.getOwner(), null);
 		
 	}
 	

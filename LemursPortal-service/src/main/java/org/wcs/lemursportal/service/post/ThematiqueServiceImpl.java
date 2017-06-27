@@ -82,7 +82,6 @@ public class ThematiqueServiceImpl extends
 			}
 			thematiqueCrudRepository.save(thematique);
 			notificationService.saveThematiqueNotification(thematique);
-			mailService.sendMail(thematique, null);
 			return thematique;
 		}
 	}

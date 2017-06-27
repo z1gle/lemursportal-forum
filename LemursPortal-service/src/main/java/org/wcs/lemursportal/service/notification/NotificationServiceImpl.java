@@ -18,6 +18,7 @@ import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.notification.NotificationRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
+import org.wcs.lemursportal.service.mail.MailService;
 
 /**
  * @author mikajy.hery
@@ -30,6 +31,7 @@ public class NotificationServiceImpl implements NotificationService {
 	@Autowired NotificationRepository notificationRepository;
 	@Autowired ThematiqueRepository thematiqueRepository; 
 	@Autowired PostRepository postRepository; 
+	@Autowired MailService mailService;
 
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.service.notification.NotificationService#notifierNouvelleQuestion(org.wcs.lemursportal.model.post.Post)
@@ -51,6 +53,7 @@ public class NotificationServiceImpl implements NotificationService {
 			notificationRepository.save(notification);
 //			notifications.add(notification);
 		}
+		mailService.sendMail(question, question.getOwner(), new ArrayList<>(thematique.getManagers()));
 		
 
 	}
@@ -112,6 +115,7 @@ public class NotificationServiceImpl implements NotificationService {
 				notification.setUserId(manager.getId());
 				notificationRepository.save(notification);
 			}
+			mailService.sendMail(thematique, new ArrayList<>(thematique.getManagers()));
 		}
 	}
 
