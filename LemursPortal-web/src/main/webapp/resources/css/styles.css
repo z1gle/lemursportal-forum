@@ -366,9 +366,52 @@ li .lang {
 .slider-top {
 	width:100%;
 	height:430px;
-	background:url(../images/slider1.png) top center no-repeat;
+	/*background:url(../images/slider1.png) top center no-repeat;*/
+	background:#000;
 	background-size:cover;
 	margin-top:100px;
+}
+
+.slider-top .carousel-inner {
+	height:430px!important;
+}
+
+#myCarousel .carousel-control .glyphicon {
+	top:48%!important;
+}
+
+.slider-top .carousel-indicators .active {
+	background:#a38000!important;
+}
+
+.carousel-caption h1 {
+	font-family:"montserratregular"!important;
+	font-size:16px!important;
+}
+
+.carousel-caption p {
+	font-family:"montserratregular"!important;
+	font-size:11px!important;
+}
+
+.forum-item .vue small {
+	font-size:8px;
+}
+
+.navbar-inverse {
+	border:1px solid #eee!important;
+	background: rgba(76,101,40,1)!important;
+	background: -moz-linear-gradient(top, rgba(76,101,40,1) 0%, rgba(76,101,40,1) 50%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 100%)!important;
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(76,101,40,1)), color-stop(50%, rgba(76,101,40,1)), color-stop(50%, rgba(255,255,255,1)), color-stop(100%, rgba(255,255,255,1)))!important;
+	background: -webkit-linear-gradient(top, rgba(76,101,40,1) 0%, rgba(76,101,40,1) 50%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 100%)!important;
+	background: -o-linear-gradient(top, rgba(76,101,40,1) 0%, rgba(76,101,40,1) 50%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 100%)!important;
+	background: -ms-linear-gradient(top, rgba(76,101,40,1) 0%, rgba(76,101,40,1) 50%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 100%)!important;
+	background: linear-gradient(to bottom, rgba(76,101,40,1) 0%, rgba(76,101,40,1) 50%, rgba(255,255,255,1) 50%, rgba(255,255,255,1) 100%)!important;
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c6528', endColorstr='#ffffff', GradientType=0 )!important;
+}
+
+.slider-top .carousel-indicators li {
+	border:1px solid #a38000!important;
 }
 
 /* Accueil */
@@ -907,6 +950,11 @@ footer {
 	margin-top: 15px;
 }
 
+footer .container .col-md-6:nth-child(2) img {
+	background:#fff;
+	padding:10px;
+}
+
 footer li {
 	list-style:none;
 	font-size:12px;
@@ -1229,11 +1277,6 @@ form select {
 
 form sup {
 	color:#F00;
-}
-
-.rouge {
-	color:red;
-	font-size:11px;
 }
 
 a.btn,
