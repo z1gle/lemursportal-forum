@@ -30,30 +30,33 @@
                                             <div class="txt-content">
                                                
                                                <div class="col-md-offset custyle">
-                                               		<!-- The Modal -->
-														<div id="myModal" class="modal">
-														
-														  <!-- The Close Button -->
-														  <span class="close" onclick="document.getElementById('myModal').style.display='none'">&times;</span>
-														
-														  <!-- Modal Content (The Image) -->
-														  <img class="modal-content" id="img01">
-														
-														  <!-- Modal Caption (Image Text) -->
-														  <div id="caption"></div>
-														</div>
+                                       
 														</br>
-                                                    <table class="table table-striped custab">
-                                                    <c:forEach items="${docIMAGE}" var="pic">
-                                                    	 <div class="col-md-3">
-                                							
-	                                    						
-	                                    							<img src="${resourcesPath}/upload/${pic.filename}" id="myImg" class="img-responsive" alt="${pic.filename}"/>
-	                                   							 
-                                							
-                            							</div>
-                                                     </c:forEach>
-                                                    </table>
+                                                   <div class="row">
+	                                                   <c:set var="isa" value="1"/>
+	                                                    <c:forEach items="${docIMAGE}" var="pic">
+	                                                    	 <div class="column">
+	    														<img src="${resourcesPath}/upload/${pic.filename}" style="width:100%" onclick="openModal();currentSlide(${isa})" class="hover-shadow cursor">
+	  														</div>
+	  														<c:set var="isa" value="${isa+1}"/>
+	                                                     </c:forEach>
+                                                     </div>
+                                                     <div id="myModal" class="modal">
+  														<span class="close cursor" onclick="closeModal()">&times;</span>
+  														<div class="modal-content">
+  														 <c:set var="isa1" value="1"/>
+  														 <c:forEach items="${docIMAGE}" var="pic">
+  															<div class="mySlides">
+														      <div class="numbertext"><c:out value="${isa1 }"/> /<c:out value="${isa }"/></div>
+														      <img src="${resourcesPath}/upload/${pic.filename}" style="width:100%">
+														      <c:set var="isa1" value="${isa1+1}"/>
+														    </div>
+														  </c:forEach>
+														  <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+    														<a class="next" onclick="plusSlides(1)">&#10095;</a>
+  														</div>
+  													</div>	
+  													
                                                     <!-- D Pagination -->
                                                     <ul class="pagination">
                                                         <li class="disabled"><a href="#">&laquo;</a></li>

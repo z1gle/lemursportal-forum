@@ -272,7 +272,7 @@ a:hover {
 }
 
 .navbar-inverse .navbar-nav > li > a {
-    color: #a38000!important;
+    color: #000!important;
 	text-transform:uppercase!important;
 }
 
@@ -281,7 +281,7 @@ a:hover {
 }
 
 .navbar-inverse .navbar-nav.top-nav > li > a {
-    color: #fff!important;
+    color: #a38000!important;
 	text-transform:none!important;
 }
 
@@ -721,6 +721,10 @@ a.forum-item-title:hover {
     font-size: 14px;
 }
 
+.form-control {
+	margin-top:5px!important;
+}
+
 .text-navy {
     color: #1ab394;
 }
@@ -945,7 +949,7 @@ a.forum-item-title:hover {
 }
 
 footer {
-	background:#282727;
+	background:#4c6528;
 	padding:30px 0 0 0;
 	margin-top: 15px;
 }
@@ -976,7 +980,7 @@ footer .copy {
 	background:#000;
 	margin-top:25px;
 	font-size:12px;
-	color:#282727;
+	color:#fff!important;
 }
 
 
@@ -1069,13 +1073,13 @@ form select {
     font-size: 1.8rem;
     width: 40px;
     height: 40px;
-    line-height: 54px;
+    line-height: 25px!important;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
     -moz-background-clip: padding;
     -webkit-background-clip: padding-box;
-    background-clip: padding-box
+    background-clip: padding-box;
 }
 
 .profil-info .image .editImage:hover {
@@ -1395,7 +1399,7 @@ a.btn:focus {
     font-size: 1.2rem;
     width: 30px;
     height: 30px;
-    line-height: 54px;
+    line-height: 25px;
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
