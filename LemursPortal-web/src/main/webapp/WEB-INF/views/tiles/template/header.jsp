@@ -60,7 +60,9 @@
 		                    </li>
 		                    
 		                    <li class="dropdown">
-		                        <a class="notif dropdown-toggle" data-toggle="dropdown" href="#"><spring:message code="home.messages"/><span class="rond"><c:out value="${nombrePrivateMessage}"/></span></a>
+		                    	<c:url value="/secured/pmessage/list" var="listMessagePriveUrl"/>
+		                    	<a class="notif" href="${listMessagePriveUrl}"><spring:message code="home.messages"/><span class="rond"><c:out value="${nombrePrivateMessage}"/></span></a>
+<%-- 		                        <a class="notif dropdown-toggle" data-toggle="dropdown" href="#"><spring:message code="home.messages"/><span class="rond"><c:out value="${nombrePrivateMessage}"/></span></a> --%>
 <!-- 		                        <ul class="dropdown-menu" role="menu"> -->
 <!-- 		                        	<li><a href="#">Bonjour, je suis...</a></li> -->
 <!-- 		                            <li><a href="#">Veuillez marquer votre sujet...</a></li> -->

@@ -4,8 +4,11 @@
 package org.wcs.lemursportal.service.notification;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.model.notification.PrivateMessage;
@@ -45,6 +48,17 @@ public class PrivateMessageServiceImpl implements PrivateMessageService {
 		message.setSender(currentUser);
 		message.setSenderId(currentUser.getId());
 		privateMessageRepository.save(message);
+	}
+
+	@Override
+	public Page<PrivateMessage> findByDestinataire(Integer destinataireId, Pageable pageable) {
+		Page<PrivateMessage> page = privateMessageRepository.findByDestinataire(destinataireId, pageable);
+		//on va marquer les messages comme lu
+		for(PrivateMessage pm: page.getContent()){
+			pm.setReadByDestinataire(true);
+			privateMessageRepository.update(pm);
+		}
+		return page;
 	}
 
 }

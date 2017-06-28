@@ -3,6 +3,8 @@
  */
 package org.wcs.lemursportal.service.notification;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.wcs.lemursportal.model.notification.PrivateMessage;
 import org.wcs.lemursportal.model.user.UserInfo;
 
@@ -28,4 +30,10 @@ public interface PrivateMessageService {
 	 * @param message
 	 */
 	void save(UserInfo currentUser, PrivateMessage message);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	Page<PrivateMessage> findByDestinataire(Integer destinataireId, Pageable pageable);
 }

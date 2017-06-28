@@ -30,7 +30,6 @@ import org.wcs.lemursportal.web.controller.BaseController;
  *
  */
 @Controller
-@Transactional
 public class PrivateMessageController extends BaseController {
 	
 	@Autowired UserInfoService userInfoService;
