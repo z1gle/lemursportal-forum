@@ -18,6 +18,7 @@ import org.wcs.lemursportal.model.post.TopQuestion;
 import org.wcs.lemursportal.model.post.TopThematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.notification.NotificationRepository;
+import org.wcs.lemursportal.repository.notification.PrivateMessageRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
 import org.wcs.lemursportal.service.post.PostService;
@@ -39,8 +40,11 @@ public class BaseController {
 	@Autowired PostService postService;
 	@Autowired UserInfoService userInfoService;
 	@Autowired
-	private SessionRegistry sessionRegistry;
-	@Autowired NotificationRepository notificationRepository;
+	protected SessionRegistry sessionRegistry;
+	@Autowired 
+	protected NotificationRepository notificationRepository;
+	
+	@Autowired PrivateMessageRepository privateMessageRepository;
 	
 	public static final int TOP_QUESTIONS_PAGE_SIZE = 20;
 	public static final int TOP_THEMATIQUES_PAGE_SIZE = 20;
@@ -109,6 +113,17 @@ public class BaseController {
 			nbNotification = notificationRepository.countByUser(userInfo.getId());
 		}
 		return nbNotification;
+	}
+	
+	@ModelAttribute("nombrePrivateMessage")
+	public Long getNombrePrivate(Authentication authentication){
+		Long nbPrivateMessage = 0L;
+		if(authentication != null){
+			String login = authentication.getName();
+			UserInfo userInfo = userInfoService.getByLogin(login);
+			nbPrivateMessage = privateMessageRepository.countByDestinataire(userInfo.getId());
+		}
+		return nbPrivateMessage;
 	}
 	
 }

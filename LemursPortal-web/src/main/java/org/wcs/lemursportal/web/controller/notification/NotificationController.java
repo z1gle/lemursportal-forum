@@ -1,4 +1,4 @@
-package org.wcs.lemursportal.web.controller;
+package org.wcs.lemursportal.web.controller.notification;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import org.wcs.lemursportal.model.notification.Notification;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.service.notification.NotificationService;
 import org.wcs.lemursportal.service.user.UserInfoService;
+import org.wcs.lemursportal.web.controller.BaseController;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>
