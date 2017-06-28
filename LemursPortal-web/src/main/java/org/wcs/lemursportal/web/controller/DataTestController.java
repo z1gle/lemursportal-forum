@@ -1,6 +1,7 @@
 package org.wcs.lemursportal.web.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -9,7 +10,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.hsqldb.lib.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -20,6 +20,7 @@ import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.PostView;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
+import org.wcs.lemursportal.model.user.UserType;
 import org.wcs.lemursportal.repository.post.PostCrudRepository;
 import org.wcs.lemursportal.repository.post.PostViewCrudRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueCrudRepository;
@@ -42,6 +43,7 @@ public class DataTestController {
 	private final Random random = new Random();
 	@Autowired UserInfoService userInfoService;
 	@Autowired UserRepository userRepository;
+	
 	@Autowired ThematiqueCrudRepository thematiqueCrudRepository;
 	@Autowired PostCrudRepository postCrudRepository; 
 	@Autowired PostViewCrudRepository postViewCrudRepository;
@@ -72,6 +74,60 @@ public class DataTestController {
 		}
 		
 		return sb.toString();
+	}
+	
+	@GetMapping(value="/admin/generate_topics")
+	public @ResponseBody String generateDataTopics(Authentication authentication, HttpServletRequest request){
+		UserInfo currentUser = userInfoService.getByLogin(authentication.getName());
+
+		UserInfo expert = addExpert();
+		StringBuilder sb = new StringBuilder("Erreur! Aucun experts enregistré dans la base de données !");
+		List<String> topics = Arrays.asList("Behavior ","Threats /conservation issues","Vocalization","Ecology","Genetics","Locomotion",
+				"Taxonomy","Conservation Status","Subfossiles","Lemur conservation and research administrative","Environmental Education",
+				"Lemur in captivity","Lemur Medicine/Biomedical assessement", "Species distribution and occurrences",
+				"Nocturnal species","Diurnal species","Reintroduction and translocation","lemur conservation success ",
+				"Nutrition","Forest fragment","Parasites","Others");
+		
+			List<Thematique> thematiques = generateThematiques(currentUser, expert, topics);
+			sb = new StringBuilder("<h2>Recap : </h2>");
+			sb.append(thematiques.size() + " générés dont : <ul>");
+		
+		return sb.toString();
+	}
+	
+	
+	private UserInfo addExpert(){
+		UserInfo u = new UserInfo();
+		u.setEmail("ratsimbazafy@yopmail.com");
+		u.setNom("Ratsimbazafy");
+		u.setPrenom("Jonah");
+		u.setLogin("jonah.ratsimbazafy");
+		u.setDateInscription(Calendar.getInstance().getTime());
+		u.setEnabled(true);
+		if(u.getRoles() == null || u.getRoles().isEmpty()){
+			u.setRoles(new java.util.HashSet<UserType>());
+			u.getRoles().add(UserRole.EXPERT.getUserType());
+		}
+		userRepository.save(u);
+		return u;
+		
+	}
+	
+	private List<Thematique> generateThematiques(UserInfo currentUser, UserInfo expert, List<String> nameThematiques){
+		List<Thematique> thematiques = new ArrayList<>();
+		for(String nameThematique:nameThematiques){
+			Thematique t = new Thematique();
+			t.setCreatedBy(currentUser);
+			t.setCreationDate(Calendar.getInstance().getTime());
+			t.setDescription(nameThematique);
+			t.setLibelle(nameThematique);
+			Set<UserInfo> managers = new java.util.HashSet<>();
+			managers.add(expert);
+			t.setManagers(managers);
+			thematiques.add(t);
+		}
+		thematiqueCrudRepository.save(thematiques);
+		return thematiques;
 	}
 	
 	private List<Thematique> generateThematique(UserInfo currentUser, List<UserInfo> experts){
