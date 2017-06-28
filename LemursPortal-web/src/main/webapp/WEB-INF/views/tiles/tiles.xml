@@ -112,6 +112,30 @@
        </put-attribute>
    </definition>
    
+   <!-- Message privée - Formulaire -->
+   <definition name="privatemessage-form" extends="base-definition">  
+       <put-attribute name="title" value="Private message" />  
+       <put-attribute name="body">
+       		<definition template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+			  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/privatemessage-form.jsp" />
+			</definition>
+       </put-attribute>
+   </definition>
+   
+   <!-- Message privée - Liste -->
+   <definition name="privatemessage-list" extends="base-definition">  
+       <put-attribute name="title" value="Private message" />  
+       <put-attribute name="body">
+       		<definition template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+			  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/privatemessage-list.jsp" />
+			</definition>
+       </put-attribute>
+   </definition>
+   
    
    <definition name="results" extends="base-definition">  
        <put-attribute name="title" value="Résultat recherche" />  
