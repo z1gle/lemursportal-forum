@@ -12,6 +12,8 @@
     	<div class="row">
             <div class="login-page" align="center">
               <h3>Erreur ! (Ceci est une page d'erreur personalisée)</h3>
+              <c:url value="/" var="homePageUrl"/>
+              <a href="${homePageUrl}">Retourner à la page d'accueil</a>
               </div>
             </div>
         </div>
