@@ -95,7 +95,7 @@
                     </c:choose>
                     <li>
                     	<c:url value="/" var="baseUrl"/>
-                    	<page:lang pageBaseUrl="${baseUrl}"/>
+                    	<page:lang/>
 <!-- 						<div class="lang"> -->
 <!-- 						    <select onchange="javascript:alert(this.value);"> -->
 <%-- 						        <option value="fr"><spring:message code="global.lang.french"/></option> --%>
