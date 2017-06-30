@@ -15,11 +15,14 @@ jQuery(document).ready(function(){
 		
 	});
 	
-});
 
-// Envoi message
-BootstrapDialog.show({
-	message: $('<div></div>').load('envoi-msg.html')
+	$('#lang-select').change(function(value){
+		var currentUrl = document.location.href;
+		var langCurrentUrl = currentUrl.indexOf("?") == -1 ? currentUrl+"?" : currentUrl+"&";
+		langCurrentUrl = langCurrentUrl + "lang=" + this.value;
+		document.location.href = langCurrentUrl;
+	});
+	
 });
 
 
@@ -39,10 +42,10 @@ $('[data-toggle="collapse"]').on('click', function() {
 
 });
 
-$('.lang-chooser select').change(function(value){
-	var currentUrl = document.location.href;
-	var langCurrentUrl = currentUrl.indexOf("?") == -1 ? currentUrl+"?" : currentUrl+"&";
-	langCurrentUrl = langCurrentUrl + "lang=" + this.value;
-	document.location.href = langCurrentUrl;
-});
 
+/*
+//Envoi message
+BootstrapDialog.show({
+	message: $('<div></div>').load('envoi-msg.html')
+});
+*/

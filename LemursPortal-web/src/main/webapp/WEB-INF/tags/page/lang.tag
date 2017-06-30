@@ -12,7 +12,7 @@
 %>
 <c:set var="baseUrl" value="<%=baseUrl%>"/>
 <div class="lang lang-chooser">
-    <select>
+    <select id="lang-select">
         <option value="fr"><spring:message code="global.lang.french"/></option>
         <option value="en"><spring:message code="global.lang.english"/></option>
         <option value="mg"><spring:message code="global.lang.malagasy"/></option>
