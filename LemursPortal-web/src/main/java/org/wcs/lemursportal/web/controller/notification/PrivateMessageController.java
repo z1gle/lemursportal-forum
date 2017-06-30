@@ -73,4 +73,13 @@ public class PrivateMessageController extends BaseController {
 		model.addAttribute("messagesPage", messagesPage);
 		return "privatemessage-list";
 	}
+	
+	@GetMapping(value="/secured/pmessage/{messageId}")
+	public String getMessage(@PathVariable(name="messageId", required=false) Integer messageId, Model model, Authentication authentication){
+		String login = authentication.getName();
+		UserInfo userInfo = userInfoService.getByLogin(login);
+		PrivateMessage privateMessage = privateMessageService.findById(messageId, userInfo.getId());
+		model.addAttribute("privateMessage", privateMessage);
+		return "privatemessage-view";
+	}
 }

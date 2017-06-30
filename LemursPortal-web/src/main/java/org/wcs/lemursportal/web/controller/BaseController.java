@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.TopQuestion;
@@ -53,7 +54,6 @@ public class BaseController {
 //	public static final String USER_PROFIL_IMAGE_RESOURCE_PATH = "/resources/profil/";
 	public static final String USER_PROFIL_IMAGE_RESOURCE_PATH = "/profil/";
 //	public static final String FILE_UPLOAD_LOCATION="G:/Rebioma/lemursPortal/workspaces/LemursPortal/LemursPortal-web/src/main/webapp/resources/" + USER_PROFIL_IMAGE_RESOURCE_PATH ;//TODO: à externaliser !
-	
 	
 	@ModelAttribute("allLogedUsers")
 	public List<String> getUsersFromSessionRegistry() {

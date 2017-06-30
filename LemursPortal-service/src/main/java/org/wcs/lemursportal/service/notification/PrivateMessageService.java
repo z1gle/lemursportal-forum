@@ -36,4 +36,12 @@ public interface PrivateMessageService {
 	 * @return
 	 */
 	Page<PrivateMessage> findByDestinataire(Integer destinataireId, Pageable pageable);
+	
+	/**
+	 * 
+	 * @param messageId
+	 * @param destinataire
+	 * @return
+	 */
+	PrivateMessage findById(Integer messageId, Integer destinataireId);
 }

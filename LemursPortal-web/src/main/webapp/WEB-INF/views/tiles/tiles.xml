@@ -33,6 +33,11 @@
    		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/login.jsp" />
    </definition>
    
+   <!-- Error page -->
+   <definition name="global-error" extends="page-entier">  
+   		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/global-error.jsp" />
+   </definition>
+   
    <!-- Registration form -->
    <definition name="registration" extends="page-entier">  
    		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/registration-form.jsp" />
@@ -120,6 +125,18 @@
 			  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
 			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
 			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/privatemessage-form.jsp" />
+			</definition>
+       </put-attribute>
+   </definition>
+   
+   <!-- Message privée - Formulaire -->
+   <definition name="privatemessage-view" extends="base-definition">  
+       <put-attribute name="title" value="Private message" />  
+       <put-attribute name="body">
+       		<definition template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+			  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/privatemessage-view.jsp" />
 			</definition>
        </put-attribute>
    </definition>

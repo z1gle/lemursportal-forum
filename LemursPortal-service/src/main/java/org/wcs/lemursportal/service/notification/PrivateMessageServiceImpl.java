@@ -61,4 +61,15 @@ public class PrivateMessageServiceImpl implements PrivateMessageService {
 		return page;
 	}
 
+	@Override
+	public PrivateMessage findById(Integer messageId, Integer destinataireId) {
+		PrivateMessage privateMessage = privateMessageRepository.findById(messageId);
+		if(privateMessage != null && privateMessage.getDestinataireId().equals(destinataireId)){
+			//Seule le destinataire peut visualiser le contenu du message
+			privateMessage.setReadByDestinataire(true);
+			return privateMessage;
+		}
+		return null;
+	}
+
 }

@@ -12,10 +12,10 @@
 <ul>
 <c:forEach items="${messagesPage.content}" var="pMessage">
 	<li>
-		<strong><fmt:formatDate pattern="${datetimeFormat}" value="${pMessage.date}" /></strong>
-		<div>
-			<h3>${pMessage.subject}</h3>
-			<p>${pMessage.body}</p>
+		<div style="border: 1px #ccc solid;">
+			<strong>Envoyé par ${pMessage.sender.label} le <fmt:formatDate pattern="${datetimeFormat}" value="${pMessage.date}" /></strong><br/>
+			<c:url value="/secured/pmessage/${pMessage.id}" var="messageUrl"/>
+			<a href="${messageUrl}">${pMessage.subject}</a>
 		</div>
 	</li>
 </c:forEach>

@@ -25,7 +25,7 @@ import org.wcs.lemursportal.model.notification.PrivateMessage;
  *
  */
 @Repository
-@Transactional(readOnly=true)
+@Transactional
 public class PrivateMessageRepositoryImpl implements PrivateMessageRepository{
 	
 	@PersistenceContext
@@ -45,7 +45,17 @@ public class PrivateMessageRepositoryImpl implements PrivateMessageRepository{
 
 	@Override
 	public PrivateMessage findById(Integer id) {
-		PrivateMessage message = em.find(PrivateMessage.class, id);
+//		PrivateMessage message = em.find(PrivateMessage.class, id);
+		CriteriaBuilder builder = em.getCriteriaBuilder();
+		CriteriaQuery<PrivateMessage> select = builder.createQuery(PrivateMessage.class);
+		Root<PrivateMessage> from = select.from(PrivateMessage.class);
+		from.fetch("sender");
+		select.select(from);
+		select.where(builder.and(
+				builder.equal(from.get("id"), id)			
+		));
+		TypedQuery<PrivateMessage> typedQuery = em.createQuery(select);
+		PrivateMessage message = typedQuery.getSingleResult();
 		return message;
 	}
 
@@ -55,6 +65,7 @@ public class PrivateMessageRepositoryImpl implements PrivateMessageRepository{
 		CriteriaBuilder builder = em.getCriteriaBuilder();
 		CriteriaQuery<PrivateMessage> select = builder.createQuery(PrivateMessage.class);
 		Root<PrivateMessage> from = select.from(PrivateMessage.class);
+		from.fetch("sender");
 		select.select(from);
 		select.where(builder.and(
 				builder.equal(from.get("destinataireId"), destinataireId),
