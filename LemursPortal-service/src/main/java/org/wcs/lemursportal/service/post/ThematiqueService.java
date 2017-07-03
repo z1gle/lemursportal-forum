@@ -16,5 +16,12 @@ public interface ThematiqueService extends GenericCRUDService<Thematique, Intege
 	 */
 	public Thematique saveOrUpdate(String currentLogin, Thematique thematique) ;
 	
+	/**
+	 * 
+	 * @param thematiqueId
+	 * @param currentLogin
+	 */
+	public void delete(Integer thematiqueId, String currentLogin);
+	
 	
 }

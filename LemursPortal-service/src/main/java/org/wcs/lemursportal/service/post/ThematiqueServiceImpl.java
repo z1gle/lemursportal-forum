@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.exception.RegistrationException;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
+import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueCrudRepository;
 import org.wcs.lemursportal.service.common.GenericCRUDServiceImpl;
 import org.wcs.lemursportal.service.mail.MailService;
@@ -35,6 +36,7 @@ public class ThematiqueServiceImpl extends
 	private UserInfoService userInfoService;
 	@Autowired 
 	NotificationService notificationService;
+	@Autowired PostRepository postRepository;
 	
 	@Autowired MailService mailService;
 
@@ -75,6 +77,7 @@ public class ThematiqueServiceImpl extends
 			//Création
 			thematique.setCreatedBy(currentUser);
 			thematique.setCreationDate(now);
+			thematique.setDeleted(false);
 			Thematique thematiqueExample = new Thematique();
 			thematiqueExample.setLibelle(thematique.getLibelle());
 			boolean thematiqueExist = thematiqueCrudRepository.exists(Example.of(thematiqueExample));
@@ -87,5 +90,15 @@ public class ThematiqueServiceImpl extends
 		}
 	}
 
-	
+	@Override
+	public void delete(Integer thematiqueId, String currentLogin) {
+		UserInfo currentUser = userInfoService.getByLogin(currentLogin);
+		if(currentUser != null){
+			Thematique thematique = thematiqueCrudRepository.findOne(thematiqueId);
+			thematique.setDeleted(true);
+			thematique.setDeletedBy(currentUser.getId());
+			thematique.setDeletedDate(new Date());
+			postRepository.deletePostByThematique(thematiqueId, currentUser.getId());
+		}
+	}
 }

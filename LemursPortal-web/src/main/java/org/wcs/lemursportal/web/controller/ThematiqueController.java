@@ -41,13 +41,13 @@ public class ThematiqueController extends BaseController{
 	
 	@Autowired
 	private ThematiqueService thematiqueService;
+	
 	@Autowired private PostRepository postRepository;
 	@Autowired
 	private UserTypeRepository userTypeRepository;
 	@Autowired
 	ThematiqueValidator thematiqueValidator;
 	
-
 	@Autowired
 	ThematiqueRepository thematiqueRepository;
 	
@@ -71,6 +71,17 @@ public class ThematiqueController extends BaseController{
 //		Thematique thematique = thematiqueService.findById(idThematique);
 		model.addAttribute(thematique);
 		return "thematique-form";
+	}
+	
+	@GetMapping(value="/secured/thematique/archive-{idThematique}")
+	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
+	public String delete(@PathVariable(name="idThematique", required=false) Integer idThematique, Authentication authentication, Model model){
+		if(idThematique == null || idThematique <= 0){
+			return "redirect:/thematique/list";
+		}
+		thematiqueService.delete(idThematique, authentication.getName());
+//		Thematique thematique = thematiqueService.findById(idThematique);
+		return "redirect:/thematique/list";
 	}
 	
 	@GetMapping(value={"/thematique/list"})

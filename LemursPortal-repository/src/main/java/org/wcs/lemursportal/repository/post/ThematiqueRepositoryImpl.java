@@ -1,10 +1,7 @@
 package org.wcs.lemursportal.repository.post;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -32,7 +29,7 @@ public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 	
 	@Autowired ThematiqueCrudRepository thematiqueCrudRepository;
 	
-	@PersistenceContext(unitName="lemursportalPUnit")
+	@PersistenceContext
 	protected EntityManager em;
 	
 	/* (non-Javadoc)
@@ -43,11 +40,13 @@ public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 //		StringBuilder qlBuild = new StringBuilder("select t, count(p) as nbPost from Post as p ");
 //		qlBuild.append("inner join p.thematique t ");
 //		qlBuild.append("group by t.id order by t.creationDate desc ");
-		TypedQuery<Long> countQuery = em.createQuery("select count(t) from Thematique as t", Long.class);
+		TypedQuery<Long> countQuery = em.createQuery("select count(t) from Thematique as t where t.deleted<>:deleted", Long.class);
+		countQuery.setParameter("deleted", true);
 		Long total = countQuery.getSingleResult();
 		StringBuilder jpqlBuilder = new StringBuilder("select t, count(q) as nbQuestions from Thematique t ")
 			.append("left join t.questions as q ")
-			.append("where q.parentId is null and (q.censored is null or q.censored != :censored) ")
+			.append("where q.parentId is null and (q.censored is null or q.censored <> :censored) ")
+			.append(" and (t.deleted=:notDeleted or t.deleted is null) ")
 			.append("group by t.id ")
 			.append("order by nbQuestions desc ");
 		
@@ -58,6 +57,7 @@ public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 			.append("order by nbQuestions desc ");*/
 		TypedQuery<Tuple> query = em.createQuery(jpqlBuilder.toString(), Tuple.class);
 		query.setParameter("censored", true);
+		query.setParameter("notDeleted", false);
 		if(pageable != null){
 			query.setFirstResult(pageable.getOffset());
 			query.setMaxResults(pageable.getPageSize());
@@ -89,12 +89,12 @@ public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 		qlBuild.append("left join Post q  on q.thematique.id = f.id ");
 		qlBuild.append("LEFT   JOIN Post   p ON p.thematique.id = f.id ");
 		//qlBuild.append("inner join fetch p.owner o");
-		qlBuild.append(" where q.parentId is null ");
+		qlBuild.append(" where (f.deleted=:notDeleted or f.deleted is null) and q.parentId is null ");
 		qlBuild.append(" group by f, f.id, p.id ");
 		qlBuild.append("ORDER  BY  f.id, p.creationDate DESC");
 		
 		Query query = em.createQuery(qlBuild.toString());
-		
+		query.setParameter("notDeleted", false);
 		
 		final List<Object[]> results = query.getResultList();
 		List<TopThematique> topThematiques = new ArrayList<>();
@@ -113,15 +113,17 @@ public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 	 */
 	@Override
 	public Thematique findByQuestionId(Integer questionId) {
-		TypedQuery<Thematique> query = em.createQuery("select t from Post p inner join fetch p.thematique t where p.id=:questionId", Thematique.class);
+		TypedQuery<Thematique> query = em.createQuery("select t from Post p inner join fetch p.thematique t where p.id=:questionId and (t.deleted=:notDeleted or t.deleted is null)", Thematique.class);
 		query.setParameter("questionId", questionId);
+		query.setParameter("notDeleted", false);
 		Thematique thematique = query.getSingleResult();
 		return thematique;
 	}
 
 	@Override
 	public Thematique findByIdAndFetchManagers(Integer thematiqueId) {
-		TypedQuery<Thematique> query = em.createQuery("select t from Thematique t inner join fetch t.managers where t.id=:thematiqueId", Thematique.class);
+		TypedQuery<Thematique> query = em.createQuery("select t from Thematique t inner join fetch t.managers where t.id=:thematiqueId and (t.deleted=:notDeleted or t.deleted is null) ", Thematique.class);
+		query.setParameter("notDeleted", false);
 		query.setParameter("thematiqueId", thematiqueId);
 		Thematique thematique = query.getSingleResult();
 		return thematique;

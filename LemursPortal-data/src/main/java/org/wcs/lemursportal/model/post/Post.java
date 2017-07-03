@@ -15,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Pattern;
 
 import org.wcs.lemursportal.model.user.UserInfo;
 
@@ -94,8 +93,15 @@ public class Post implements Serializable {
 //			inverseJoinColumns= {@JoinColumn(name = "id_document", referencedColumnName = "id")}
 //		)
 //	private List<Document> documents; //list of attachments
-
 	
+	public Boolean deleted = false;
+	
+	@Column(name="deleted_by", nullable=true)
+	private Integer deletedBy;
+	
+	@Column(name="deleted_date", nullable=true)
+	private Date deletedDate;
+
 	public Integer getId() {
 		return id;
 	}
@@ -246,6 +252,47 @@ public class Post implements Serializable {
 		this.uriYoutube = uriYoutube;
 	}
 	
+	/**
+	 * @return the deleted
+	 */
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	/**
+	 * @param deleted the deleted to set
+	 */
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
+	/**
+	 * @return the deletedBy
+	 */
+	public Integer getDeletedBy() {
+		return deletedBy;
+	}
+
+	/**
+	 * @param deletedBy the deletedBy to set
+	 */
+	public void setDeletedBy(Integer deletedBy) {
+		this.deletedBy = deletedBy;
+	}
+
+	/**
+	 * @return the deletedDate
+	 */
+	public Date getDeletedDate() {
+		return deletedDate;
+	}
+
+	/**
+	 * @param deletedDate the deletedDate to set
+	 */
+	public void setDeletedDate(Date deletedDate) {
+		this.deletedDate = deletedDate;
+	}
 	
 	
 

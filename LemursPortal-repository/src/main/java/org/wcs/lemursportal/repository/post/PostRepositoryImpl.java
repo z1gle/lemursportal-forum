@@ -1,6 +1,7 @@
 package org.wcs.lemursportal.repository.post;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,11 @@ public class PostRepositoryImpl implements PostRepository {
 		CriteriaQuery<Post> select = builder.createQuery(Post.class);
 		Root<Post> from = select.from(Post.class);
 		select.select(from);
-		select.where(from.get("parent").isNull());
+		select.where(builder.and(
+				from.get("parent").isNull(), 
+				builder.or(builder.equal(from.get("deleted"), false), from.get("deleted").isNull())
+				)
+		);
 		select.orderBy(builder.desc(from.get("creationDate")));
 		TypedQuery<Post> typedQuery = em.createQuery(select);
 		if(pageable != null){
@@ -88,12 +93,13 @@ public class PostRepositoryImpl implements PostRepository {
 	 * @see org.wcs.lemursportal.repository.post.PostRepository#countQuestion()
 	 */
 	private Long countQuestions(Integer idThematique) {
-		StringBuilder jpql = new StringBuilder("select count(p.id) from Post p where p.parentId is null and (p.censored is null or p.censored != :censored) ");
+		StringBuilder jpql = new StringBuilder("select count(p.id) from Post p where (p.deleted=:notDeleted or p.deleted is null) and p.parentId is null and (p.censored is null or p.censored <> :censored) ");
 		if(idThematique != null){
 			jpql.append("and p.thematique.id=:thematiqueId ");
 		}
 		Query query = em.createQuery(jpql.toString(), Long.class);
 		query.setParameter("censored", Boolean.TRUE);
+		query.setParameter("notDeleted", Boolean.FALSE);
 		if(idThematique != null){
 			query.setParameter("thematiqueId", idThematique);
 		}
@@ -114,7 +120,7 @@ public class PostRepositoryImpl implements PostRepository {
 		Long total = countQuestions(idThematique);
 		StringBuilder jpql = new StringBuilder("select max(r.id) as lastResponseId, count(r.id) as nbResponse, q.id from Post as q ")
 		.append("left join q.children as r ")
-		.append(" where q.parentId is null and (q.censored is null or q.censored != :censored) ");
+		.append(" where (q.deleted=:notDeleted or q.deleted is null) and q.parentId is null and (q.censored is null or q.censored <> :censored) ");
 		if(idThematique != null){
 			jpql.append(" and q.thematique.id=:thematiqueId ");
 		}
@@ -130,6 +136,7 @@ public class PostRepositoryImpl implements PostRepository {
 		
 		TypedQuery<Tuple> typedQuery = em.createQuery(jpql.toString(), Tuple.class);
 		typedQuery.setParameter("censored", Boolean.TRUE);
+		typedQuery.setParameter("notDeleted", Boolean.FALSE);
 		if(idThematique != null){
 			typedQuery.setParameter("thematiqueId", idThematique);
 		}
@@ -178,9 +185,10 @@ public class PostRepositoryImpl implements PostRepository {
 		if(postId != null){
 			StringBuilder jpql = new StringBuilder("select p from Post p ")
 				.append("left join fetch p.owner ")
-				.append(" where p.id = :postId");
+				.append(" where (p.deleted=:notDeleted or p.deleted is null) and p.id = :postId");
 			TypedQuery<Post> query = em.createQuery(jpql.toString(), Post.class);
 			query.setParameter("postId", postId);
+			query.setParameter("notDeleted", false);
 			post = query.getSingleResult();
 		}
 		return post;
@@ -191,9 +199,10 @@ public class PostRepositoryImpl implements PostRepository {
 		if(postIds != null && !postIds.isEmpty()){
 			StringBuilder jpql = new StringBuilder("select p from Post p ")
 				.append("left join fetch p.owner ")
-				.append(" where p.id in (:ids)");
+				.append(" where (p.deleted=:notDeleted or p.deleted is null) and p.id in (:ids)");
 			TypedQuery<Post> query = em.createQuery(jpql.toString(), Post.class);
 			query.setParameter("ids", postIds);
+			query.setParameter("notDeleted", false);
 			posts = query.getResultList();
 		}
 		return posts;
@@ -205,9 +214,10 @@ public class PostRepositoryImpl implements PostRepository {
 		
 		StringBuilder jpql = new StringBuilder("select p from Post p ")
 			.append("left join fetch p.owner ")
-			.append(" where p.parentId = :id)");
+			.append(" where (p.deleted=:notDeleted or p.deleted is null) and p.parentId = :id)");
 		TypedQuery<Post> query = em.createQuery(jpql.toString(), Post.class);
 		query.setParameter("id", parentId);
+		query.setParameter("notDeleted", false);
 		posts = query.getResultList();
 		System.out.println("zanany : " +posts.size());
 		return posts;
@@ -271,7 +281,7 @@ public class PostRepositoryImpl implements PostRepository {
 	public Page<Post> getQuestionResponses(Integer questionId, Pageable pageable) {
 		StringBuilder jpql = new StringBuilder("select p from Post p inner join fetch p.owner ");
 		StringBuilder jpqlCount = new StringBuilder("select count(p.id) from Post p ");
-		StringBuilder jpqlWhere = new StringBuilder("where (p.censored is null or p.censored != :censored) ")
+		StringBuilder jpqlWhere = new StringBuilder("where (p.censored is null or p.censored <> :censored) ")
 			.append("and p.parentId=:questionId ");
 		//Le nombe total des reponses
 		TypedQuery<Long> countQuery = em.createQuery(jpqlCount.append(jpqlWhere).toString(), Long.class);
@@ -302,9 +312,22 @@ public class PostRepositoryImpl implements PostRepository {
 			query.setFirstResult(pageable.getOffset());
 			query.setMaxResults(pageable.getPageSize());
 		}
-		
 		List<Post> responses = query.getResultList();
 		return new PageImpl<>(responses, pageable, total);
+	}
+
+
+	@Transactional(readOnly=false)
+	@Override
+	public Integer deletePostByThematique(Integer thematiqueId, Integer userId) {
+		StringBuilder jpql = new StringBuilder("update Post p set p.deleted=:deleted, p.deletedBy=:deletedBy, p.deletedDate=:deletedDate where p.thematiqueId=:thematiqueId ");
+		Query query = em.createQuery(jpql.toString());
+		query.setParameter("deleted", true);
+		query.setParameter("deletedBy", userId);
+		query.setParameter("deletedDate", new Date());
+		query.setParameter("thematiqueId", thematiqueId);
+		int nbUpdated = query.executeUpdate();
+		return nbUpdated;
 	}
 	
 

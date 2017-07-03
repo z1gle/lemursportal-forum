@@ -67,6 +67,26 @@ public class Thematique implements Serializable {
 	)
 	private Set<UserInfo> managers;
 	
+	private Boolean deleted= false;
+	
+	@Column(name="deleted_by", nullable=true)
+	private Integer deletedBy;
+	
+	@Column(name="deleted_date", nullable=true)
+	private Date deletedDate;
+	
+	/**
+	 * @return the deleted
+	 */
+	public Boolean getDeleted() {
+		return deleted;
+	}
+	/**
+	 * @param deleted the deleted to set
+	 */
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -143,5 +163,29 @@ public class Thematique implements Serializable {
 	}
 	public void setQuestions(List<Post> questions) {
 		this.questions = questions;
+	}
+	/**
+	 * @return the deletedBy
+	 */
+	public Integer getDeletedBy() {
+		return deletedBy;
+	}
+	/**
+	 * @param deletedBy the deletedBy to set
+	 */
+	public void setDeletedBy(Integer deletedBy) {
+		this.deletedBy = deletedBy;
+	}
+	/**
+	 * @return the deletedDate
+	 */
+	public Date getDeletedDate() {
+		return deletedDate;
+	}
+	/**
+	 * @param deletedDate the deletedDate to set
+	 */
+	public void setDeletedDate(Date deletedDate) {
+		this.deletedDate = deletedDate;
 	}
 }

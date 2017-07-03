@@ -31,6 +31,13 @@ public interface PostRepository {
 	 
 	 /**
 	  * 
+	  * @param thematiqueId
+	  * @return
+	  */
+	 Integer deletePostByThematique(Integer thematiqueId, Integer userId);
+	 
+	 /**
+	  * 
 	  * @param pageable
 	  * @return
 	  */
