@@ -60,6 +60,8 @@
 						</div>
 					</div>
 				</div>
+				<c:url value="/secured/thematique/${parThematique.thematique.id}" var="modifUrl"/>
+				<div><a href="${modifUrl}">Modifier</a></div>
 			</div>
 			<!-- F Sujet -->
 	</c:forEach>

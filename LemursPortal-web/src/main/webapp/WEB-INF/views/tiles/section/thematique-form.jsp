@@ -39,9 +39,7 @@
 										</div>
 										
 										<div>
-										<form:select path="managers">
-		                        			<form:options items="${experts}" itemValue="id" itemLabel="label"/>
-		                        		</form:select>
+										<form:select path="managers" multiple="true" items="${experts}" itemLabel="label" itemValue="id"/>
 		                        		</div>
 										<div>
 											<form:button value="save"><spring:message code="thematique.label.enregistrer"/></form:button>

@@ -67,6 +67,7 @@ public class ThematiqueServiceImpl extends
 			persistentEntity.setModifiedBy(currentUser);
 			persistentEntity.setLibelle(thematique.getLibelle());
 			persistentEntity.setDescription(thematique.getDescription());
+			persistentEntity.setManagers(thematique.getManagers());
 			this.thematiqueCrudRepository.save(persistentEntity);
 //			notificationService.saveThematiqueNotification(thematique);
 			return persistentEntity;

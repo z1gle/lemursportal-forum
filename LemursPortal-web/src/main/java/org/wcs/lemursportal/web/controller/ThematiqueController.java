@@ -28,7 +28,6 @@ import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
 import org.wcs.lemursportal.repository.user.UserTypeRepository;
-import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
 import org.wcs.lemursportal.web.validator.ThematiqueValidator;
 
@@ -43,7 +42,6 @@ public class ThematiqueController extends BaseController{
 	@Autowired
 	private ThematiqueService thematiqueService;
 	@Autowired private PostRepository postRepository;
-	@Autowired private PostService postService;
 	@Autowired
 	private UserTypeRepository userTypeRepository;
 	@Autowired
@@ -69,7 +67,8 @@ public class ThematiqueController extends BaseController{
 		if(idThematique == null || idThematique <= 0){
 			return "redirect:/secured/thematique/create";
 		}
-		Thematique thematique = thematiqueService.findById(idThematique);
+		Thematique thematique = thematiqueRepository.findByIdAndFetchManagers(idThematique);
+//		Thematique thematique = thematiqueService.findById(idThematique);
 		model.addAttribute(thematique);
 		return "thematique-form";
 	}
