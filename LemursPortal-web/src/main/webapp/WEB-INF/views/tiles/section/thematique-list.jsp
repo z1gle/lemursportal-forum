@@ -62,7 +62,11 @@
 				</div>
 				<sec:authorize access="hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')"> 
 				<c:url value="/secured/thematique/${parThematique.thematique.id}" var="modifUrl"/>
-				<div><a href="${modifUrl}">Modifier</a></div>
+				<c:url value="/secured/thematique/archive-${parThematique.thematique.id}" var="deleteUrl"/>
+				<div>
+					<a href="${modifUrl}">Modifier</a> &nbsp;
+					<a href="${deleteUrl}">Supprimer</a>
+				</div>
 				</sec:authorize>
 			</div>
 			<!-- F Sujet -->
