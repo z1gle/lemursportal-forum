@@ -180,6 +180,15 @@ public class PostController extends BaseController{
 		model.addAttribute("responsesPage", responsesPage);
 		return "showPost";
 	}
+	
+	@GetMapping(value="/post/del/{idPost}")
+	public String deletePost(@PathVariable(name="idPost", required=true) Integer idPost, Authentication authentication, 
+			Model model){
+		if(authentication != null){
+			Post post = postService.deletepost(idPost, authentication.getName());
+		}
+		return "redirect:/";
+	}
 	 
 	
 	@PostMapping(value="/secured/post/reponse")

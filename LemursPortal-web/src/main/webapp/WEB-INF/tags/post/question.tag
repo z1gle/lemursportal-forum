@@ -17,6 +17,15 @@
 <!-- 	type="java.lang.Boolean" description="Un flag pour afficher ou pas les information sur la dernière reponse" %> -->
 <div class="forum-item">
 	<div class="row">
+	
+        <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
+<%--    <sec:authentication property="principal" /> --%>
+        <sec:authentication property="name" var="currentUserLogin"/>
+<!-- 		<a href="#">Modifier</a> -->
+		<c:if test="${isLoggedInUser && currentUserLogin eq topQuestion.question.owner.login}">
+			<c:url value="/post/del/${topQuestion.question.id}" var="delUrl"/>
+			<a href="${delUrl}">Supprimer</a>		
+		</c:if>
 		<div class="col-md-8">
 			<user:forum-profil userInfo="${topQuestion.question.owner}"/>
 			<c:url value="/post/show/${topQuestion.question.id}" var="questionPageUrl"/>

@@ -2,6 +2,7 @@ package org.wcs.lemursportal.service.post;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueCrudRepository;
+import org.wcs.lemursportal.repository.post.ThematiqueRepository;
 import org.wcs.lemursportal.service.common.GenericCRUDServiceImpl;
 import org.wcs.lemursportal.service.mail.MailService;
 import org.wcs.lemursportal.service.notification.NotificationService;
@@ -39,6 +41,8 @@ public class ThematiqueServiceImpl extends
 	@Autowired PostRepository postRepository;
 	
 	@Autowired MailService mailService;
+	
+	@Autowired ThematiqueRepository thematiqueRepository;
 
 	/* (non-Javadoc)
 	 * @see org.wcs.lemursportal.service.common.GenericCRUDServiceImpl#getJpaRepository()
@@ -100,5 +104,13 @@ public class ThematiqueServiceImpl extends
 			thematique.setDeletedDate(new Date());
 			postRepository.deletePostByThematique(thematiqueId, currentUser.getId());
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.wcs.lemursportal.service.common.GenericCRUDServiceImpl#findAll()
+	 */
+	@Override
+	public List<Thematique> findAll() {
+		return thematiqueRepository.findAll();
 	}
 }

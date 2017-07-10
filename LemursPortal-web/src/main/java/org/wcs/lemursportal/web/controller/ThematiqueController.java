@@ -97,9 +97,9 @@ public class ThematiqueController extends BaseController{
 		model.addAttribute("topThematiquePage", topThematiquePage);
 		return "thematique-list";
 	}
-	
-	@PostMapping(value="/secured/thematique")
+
 	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
+	@PostMapping(value="/secured/thematique")
 	public String submit(Authentication authentication, Model model, 
 			@ModelAttribute Thematique thematique, 
 			BindingResult results)

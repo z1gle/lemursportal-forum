@@ -26,6 +26,12 @@ public interface ThematiqueRepository {
 	
 	/**
 	 * 
+	 * @return
+	 */
+	List<Thematique> findAll();
+	
+	/**
+	 * 
 	 * @param questionId
 	 * @return
 	 */

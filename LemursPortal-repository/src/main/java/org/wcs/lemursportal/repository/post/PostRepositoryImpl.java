@@ -120,9 +120,11 @@ public class PostRepositoryImpl implements PostRepository {
 		Long total = countQuestions(idThematique);
 		StringBuilder jpql = new StringBuilder("select max(r.id) as lastResponseId, count(r.id) as nbResponse, q.id from Post as q ")
 		.append("left join q.children as r ")
-		.append(" where (q.deleted=:notDeleted or q.deleted is null) and q.parentId is null and (q.censored is null or q.censored <> :censored) ");
+		.append("inner join q.thematique t ")
+		.append(" where (q.deleted=:notDeleted or q.deleted is null) and q.parentId is null and (q.censored is null or q.censored <> :censored) ")
+		.append("and (t.deleted=:notDeleted or t.deleted is null) ");
 		if(idThematique != null){
-			jpql.append(" and q.thematique.id=:thematiqueId ");
+			jpql.append(" and t.id=:thematiqueId ");
 		}
 //		jpql.append(" and (r.censored is null or r.censored != :censored) ")
 		jpql.append(" group by q.id order by nbResponse desc ");

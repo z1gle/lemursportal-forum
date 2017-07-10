@@ -2,6 +2,8 @@ package org.wcs.lemursportal.service.post;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.PostView;
 import org.wcs.lemursportal.model.post.TopQuestion;
@@ -37,4 +39,7 @@ public interface PostService {
 	 * @return
 	 */
 	PostView incrementerNbVue(Post question, String user);
+	
+	@PostAuthorize ("returnObject.owner.login == authentication.name or hasRole('ADMIN')")
+	Post deletepost(Integer postId, String currentLogin);
 }

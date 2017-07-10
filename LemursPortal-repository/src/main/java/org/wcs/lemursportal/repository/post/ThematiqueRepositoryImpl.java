@@ -129,4 +129,12 @@ public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 		return thematique;
 	}
 
+	@Override
+	public List<Thematique> findAll() {
+		TypedQuery<Thematique> query = em.createQuery("select t from Thematique t where t.deleted=:notDeleted or t.deleted is null ", Thematique.class);
+		query.setParameter("notDeleted", false);
+		List<Thematique> thematiques = query.getResultList();
+		return thematiques;
+	}
+
 }

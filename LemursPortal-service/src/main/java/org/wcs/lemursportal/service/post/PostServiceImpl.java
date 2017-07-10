@@ -166,4 +166,15 @@ public class PostServiceImpl implements PostService {
 		return postView;
 	}
 
+	@Override
+	@Transactional(readOnly=false)
+	public Post deletepost(Integer postId, String currentLogin) {
+		Post post = postRepository.getPostsAndFetchOwner(postId);
+		UserInfo currentUser = userInfoService.getByLogin(currentLogin);
+		post.setDeleted(true);
+		post.setDeletedBy(currentUser.getId());
+		post.setDeletedDate(new Date());
+		return post;
+	}
+
 }
