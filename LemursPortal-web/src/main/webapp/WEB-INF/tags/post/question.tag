@@ -21,8 +21,9 @@
         <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
 <%--    <sec:authentication property="principal" /> --%>
         <sec:authentication property="name" var="currentUserLogin"/>
+        <sec:authorize access="hasAnyRole('ADMIN', 'MODERATEUR')" var="isAdminOrModerateur"/>
+		<c:if test="${isLoggedInUser && (currentUserLogin eq topQuestion.question.owner.login || isAdminOrModerateur)}">
 <!-- 		<a href="#">Modifier</a> -->
-		<c:if test="${isLoggedInUser && currentUserLogin eq topQuestion.question.owner.login}">
 			<c:url value="/post/del/${topQuestion.question.id}" var="delUrl"/>
 			<a href="${delUrl}">Supprimer</a>		
 		</c:if>
