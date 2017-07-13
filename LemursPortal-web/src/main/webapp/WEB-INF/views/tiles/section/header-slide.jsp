@@ -55,5 +55,6 @@
   <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-menu-right"></span></a>
 </div>
 </div>
+</div>
 
 
