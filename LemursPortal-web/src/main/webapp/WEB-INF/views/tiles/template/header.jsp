@@ -9,7 +9,7 @@
 <c:url value="/resources" var="resourcesPath"/>
 
 <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav id="navigation" class="navbar navbar-inverse navbar-fixed-top animated-header" role="navigation">
         <div class="container">
             <!-- D menu mobile  -->
             <div class="navbar-header">
@@ -20,7 +20,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <c:url value="/" var="homePage"/>
-                <a class="navbar-brand" href="${homePage}"><img class="img-responsive" src="${resourcesPath}/images/logo-lemurs.png" alt="Lemurs Portal"/></a>
+                <a class="navbar-brand" href="${homePage}"><img class="img-responsive" src="${resourcesPath}/images/logo-lemursportal.png" alt="Lemurs Portal"/></a>
             </div>
             <!-- F menu mobile  -->
             
@@ -110,7 +110,7 @@
                 
                 <ul class="nav navbar-nav navbar-left">
                 	<li>
-                        <a href="#"><spring:message code="home.menu.questions"/></a>
+                        <a href="${homePage}"><spring:message code="home.menu.questions"/></a>
                     </li>
                     <li>
                     	<c:url value="/documents" var="documentsUrl"/>

@@ -59,6 +59,16 @@ jQuery(document).ready(function(){
 
 	});
 	
+	$(window).scroll(function () {
+        if ($(window).scrollTop() > 400) {
+            $(".navbar a").css("color","#fff");
+            $("#navigation").removeClass("animated-header");
+        } else {
+            $(".navbar a").css("color","inherit");
+            $("#navigation").addClass("animated-header");
+        }
+    });
+	
 });
 
 

@@ -33,7 +33,7 @@
                   <button type="submit"><spring:message code="login.btn.connect"/></button>
                   <p class="message">
                   <c:url value="/signup" var="signupUrl"/>
-                  <a href="${signupUrl}" class="left"><spring:message code="login.signup"/> ?</a> 
+                  <a href="${signupUrl}" class="al-left"><spring:message code="login.signup"/> ?</a> 
                   <a href="#" class="right"><spring:message code="login.forgot.password"/> ?</a></p>
                 </form>
               </div>

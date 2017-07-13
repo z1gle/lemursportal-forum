@@ -64,6 +64,7 @@
 }
 
 /* Next & previous buttons */
+/*
 .prev,
 .next {
   cursor: pointer;
@@ -80,7 +81,7 @@
   user-select: none;
   -webkit-user-select: none;
 }
-
+*/
 /* Position the "next button" to the right */
 .next {
   right: 0;
