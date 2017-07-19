@@ -9,8 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.wcs.lemursportal.dto.user.UserRegistrationForm;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.model.user.UserType;
+import org.wcs.lemursportal.service.exception.UserAlreadyExistAuthenticationException;
+
 
 /**
  * @author mikajy.hery
@@ -27,18 +30,18 @@ public interface UserInfoService {
 	void updateUserRoles(Integer userId, Set<UserType> roles);
 	/**
 	 * 
-	 * @param login
+	 * @param email
 	 * @return
 	 */
-	@PostAuthorize ("returnObject.login == authentication.name")
-	UserInfo getByLogin(String login);
+	@PostAuthorize ("returnObject.email == authentication.name")
+	UserInfo getByEmail(String email);
 	/**
 	 * 
 	 * @param id
 	 * @return
 	 */
 
-	@PostAuthorize ("returnObject.login == authentication.name or hasRole('ADMIN')")
+	@PostAuthorize ("returnObject.email == authentication.name or hasRole('ADMIN')")
 	UserInfo getById(Integer id);
 	
 	
@@ -54,7 +57,7 @@ public interface UserInfoService {
 	 * 
 	 * @param user
 	 */
-	//@PreAuthorize ("#user.login == authentication.name")
+	//@PreAuthorize ("#user.email == authentication.name")
 	void update(UserInfo user);
 	
 	/**
@@ -72,4 +75,7 @@ public interface UserInfoService {
 	 */
 	@PreAuthorize("hasAnyRole('ADMIN', 'MODERATEUR')")
 	Page<UserInfo> findByPagination(Pageable pageable);
+	
+	UserInfo registerNewUser(UserRegistrationForm userRegistrationForm)throws UserAlreadyExistAuthenticationException;
+
 }

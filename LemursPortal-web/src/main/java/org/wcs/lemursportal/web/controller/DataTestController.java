@@ -51,7 +51,7 @@ public class DataTestController {
 	
 	@GetMapping(value="/admin/generate_topicsandpost")
 	public @ResponseBody String generateDataForTest(Authentication authentication, HttpServletRequest request){
-		UserInfo currentUser = userInfoService.getByLogin(authentication.getName());
+		UserInfo currentUser = userInfoService.getByEmail(authentication.getName());
 
 		List<UserInfo> experts = userTypeRepository.findUsers(UserRole.EXPERT);
 		StringBuilder sb = new StringBuilder("Erreur! Aucun experts enregistré dans la base de données !");
@@ -78,7 +78,7 @@ public class DataTestController {
 	
 	@GetMapping(value="/admin/generate_topics")
 	public @ResponseBody String generateDataTopics(Authentication authentication, HttpServletRequest request){
-		UserInfo currentUser = userInfoService.getByLogin(authentication.getName());
+		UserInfo currentUser = userInfoService.getByEmail(authentication.getName());
 
 		UserInfo expert = addExpert();
 		StringBuilder sb = new StringBuilder("Erreur! Aucun experts enregistré dans la base de données !");
@@ -101,7 +101,6 @@ public class DataTestController {
 		u.setEmail("ratsimbazafy@yopmail.com");
 		u.setNom("Ratsimbazafy");
 		u.setPrenom("Jonah");
-		u.setLogin("jonah.ratsimbazafy");
 		u.setDateInscription(Calendar.getInstance().getTime());
 		u.setEnabled(true);
 		if(u.getRoles() == null || u.getRoles().isEmpty()){

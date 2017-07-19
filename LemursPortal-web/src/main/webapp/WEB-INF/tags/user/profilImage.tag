@@ -12,6 +12,9 @@
 	<c:when test="${empty src}">
 		<img src="${resourcesPath}/profil/default.png" alt="${alt}" class="${cssClass}">
 	</c:when>
+	<c:when test = "${fn:startsWith(src, 'http')}">
+        <img src="${src}" alt="${alt}" class="${cssClass}">
+   	</c:when>
 	<c:otherwise>
 		<img src="${resourcesPath}/${src}" alt="${alt}" class="${cssClass}">
 	</c:otherwise>

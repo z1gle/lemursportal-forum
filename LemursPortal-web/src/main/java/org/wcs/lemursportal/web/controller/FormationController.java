@@ -34,7 +34,7 @@ import org.wcs.lemursportal.web.constants.View;
  */
 @Controller
 @RequestMapping("/formation")
-public class FormationController {
+public class FormationController extends BaseController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(FormationController.class);
 	
@@ -103,9 +103,9 @@ public class FormationController {
 	@RequestMapping(method = RequestMethod.GET, value = URL.SHOW_FORMATION)
 	public String viewFormationPage(Authentication authentication, Model model, @PathVariable("id") Long formationId,
 			HttpSession session, HttpServletRequest request, HttpServletResponse resp) {
-		String login = authentication==null?null:authentication.getName();
+		String email = authentication==null?null:authentication.getName();
 		
-		Formation currentFormation = formationService.getFormation(formationId, login);
+		Formation currentFormation = formationService.getFormation(formationId, email);
 		
 		model.addAttribute("formation", currentFormation);
 

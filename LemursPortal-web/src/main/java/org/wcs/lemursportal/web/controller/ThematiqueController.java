@@ -113,7 +113,7 @@ public class ThematiqueController extends BaseController{
 			savedThematique = thematiqueService.saveOrUpdate(authentication.getName(), thematique);
 		}catch(RegistrationException e){
 			if(e.getCode() == RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION){
-				results.rejectValue("login", "validation.thematique.exist");
+				results.rejectValue("email", "validation.thematique.exist");
 				return "forward:thematique-form";
 			}else{
 				return "forward:thematique-form";

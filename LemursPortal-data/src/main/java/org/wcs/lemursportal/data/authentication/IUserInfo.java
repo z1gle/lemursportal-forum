@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public interface IUserInfo extends  Serializable {
 	
-	public String getLogin();
+	public String getEmail();
 	
 	public String getPassword();
 }

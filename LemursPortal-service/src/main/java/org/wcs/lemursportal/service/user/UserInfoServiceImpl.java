@@ -16,14 +16,18 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wcs.lemursportal.dto.user.SocialProvider;
+import org.wcs.lemursportal.dto.user.UserRegistrationForm;
 import org.wcs.lemursportal.exception.RegistrationException;
 import org.wcs.lemursportal.model.authentication.UserRole;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.model.user.UserType;
 import org.wcs.lemursportal.repository.user.UserRepository;
+import org.wcs.lemursportal.service.exception.UserAlreadyExistAuthenticationException;
 
 /**
  * @author mikajy.hery
@@ -37,6 +41,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 	
 	@Autowired 
 	UserRepository userRepository;
+	
+//	@Autowired
+//    @Qualifier(value = "localUserDetailService")
+//    private UserDetailsService userDetailService;
 	
 	@Autowired 
 	BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -56,18 +64,29 @@ public class UserInfoServiceImpl implements UserInfoService {
 			user.setRoles(new java.util.HashSet<UserType>());
 			user.getRoles().add(UserRole.SIMPLE_USER.getUserType());
 		}
-		//On verifie que le login n'existe pas encore en bdd
-		UserInfo userLoginExample = new UserInfo();
-		userLoginExample.setLogin(user.getLogin());
-		boolean loginExist = userRepository.exists(Example.of(userLoginExample));
-		if(loginExist){
+		//On verifie que l'email n'existe pas encore en bdd
+		UserInfo userEmailExample = new UserInfo();
+		userEmailExample.setEmail(user.getEmail());
+		boolean emailExist = userRepository.exists(Example.of(userEmailExample));
+		if(emailExist){
 			throw new RegistrationException(RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION);
 		}
-		String cryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+		String cryptedPassword = encodePassword(user.getPassword(), user.getProvider() == null || user.getProvider().equalsIgnoreCase("NONE"));
 		user.setPassword(cryptedPassword);
 		user.setDateInscription(Calendar.getInstance().getTime());
 		userRepository.save(user);
 	}
+	
+    private String encodePassword(String password, boolean isNormalRegistration) {
+        String encodedPassword = null;
+
+        if (isNormalRegistration) {
+            LOGGER.debug("Registration normal. Encoding password.");
+            encodedPassword = bCryptPasswordEncoder.encode(password);
+        }
+
+        return encodedPassword;
+    }
 
 	@Override @Transactional(readOnly=true)
 	public UserInfo getById(Integer id) {
@@ -106,8 +125,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 
 	@Override
-	public UserInfo getByLogin(String login) {
-		return userRepository.findByLoginAndEnabled(login, Boolean.TRUE);
+	@PostAuthorize("returnObject.email == authentication.name")
+	public UserInfo getByEmail(String email) {
+		return userRepository.findByEmailAndEnabled(email, Boolean.TRUE);
 	}
 
 
@@ -139,5 +159,41 @@ public class UserInfoServiceImpl implements UserInfoService {
 		UserInfo user = userRepository.findOne(id);
 		return user;
 	}
+
+	@Override
+    @Transactional(noRollbackFor = UserAlreadyExistAuthenticationException.class) 
+    public UserInfo registerNewUser(final UserRegistrationForm userRegistrationForm) throws UserAlreadyExistAuthenticationException {
+        UserInfo userExist = userRepository.findByEmail(userRegistrationForm.getUserId());
+        if (userExist != null) {
+            
+            throw new UserAlreadyExistAuthenticationException("User with email id " + userRegistrationForm.getEmail() + " already exist");
+        }
+
+        UserInfo user = buildUser(userRegistrationForm);
+        save(user);
+//        userRepository.save(user);
+//        userRepository.flush();
+
+        return user;//(LocalUser) userDetailService.loadUserByUsername(userRegistrationForm.getUserId());
+    }
+	
+	private UserInfo buildUser(final UserRegistrationForm formDTO) {
+    	UserInfo user = new UserInfo();
+        user.setEmail(formDTO.getEmail());
+        user.setNom(formDTO.getNom());
+        user.setPrenom(formDTO.getPrenom());
+        user.setPassword(formDTO.getPassword());
+        user.setPhotoProfil(formDTO.getImageUrl());
+        user.setDateNaissance(formDTO.getDateNaissance());
+        
+        user.setRoles(new java.util.HashSet<UserType>());
+		user.getRoles().add(UserRole.SIMPLE_USER.getUserType());
+//        user.setActive(1);
+		if(formDTO.getSocialProvider() == null) {
+			user.setProvider(SocialProvider.NONE.toString());
+		} else 
+			user.setProvider(formDTO.getSocialProvider().toString());
+        return user;
+    }
 
 }

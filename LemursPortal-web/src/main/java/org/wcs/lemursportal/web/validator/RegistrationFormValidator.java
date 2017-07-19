@@ -35,7 +35,7 @@ public class RegistrationFormValidator implements Validator{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "validation.mandatory");
 		if(user.getId() == null){
 			//ces champs existe seuleemnt pour la création de compte
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "login", "validation.mandatory");
+//			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "validation.mandatory");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "validation.mandatory");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordConfirm", "validation.mandatory");
 			if(!user.getPassword().equals(user.getPasswordConfirm())){
@@ -48,7 +48,9 @@ public class RegistrationFormValidator implements Validator{
 		if(StringUtils.isNotEmpty(user.getEmail()) && !EmailValidator.getInstance().isValid(user.getEmail())){
 			errors.rejectValue("email", "validation.email.format.invalid", "Invalid email");
 		}
-		fileValidator.validate(target, errors);
+		
+		// a verifier : erreur si on ne change pas le photo de profil
+//		fileValidator.validate(target, errors);
 		
 	}
 

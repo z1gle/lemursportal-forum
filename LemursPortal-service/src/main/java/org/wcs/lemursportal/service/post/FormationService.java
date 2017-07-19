@@ -22,14 +22,14 @@ public interface FormationService {
 	 * @param formation
 	 */
 	//@PreAuthorize("hasRole('ADMIN')")
-	public void save(Formation formation, String login);
+	public void save(Formation formation, String email);
 	
 	public Formation getFormation(Long formationId);
 	
-	public Formation getFormation(Long formationId, String login);
+	public Formation getFormation(Long formationId, String email);
 
-	public void update(Formation formation, String login);
+	public void update(Formation formation, String email);
 
-	void deleteById(Long id, String login);
+	void deleteById(Long id, String email);
 	
 }

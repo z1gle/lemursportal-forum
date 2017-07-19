@@ -15,6 +15,10 @@
 		<springframework.version>4.3.6.RELEASE</springframework.version>
 		<spring.security.version>4.0.1.RELEASE</spring.security.version>
 		<spring.security.oauth.version>2.0.12.RELEASE</spring.security.oauth.version>
+        <spring.social.version>1.1.0.RELEASE</spring.social.version>
+        <spring.social.facebook.version>2.0.3.RELEASE</spring.social.facebook.version>
+        <spring.social.twitter.version>1.1.0.RELEASE</spring.social.twitter.version>
+        <spring.social.google.version>1.0.0.RELEASE</spring.social.google.version>
 		<hibernate.version>5.2.5.Final</hibernate.version>
 		<hibernate.search.version>5.6.0.Final</hibernate.search.version>
 		<hibernate.annotation.version>5.0.1.Final</hibernate.annotation.version>
@@ -496,6 +500,53 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.2</version>
 		</dependency>
+		
+		<!-- Spring Social -->
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-config</artifactId>
+            <version>${spring.social.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-core</artifactId>
+            <version>${spring.social.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-security</artifactId>
+            <version>${spring.social.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-web</artifactId>
+            <version>${spring.social.version}</version>
+        </dependency>
+        <!-- Spring Social Facebook -->
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-facebook</artifactId>
+            <version>${spring.social.facebook.version}</version>
+        </dependency>
+        <!-- Spring Social Twitter -->
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-twitter</artifactId>
+            <version>${spring.social.twitter.version}</version>
+        </dependency>
+        <!-- Spring Social google In -->
+        <dependency>
+            <groupId>org.springframework.social</groupId>
+            <artifactId>spring-social-google</artifactId>
+            <version>${spring.social.google.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.gabrielruiu/spring-social-yahoo -->
+		<dependency>
+		    <groupId>com.github.gabrielruiu</groupId>
+		    <artifactId>spring-social-yahoo</artifactId>
+		    <version>1.0.0.RELEASE</version>
+		</dependency>
+		        
 
 		<!-- Utilities -->
 		<dependency>

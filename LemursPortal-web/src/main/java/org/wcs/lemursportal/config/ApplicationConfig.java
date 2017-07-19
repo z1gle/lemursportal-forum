@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc   
 @EnableTransactionManagement
 @EnableSpringDataWebSupport
-@Import({ WebAppConfigurer.class, SecurityConfig.class, MailConfig.class, RepositoryConfig.class })
+@Import({ WebAppConfigurer.class, SecurityConfig.class, MailConfig.class, RepositoryConfig.class, SocialConfig.class})
 public class ApplicationConfig{
 
 }

@@ -87,7 +87,7 @@ public class PostServiceImpl implements PostService {
 	@Override
 	@Transactional(readOnly=false)
 	public void insert(Post post, String authorLogin) {
-		UserInfo currentUser = userInfoService.getByLogin(authorLogin);
+		UserInfo currentUser = userInfoService.getByEmail(authorLogin);
 		post.setOwnerId(currentUser.getId());
 		post.setOwner(currentUser);
 		post.setCreationDate(new Date());
@@ -158,7 +158,7 @@ public class PostServiceImpl implements PostService {
 		}
 		if(user != null){
 			UserInfo currentUser = null;
-			currentUser = userInfoService.getByLogin(user);
+			currentUser = userInfoService.getByEmail(user);
 			postView.setViewBy(currentUser.getId());
 		}
 		postView.setViewDate(Calendar.getInstance().getTime());
@@ -170,7 +170,7 @@ public class PostServiceImpl implements PostService {
 	@Transactional(readOnly=false)
 	public Post deletepost(Integer postId, String currentLogin) {
 		Post post = postRepository.getPostsAndFetchOwner(postId);
-		UserInfo currentUser = userInfoService.getByLogin(currentLogin);
+		UserInfo currentUser = userInfoService.getByEmail(currentLogin);
 		post.setDeleted(true);
 		post.setDeletedBy(currentUser.getId());
 		post.setDeletedDate(new Date());

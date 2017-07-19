@@ -13,9 +13,10 @@ import org.wcs.lemursportal.model.user.UserInfo;
 @Repository
 public interface UserRepository extends JpaRepository<UserInfo, Integer>{
 	
-	//@Query("select u from UserInfo as u where u.login=?1")
-	UserInfo findByLogin(String login);
+	//@Query("select u from UserInfo as u where u.email=?1")
+	UserInfo findByEmail(String email);
+		
+	//@Query("select u from UserInfo as u where u.email=?1 and u.enabled=?2")
+	UserInfo findByEmailAndEnabled(String email, boolean enabled);
 	
-	//@Query("select u from UserInfo as u where u.login=?1 and u.enabled=?2")
-	UserInfo findByLoginAndEnabled(String login, boolean enabled);
 }

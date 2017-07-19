@@ -59,16 +59,16 @@ public class PrivateMessageController extends BaseController {
 		if(results.hasErrors()){
 			return "privatemessage-form";
 		}
-		String login = authentication.getName();
-		UserInfo currentUser = userInfoService.getByLogin(login);
+		String email = authentication.getName();
+		UserInfo currentUser = userInfoService.getByEmail(email);
 		privateMessageService.save(currentUser, privateMessage);
 		return "redirect:/secured/pmessage/list";
 	}
 	
 	@GetMapping(value="/secured/pmessage/list")
 	public String getListMessage(Model model, Authentication authentication){
-		String login = authentication.getName();
-		UserInfo userInfo = userInfoService.getByLogin(login);
+		String email = authentication.getName();
+		UserInfo userInfo = userInfoService.getByEmail(email);
 		Page<PrivateMessage> messagesPage = privateMessageRepository.findByDestinataire(userInfo.getId(), new PageRequest(0, 100));
 		model.addAttribute("messagesPage", messagesPage);
 		return "privatemessage-list";
@@ -76,8 +76,8 @@ public class PrivateMessageController extends BaseController {
 	
 	@GetMapping(value="/secured/pmessage/{messageId}")
 	public String getMessage(@PathVariable(name="messageId", required=false) Integer messageId, Model model, Authentication authentication){
-		String login = authentication.getName();
-		UserInfo userInfo = userInfoService.getByLogin(login);
+		String email = authentication.getName();
+		UserInfo userInfo = userInfoService.getByEmail(email);
 		PrivateMessage privateMessage = privateMessageService.findById(messageId, userInfo.getId());
 		model.addAttribute("privateMessage", privateMessage);
 		return "privatemessage-view";

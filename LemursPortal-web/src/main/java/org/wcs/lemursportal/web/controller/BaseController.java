@@ -3,6 +3,8 @@ package org.wcs.lemursportal.web.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,7 +14,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.TopQuestion;
@@ -32,6 +33,8 @@ import org.wcs.lemursportal.service.user.UserInfoService;
  */
 @Controller
 public class BaseController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(BaseController.class);
 	
 	@Autowired
 	ThematiqueService thematiqueService;
@@ -98,8 +101,8 @@ public class BaseController {
 	public UserInfo getCurrentUser(Authentication authentication){
 		UserInfo userInfo = new UserInfo();
 		if(authentication != null){
-			String login = authentication.getName();
-			userInfo = userInfoService.getByLogin(login);
+			String email = authentication.getName();
+			userInfo = userInfoService.getByEmail(email);
 		}
 		return userInfo;
 	}
@@ -108,8 +111,8 @@ public class BaseController {
 	public Long getNombreNotification(Authentication authentication){
 		Long nbNotification = 0L;
 		if(authentication != null){
-			String login = authentication.getName();
-			UserInfo userInfo = userInfoService.getByLogin(login);
+			String email = authentication.getName();
+			UserInfo userInfo = userInfoService.getByEmail(email);
 			nbNotification = notificationRepository.countByUser(userInfo.getId());
 		}
 		return nbNotification;
@@ -119,8 +122,8 @@ public class BaseController {
 	public Long getNombrePrivate(Authentication authentication){
 		Long nbPrivateMessage = 0L;
 		if(authentication != null){
-			String login = authentication.getName();
-			UserInfo userInfo = userInfoService.getByLogin(login);
+			String email = authentication.getName();
+			UserInfo userInfo = userInfoService.getByEmail(email);
 			nbPrivateMessage = privateMessageRepository.countByDestinataire(userInfo.getId());
 		}
 		return nbPrivateMessage;

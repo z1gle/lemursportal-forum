@@ -48,8 +48,8 @@ public class FormationServiceImpl implements FormationService {
 	
 	@Transactional
 	@Override
-	public void save(Formation formation, String login) {
-		UserInfo user = userRepository.findByLogin(login);
+	public void save(Formation formation, String email) {
+		UserInfo user = userRepository.findByEmail(email);
 		formation.setOwner(user);
 		formation.setOwnerId(user.getId());
 		Date date = new Date();
@@ -64,9 +64,9 @@ public class FormationServiceImpl implements FormationService {
 	}
 
 	@Override
-	public void update(Formation formation, String login) {
+	public void update(Formation formation, String email) {
 		//checking owner
-		UserInfo user = userRepository.findByLogin(login);
+		UserInfo user = userRepository.findByEmail(email);
 		Formation oldFormation = getFormation(formation.getId());
 		if(oldFormation.getOwnerId().equals(user.getId())) {
 			oldFormation.setTitle(formation.getTitle());
@@ -79,8 +79,8 @@ public class FormationServiceImpl implements FormationService {
 
 
 	@Override
-	public void deleteById(Long id, String login) {
-		UserInfo user = userRepository.findByLogin(login);
+	public void deleteById(Long id, String email) {
+		UserInfo user = userRepository.findByEmail(email);
 		Formation oldFormation = getFormation(id);
 		if(oldFormation.getOwnerId().equals(user.getId())) {
 			formationCrudRepository.delete(id);
@@ -91,10 +91,10 @@ public class FormationServiceImpl implements FormationService {
 
 	@Override
 	@Transactional
-	public Formation getFormation(Long formationId, String login) {
+	public Formation getFormation(Long formationId, String email) {
 		Formation formation = getFormation(formationId);
 		
-		if(login == null || !formation.getOwnerId().equals(userRepository.findByLogin(login).getId())) {
+		if(email == null || !formation.getOwnerId().equals(userRepository.findByEmail(email).getId())) {
 			int viewCount = formation.getViewCount();
 			formation.setViewCount(++viewCount);
 			formationCrudRepository.save(formation);

@@ -6,6 +6,8 @@ package org.wcs.lemursportal.web.form;
 import java.util.Date;
 import java.util.List;
 
+import org.wcs.lemursportal.dto.user.SocialProvider;
+
 /**
  * @author mikajy.hery
  *
@@ -18,7 +20,6 @@ public class RegistrationForm extends FileBucket {
 	private Date dateNaissance;
 	private String institution;
 	private String postOccupe;
-	private String login;
 	private String password;
 	private String passwordConfirm;
 	private String email;
@@ -27,6 +28,7 @@ public class RegistrationForm extends FileBucket {
 	private String biographie;	
 	private List<Integer> userTypeIds;
 	private String photoProfil;
+	private SocialProvider socialProvider;
 	public Integer getId() {
 		return id;
 	}
@@ -50,12 +52,6 @@ public class RegistrationForm extends FileBucket {
 	}
 	public void setDateNaissance(Date dateNaissance) {
 		this.dateNaissance = dateNaissance;
-	}
-	public String getLogin() {
-		return login;
-	}
-	public void setLogin(String login) {
-		this.login = login;
 	}
 	public String getPassword() {
 		return password;
@@ -117,6 +113,12 @@ public class RegistrationForm extends FileBucket {
 	}
 	public void setPhotoProfil(String photoProfil) {
 		this.photoProfil = photoProfil;
+	}
+	public SocialProvider getSocialProvider() {
+		return socialProvider;
+	}
+	public void setSocialProvider(SocialProvider socialProvider) {
+		this.socialProvider = socialProvider;
 	}
 	
 }

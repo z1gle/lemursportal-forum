@@ -24,7 +24,6 @@ public abstract class UserInfoFactory {
 			form.setEnabled(user.getEnabled());
 			form.setId(user.getId());
 			form.setLastAccessDate(user.getLastAccessDate());
-			form.setLogin(user.getLogin());
 			form.setNom(user.getNom());
 //			form.setPassword(user.getP);
 			form.setInstitution(user.getInstitution());
@@ -41,7 +40,7 @@ public abstract class UserInfoFactory {
 	
 	public static UserInfo toEntity(RegistrationForm form){
 		UserInfo entity = null;
-		if(form != null){
+		if(form != null) {
 			entity = new UserInfo();
 			entity.setId(form.getId());
 			entity.setBiographie(form.getBiographie());
@@ -49,7 +48,6 @@ public abstract class UserInfoFactory {
 			entity.setEmail(form.getEmail());
 			entity.setEnabled(form.getEnabled());
 			//entity.setLastAccessDate(form.getLastAccessDate());
-			entity.setLogin(form.getLogin());
 			entity.setPassword(form.getPassword());
 			entity.setPrenom(form.getPrenom());
 			entity.setNom(form.getNom());
@@ -61,4 +59,5 @@ public abstract class UserInfoFactory {
 		}
 		return entity;
 	}
+	
 }

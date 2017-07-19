@@ -49,8 +49,8 @@ public class UserInfo implements IUserInfo {
 	@Column(name="post_occupe")
 	private String postOccupe;
 	
-	@Column(name = "login", nullable=false, unique=true)
-	private String login;
+//	@Column(name = "login", nullable=false, unique=true)
+//	private String login;
 	
 	@Column(name = "password")
 	private String password;
@@ -61,6 +61,7 @@ public class UserInfo implements IUserInfo {
 	@Column(name = "last_access_date")
 	private Date lastAccessDate;
 	
+	@Column(name = "email", nullable=false, unique=true)
 	private String email;
 	
 	@Column(name = "biographie", columnDefinition = "text")
@@ -68,6 +69,9 @@ public class UserInfo implements IUserInfo {
 	
 	@Column(name = "photo_profil")
 	private String photoProfil;
+	
+	@Column(name = "PROVIDER", nullable = false, length = 32)
+	private String provider;
 	
 	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(
@@ -80,12 +84,12 @@ public class UserInfo implements IUserInfo {
 	@ManyToMany(mappedBy="managers")
 	private Set<Thematique> managedThematiques;
 	
-	public String getLogin() {
-		return login;
-	}
-	public void setLogin(String login) {
-		this.login = login;
-	}
+//	public String getLogin() {
+//		return login;
+//	}
+//	public void setLogin(String login) {
+//		this.login = login;
+//	}
 	public String getPassword() {
 		return password;
 	}
@@ -170,7 +174,7 @@ public class UserInfo implements IUserInfo {
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((login == null) ? 0 : login.hashCode());
+//		result = prime * result + ((login == null) ? 0 : login.hashCode());
 		return result;
 	}
 	/* (non-Javadoc)
@@ -202,11 +206,11 @@ public class UserInfo implements IUserInfo {
 		} else if (!id.equals(other.id)) {
 			return false;
 		}
-		if (login == null) {
-			if (other.login != null) {
+		if (email == null) {
+			if (other.email != null) {
 				return false;
 			}
-		} else if (!login.equals(other.login)) {
+		} else if (!email.equals(other.email)) {
 			return false;
 		}
 		return true;
@@ -231,6 +235,12 @@ public class UserInfo implements IUserInfo {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getPrenom()).append(" ").append(getNom());
 		return sb.toString();
+	}
+	public String getProvider() {
+		return provider;
+	}
+	public void setProvider(String provider) {
+		this.provider = provider;
 	}
 	
 }

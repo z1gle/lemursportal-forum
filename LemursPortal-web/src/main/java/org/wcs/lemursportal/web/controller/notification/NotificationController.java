@@ -26,7 +26,7 @@ public class NotificationController extends BaseController{
 	
 	@GetMapping(value="/secured/notification/list")
 	public String list(Model model, Authentication authentication){
-		UserInfo currentUser = userInfoService.getByLogin(authentication.getName());
+		UserInfo currentUser = userInfoService.getByEmail(authentication.getName());
 		List<Notification> notifications = 	notificationService.getUserNotifications(currentUser.getId());
 		model.addAttribute("notifications", notifications);
 //		int nbDeleted = notificationRepository.deleteByUser(currentUser.getId());
@@ -35,7 +35,7 @@ public class NotificationController extends BaseController{
 	
 	@GetMapping(value="/secured/notification/confirm")
 	public String confirm(Authentication authentication, Model model){
-		UserInfo currentUser = userInfoService.getByLogin(authentication.getName());
+		UserInfo currentUser = userInfoService.getByEmail(authentication.getName());
 		int nbDeleted = notificationRepository.deleteByUser(currentUser.getId());
 		return "redirect:/";
 	}

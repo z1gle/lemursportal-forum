@@ -20,11 +20,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.social.security.SocialUserDetailsService;
+import org.springframework.social.security.SpringSocialConfigurer;
 import org.wcs.lemursportal.service.authentication.AuthenticationService;
+import org.wcs.lemursportal.service.user.LocalUserDetailService;
+import org.wcs.lemursportal.service.user.SocialUserDetailService;
+import org.wcs.lemursportal.repository.user.UserRepository;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>
@@ -43,12 +49,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	AuthenticationService authenticationService;
+	
+	@Autowired
+    private UserRepository userRepository;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		//http.requiresChannel().anyRequest().requiresSecure();
 		//On securise les pages qui manipules des mots de passe
-		http.requiresChannel().antMatchers("/login**", "/**", "/formation**", "/authenticate**", "/signup**").requiresSecure();
+		http.requiresChannel().antMatchers("/login**", "/**", "/formation**", "/authenticate**").requiresSecure();
 		http.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).sessionFixation().none() //on veut garder la même session pour le basculement des pages http<->https
 			.maximumSessions(1).sessionRegistry(sessionRegistry());
@@ -60,18 +69,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.anyRequest().permitAll()
 			.and().formLogin()
 						.loginPage("/login").permitAll()
-						.usernameParameter("login").passwordParameter("password")
+						.usernameParameter("email").passwordParameter("password")
 						.failureUrl("/login?error")
 						.loginProcessingUrl("/authenticate").permitAll()
 			.and().logout()
+						.deleteCookies("JSESSIONID")
 						.logoutUrl("/logout").permitAll()
     			        .logoutSuccessUrl("/")
+    	    .and()
+    	    			.authorizeRequests()
+                        .antMatchers(
+                                "/auth/**",
+                                "/login",
+                                "/signup/**",
+                                "/register/**"
+                        ).permitAll()
     		.and().rememberMe()
     					.rememberMeServices(rememberMeServices())
-    					.key("remember-me-key");
+    					.key("remember-me-key")
+    		.and()
+    					.apply(new SpringSocialConfigurer());;
 //		http.csrf();
 		http.csrf().disable();
+		
 	}
+	
 	
 	@Bean
 	public SessionRegistry sessionRegistry() {
@@ -88,6 +110,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+	/**
+     * Configures the authentication manager bean which processes authentication
+     * requests.
+     */
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(userDetailsService())
+                .passwordEncoder(bCryptPasswordEncoder());
+    }
+    
+    /*
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth)
 			throws Exception {
@@ -95,7 +129,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //		auth.userDetailsService(authenticationService).passwordEncoder(encoder);
 		auth.userDetailsService(authenticationService).passwordEncoder(bCryptPasswordEncoder());
 	}
-
+	*/
+    
+    
+    /**
+     * This bean is used to load the user specific data when social sign in
+     * is used.
+     */
+    @Autowired
+    public SocialUserDetailsService socialUserDetailsService() {
+        return new SocialUserDetailService(userDetailsService());
+    }
+    
 	@Bean
 	public RoleHierarchy roleHierarchy() {
 		RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
@@ -122,4 +167,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return super.authenticationManagerBean();
 	}
 
+	/**
+     * This bean is load the user specific data when form login is used.
+     */
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new LocalUserDetailService(userRepository);
+    }
 }

@@ -5,13 +5,13 @@ package org.wcs.lemursportal.model.authentication;
  *
  */
 public class Authority {
-	private String login;
+	private String email;
 	private String authority;
 	public String getLogin() {
-		return login;
+		return email;
 	}
-	public void setLogin(String login) {
-		this.login = login;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getAuthority() {
 		return authority;

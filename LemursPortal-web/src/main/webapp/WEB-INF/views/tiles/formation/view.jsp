@@ -42,7 +42,7 @@
 						<!-- user is author -->
 						<c:set var="isAuthor" value="false" />
 						<sec:authorize access="hasRole('EXPERT')">
-							<c:if test="${uLogin == formation.owner.login}">
+							<c:if test="${uLogin == formation.owner.email}">
 								<c:set var="isAuthor" value="true" />
 							</c:if>
 						</sec:authorize>

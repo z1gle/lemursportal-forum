@@ -14,7 +14,6 @@ public class URL {
 	public static final String ADD_FORMATION = "/new";
 	public static final String EDIT_FORMATION = "/{id}/edit";
 	public static final String DELETE_FORMATION = "/{id}/delete";
-	public static final String CANCEL = "/{id}/cancel";
 	
 	public static final String UPLOAD_IMAGE = "**/uploadimage";
 	public static final String SHOW_IMAGE = "**/u-images/{name}.{type}";

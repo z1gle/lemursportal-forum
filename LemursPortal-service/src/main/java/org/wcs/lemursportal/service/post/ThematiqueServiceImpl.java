@@ -64,7 +64,7 @@ public class ThematiqueServiceImpl extends
 	@Override
 	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
 	public Thematique saveOrUpdate(String currentLogin, Thematique thematique) {
-		UserInfo currentUser = userInfoService.getByLogin(currentLogin);
+		UserInfo currentUser = userInfoService.getByEmail(currentLogin);
 		Date now = Calendar.getInstance().getTime();
 		if(thematique.getId() != null){
 			//Edition
@@ -96,7 +96,7 @@ public class ThematiqueServiceImpl extends
 
 	@Override
 	public void delete(Integer thematiqueId, String currentLogin) {
-		UserInfo currentUser = userInfoService.getByLogin(currentLogin);
+		UserInfo currentUser = userInfoService.getByEmail(currentLogin);
 		if(currentUser != null){
 			Thematique thematique = thematiqueCrudRepository.findOne(thematiqueId);
 			thematique.setDeleted(true);

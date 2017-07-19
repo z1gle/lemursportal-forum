@@ -20,8 +20,8 @@ public class UserInfo implements IUserInfo {
 	private static final long serialVersionUID = 7606421457192166667L;
 	
 	@Id
-	@Column(name = "login")
-	private String login;
+	@Column(name = "email")
+	private String email;
 	
 	@Column(name = "password")
 	private String password;
@@ -36,11 +36,11 @@ public class UserInfo implements IUserInfo {
 	private String role;
 //	private HashSet<Authority> authorities;
 	
-	public String getLogin() {
-		return login;
+	public String getEmail() {
+		return email;
 	}
-	public void setLogin(String login) {
-		this.login = login;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	public String getPassword() {
 		return password;

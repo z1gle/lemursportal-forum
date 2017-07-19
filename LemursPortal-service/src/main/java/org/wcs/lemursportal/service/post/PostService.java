@@ -40,6 +40,6 @@ public interface PostService {
 	 */
 	PostView incrementerNbVue(Post question, String user);
 	
-	@PostAuthorize ("returnObject.owner.login == authentication.name or hasRole('ADMIN')")
+	@PostAuthorize ("returnObject.owner.email == authentication.name or hasRole('ADMIN')")
 	Post deletepost(Integer postId, String currentLogin);
 }

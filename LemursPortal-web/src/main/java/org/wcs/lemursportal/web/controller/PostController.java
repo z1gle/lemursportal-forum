@@ -98,7 +98,7 @@ public class PostController extends BaseController{
 			return "forward:getFormPost";
 		}
 		//thematiqueService.saveOrUpdate(authentication.getName(), thematique);
-		UserInfo currentUser = userInfoService.getByLogin(authentication.getName());
+		UserInfo currentUser = userInfoService.getByEmail(authentication.getName());
 		Date now = Calendar.getInstance().getTime();
 		
 		if(null!= post.getUriYoutube()){
