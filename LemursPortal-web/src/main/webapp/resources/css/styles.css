@@ -265,6 +265,14 @@ a:hover {
 }
 
 /* Navigation */
+#navigation {
+	-webkit-transition: all 0.8s ease 0s;
+	-moz-transition: all 0.8s ease 0s;
+        -ms-transition: all 0.8s ease 0s;
+         -o-transition: all 0.8s ease 0s;
+            transition: all 0.8s ease 0s;
+}
+
 .navbar-header img {
 	margin-top:-15px;
 }
