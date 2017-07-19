@@ -60,6 +60,18 @@
 
 			$('textarea.editor').summernote({
 				height: 400,
+				toolbar: [
+				          ['style', ['style']],
+				          ['font', ['bold', 'italic', 'underline', 'clear']],
+				          ['font', ['fontsize']],
+				          ['color', ['color']],
+				          ['para', ['ul', 'ol', 'paragraph']],
+				          ['height', ['height']],
+				          ['table', ['table']],
+				          ['insert', ['link', 'picture', 'video']],
+				          ['view', ['codeview']],
+				          ['help', ['help']]
+				        ],
 				onImageUpload: function (files, editor, welEditable) {
 					sendFile(files[0], editor, welEditable);
 				}
