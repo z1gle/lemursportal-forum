@@ -10,7 +10,7 @@
         <div class="col-md-6">
         	<div class="row">
                 <div class="col-xs-2">
-                    <img src="${resourcesPath}/images/logo-footer.png" alt="">
+                    <img src="${resourcesPath}/images/logo-lemurs-blanc.png" style="width: 48px" alt="">
                 </div>
                 <div class="col-xs-5">
                     <ul>
@@ -31,7 +31,7 @@
             </div>
         </div>
         
-        <div class="col-md-6">
+        <div id="partenaire" class="col-md-6">
         	<div class="row">
                 <div class="col-xs-2">
                     <a href="#"><img src="${resourcesPath}/images/part1.png" alt=""/></a>

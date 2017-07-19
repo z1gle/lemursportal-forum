@@ -60,7 +60,7 @@
                         <div class="info">
                             <!-- D S'affiche si l'utilisateur lui-même est connecté -->
                             <c:url value="/user/profil/edit" var="userProfilUrl"/>
-                            <a href="${userProfilUrl}" class="btn left"><spring:message code="profil.label.modifiermonprofil"/></a>
+                            <a href="${userProfilUrl}" class="btn al-left"><spring:message code="profil.label.modifiermonprofil"/></a>
                             <!-- F S'affiche si l'utilisateur lui-même est connecté -->
                         </div>
                     </div>

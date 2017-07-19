@@ -63,7 +63,7 @@
 
                           <div class="media">
                             <div class="media-heading col-md-3 forum-user-info">
-                               <a href="#" class="left"><user:profilImage src="${child.owner.photoProfil}" cssClass="img-circle"/></a>
+                               <a href="#" class="al-left"><user:profilImage src="${child.owner.photoProfil}" cssClass="img-circle"/></a>
                                <div class="reponse-user"><a href="#"><c:out value="${child.owner.nom}"/> <c:out value="${child.owner.prenom}"/>
                                </a><br/><i>Visiteur</i><br/><br/><fmt:formatDate pattern="${datetimeFormat}" value="${child.creationDate}"/></div>
                             </div>
