@@ -3,6 +3,7 @@
  */
 package org.wcs.lemursportal.service.notification;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,11 @@ import org.wcs.lemursportal.repository.notification.NotificationRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
 import org.wcs.lemursportal.service.mail.MailService;
+
+import freemarker.core.ParseException;
+import freemarker.template.MalformedTemplateNameException;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateNotFoundException;
 
 /**
  * @author mikajy.hery
@@ -53,7 +59,12 @@ public class NotificationServiceImpl implements NotificationService {
 			notificationRepository.save(notification);
 //			notifications.add(notification);
 		}
-		mailService.sendMail(question, question.getOwner(), new ArrayList<>(thematique.getManagers()));
+		//mailService.sendMail(question, question.getOwner(), new ArrayList<>(thematique.getManagers()));
+		try {
+			mailService.saveMail(question, question.getOwner(), new ArrayList<>(thematique.getManagers()));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		} 
 		
 
 	}
@@ -115,7 +126,12 @@ public class NotificationServiceImpl implements NotificationService {
 				notification.setUserId(manager.getId());
 				notificationRepository.save(notification);
 			}
-			mailService.sendMail(thematique, new ArrayList<>(thematique.getManagers()));
+//			mailService.sendMail(thematique, new ArrayList<>(thematique.getManagers()));
+			try {
+				mailService.saveMail(thematique, new ArrayList<>(thematique.getManagers()));
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			} 
 		}
 	}
 
