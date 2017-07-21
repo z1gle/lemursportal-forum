@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
@@ -21,9 +22,13 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.wcs.lemursportal.model.mail.MailQueue;
+import org.wcs.lemursportal.model.mail.MailQueueMimeMessagePreparator;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
@@ -40,6 +45,7 @@ import freemarker.template.TemplateNotFoundException;
  *
  */
 @Service
+@EnableScheduling
 public class MailServiceImpl implements MailService {
 	
 	@Value("${mail.notification.question.subject:Nouvelle question}")
@@ -72,7 +78,6 @@ public class MailServiceImpl implements MailService {
 	public void sendMail(Post question, UserInfo owner, List<UserInfo> destinataires) {
 		MimeMessagePreparator preparator = getMessagePreparator(question, destinataires);
 		sendMail(preparator);
-
 	}
 
 	private void sendMail(MimeMessagePreparator mimeMessagePreparator) {
@@ -186,7 +191,6 @@ public class MailServiceImpl implements MailService {
 		model.put("thematique", thematique);
 		String body = FreeMarkerTemplateUtils
 					.processTemplateIntoString(freemarkerConfiguration.getTemplate("fm_thematiqueMailTemplate.txt"), model);
-		
 		MailQueue mailQueue = new MailQueue();
 		mailQueue.setBody(body);
 		mailQueue.setSubject(sujet);
@@ -205,9 +209,7 @@ public class MailServiceImpl implements MailService {
 		String sujet = "[LemursPortal] Nouvelle question";
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("question", question);
-		String body = FreeMarkerTemplateUtils
-					.processTemplateIntoString(freemarkerConfiguration.getTemplate("fm_questionMailTemplate.txt"), model);
-		
+		String body = FreeMarkerTemplateUtils.processTemplateIntoString(freemarkerConfiguration.getTemplate("fm_questionMailTemplate.txt"), model);
 		MailQueue mailQueue = new MailQueue();
 		mailQueue.setBody(body);
 		mailQueue.setSubject(sujet);
@@ -220,5 +222,23 @@ public class MailServiceImpl implements MailService {
 		mailQueue.setSent(false);
 		mailQueueRepository.save(mailQueue);
 	}
+	
+	@Scheduled(fixedDelay = 300000)//60*5*1000 = 5 minutes
+	@Transactional(noRollbackFor=MailException.class)
+	public void sendMails(){
+		List<MailQueue> mailQueues = mailQueueRepository.findAllNotSent();
+		for(MailQueue mailQueue : mailQueues){
+			MailQueueMimeMessagePreparator preparator = new MailQueueMimeMessagePreparator(mailQueue);
+			try{
+				mailSender.send(preparator);
+				mailQueue.setSent(true);
+				mailQueue.setSentDate(new Date());
+			}catch(MailException e){
+				mailQueue.setSendingErrors(e.getMessage());
+			}
+			mailQueueRepository.update(mailQueue);
+		}
+	}
+
 
 }

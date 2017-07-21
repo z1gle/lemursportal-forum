@@ -40,6 +40,8 @@ public class MailQueue implements Serializable {
 	private Boolean sent;
 	@Column(name="sent_date", nullable=true)
 	private Date sentDate;
+	@Column(name="sending_errors", nullable=true)
+	private String sendingErrors;
 	/**
 	 * @return the id
 	 */
@@ -124,7 +126,18 @@ public class MailQueue implements Serializable {
 	public void setDestinataires(String destinataires) {
 		this.destinataires = destinataires;
 	}
-	
+	/**
+	 * @return the sendingErrors
+	 */
+	public String getSendingErrors() {
+		return sendingErrors;
+	}
+	/**
+	 * @param sendingErrors the sendingErrors to set
+	 */
+	public void setSendingErrors(String sendingErrors) {
+		this.sendingErrors = sendingErrors;
+	}
 	
 
 }
