@@ -3,7 +3,7 @@
         <h3>Dear, nouvelle thematique ajouté dans lemurs portal</h3>
  
         <div>
-            new Thematique:
+            Information:
             title is : ${thematique.libelle}.
             body is : ${thematique.description}.
         </div>
