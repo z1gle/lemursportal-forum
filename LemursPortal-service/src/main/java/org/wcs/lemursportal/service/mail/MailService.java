@@ -47,7 +47,7 @@ public interface MailService {
 	 * @param owner
 	 * @param thematiqueManager
 	 */
-	void saveMail(Post question, UserInfo owner, List<UserInfo> thematiqueManager) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException;
+	void saveMail(Post question, UserInfo owner, List<UserInfo> thematiqueManager, String questionUrl) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException;
 	
 	public void sendMails();
 

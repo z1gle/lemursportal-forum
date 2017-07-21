@@ -43,7 +43,7 @@ public class NotificationServiceImpl implements NotificationService {
 	 * @see org.wcs.lemursportal.service.notification.NotificationService#notifierNouvelleQuestion(org.wcs.lemursportal.model.post.Post)
 	 */
 	@Override
-	public void saveNotificationNouvelleQuestion(Post question) {
+	public void saveNotificationNouvelleQuestion(Post question, String postUrl) {
 		Thematique thematique = thematiqueRepository.findByIdAndFetchManagers(question.getThematiqueId());
 //		List<Notification> notifications = new ArrayList<>();
 		for(UserInfo user: thematique.getManagers()){
@@ -61,7 +61,7 @@ public class NotificationServiceImpl implements NotificationService {
 		}
 		//mailService.sendMail(question, question.getOwner(), new ArrayList<>(thematique.getManagers()));
 		try {
-			mailService.saveMail(question, question.getOwner(), new ArrayList<>(thematique.getManagers()));
+			mailService.saveMail(question, question.getOwner(), new ArrayList<>(thematique.getManagers()), postUrl);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		} 
@@ -98,10 +98,10 @@ public class NotificationServiceImpl implements NotificationService {
 	 * @see org.wcs.lemursportal.service.notification.NotificationService#savePostNotification(org.wcs.lemursportal.model.post.Post)
 	 */
 	@Override
-	public void savePostNotification(Post post) {
+	public void savePostNotification(Post post, String postUrl) {
 		if(post == null) return;
 		if(post.getParentId() == null){
-			saveNotificationNouvelleQuestion(post);
+			saveNotificationNouvelleQuestion(post, postUrl);
 		}else{
 			saveNotificationNouveauCommentaire(post);
 		}

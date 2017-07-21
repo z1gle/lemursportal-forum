@@ -16,6 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -71,7 +72,7 @@ public class PostController extends BaseController{
 	
 	@PostMapping(value="/secured/post")
 	public String submit(Authentication authentication, Model model, 
-			@ModelAttribute Post post, @RequestParam("file") MultipartFile file,
+			@ModelAttribute Post post, @RequestParam("file") MultipartFile file, HttpServletRequest request,
 			BindingResult results){		
 		if(authentication == null) return "redirect:/login";
 		//ValidationUtils.rejectIfEmptyOrWhitespace(results, "libelle", "validation.mandatory");
@@ -146,8 +147,18 @@ public class PostController extends BaseController{
 		
 		post.setCreationDate(now);
 		post.setOwnerId(currentUser.getId());
-		postService.insert(post, authentication.getName());
+		postService.insert(post, authentication.getName(), getPostUrl(post, request));
 		return "redirect:/post/show/" + post.getId();
+	}
+	
+	private String getPostUrl(Post post, HttpServletRequest request){
+		StringBuilder postUrl = new StringBuilder(); 
+		String requestUrl = request.getRequestURL().toString();
+		String contextPath = request.getContextPath();
+		String path = requestUrl.substring(0, requestUrl.indexOf(contextPath) + contextPath.length());
+		postUrl.append(path).append("/post/show/");
+		return postUrl.toString();
+		
 	}
 	
 	
@@ -194,7 +205,7 @@ public class PostController extends BaseController{
 	@PostMapping(value="/secured/post/reponse")
 	@PreAuthorize("hasAnyRole('USER', 'EXPERT','MODERATEUR', 'ADMIN')")
 	public String submitReponse(Authentication authentication, Model model, 
-			@ModelAttribute Post post, 
+			@ModelAttribute Post post, HttpServletRequest request,
 			BindingResult results){		
 		//ValidationUtils.rejectIfEmptyOrWhitespace(results, "libelle", "validation.mandatory");
 		if(results.hasErrors()){
@@ -203,7 +214,7 @@ public class PostController extends BaseController{
 		Integer id = post.getId();
 		post.setParentId(id);
 		post.setTitle("");
-		postService.insert(post, authentication.getName());
+		postService.insert(post, authentication.getName(), getPostUrl(post, request));
 		return "redirect:/post/show/"+id;
 	}
 }

@@ -28,12 +28,12 @@ public interface NotificationService {
 	 * 
 	 * @param post
 	 */
-	void savePostNotification(Post post);
+	void savePostNotification(Post post, String postUrl);
 	/**
 	 * 
 	 * @param question
 	 */
-	void saveNotificationNouvelleQuestion(Post question);
+	void saveNotificationNouvelleQuestion(Post question, String postUrl);
 	/**
 	 * 
 	 * @param commentaire

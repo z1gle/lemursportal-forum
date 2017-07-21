@@ -86,7 +86,7 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	@Transactional(readOnly=false)
-	public void insert(Post post, String authorLogin) {
+	public void insert(Post post, String authorLogin, String postUrl) {
 		UserInfo currentUser = userInfoService.getByEmail(authorLogin);
 		post.setOwnerId(currentUser.getId());
 		post.setOwner(currentUser);
@@ -120,7 +120,7 @@ public class PostServiceImpl implements PostService {
 		postRepository.insert(post);
 		
 		/* Notification */
-		notificationService.savePostNotification(post);
+		notificationService.savePostNotification(post, postUrl);
 		
 	}
 	

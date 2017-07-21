@@ -20,7 +20,7 @@ public interface PostService {
 	 */
 	public Page<TopQuestion> getTopQuestions(Pageable pageable);
 	
-	public void insert(Post post, String authorLogin);
+	public void insert(Post post, String authorLogin, String postUrl);
 	
 	Page<Post> search(Pageable pageable, String pattern);
 	

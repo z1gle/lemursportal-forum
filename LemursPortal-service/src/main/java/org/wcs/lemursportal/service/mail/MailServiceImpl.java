@@ -205,10 +205,11 @@ public class MailServiceImpl implements MailService {
 	}
 
 	@Override
-	public void saveMail(Post question, UserInfo owner, List<UserInfo> thematiqueManager) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
+	public void saveMail(Post question, UserInfo owner, List<UserInfo> thematiqueManager, String questionUrl) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException {
 		String sujet = "[LemursPortal] Nouvelle question";
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("question", question);
+		model.put("questionUrl", questionUrl);
 		String body = FreeMarkerTemplateUtils.processTemplateIntoString(freemarkerConfiguration.getTemplate("fm_questionMailTemplate.txt"), model);
 		MailQueue mailQueue = new MailQueue();
 		mailQueue.setBody(body);
