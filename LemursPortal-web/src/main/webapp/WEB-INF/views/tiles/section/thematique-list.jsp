@@ -63,9 +63,10 @@
 				<sec:authorize access="hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')"> 
 				<c:url value="/secured/thematique/${parThematique.thematique.id}" var="modifUrl"/>
 				<c:url value="/secured/thematique/archive-${parThematique.thematique.id}" var="deleteUrl"/>
+				<spring:message var="textConfirm" code="thematique.confirm.deletion"/>
 				<div>
 					<a href="${modifUrl}">Modifier</a> &nbsp;
-					<a href="${deleteUrl}">Supprimer</a>
+					<a href="javascript:confirmDeletion('${textConfirm}', '${deleteUrl}');">Supprimer</a>
 				</div>
 				</sec:authorize>
 			</div>

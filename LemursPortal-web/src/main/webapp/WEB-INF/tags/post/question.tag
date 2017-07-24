@@ -25,7 +25,8 @@
 		<c:if test="${isLoggedInUser && (currentUserLogin eq topQuestion.question.owner.email || isAdminOrModerateur)}">
 <!-- 		<a href="#">Modifier</a> -->
 			<c:url value="/post/del/${topQuestion.question.id}" var="delUrl"/>
-			<a href="${delUrl}">Supprimer</a>		
+			<spring:message var="postDeletionConfirm" code="post.confirm.deletion"/>
+			<a href="javascript:confirmDeletion('${postDeletionConfirm}', '${delUrl}');">Supprimer</a>		
 		</c:if>
 		<div class="col-md-8">
 			<user:forum-profil userInfo="${topQuestion.question.owner}"/>

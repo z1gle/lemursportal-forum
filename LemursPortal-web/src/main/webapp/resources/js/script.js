@@ -21,6 +21,13 @@ function setGetParameter(paramName, paramValue)
     window.location.href = url + hash;
 }
 
+function confirmDeletion(text, redirectUrl){
+	var r = confirm(text);
+	if (r == true) {
+		window.location.href = redirectUrl;
+	}
+}
+
 // JavaScript Document for Lemurs
 jQuery(document).ready(function(){
 				
