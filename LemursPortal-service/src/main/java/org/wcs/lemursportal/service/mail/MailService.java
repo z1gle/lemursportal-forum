@@ -39,7 +39,7 @@ public interface MailService {
 	 * @param thematique
 	 * @param destinataires
 	 */
-	void saveMail(Thematique thematique, List<UserInfo> destinataires) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException;
+	void saveMail(Thematique thematique, List<UserInfo> destinataires, String thematiqueUrl) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException;
 	
 	/**
 	 * 

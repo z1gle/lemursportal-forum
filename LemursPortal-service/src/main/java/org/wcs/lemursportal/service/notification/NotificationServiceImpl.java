@@ -3,7 +3,6 @@
  */
 package org.wcs.lemursportal.service.notification;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,11 +19,6 @@ import org.wcs.lemursportal.repository.notification.NotificationRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
 import org.wcs.lemursportal.service.mail.MailService;
-
-import freemarker.core.ParseException;
-import freemarker.template.MalformedTemplateNameException;
-import freemarker.template.TemplateException;
-import freemarker.template.TemplateNotFoundException;
 
 /**
  * @author mikajy.hery
@@ -112,7 +106,7 @@ public class NotificationServiceImpl implements NotificationService {
 	 * @see org.wcs.lemursportal.service.notification.NotificationService#saveThematiqueNotification(org.wcs.lemursportal.model.post.Thematique)
 	 */
 	@Override
-	public void saveThematiqueNotification(Thematique thematique) {
+	public void saveThematiqueNotification(Thematique thematique, String thematiqueUrl) {
 		if(thematique != null){
 			for(UserInfo manager: thematique.getManagers()){
 				Notification notification = new Notification();
@@ -128,7 +122,7 @@ public class NotificationServiceImpl implements NotificationService {
 			}
 //			mailService.sendMail(thematique, new ArrayList<>(thematique.getManagers()));
 			try {
-				mailService.saveMail(thematique, new ArrayList<>(thematique.getManagers()));
+				mailService.saveMail(thematique, new ArrayList<>(thematique.getManagers()), thematiqueUrl);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			} 

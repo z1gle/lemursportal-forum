@@ -1,12 +1,11 @@
 <html>
     <body>
-        <h3>Dear, nouvelle thematique ajouté dans lemurs portal</h3>
+        <h3>Dear, <a href="${thematiqueUrl}${thematique.id}">nouvelle thematique</a> ajouté dans lemurs portal</h3>
  
         <div>
             Information:
             title is : ${thematique.libelle}.
             body is : ${thematique.description}.
         </div>
-        <span>Sent using FreeMarker Template</span>
     </body>
 </html>

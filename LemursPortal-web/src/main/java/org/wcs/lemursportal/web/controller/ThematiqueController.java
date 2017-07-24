@@ -2,6 +2,8 @@ package org.wcs.lemursportal.web.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wcs.lemursportal.exception.RegistrationException;
 import org.wcs.lemursportal.model.authentication.UserRole;
+import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.post.TopQuestion;
 import org.wcs.lemursportal.model.post.TopThematique;
@@ -101,7 +104,7 @@ public class ThematiqueController extends BaseController{
 	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
 	@PostMapping(value="/secured/thematique")
 	public String submit(Authentication authentication, Model model, 
-			@ModelAttribute Thematique thematique, 
+			@ModelAttribute Thematique thematique, HttpServletRequest request, 
 			BindingResult results)
 	{
 		thematiqueValidator.validate(thematique, results);
@@ -110,7 +113,7 @@ public class ThematiqueController extends BaseController{
 		}
 		Thematique savedThematique = null;
 		try{
-			savedThematique = thematiqueService.saveOrUpdate(authentication.getName(), thematique);
+			savedThematique = thematiqueService.saveOrUpdate(authentication.getName(), thematique, getThematiqueUrl(request));
 		}catch(RegistrationException e){
 			if(e.getCode() == RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION){
 				results.rejectValue("email", "validation.thematique.exist");
@@ -121,6 +124,16 @@ public class ThematiqueController extends BaseController{
 		}
 		
 		return "redirect:/postsParThematique/" + savedThematique.getId();
+	}
+	
+	private String getThematiqueUrl(HttpServletRequest request){
+		StringBuilder urlSb = new StringBuilder(); 
+		String requestUrl = request.getRequestURL().toString();
+		String contextPath = request.getContextPath();
+		String path = requestUrl.substring(0, requestUrl.indexOf(contextPath) + contextPath.length());
+		urlSb.append(path).append("/postsParThematique/");
+		return urlSb.toString();
+		
 	}
 	
 	@RequestMapping(value="/postsParThematique/{idThematique}",method=RequestMethod.GET)

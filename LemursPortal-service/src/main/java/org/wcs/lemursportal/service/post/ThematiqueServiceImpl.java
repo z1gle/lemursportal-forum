@@ -63,7 +63,7 @@ public class ThematiqueServiceImpl extends
 	 */
 	@Override
 	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
-	public Thematique saveOrUpdate(String currentLogin, Thematique thematique) {
+	public Thematique saveOrUpdate(String currentLogin, Thematique thematique, String thematiqueUrl) {
 		UserInfo currentUser = userInfoService.getByEmail(currentLogin);
 		Date now = Calendar.getInstance().getTime();
 		if(thematique.getId() != null){
@@ -89,7 +89,7 @@ public class ThematiqueServiceImpl extends
 				throw new RegistrationException(RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION);
 			}
 			thematiqueCrudRepository.save(thematique);
-			notificationService.saveThematiqueNotification(thematique);
+			notificationService.saveThematiqueNotification(thematique, thematiqueUrl);
 			return thematique;
 		}
 	}

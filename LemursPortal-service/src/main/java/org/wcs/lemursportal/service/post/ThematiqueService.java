@@ -14,7 +14,7 @@ public interface ThematiqueService extends GenericCRUDService<Thematique, Intege
 	 * @param thematique
 	 * @return
 	 */
-	public Thematique saveOrUpdate(String currentLogin, Thematique thematique) ;
+	public Thematique saveOrUpdate(String currentLogin, Thematique thematique, String thematiqueUrl) ;
 	
 	/**
 	 * 

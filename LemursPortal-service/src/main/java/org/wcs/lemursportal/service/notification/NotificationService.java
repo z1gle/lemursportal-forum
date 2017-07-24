@@ -23,7 +23,7 @@ public interface NotificationService {
 	 * 
 	 * @param thematique
 	 */
-	void saveThematiqueNotification(Thematique thematique);
+	void saveThematiqueNotification(Thematique thematique, String thematiqueUrl);
 	/**
 	 * 
 	 * @param post
