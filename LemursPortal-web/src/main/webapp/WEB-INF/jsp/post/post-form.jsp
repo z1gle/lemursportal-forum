@@ -228,7 +228,7 @@
 </div> 
 <div class="copy">Copyright - Lemurs Portal 2017</div>  
 </footer>
-<script src="bootstrap/js/bootstrap.min.js"></script>
+<!--script src="bootstrap/js/bootstrap.min.js"></script-->
 <script>
 jQuery(document).ready(function(){
 				

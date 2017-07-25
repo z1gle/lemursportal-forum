@@ -19,7 +19,7 @@
                 <div class="profil-info">
                 
                 	<!-- D Envoi message Modal -->
-                    <div id="envoi-msg" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <!--div id="envoi-msg" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                         <div class="modal-content">
                         <div class="modal-header">
@@ -43,7 +43,8 @@
                         </div>
                         </div>
                         </div>
-                    </div>
+                    </div-->
+					
                     <!-- D Envoi message Modal -->
                     
                 

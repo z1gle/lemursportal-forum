@@ -8,7 +8,8 @@
        <put-attribute name="head" value="" />  
        <put-attribute name="header" value="/WEB-INF/views/tiles/template/header.jsp" /> 
        <put-attribute name="body" value="" /> 
-       <put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />  
+       <put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />
+	   <put-attribute name="body.end" value="" />
    </definition>
    
    <definition name="page-entier" template="/WEB-INF/views/tiles/layouts/blank-layout.jsp">
@@ -39,9 +40,10 @@
    </definition>
    
    <!-- Registration form -->
-   <definition name="registration" extends="page-entier">  
+   <definition name="registration" extends="page-entier">
    		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/registration-form.jsp" />
    </definition>
+   
    <!-- Edit profile -->
    <definition name="profil.edit.page" extends="base-definition">  
        <put-attribute name="title" value="Edit profil" />  
@@ -50,7 +52,8 @@
    </definition>
    <!-- View profile -->
    <definition name="profil.view.page" extends="base-definition">  
-       <put-attribute name="title" value="Edit profil" />  
+       <put-attribute name="title" value="Edit profil" /> 
+	   <put-attribute name="body.end" value="/WEB-INF/views/tiles/pages/message.jsp" />	   
        <put-attribute name="body">
 			<definition template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
 			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/view-profil.jsp" />
@@ -99,6 +102,7 @@
 	 <definition name="experts" extends="base-definition">  
        <put-attribute name="title" value="Les experts" />  
        <put-attribute name="body" value="experts.body" />
+	   <put-attribute name="body.end" value="/WEB-INF/views/tiles/pages/message.jsp" />
    </definition>
    
 	<definition name="experts.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
@@ -109,6 +113,7 @@
 	
 	<definition name="expertdetail" extends="base-definition">  
        <put-attribute name="title" value="Expert Detail" />  
+	   <put-attribute name="body.end" value="/WEB-INF/views/tiles/pages/message.jsp" />
        <put-attribute name="body">
 			<definition template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
 			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/other-profil.jsp" />

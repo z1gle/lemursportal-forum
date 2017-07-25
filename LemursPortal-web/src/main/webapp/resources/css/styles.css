@@ -1574,10 +1574,11 @@ a.btn:hover {
 }
 
 /* Envoi Message */
+/* --
 .modal-backdrop {
 	position:relative!important;
 }
-
+*/
 .modal.fade {
 	margin-top:15%;
 }
