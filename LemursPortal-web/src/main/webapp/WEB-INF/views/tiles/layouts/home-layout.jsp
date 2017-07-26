@@ -33,7 +33,7 @@
 		<tiles:insertAttribute name="footer" />
 	</footer>
 </body>
-<script src="${resourcesPath}/bootstrap/js/bootstrap.min.js"></script>
+<!--script src="${resourcesPath}/bootstrap/js/bootstrap.min.js"></script-->
 <script>
 jQuery(document).ready(function(){
 				
