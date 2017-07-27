@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -21,7 +21,7 @@
                             <a href="${addQuestionUrl}" class="add-quest"><spring:message code="home.ask.question"/></a>
                         </div>
                         </sec:authorize>
-                        <h2><span>Thématique :</span><c:out value="${thematique.libelle}"/></h2>
+                        <h2><span>ThÃ©matique :</span><c:out value="${thematique.libelle}"/></h2>
                     </div>
     				<!-- D Sujet -->
     				 <c:forEach items="${postsBythematiquePage.content}" var="QuestionParTheme">

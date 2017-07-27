@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec"
@@ -13,7 +13,7 @@
 	<div class="forum-container">
 		<div class="form">
 			<div style="border: 1px #ccc solid;">
-				<strong>Envoyé par <span>${privateMessage.sender.label}</span> le <fmt:formatDate pattern="${datetimeFormat}" value="${privateMessage.date}" /></strong><br/>
+				<strong>EnvoyÃ© par <span>${privateMessage.sender.label}</span> le <fmt:formatDate pattern="${datetimeFormat}" value="${privateMessage.date}" /></strong><br/>
 				<c:url value="/secured/pmessage/${privateMessage.id}" var="messageUrl"/>
 				<h3>${privateMessage.subject}</h3>
 				<p>${privateMessage.body}</p>

@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
@@ -16,11 +16,11 @@
             	<thead>
 <!--            		<a href="#" class="btn btn-primary btn-xs pull-right">Ajouter un membre</a> -->
                 <tr>
-                    <th>Nom & Prénoms</th>
+                    <th>Nom & PrÃ©noms</th>
                     <th>Nbr questions</th>
-                    <th>Nbr réponses</th>
+                    <th>Nbr rÃ©ponses</th>
                     <th>Membre depuis</th>
-                    <th>Nouveau rôle</th>
+                    <th>Nouveau rÃ´le</th>
                     <th class="text-center">Action</th>
                 </tr>
             	</thead>
@@ -64,7 +64,7 @@
 <%--                         <form> --%>
 <!--                             <select> -->
 <!--                                 <option>Expert</option> -->
-<!--                                 <option>Modérateur</option> -->
+<!--                                 <option>ModÃ©rateur</option> -->
 <!--                                 <option>Visiteur</option> -->
 <!--                             </select> -->
 <%--                         </form> --%>
@@ -80,7 +80,7 @@
 <%--                         <form> --%>
 <!--                             <select> -->
 <!--                                 <option>Expert</option> -->
-<!--                                 <option>Modérateur</option> -->
+<!--                                 <option>ModÃ©rateur</option> -->
 <!--                                 <option>Visiteur</option> -->
 <!--                             </select> -->
 <%--                         </form> --%>
@@ -96,7 +96,7 @@
 <%--                         <form> --%>
 <!--                             <select> -->
 <!--                                 <option>Expert</option> -->
-<!--                                 <option>Modérateur</option> -->
+<!--                                 <option>ModÃ©rateur</option> -->
 <!--                                 <option>Visiteur</option> -->
 <!--                             </select> -->
 <%--                         </form> --%>
@@ -104,7 +104,7 @@
 <!--                         <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicont"></span>Valider</a> <a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Supprimer ce membre</a></td> -->
 <!--                     </tr> -->
 <!--                     <tr> -->
-<!--                         <td>Jean-Aimé Rakotonirainy<br /><i>Expert</i></td> -->
+<!--                         <td>Jean-AimÃ© Rakotonirainy<br /><i>Expert</i></td> -->
 <!--                         <td>1564</td> -->
 <!--                         <td>8975</td> -->
 <!--                         <td>03.05.2016</td> -->
@@ -112,7 +112,7 @@
 <%--                         <form> --%>
 <!--                             <select> -->
 <!--                                 <option>Expert</option> -->
-<!--                                 <option>Modérateur</option> -->
+<!--                                 <option>ModÃ©rateur</option> -->
 <!--                                 <option>Visiteur</option> -->
 <!--                             </select> -->
 <%--                         </form> --%>
@@ -128,7 +128,7 @@
 <%--                         <form> --%>
 <!--                             <select> -->
 <!--                                 <option>Expert</option> -->
-<!--                                 <option>Modérateur</option> -->
+<!--                                 <option>ModÃ©rateur</option> -->
 <!--                                 <option>Visiteur</option> -->
 <!--                             </select> -->
 <%--                         </form> --%>
@@ -144,7 +144,7 @@
 <%--                         <form> --%>
 <!--                             <select> -->
 <!--                                 <option>Expert</option> -->
-<!--                                 <option>Modérateur</option> -->
+<!--                                 <option>ModÃ©rateur</option> -->
 <!--                                 <option>Visiteur</option> -->
 <!--                             </select> -->
 <%--                         </form> --%>
@@ -160,7 +160,7 @@
 <%--                         <form> --%>
 <!--                             <select> -->
 <!--                                 <option>Expert</option> -->
-<!--                                 <option>Modérateur</option> -->
+<!--                                 <option>ModÃ©rateur</option> -->
 <!--                                 <option>Visiteur</option> -->
 <!--                             </select> -->
 <%--                         </form> --%>
@@ -176,7 +176,7 @@
 <%--                         <form> --%>
 <!--                             <select> -->
 <!--                                 <option>Expert</option> -->
-<!--                                 <option>Modérateur</option> -->
+<!--                                 <option>ModÃ©rateur</option> -->
 <!--                                 <option>Visiteur</option> -->
 <!--                             </select> -->
 <%--                         </form> --%>
@@ -192,7 +192,7 @@
 <%--                         <form> --%>
 <!--                             <select> -->
 <!--                                 <option>Expert</option> -->
-<!--                                 <option>Modérateur</option> -->
+<!--                                 <option>ModÃ©rateur</option> -->
 <!--                                 <option>Visiteur</option> -->
 <!--                             </select> -->
 <%--                         </form> --%>

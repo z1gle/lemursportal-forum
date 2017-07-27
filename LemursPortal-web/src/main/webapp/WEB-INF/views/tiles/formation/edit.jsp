@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -12,7 +12,7 @@
 
 <div class="container lemurs-page">
     <div class="row">
-    <!-- Début Ajouter Formation -->
+    <!-- DÃ©but Ajouter Formation -->
         <div class="col-md-9">
             <div class="wrapper wrapper-content animated fadeInRight">
     
@@ -32,7 +32,7 @@
                                   <label><!--  spring:message code="title"/-->Titre<sup>*</sup></label>
                                   	<input name="title" type="text" value="${formation.title}"/>
                                   
-                                  <label><!-- spring:message code="formation.description"/-->Déscription<sup>*</sup></label>
+                                  <label><!-- spring:message code="formation.description"/-->DÃ©scription<sup>*</sup></label>
                                   <textarea rows="5" name="description">${formation.description}</textarea>
                                   
 <!--                                   <label>Ajouter un fichier</label> -->

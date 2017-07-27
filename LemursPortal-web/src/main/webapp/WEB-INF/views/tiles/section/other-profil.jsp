@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -79,7 +79,7 @@
                             <div class="txt-content">
                                 <div class="info">
                                 	<div class="col-md-6">
-                                        <p><span><span>Rôle:</span><br />
+                                        <p><span><span>RÃ´le:</span><br />
                                         	<!-- Roles display -->
 											<sec:authentication property="authorities" var="roles" scope="page" />
 											    <c:forEach var="role" items="${roles}">
@@ -87,16 +87,16 @@
 											    </c:forEach>
                                         </span></p>
                                         <p><span><span>Institution:</span><br /><c:out value="${userInfo.institution}"/></span></p>
-                                        <p><span><span>Poste occupé:</span><br /><c:out value="${userInfo.postOccupe}"/></span></p>
+                                        <p><span><span>Poste occupÃ©:</span><br /><c:out value="${userInfo.postOccupe}"/></span></p>
                                         <p><span><span>Email:</span><br /><a href="#" title="#"><c:out value="${userInfo.email}"/></a></span></p>
                                     </div>
                                     
                                     <div class="col-md-6">
                                     
                                         <p><span><span>Inscrit(e) le:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.dateInscription}" /></span></p>
-                                        <p><span><span>Dernière activité le:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.lastAccessDate}" /></span></p>
+                                        <p><span><span>DerniÃ¨re activitÃ© le:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.lastAccessDate}" /></span></p>
 <!--                                         <p><span><span>Nombre de questions :</span><br />18</span></p> -->
-<!--                                         <p><span><span>Nombre de réponses :</span><br />45</span></p> -->
+<!--                                         <p><span><span>Nombre de rÃ©ponses :</span><br />45</span></p> -->
                                     </div>
                                 </div>
                             </div>

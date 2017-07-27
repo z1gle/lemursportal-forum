@@ -1,5 +1,5 @@
- <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -81,7 +81,7 @@
                                                             <td><c:out	value="${video.filename}" /></td>
                                                             <td class="text-center">
                                                             <c:url var="videoPageUrl" value="/files/${video.id}"/>
-                                                            <a class='btn btn-info btn-xs' href="${videoPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
+                                                            <a class='btn btn-info btn-xs' href="${videoPageUrl}"><span class="glyphicont"></span>TÃ©lÃ©charger</a></td>
                                                         </tr>
                                                         </c:forEach>
                                                     </table>
@@ -108,7 +108,7 @@
                                                             <td><c:out	value="${audio.filename}" /></td>
                                                             <td class="text-center">
                                                             <c:url var="audioPageUrl" value="/files/${audio.id}"/>
-                                                            <a class='btn btn-info btn-xs' href="${audioPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
+                                                            <a class='btn btn-info btn-xs' href="${audioPageUrl}"><span class="glyphicont"></span>TÃ©lÃ©charger</a></td>
                                                         </tr>
                                                         </c:forEach>
                                                         
@@ -136,7 +136,7 @@
                                                             <td><c:out	value="${publication.filename}" /></td>
                                                             <td class="text-center">
                                                             <c:url var="publicationPageUrl" value="/files/${publication.id}"/>
-                                                            <a class='btn btn-info btn-xs' href="${publicationPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
+                                                            <a class='btn btn-info btn-xs' href="${publicationPageUrl}"><span class="glyphicont"></span>TÃ©lÃ©charger</a></td>
                                                         </tr>
                                                         </c:forEach>
                                                     </table>

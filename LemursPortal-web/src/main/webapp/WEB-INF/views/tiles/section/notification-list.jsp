@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -24,17 +24,17 @@
 						<c:url value="/post/show/${notification.questionId}" var="questionUrl"/>
 						<c:url value="/postsParThematique/${notification.thematiqueId}" var="thematiqueUrl"/>
 							<fmt:formatDate pattern="${datetimeFormat}" value="${notification.date}" />: 
-							On a répondu à la question <a href="${questionUrl}">${notification.question.title}</a> dans le Thematique <a href="${thematiqueUrl}">${notification.thematique.libelle}</a>
+							On a rÃ©pondu Ã  la question <a href="${questionUrl}">${notification.question.title}</a> dans le Thematique <a href="${thematiqueUrl}">${notification.thematique.libelle}</a>
 					</c:when>
 					<c:when test="${notification.questionId != null}">
 						<c:url value="/post/show/${notification.questionId}" var="questionUrl"/>
 						<c:url value="/postsParThematique/${notification.thematiqueId}" var="thematiqueUrl"/>
 						<fmt:formatDate pattern="${datetimeFormat}" value="${notification.date}" />:
-						<a href="${questionUrl}">Une nouvelle question</a> a été ajouté dans le Thematique <a href="${thematiqueUrl}">${notification.thematique.libelle}</a>
+						<a href="${questionUrl}">Une nouvelle question</a> a Ã©tÃ© ajoutÃ© dans le Thematique <a href="${thematiqueUrl}">${notification.thematique.libelle}</a>
 					</c:when>
 					<c:when test="${notification.thematiqueId != null}">
 						<fmt:formatDate pattern="${datetimeFormat}" value="${notification.date}" />:
-						La thematique <a href="">${notification.thematique.libelle}</a> à été créée !
+						La thematique <a href="">${notification.thematique.libelle}</a> Ã  Ã©tÃ© crÃ©Ã©e !
 					</c:when>
 					<c:otherwise>
 						

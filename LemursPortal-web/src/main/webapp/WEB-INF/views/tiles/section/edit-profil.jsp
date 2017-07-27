@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -10,7 +10,7 @@
 
 <spring:message code="date.format" var="dateFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
-<!-- Début Ajouter Question -->
+<!-- DÃ©but Ajouter Question -->
 <div class="container lemurs-page">
 	 <div class="row">
         <div class="full-width">
@@ -61,7 +61,7 @@
                                   		<form:input path="postOccupe"/><form:errors path="postOccupe"/>
                                   		<label><spring:message code="profil.edit.biographie"/><sup>*</sup></label>
                                   		<form:textarea path="biographie" rows="9"/><form:errors path="biographie"/>
-                                  		<form:button value="Mettre à jour" class="right"><spring:message code="profil.edit.maj.btn"/></form:button>
+                                  		<form:button value="Mettre Ã  jour" class="right"><spring:message code="profil.edit.maj.btn"/></form:button>
                                   	</div>
                             </div>
                            </form:form>

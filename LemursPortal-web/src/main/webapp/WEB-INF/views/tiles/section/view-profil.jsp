@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -59,10 +59,10 @@
                     <div class="box">
                         <div class="name"><strong><c:out value="${userInfo.prenom}"/> <c:out value="${userInfo.nom}"/></strong></div>
                         <div class="info">
-                            <!-- D S'affiche si l'utilisateur lui-même est connecté -->
+                            <!-- D S'affiche si l'utilisateur lui-mÃªme est connectÃ© -->
                             <c:url value="/user/profil/edit" var="userProfilUrl"/>
                             <a href="${userProfilUrl}" class="btn al-left"><spring:message code="profil.label.modifiermonprofil"/></a>
-                            <!-- F S'affiche si l'utilisateur lui-même est connecté -->
+                            <!-- F S'affiche si l'utilisateur lui-mÃªme est connectÃ© -->
                         </div>
                     </div>
                 </div>
@@ -101,7 +101,7 @@
                                         <p><span><span><spring:message code="profil.label.inscritle"/>:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.dateInscription}" /></span></p>
                                         <p><span><span><spring:message code="profil.label.derniereactivite"/>:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.lastAccessDate}" /></span></p>
 <!--                                         <p><span><span>Nombre de questions :</span><br />18</span></p> -->
-<!--                                         <p><span><span>Nombre de réponses :</span><br />45</span></p> -->
+<!--                                         <p><span><span>Nombre de rÃ©ponses :</span><br />45</span></p> -->
                                     </div>
                                 </div>
                             </div>

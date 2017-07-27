@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -39,7 +39,7 @@
 		                                 <small><c:out value="${formations.viewCount}" escapeXml="true" /> lectures</small>
 		                            </div>
 		                            <div class="col-md-3 forum-user-info">
-		                               <div class="reponse-user">Publiée par :<br />
+		                               <div class="reponse-user">PubliÃ©e par :<br />
 		                               	<a href="#"><c:out value="${formations.owner.prenom}" escapeXml="true" /></a><br/>
 		                               	<fmt:formatDate pattern="${datetimeFormat}" value="${formations.creationDate}"/></div>
 		                            </div>
