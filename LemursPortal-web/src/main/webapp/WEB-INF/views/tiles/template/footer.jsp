@@ -34,19 +34,24 @@
         <div id="partenaire" class="col-md-6">
         	<div class="row">
                 <div class="col-xs-2">
-                    <a href="#"><img src="${resourcesPath}/images/part1.png" alt=""/></a>
+                	<c:url value="http://www.fapbm.org/" var="fapbmUrl"/>
+                    <a href="${fapbmUrl}" target="_blank"><img src="${resourcesPath}/images/part1.png" alt=""/></a>
                 </div>
                 <div class="col-xs-2">
-                    <a href="#"><img  src="${resourcesPath}/images/part2.png" alt=""/></a>
+                	<c:url value="http://www.gerp.mg" var="gerpUrl"/>
+                    <a href="${gerpUrl}" target="_blank"><img  src="${resourcesPath}/images/part2.png" alt=""/></a>
                 </div>
                 <div class="col-xs-2">
-                    <a href="#"><img  src="${resourcesPath}/images/part3.png" alt=""/></a>
+                	<c:url value="http://www.primate-sg.org/" var="primatesUrl"/>
+                    <a href="${primatesUrl}" target="_blank"><img  src="${resourcesPath}/images/part3.png" alt=""/></a>
                 </div>
                 <div class="col-xs-2">
-                    <a href="#"><img src="${resourcesPath}/images/part4.png" alt=""/></a>
+                	<c:url value="http://madagascar.wcs.org" var="wcsUrl"/>
+                    <a href="${wcsUrl}" target="_blank"><img src="${resourcesPath}/images/part4.png" alt=""/></a>
                 </div>
                 <div class="col-xs-2">
-                    <a href="#"><img src="${resourcesPath}/images/part5.png" alt=""/></a>
+                	<c:url value="http://data.rebioma.net/" var="rebiomaUrl"/>
+                    <a href="${rebiomaUrl}" target="_blank"><img src="${resourcesPath}/images/part5.png" alt=""/></a>
                 </div>
             </div>
         </div>
