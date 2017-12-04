@@ -29,13 +29,19 @@ public class Document {
 	private UserInfo author;
 	
 	@Column(name="url")
-	private String url; 
+	private String url;
+	
+	@Column(name="uriYoutube")
+	private String uriYoutube;
 	
 	@Column(name="filename")
 	private String filename; 
 	
 	@Column(name="date_creation", nullable=false)
 	private Date creationDate;
+	
+	//@Column(name="date_upload", nullable=false)
+	//private Date uploadDate;
 
 	@Column(name="type_id", insertable=true, updatable=true, nullable=true)
 	private Integer typeId;
@@ -107,6 +113,15 @@ public class Document {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
+	
+	public void setUriYoutube(String uriYoutube) {
+		this.uriYoutube = uriYoutube;
+	}
+	
+	public String getUriYoutube() {
+		return uriYoutube;
+	}
+	
 	
 	
 }
