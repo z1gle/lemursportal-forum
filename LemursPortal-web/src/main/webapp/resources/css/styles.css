@@ -1070,6 +1070,10 @@ form select {
 	margin: 0 0 15px;
 }
 
+.int .navbar-inverse {
+    border: 0px solid #000!important;
+    background: rgba(0, 0, 0, 1) !important;
+}
 
 /* Profil */
 
