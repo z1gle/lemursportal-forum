@@ -32,16 +32,16 @@
                                   </form:select>
                                   <form:errors path="thematiqueId"/>
                                   <br/>
-                                  <label>Titre de la question <sup>*</sup></label>
+                                  <label>Titre de la question <sup>*</sup></label><span class="rouge"><form:errors path="title"/></span>
                                   <form:input path="title"/>
                                   
                                   <label>Ajouter un fichier (photos, documents, videos, audios...)</label>
                                   <input type="file" name="file" class="fisie" />
                                   
-                                   <label>Url youtube  <span class="rouge"><c:out value="${errors}" /></span></label>  
+                                   <label>Url youtube  <span class="rouge"><c:out value="${error_youtube}" /></span></label>  
                                   <form:input path="uriYoutube"/>
                                   
-                                  <label>Votre question <sup>*</sup></label>                                  
+                                  <label>Votre question <sup>*</sup></label><span class="rouge"><form:errors path="body"/>  </span>                                
                                   <form:textarea path="body"/>
                                   <form:button value="save">Poster</form:button>
                             </div>

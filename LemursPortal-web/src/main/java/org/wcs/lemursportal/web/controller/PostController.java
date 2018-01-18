@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -77,13 +78,15 @@ public class PostController extends BaseController{
 		if(authentication == null) return "redirect:/login";
 		//ValidationUtils.rejectIfEmptyOrWhitespace(results, "libelle", "validation.mandatory");
 		ValidationUtils.rejectIfEmptyOrWhitespace(results, "thematiqueId", "validation.mandatory");
-		
+		ValidationUtils.rejectIfEmptyOrWhitespace(results, "body", "validation.mandatory");
+		ValidationUtils.rejectIfEmptyOrWhitespace(results, "title", "validation.mandatory");
+		 System.out.println("gffghgfh");
 		//validate url youtube video
 		if(null!=post.getUriYoutube()&& !post.getUriYoutube().isEmpty()){
 			Pattern pattern =  Pattern.compile(URL_YOUTUBE_PATTERN);  
 			Matcher matcher = pattern.matcher(post.getUriYoutube().trim());  
 			if (!matcher.matches()) {  
-				model.addAttribute("errors","invalid url youtube");
+				model.addAttribute("error_youtube","invalid url youtube");
 				List<Thematique> listethematique = thematiqueService.findAll();
 				model.addAttribute("listeThematique", listethematique);
 				model.addAttribute(post);
@@ -91,15 +94,21 @@ public class PostController extends BaseController{
 			}
 		}
 		if(results.hasErrors()){
+			 
 			List<String> errors = new ArrayList<>();
 			for(FieldError fieldError:results.getFieldErrors()){
 				errors.add(fieldError.getCode());
+				
 			}
+			List<Thematique> listethematique = thematiqueService.findAll();
+			model.addAttribute("listeThematique", listethematique);
+			model.addAttribute(post);
 			model.addAttribute("errors",errors);
-			return "forward:getFormPost";
+			return "getFormPost";
 		}
 		//thematiqueService.saveOrUpdate(authentication.getName(), thematique);
 		UserInfo currentUser = userInfoService.getByEmail(authentication.getName());
+		System.out.println("mail");
 		Date now = Calendar.getInstance().getTime();
 		
 		if(null!= post.getUriYoutube()){
@@ -131,6 +140,7 @@ public class PostController extends BaseController{
 	                Document doc  = new Document();
 	                doc.setAuthor(currentUser);
 	                doc.setCreationDate(now);
+	               // doc.setUploadDate(now);
 	                doc.setFilename(filename);
 	                doc.setUrl("/" + "resources" + "/" + "upload"+ "/" + filename);
 	                doc.setAuthorId(currentUser.getId());
@@ -157,6 +167,8 @@ public class PostController extends BaseController{
 		String contextPath = request.getContextPath();
 		String path = requestUrl.substring(0, requestUrl.indexOf(contextPath) + contextPath.length());
 		postUrl.append(path).append("/post/show/");
+		System.out.println(postUrl);
+		
 		return postUrl.toString();
 		
 	}
