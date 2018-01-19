@@ -15,7 +15,7 @@
 	<c:url var="postsParThematique" value="/postsParThematique/${topThematique.thematique.id}"></c:url>
 		<a href="${postsParThematique}" class="list-group-item">
          <div class="media">
-             <div class="pull-left">
+             <div class="pull-left" style="max-width:200px">
                  <c:out value="${topThematique.thematique.libelle}"/>
              </div>
              <div class="pull-right">

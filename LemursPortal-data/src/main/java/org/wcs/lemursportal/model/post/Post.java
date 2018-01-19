@@ -36,7 +36,7 @@ public class Post implements Serializable {
 	@Column(name="title"/*, nullable=false*/)
 	private String title;
 	
-	@Column(name="contenu"/*, nullable=true*/)
+	@Column(name="contenu", columnDefinition = "text"/*, nullable=true*/)
 	private String body;
 	
 	@Column(name="date_creation", nullable=false)

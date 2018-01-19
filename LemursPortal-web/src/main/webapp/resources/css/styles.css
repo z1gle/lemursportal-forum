@@ -523,6 +523,12 @@ li .lang {
   background:#ede9e9;
 }
 
+.formation-item {
+  padding: 15px 15px !important;
+  border: 0px !important;
+  background:none !important;
+}
+
 .views-number {
   font-size: 14px;
   line-height: 18px;

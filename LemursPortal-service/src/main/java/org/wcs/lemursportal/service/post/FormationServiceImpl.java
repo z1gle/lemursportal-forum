@@ -64,6 +64,7 @@ public class FormationServiceImpl implements FormationService {
 	}
 
 	@Override
+	@Transactional
 	public void update(Formation formation, String email) {
 		//checking owner
 		UserInfo user = userRepository.findByEmail(email);
@@ -79,6 +80,7 @@ public class FormationServiceImpl implements FormationService {
 
 
 	@Override
+	@Transactional
 	public void deleteById(Long id, String email) {
 		UserInfo user = userRepository.findByEmail(email);
 		Formation oldFormation = getFormation(id);
