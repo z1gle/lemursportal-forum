@@ -122,7 +122,8 @@ public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 
 	@Override
 	public Thematique findByIdAndFetchManagers(Integer thematiqueId) {
-		TypedQuery<Thematique> query = em.createQuery("select t from Thematique t inner join fetch t.managers where t.id=:thematiqueId and (t.deleted=:notDeleted or t.deleted is null) ", Thematique.class);
+		//TypedQuery<Thematique> query = em.createQuery("select t from Thematique t inner join fetch t.managers where t.id=:thematiqueId and (t.deleted=:notDeleted or t.deleted is null) ", Thematique.class);
+		TypedQuery<Thematique> query = em.createQuery("select t from Thematique t where t.id=:thematiqueId and (t.deleted=:notDeleted or t.deleted is null) ", Thematique.class);
 		query.setParameter("notDeleted", false);
 		query.setParameter("thematiqueId", thematiqueId);
 		Thematique thematique = query.getSingleResult();
