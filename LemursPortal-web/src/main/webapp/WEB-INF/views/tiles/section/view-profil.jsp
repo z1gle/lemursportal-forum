@@ -75,7 +75,8 @@
                     <!-- D Tab -->
                     <ul class="nav nav-tabs userProfileTabs" role="tablist">
                         <li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="true">Informations</a></li>
-                        <li role="presentation" class=""><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="false">Biographie</a></li>
+                        <li role="presentation" class=""><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="profil.edit.biographie"/></a></li>
+                        <li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="profil.edit.publication"/></a></li>
                     </ul>
 <!-- F Tab -->
                     
@@ -109,7 +110,13 @@
                 
                         <div role="tabpanel" class="tab-pane fade" id="tab-item-2">
                             <div class="txt-content">
-                            <p><c:out value="${userInfo.biographie}"/> </p>
+                            <p><c:out value="${userInfo.biographie}" escapeXml="false" /> </p>
+                            </div>
+                        </div>
+                
+                        <div role="tabpanel" class="tab-pane fade" id="tab-item-3">
+                            <div class="txt-content">
+                            <p><c:out value="${userInfo.publication}" escapeXml="false" /> </p>
                             </div>
                         </div>
                     </div>

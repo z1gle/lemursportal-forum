@@ -303,6 +303,7 @@ public class RegistrationController extends BaseController {
 //            model.addAttribute("fileName", fileName);
 		}
 		UserInfo user = UserInfoFactory.toEntity(registrationForm);
+		LOGGER.debug(user.getPublication() + "######################");
 		userInfoService.update(user);
 		model.addAttribute("successMessage", messageSource.getMessage("message.edit.successMessage",new Object[]{} ,locale));
 		return "redirect:/user/profil";
