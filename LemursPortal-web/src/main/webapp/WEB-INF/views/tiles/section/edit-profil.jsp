@@ -43,9 +43,6 @@
 									  <c:out value="${role}/ "/> 
 									</c:forEach>
 								  </label>
-						  
-                                 	<label><spring:message code="signup.email.placeholder"/><sup>*</sup></label>
-                                 	<form:input path="email"/><form:errors path="email"/>
 								  <br/><br/>
                                 </div>
                                 	<div class="col-md-4">
