@@ -1387,7 +1387,7 @@ a.btn:focus {
 
 /* Experts */
 .expert {
-  margin: 20px 0;
+  margin: 0 0 20px;
 }
 
 .expert-sidebar {
@@ -1475,11 +1475,15 @@ a.btn:focus {
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 7px;
+  height: 40px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .expert-usertitle-role {
   font-size: 10px;
   margin-bottom: 15px;
+  height: 30px;
 }
 
 .expert-userbuttons {
