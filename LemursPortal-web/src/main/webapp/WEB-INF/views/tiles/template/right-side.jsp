@@ -170,12 +170,15 @@
 </div>
 <div class="list-group people-group photos-videos">
     <div class="popup-gallery">
-        <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""/></a>
-        <a href="#"><div class="video"></div><img src="${resourcesPath}/images/lem.png" alt=""/></a>
-        <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""/></a>
-        <a href="#"><div class="video"></div><img src="${resourcesPath}/images/lem.png" alt=""/></a>
-        <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""/></a>
-        <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""/></a>
+    <c:forEach items="${topDocuments}" var="topDocument">
+        <a href="#">
+       <!-- <c:if test="${topDocument.type.id == 2}">
+        	<div class="video"></div>
+        </c:if>-->
+        	<img src="${resourcesPath}/upload/${topDocument.filename} alt=""/>
+        </a>
+        
+      </c:forEach>
     </div>
 </div>
 <!-- F Video -->
