@@ -40,6 +40,8 @@ public class Document {
 	@Column(name="date_creation", nullable=false)
 	private Date creationDate;
 	
+	public Boolean deleted = false;
+	
 	//@Column(name="date_upload", nullable=false)
 	//private Date uploadDate;
 
@@ -120,6 +122,20 @@ public class Document {
 	
 	public String getUriYoutube() {
 		return uriYoutube;
+	}
+	
+	/**
+	 * @return the deleted
+	 */
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	/**
+	 * @param deleted the deleted to set
+	 */
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 	
 	

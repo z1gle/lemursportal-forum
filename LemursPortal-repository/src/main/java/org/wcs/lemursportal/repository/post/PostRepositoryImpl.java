@@ -305,10 +305,12 @@ public class PostRepositoryImpl implements PostRepository {
 
 	@Override
 	public Page<Post> getYoutubeVideo(Pageable pageable) {
-		StringBuilder jpql = new StringBuilder("select p from Post p where p.uriYoutube is not null order by p.creationDate asc");
-		StringBuilder jpqlCount = new StringBuilder("select count(p.id) from Post p where uriYoutube is not null ");
+		StringBuilder jpql = new StringBuilder("select p from Post p where p.uriYoutube is not null  and (p.deleted=:notDeleted or p.deleted is null) order by p.creationDate asc ");
+		StringBuilder jpqlCount = new StringBuilder("select count(p.id) from Post p where uriYoutube is not null and (p.deleted=:notDeleted or p.deleted is null)");
 		TypedQuery<Post> query = em.createQuery(jpql.toString(),Post.class);
+		query.setParameter("notDeleted", false);
 		TypedQuery<Long> countQuery = em.createQuery(jpqlCount.toString(), Long.class);
+		countQuery.setParameter("notDeleted", false);
 		Long total = countQuery.getSingleResult();
 		if(pageable != null){
 			query.setFirstResult(pageable.getOffset());

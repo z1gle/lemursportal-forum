@@ -8,12 +8,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.wcs.lemursportal.model.post.Document;
 import org.wcs.lemursportal.model.post.DocumentType;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.PostView;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.post.TopQuestion;
 import org.wcs.lemursportal.model.user.UserInfo;
+import org.wcs.lemursportal.repository.post.DocumentRepository;
 import org.wcs.lemursportal.repository.post.PostCrudRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.PostViewCrudRepository;
@@ -38,6 +40,8 @@ public class PostServiceImpl implements PostService {
 	
 	@Autowired ThematiqueCrudRepository thematiqueCrudRepository;
 	
+	@Autowired DocumentRepository documentRepository;
+	
 	@Autowired 
 	PostViewCrudRepository postViewCrudRepository;
 	
@@ -47,13 +51,13 @@ public class PostServiceImpl implements PostService {
 	@Autowired NotificationService notificationService;
 
 	private enum PHOTOEXT {
-		png, jpg, gif
+		png, jpeg, jpg, gif
 	}
 	private enum VIDEOEXT {
-		mov, avi, mkv,mp4,wmv,mpg
+		mov, avi, mkv,mp4,wmv,mpg,mpeg
 	}
 	private enum AUDIOEXT {
-		wma, mp3, avi
+		wma, mp3
 	}
 	
 	public enum DOCTYPE {
@@ -171,6 +175,10 @@ public class PostServiceImpl implements PostService {
 	public Post deletepost(Integer postId, String currentLogin) {
 		Post post = postRepository.getPostsAndFetchOwner(postId);
 		UserInfo currentUser = userInfoService.getByEmail(currentLogin);
+		
+		if(post.getDocumentId()!=0){
+			documentRepository.deleteDocument(post.getDocumentId());
+		}
 		post.setDeleted(true);
 		post.setDeletedBy(currentUser.getId());
 		post.setDeletedDate(new Date());

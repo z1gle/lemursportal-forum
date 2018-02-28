@@ -47,6 +47,7 @@ public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 			.append("left join t.questions as q ")
 			.append("where q.parentId is null and (q.censored is null or q.censored <> :censored) ")
 			.append(" and (t.deleted=:notDeleted or t.deleted is null) ")
+			.append(" and (q.deleted=:notDeleted or q.deleted is null) ")
 			.append("group by t.id ")
 			.append("order by nbQuestions desc ");
 		
@@ -87,9 +88,11 @@ public class ThematiqueRepositoryImpl implements ThematiqueRepository {
 		qlBuild.append("FROM   Thematique  f ");
 		qlBuild.append("left join Post v  on v.thematique.id = f.id ");
 		qlBuild.append("left join Post q  on q.thematique.id = f.id ");
-		qlBuild.append("LEFT   JOIN Post   p ON p.thematique.id = f.id ");
+		qlBuild.append("LEFT   JOIN Post p ON p.thematique.id = f.id ");
 		//qlBuild.append("inner join fetch p.owner o");
 		qlBuild.append(" where (f.deleted=:notDeleted or f.deleted is null) and q.parentId is null ");
+		qlBuild.append(" and (v.deleted=:notDeleted or v.deleted is null) ");
+		qlBuild.append(" and (p.deleted=:notDeleted or p.deleted is null) ");
 		qlBuild.append(" group by f, f.id, p.id ");
 		qlBuild.append("ORDER  BY  f.id, p.creationDate DESC");
 		
