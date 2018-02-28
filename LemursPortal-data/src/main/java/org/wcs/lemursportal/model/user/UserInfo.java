@@ -67,6 +67,9 @@ public class UserInfo implements IUserInfo {
 	@Column(name = "biographie", columnDefinition = "text")
 	private String biographie;
 	
+	@Column(name = "publication", columnDefinition = "text")
+	private String publication;
+	
 	@Column(name = "photo_profil")
 	private String photoProfil;
 	
@@ -241,6 +244,12 @@ public class UserInfo implements IUserInfo {
 	}
 	public void setProvider(String provider) {
 		this.provider = provider;
+	}
+	public String getPublication() {
+		return publication;
+	}
+	public void setPublication(String publication) {
+		this.publication = publication;
 	}
 	
 }

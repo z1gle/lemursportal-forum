@@ -32,7 +32,7 @@ public class MailQueue implements Serializable {
 	@Column(name="id")
 	private Integer id;
 	private String subject;
-	@Column(name="body")
+	@Column(name="body", columnDefinition = "text")
 	private String body;
 	private String destinataires;
 	@Column(name="creation_date", nullable=false)

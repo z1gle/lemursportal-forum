@@ -73,7 +73,7 @@ body.int {
 
 .form {
   position:relative;
-  z-index:1;
+  /*z-index:1;*/
   max-width:360px;
   margin:0 auto 100px;
   padding:10%;
@@ -84,6 +84,17 @@ body.int {
 div.note-editable {
   text-align:left;
   background-color:#fff!important;
+}
+
+.btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active {
+    background-color: #a38000 !important; 
+    border-color: #a38000 !important;
+}
+
+.form-group label {
+    display: block !important;
+    float: none !important;
+    text-align: left !important;
 }
 
 .form input {
@@ -184,7 +195,7 @@ button:focus {
 
 .container {
   position:relative;
-  z-index:1;
+  /*z-index:1;*/
   margin:0 auto;
 }
 
@@ -521,6 +532,12 @@ li .lang {
   padding: 15px 20px;
   border: 1px solid #d7d7d7;
   background:#ede9e9;
+}
+
+.formation-item {
+  padding: 15px 15px !important;
+  border: 0px !important;
+  background:none !important;
 }
 
 .views-number {
@@ -1070,6 +1087,10 @@ form select {
 	margin: 0 0 15px;
 }
 
+.int .navbar-inverse {
+    border: 0px solid #000!important;
+    background: rgba(0, 0, 0, 1) !important;
+}
 
 /* Profil */
 
@@ -1308,7 +1329,7 @@ form select {
 .liste-quest .profil-info .img-circle,
 .edit-profil-form .img-circle,
 .page-profil .profil-info .img-circle {
-	width:200px!important;
+	width:184px!important;
 }
 
 form sup {
@@ -1366,7 +1387,7 @@ a.btn:focus {
 
 /* Experts */
 .expert {
-  margin: 20px 0;
+  margin: 0 0 20px;
 }
 
 .expert-sidebar {
@@ -1454,11 +1475,15 @@ a.btn:focus {
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 7px;
+  height: 40px;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .expert-usertitle-role {
   font-size: 10px;
   margin-bottom: 15px;
+  height: 30px;
 }
 
 .expert-userbuttons {

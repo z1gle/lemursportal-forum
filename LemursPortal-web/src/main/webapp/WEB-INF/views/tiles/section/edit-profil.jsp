@@ -36,7 +36,14 @@
                                   <label><spring:message code="profil.edit.change.photo"/></label>
                                   <form:input type="file" path="file" class="pdp"/>
                                   <form:errors path="file" class="error"/>
-                                  
+                                  <label><spring:message code="profil.role"/><sup>*</sup></label>
+                           		  <sec:authentication property="authorities" var="roles" scope="page" />
+                                  <label style="font-weight: normal; padding-left: 20px;"> 
+									<c:forEach var="role" items="${roles}">
+									  <c:out value="${role}/ "/> 
+									</c:forEach>
+								  </label>
+								  <br/><br/>
                                 </div>
                                 	<div class="col-md-4">
 	                                	<form:hidden path="id"/>
@@ -44,23 +51,26 @@
 	                                  	<form:input path="nom"/><form:errors path="nom"/>
 	                                  	<label><spring:message code="signup.surname.placeholder"/><sup>*</sup></label>
 	                                  	<form:input path="prenom"/><form:errors path="prenom"/>
-	                                  	<label><spring:message code="signup.dateofbirth.placeholder"/> (<c:out value="${dateFormat}"/>)</label>
-	                                  	<form:input path="dateNaissance"/><form:errors path="dateNaissance"/>
 	                                  	<label><spring:message code="signup.email.placeholder"/><sup>*</sup></label>
 	                                  	<form:input path="email"/><form:errors path="email"/>
                                   	</div>
                                   	<div class="col-md-4">
-                                  		<label><spring:message code="profil.role"/><sup>*</sup></label>
-                                  		<sec:authentication property="authorities" var="roles" scope="page" />
-										<c:forEach var="role" items="${roles}">
-										  <c:out value="${role}"/> 
-										</c:forEach><br/>
                                   		<label><spring:message code="profil.edit.institution"/></label>
                                   		<form:input path="institution"/><form:errors path="institution"/>
                                   		<label><spring:message code="profil.edit.postoccupe"/></label>
                                   		<form:input path="postOccupe"/><form:errors path="postOccupe"/>
-                                  		<label><spring:message code="profil.edit.biographie"/><sup>*</sup></label>
-                                  		<form:textarea path="biographie" rows="9"/><form:errors path="biographie"/>
+                                  		<label><spring:message code="signup.dateofbirth.placeholder"/> (<c:out value="${dateFormat}"/>)</label>
+	                                  	<form:input path="dateNaissance"/><form:errors path="dateNaissance"/>
+                                  	</div>
+                                  	
+                                  	<div class="col-md-8">
+                                  		<div class="forma-style">
+                                  			<label style="float: none !important; display: block"><spring:message code="profil.edit.biographie"/><sup>*</sup></label>
+                                  			<form:textarea path="biographie" rows="5"/><form:errors path="biographie"/>
+                                  			
+                                  			<label style="float: none !important; display: block"><spring:message code="profil.edit.publication"/><sup>*</sup></label>
+                                  			<form:textarea path="publication" rows="5"/><form:errors path="publication"/>
+                                  		</div>
                                   		<form:button value="Mettre à jour" class="right"><spring:message code="profil.edit.maj.btn"/></form:button>
                                   	</div>
                             </div>
@@ -75,3 +85,45 @@
        </div>
       </div>   
     <!-- Fin Ajouter Question --> 
+    <script type="text/javascript" src="<c:url value="/resources/js/app/form-edit.js"/>"></script>
+    <script>
+
+	$('#biographie').summernote({
+		height: 200,
+		toolbar: [
+		          ['style', ['style']],
+		          ['font', ['bold', 'italic', 'underline', 'clear']],
+		          ['font', ['fontsize']],
+		          ['color', ['color']],
+		          ['para', ['ul', 'ol', 'paragraph']],
+		          ['height', ['height']],
+		          ['table', ['table']],
+		          ['insert', ['link', 'picture', 'video']],
+		          ['view', ['codeview']],
+		          ['help', ['help']]
+		        ],
+		onImageUpload: function (files, editor, welEditable) {
+			sendFile(files[0], editor, welEditable);
+		}
+	});
+
+	$('#publication').summernote({
+		height: 200,
+		toolbar: [
+		          ['style', ['style']],
+		          ['font', ['bold', 'italic', 'underline', 'clear']],
+		          ['font', ['fontsize']],
+		          ['color', ['color']],
+		          ['para', ['ul', 'ol', 'paragraph']],
+		          ['height', ['height']],
+		          ['table', ['table']],
+		          ['insert', ['link', 'picture', 'video']],
+		          ['view', ['codeview']],
+		          ['help', ['help']]
+		        ],
+		onImageUpload: function (files, editor, welEditable) {
+			sendFile(files[0], editor, welEditable);
+		}
+	});
+			
+</script> 

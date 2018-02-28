@@ -19,6 +19,7 @@ public abstract class UserInfoFactory {
 		if( user != null){
 			form = new RegistrationForm();
 			form.setBiographie(user.getBiographie());
+			form.setPublication(user.getPublication());
 			form.setDateNaissance(user.getDateNaissance());
 			form.setEmail(user.getEmail());
 			form.setEnabled(user.getEnabled());
@@ -44,6 +45,7 @@ public abstract class UserInfoFactory {
 			entity = new UserInfo();
 			entity.setId(form.getId());
 			entity.setBiographie(form.getBiographie());
+			entity.setPublication(form.getPublication());
 			entity.setDateNaissance(form.getDateNaissance());
 			entity.setEmail(form.getEmail());
 			entity.setEnabled(form.getEnabled());

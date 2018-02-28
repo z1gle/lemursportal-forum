@@ -72,7 +72,7 @@
 						</div>
                     </div>
     				
-                    <div class="forum-item">
+                    <div class="forum-item formation-item">
 	                        <div class="row">
 		                            <c:out value="${formation.body}" escapeXml="false" />
 		                    </div>

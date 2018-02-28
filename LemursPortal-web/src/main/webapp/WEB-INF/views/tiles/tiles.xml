@@ -47,6 +47,7 @@
    <!-- Edit profile -->
    <definition name="profil.edit.page" extends="base-definition">  
        <put-attribute name="title" value="Edit profil" />  
+       <put-attribute name="head" value="/WEB-INF/views/tiles/formation/tinymce.jsp" /> 
        <put-attribute name="body" value="/WEB-INF/views/tiles/section/edit-profil.jsp">
        </put-attribute>
    </definition>

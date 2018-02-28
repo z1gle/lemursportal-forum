@@ -25,7 +25,8 @@ public class RegistrationForm extends FileBucket {
 	private String email;
 	private Boolean enabled;
 	private Date lastAccessDate;
-	private String biographie;	
+	private String biographie;
+	private String publication;	
 	private List<Integer> userTypeIds;
 	private String photoProfil;
 	private SocialProvider socialProvider;
@@ -119,6 +120,12 @@ public class RegistrationForm extends FileBucket {
 	}
 	public void setSocialProvider(SocialProvider socialProvider) {
 		this.socialProvider = socialProvider;
+	}
+	public String getPublication() {
+		return publication;
+	}
+	public void setPublication(String publication) {
+		this.publication = publication;
 	}
 	
 }

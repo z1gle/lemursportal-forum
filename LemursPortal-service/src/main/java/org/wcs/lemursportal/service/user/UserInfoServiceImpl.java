@@ -116,6 +116,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		persistUser.setPrenom(user.getPrenom());
 		persistUser.setInstitution(user.getInstitution());
 		persistUser.setPostOccupe(user.getPostOccupe());
+		persistUser.setPublication(user.getPublication());
 		if(StringUtils.isNotBlank(user.getPhotoProfil())){
 			persistUser.setPhotoProfil(user.getPhotoProfil());
 		}
