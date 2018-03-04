@@ -76,6 +76,17 @@
 					<br />
 			</div>
 		</div>
-
+		<div class="col-md-4 forum-user-info">
+		<c:if test="${topQuestion.question.documentId > 0}">
+			<c:url var="videoPageUrl" value="/files/${topQuestion.question.documentId}"/>
+			<a  href="${videoPageUrl}">
+			<img src="${resourcesPath}/images/icon-audio.png" alt=""></a>
+		</c:if>
+		<c:if test="${not empty topQuestion.question.uriYoutube }">
+		 <c:url var="publicationPageUrl" value="${topQuestion.question.uriYoutube}"/>
+            <a  href="${publicationPageUrl}"  target="_blank">
+			<img src="${resourcesPath}/images/icon-video-document.png" alt=""></a>
+		</c:if>
+		</div>
 	</div>
 </div>

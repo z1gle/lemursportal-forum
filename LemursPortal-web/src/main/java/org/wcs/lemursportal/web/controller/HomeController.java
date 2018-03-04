@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping
 public class HomeController extends BaseController {
 	
-	@RequestMapping(value="/general-error")
-	public String globalError(Model model){
-		return "global-error";
-	}
+//	@RequestMapping(value="/general-error")
+//	public String globalError(Model model){
+//		return "global-error";
+//	}
 	
 	@RequestMapping(value={"/", "/index", "/home", "/accueil"}, method=RequestMethod.GET)
 	public String home(Model model, Authentication authentication){

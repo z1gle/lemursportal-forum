@@ -176,7 +176,7 @@ public class PostServiceImpl implements PostService {
 		Post post = postRepository.getPostsAndFetchOwner(postId);
 		UserInfo currentUser = userInfoService.getByEmail(currentLogin);
 		
-		if(post.getDocumentId()!=0){
+		if(post.getDocumentId()!=null){
 			documentRepository.deleteDocument(post.getDocumentId());
 		}
 		post.setDeleted(true);

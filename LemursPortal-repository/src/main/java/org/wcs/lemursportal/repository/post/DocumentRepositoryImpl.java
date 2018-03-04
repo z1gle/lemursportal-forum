@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.model.post.Document;
+import org.wcs.lemursportal.model.post.DocumentType;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
 
@@ -66,9 +67,11 @@ public class DocumentRepositoryImpl implements DocumentRepository{
 	@Override
 	public Page<Document> findTopDocuments(Pageable pageable) {
 		List<String> typeDoc = Arrays.asList("1","2");
-		String s = "from  Document t where  t.type.id=:documentType order by creationDate DESC";
+		String s = "from  Document t where  (t.typeId=:imageId or t.typeId=:videoId ) and (t.deleted=:notDeleted or t.deleted is null) order by creationDate DESC";
 		TypedQuery<Document> query = em.createQuery(s, Document.class);
-		query.setParameter("documentType", 1);
+		query.setParameter("imageId", 1);
+		query.setParameter("videoId", 2);
+		query.setParameter("notDeleted", false);
 		if(pageable != null){
 			query.setFirstResult(pageable.getOffset());
 			query.setMaxResults(pageable.getPageSize());

@@ -25,6 +25,7 @@
                                     <p class="forum-date"><fmt:formatDate pattern="${datetimeFormat}" value="${post.creationDate}"/></p>
                                 </div>
                             </div>
+                            
                             <div class="col-md-1 forum-info">
                                 <span class="views-number">
                                     ${responsesPage.totalElements }
@@ -33,7 +34,18 @@
                                     <small>Commentaires</small>
                                 </div>
                             </div>
-                           
+                           <div class="col-md-4 forum-info">
+	                            <c:if test="${post.documentId > 0}">
+	                            <c:url var="videoPageUrl" value="/files/${post.documentId}"/>
+								<a  href="${videoPageUrl}">
+									<img src="${resourcesPath}/images/icon-audio.png" alt=""></a>
+								</c:if>
+								<c:if test="${not empty post.uriYoutube }">
+								 <c:url var="publicationPageUrl" value="${post.uriYoutube}"/>
+            						<a  href="${publicationPageUrl}"  target="_blank">
+									<img src="${resourcesPath}/images/icon-video-document.png" alt=""></a>
+								</c:if>
+							 </div>
                         </div>
                     </div>
                     

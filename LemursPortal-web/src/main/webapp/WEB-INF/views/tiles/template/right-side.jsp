@@ -172,10 +172,18 @@
     <div class="popup-gallery">
     <c:forEach items="${topDocuments}" var="topDocument">
         <a href="#">
-       <!-- <c:if test="${topDocument.type.id == 2}">
+       <c:if test="${topDocument.typeId == 2}">
+       <c:url var="videoPageUrl" value="/documents#tab-item-2"/>
+			<a  href="${videoPageUrl}">
         	<div class="video"></div>
-        </c:if>-->
-        	<img src="${resourcesPath}/upload/${topDocument.filename} alt=""/>
+        	<img src="${resourcesPath}/images/lem.png" alt=""/></a>
+        </c:if>
+        <c:if test="${topDocument.typeId == 1}">
+        <c:url var="videoPageUrl" value="/documents#tab-item-1"/>
+			<a  href="${videoPageUrl}">
+        	<img src="${resourcesPath}/upload/${topDocument.filename}" alt=""/></a>
+        </c:if>
+        	
         </a>
         
       </c:forEach>

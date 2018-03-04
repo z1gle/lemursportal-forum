@@ -100,14 +100,14 @@ public class BaseController {
 	
 	@ModelAttribute("topDocuments")
 	public List<Document> getTopDocument(Integer page, Model model,DOCTYPE docType ){
-//		if(page == null || page < 1){
-//			page = 0;
-//		}else{
-//			page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
-//		}
-//		Pageable pageable = new PageRequest(0, TOP_DOCUMENT_ACCUEIL_SIZE);
-//		Page<Document> pageDocuments = documentRepository.findTopDocuments(pageable);
-//		if(null != pageDocuments) return pageDocuments.getContent();
+		if(page == null || page < 1){
+			page = 0;
+		}else{
+			page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+		}
+		Pageable pageable = new PageRequest(0, TOP_DOCUMENT_ACCUEIL_SIZE);
+		Page<Document> pageDocuments = documentRepository.findTopDocuments(pageable);
+		if(null != pageDocuments) return pageDocuments.getContent();
 		return null;
 	}
 	
