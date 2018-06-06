@@ -59,6 +59,8 @@ public interface UserInfoService {
 	 */
 	//@PreAuthorize ("#user.email == authentication.name")
 	void update(UserInfo user);
+        
+        void updatePassword(UserInfo user, String newPassword) throws Exception;
 	
 	/**
 	 * 

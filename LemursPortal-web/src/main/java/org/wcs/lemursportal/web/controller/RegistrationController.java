@@ -1,11 +1,13 @@
 /**
- * 
+ *
  */
 package org.wcs.lemursportal.web.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.logging.Level;
 
 import javax.servlet.ServletContext;
 import javax.validation.Valid;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.wcs.lemursportal.dto.user.UserRegistrationForm;
@@ -38,6 +41,7 @@ import org.wcs.lemursportal.service.authentication.AuthenticationService;
 import org.wcs.lemursportal.service.exception.UserAlreadyExistAuthenticationException;
 import org.wcs.lemursportal.service.util.SecurityUtil;
 import org.wcs.lemursportal.service.user.UserInfoService;
+import org.wcs.lemursportal.web.form.ChangePasswordForm;
 import org.wcs.lemursportal.web.form.RegistrationForm;
 import org.wcs.lemursportal.web.validator.RegistrationFormValidator;
 
@@ -48,27 +52,28 @@ import org.wcs.lemursportal.web.validator.RegistrationFormValidator;
 @Transactional
 @Controller
 public class RegistrationController extends BaseController {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
-	
-	@Autowired
-	private RegistrationFormValidator registrationFormValidator;
-	
-	@Autowired
-	private UserInfoService userInfoService;
-	
-	@Autowired
-	private AuthenticationService authenticationService;
-	
-	@Autowired ServletContext context; 
-	
-	@Autowired
-	private MessageSource messageSource;
-	
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
+
+    @Autowired
+    private RegistrationFormValidator registrationFormValidator;
+
+    @Autowired
+    private UserInfoService userInfoService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @Autowired
+    ServletContext context;
+
+    @Autowired
+    private MessageSource messageSource;
+
 //	@Autowired
 //    private UserInfoService userService;
 
-	/*
+    /*
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public ModelAndView signup(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException {
         ModelAndView model = new ModelAndView();
@@ -76,7 +81,6 @@ public class RegistrationController extends BaseController {
         model.setViewName("registration");
         return model;
     }*/
-	
 //    @RequestMapping(value = {"/user/register"}, method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 //    public @ResponseBody String registerUser(@RequestBody UserRegistrationForm registrationForm) throws UserAlreadyExistAuthenticationException {
 //
@@ -89,14 +93,13 @@ public class RegistrationController extends BaseController {
 //       return "success";
 //
 //    }
-	
-	@RequestMapping(value = "/signup", method = RequestMethod.GET)
+    @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String redirectRequestToRegistrationPage() {
         LOGGER.debug("Redirecting request to registration page.");
 
         return "redirect:/register";
     }
-    
+
     /**
      * Renders the registration page.
      */
@@ -113,13 +116,15 @@ public class RegistrationController extends BaseController {
 
         return "registration";
     }
-    
+
     /**
      * Creates the form object used in the registration form.
+     *
      * @param connection
-     * @return  If a user is signing in by using a social provider, this method returns a form
-     *          object populated by the values given by the provider. Otherwise this method returns
-     *          an empty form object (normal form registration).
+     * @return If a user is signing in by using a social provider, this method
+     * returns a form object populated by the values given by the provider.
+     * Otherwise this method returns an empty form object (normal form
+     * registration).
      */
     private RegistrationForm createRegistrationDTO(Connection<?> connection) {
         RegistrationForm dto = new RegistrationForm();
@@ -130,20 +135,20 @@ public class RegistrationController extends BaseController {
             dto.setNom(socialMediaProfile.getFirstName());
             dto.setPrenom(socialMediaProfile.getLastName());
             dto.setPhotoProfil(connection.getImageUrl());
-            
+
             dto.setSocialProvider(SecurityUtil.toSocialProvider(connection.getKey().getProviderId().toUpperCase()));
         }
 
         return dto;
     }
-    
+
     /**
      * Processes the form submissions of the registration form.
      */
-    @RequestMapping(value ="/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registerUserAccount(@Valid @ModelAttribute("registrationForm") RegistrationForm userAccountData,
-                                      BindingResult result,
-                                      WebRequest request) throws UserAlreadyExistAuthenticationException {
+            BindingResult result,
+            WebRequest request) throws UserAlreadyExistAuthenticationException {
         LOGGER.debug("Registering user account with information: {}", userAccountData);
         if (result.hasErrors()) {
             LOGGER.debug("Validation errors found. Rendering form view.");
@@ -160,10 +165,10 @@ public class RegistrationController extends BaseController {
                 .addPassword(userAccountData.getPassword())
                 .addSocialProvider(userAccountData.getSocialProvider())
                 .addImageUrl(userAccountData.getPhotoProfil())
-        .build();
+                .build();
 
         LOGGER.debug("#### info : {} + {} + {}", userForm.getEmail(), userForm.getUserId(), userForm.getPrenom());
-        
+
         UserInfo registered = createUserAccount(userForm, result);
 
         //If email address was already found from the database, render the form view.
@@ -177,16 +182,16 @@ public class RegistrationController extends BaseController {
         //Logs the user in.
         SecurityUtil.authenticateUser(registered);
         LOGGER.debug("User {} has been signed in", registered);
-        
+
         //stores the connection to the UserConnection table
         ProviderSignInUtils.handlePostSignUp(userForm.getEmail(), request);
 
         return "redirect:/";
     }
-    
+
     /**
-     * creatuion d'un compte utilisateur.
-     * verification si l'addresse email est deja utilisee
+     * creatuion d'un compte utilisateur. verification si l'addresse email est
+     * deja utilisee
      */
     private UserInfo createUserAccount(UserRegistrationForm userAccountData, BindingResult result) {
         LOGGER.debug("Creating user account with information: {}", userAccountData);
@@ -194,9 +199,8 @@ public class RegistrationController extends BaseController {
 
         try {
             registered = userInfoService.registerNewUser(userAccountData);
-        }
-        catch (Exception ex) {
-        	ex.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
             LOGGER.debug("An email address: {} exists.", userAccountData.getEmail());
             addFieldError(
                     "registrationForm",
@@ -208,7 +212,7 @@ public class RegistrationController extends BaseController {
 
         return registered;
     }
-	
+
 //	/**
 //	 * Affichage du formulaire d'inscription (nouvel utilisateur)
 //	 * 
@@ -220,17 +224,19 @@ public class RegistrationController extends BaseController {
 //		model.addAttribute("registrationForm", registrationForm);
 //		return "registration";
 //	}	
-	/**
-	 * Validation du formulaire d'inscription de l'utilisateur
-	 * Si le formulaire est valide, on appelle de service d'inscription
-	 * Si l'inscription a reussi, l'utilisateur sera redirigé vers la page d'accueil tout en etant connecté automatiquement.
-	 * Si le formulaire n'est pas valide, on retourne à la page d'inscription avec le formulaire pre-rempli et les message d'erreur
-	 * 
-	 * @param userInfoForm
-	 * @param results
-	 * @param model
-	 * @return
-	 */
+    /**
+     * Validation du formulaire d'inscription de l'utilisateur Si le formulaire
+     * est valide, on appelle de service d'inscription Si l'inscription a
+     * reussi, l'utilisateur sera redirigé vers la page d'accueil tout en etant
+     * connecté automatiquement. Si le formulaire n'est pas valide, on retourne
+     * à la page d'inscription avec le formulaire pre-rempli et les message
+     * d'erreur
+     *
+     * @param userInfoForm
+     * @param results
+     * @param model
+     * @return
+     */
 //	@RequestMapping(value="/signup", method=RequestMethod.POST)
 //	public String signupSubmit(HttpServletRequest request, Model model, 
 //			@ModelAttribute RegistrationForm registrationForm, 
@@ -255,61 +261,63 @@ public class RegistrationController extends BaseController {
 //		}
 //		return "redirect:/";
 //	}
-	/**
-	 * 
-	 * @param userId
-	 * @param model
-	 * @return
-	 */
-	@GetMapping(value="/user/profil")
-	public String viewProfil(Authentication authentication, Model model){
-		String email = authentication.getName();
-		UserInfo userInfo = userInfoService.getByEmail(email);
-		model.addAttribute("userInfo", userInfo);
-		return "profil.view.page";
-	}
-	/**
-	 * 
-	 * @param userId
-	 * @param model
-	 * @return
-	 */
-	@GetMapping(value="/user/profil/edit")
-	public String editProfil(Authentication authentication, Model model){
-		String email = authentication.getName();
-		UserInfo userInfo = userInfoService.getByEmail(email);
-		RegistrationForm registrationForm = UserInfoFactory.toForm(userInfo);
-		model.addAttribute("registrationForm", registrationForm);
-		return "profil.edit.page";
-	}
-	
-	@PostMapping(value="/user/profil/edit")
-	public String editSubmit(Locale locale, Model model, 
-			@ModelAttribute RegistrationForm registrationForm, 
-			BindingResult results) throws IOException 
-	{
-		registrationFormValidator.validate(registrationForm, results);
-		if(results.hasErrors()){
-			return "profil.edit.page";
-		}
-		MultipartFile multipartFile = registrationForm.getFile();
-		if(multipartFile != null && !registrationForm.getFile().getOriginalFilename().isEmpty()){
+    /**
+     *
+     * @param userId
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/user/profil")
+    public String viewProfil(Authentication authentication, Model model) {
+        String email = authentication.getName();
+        UserInfo userInfo = userInfoService.getByEmail(email);
+        model.addAttribute("userInfo", userInfo);
+        return "profil.view.page";
+    }
 
-			String fileUploadLocation = context.getRealPath("/resources/") + USER_PROFIL_IMAGE_RESOURCE_PATH;
-			FileCopyUtils.copy(multipartFile.getBytes(), new File(fileUploadLocation + multipartFile.getOriginalFilename()));
-			String imagePath = USER_PROFIL_IMAGE_RESOURCE_PATH.endsWith("/") ? USER_PROFIL_IMAGE_RESOURCE_PATH : USER_PROFIL_IMAGE_RESOURCE_PATH +"/"; 
-			registrationForm.setPhotoProfil(imagePath + multipartFile.getOriginalFilename());
+    /**
+     *
+     * @param userId
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/user/profil/edit")
+    public String editProfil(Authentication authentication, Model model) {
+        String email = authentication.getName();
+        UserInfo userInfo = userInfoService.getByEmail(email);
+        RegistrationForm registrationForm = UserInfoFactory.toForm(userInfo);
+        ChangePasswordForm changePasswordForm = UserInfoFactory.toChangePasswordForm(userInfo);
+        model.addAttribute("registrationForm", registrationForm);
+        model.addAttribute("changePasswordForm", changePasswordForm);
+        return "profil.edit.page";
+    }
+
+    @PostMapping(value = "/user/profil/edit")
+    public String editSubmit(Locale locale, Model model,
+            @ModelAttribute RegistrationForm registrationForm,
+            BindingResult results) throws IOException {
+        registrationFormValidator.validate(registrationForm, results);
+        if (results.hasErrors()) {
+            return "profil.edit.page";
+        }
+        MultipartFile multipartFile = registrationForm.getFile();
+        if (multipartFile != null && !registrationForm.getFile().getOriginalFilename().isEmpty()) {
+
+            String fileUploadLocation = context.getRealPath("/resources/") + USER_PROFIL_IMAGE_RESOURCE_PATH;
+            FileCopyUtils.copy(multipartFile.getBytes(), new File(fileUploadLocation + multipartFile.getOriginalFilename()));
+            String imagePath = USER_PROFIL_IMAGE_RESOURCE_PATH.endsWith("/") ? USER_PROFIL_IMAGE_RESOURCE_PATH : USER_PROFIL_IMAGE_RESOURCE_PATH + "/";
+            registrationForm.setPhotoProfil(imagePath + multipartFile.getOriginalFilename());
 //            String fileName = multipartFile.getOriginalFilename();
 //            model.addAttribute("fileName", fileName);
-		}
-		UserInfo user = UserInfoFactory.toEntity(registrationForm);
-		LOGGER.debug(user.getPublication() + "######################");
-		userInfoService.update(user);
-		model.addAttribute("successMessage", messageSource.getMessage("message.edit.successMessage",new Object[]{} ,locale));
-		return "redirect:/user/profil";
-	}
-	
-	private void addFieldError(String objectName, String fieldName, String fieldValue,  String errorCode, BindingResult result) {
+        }
+        UserInfo user = UserInfoFactory.toEntity(registrationForm);
+        LOGGER.debug(user.getPublication() + "######################");
+        userInfoService.update(user);
+        model.addAttribute("successMessage", messageSource.getMessage("message.edit.successMessage", new Object[]{}, locale));
+        return "redirect:/user/profil";
+    }
+
+    private void addFieldError(String objectName, String fieldName, String fieldValue, String errorCode, BindingResult result) {
         LOGGER.debug(
                 "Field error: {} field: {} with error code: {}",
                 objectName,
@@ -329,5 +337,17 @@ public class RegistrationController extends BaseController {
         result.addError(error);
         LOGGER.debug("Field error: {} to binding result: {}", error, result);
     }
-
+    
+    @PostMapping(value = "/user/profil/password/edit")
+    public @ResponseBody HashMap<String, Object> editPasswordSubmit(Locale locale, Model model, @ModelAttribute("changePasswordForm") ChangePasswordForm changePasswordForm, BindingResult results) throws IOException {
+        UserInfo user = UserInfoFactory.toEntity(changePasswordForm);
+        LOGGER.debug(user.getPublication() + "######################");
+        try {
+            userInfoService.updatePassword(user, changePasswordForm.getNewPassword());
+            super.setResultat(Boolean.TRUE, messageSource.getMessage("message.edit.successMessage", new Object[]{}, locale));
+        } catch (Exception ex) {
+            super.setResultat(Boolean.FALSE, ex.getMessage());
+        }        
+        return super.returnResultat();
+    }
 }
