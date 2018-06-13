@@ -18,4 +18,7 @@ public interface DocumentRepository {
 	 */
 	List<Document> findAllDocuments();
 	Page<Document> findDocumentsbyType(int docTypeId, Pageable pageable);
+	Page<Document> findTopDocuments(Pageable pageable);
+	int deleteDocument(int docId);
+	
 }

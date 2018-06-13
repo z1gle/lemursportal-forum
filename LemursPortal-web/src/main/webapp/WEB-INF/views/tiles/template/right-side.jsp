@@ -170,12 +170,23 @@
 </div>
 <div class="list-group people-group photos-videos">
     <div class="popup-gallery">
-        <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""/></a>
-        <a href="#"><div class="video"></div><img src="${resourcesPath}/images/lem.png" alt=""/></a>
-        <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""/></a>
-        <a href="#"><div class="video"></div><img src="${resourcesPath}/images/lem.png" alt=""/></a>
-        <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""/></a>
-        <a href="#"><img src="${resourcesPath}/images/lem.png" alt=""/></a>
+    <c:forEach items="${topDocuments}" var="topDocument">
+        <a href="#">
+       <c:if test="${topDocument.typeId == 2}">
+       <c:url var="videoPageUrl" value="/documents#tab-item-2"/>
+			<a  href="${videoPageUrl}">
+        	<div class="video"></div>
+        	<img src="${resourcesPath}/images/lem.png" alt=""/></a>
+        </c:if>
+        <c:if test="${topDocument.typeId == 1}">
+        <c:url var="videoPageUrl" value="/documents#tab-item-1"/>
+			<a  href="${videoPageUrl}">
+        	<img src="${resourcesPath}/upload/${topDocument.filename}" alt=""/></a>
+        </c:if>
+        	
+        </a>
+        
+      </c:forEach>
     </div>
 </div>
 <!-- F Video -->

@@ -18,6 +18,8 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -113,6 +115,14 @@ public class PostController extends BaseController{
 		
 		if(null!= post.getUriYoutube()){
 			String urIYoutube = post.getUriYoutube().trim();
+			if(StringUtils.isEmpty(urIYoutube))post.setUriYoutube(null);
+			else{
+				if (!urIYoutube.toLowerCase().matches("^\\w+://.*")) {
+					urIYoutube = "http://" + urIYoutube;
+					post.setUriYoutube(urIYoutube);
+				}
+			}
+				
 		}
 		
 		//handle file upload

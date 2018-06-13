@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.User;
@@ -15,16 +16,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.wcs.lemursportal.model.post.Document;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.TopQuestion;
 import org.wcs.lemursportal.model.post.TopThematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.notification.NotificationRepository;
 import org.wcs.lemursportal.repository.notification.PrivateMessageRepository;
+import org.wcs.lemursportal.repository.post.DocumentRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
 import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
+import org.wcs.lemursportal.service.post.PostServiceImpl.DOCTYPE;
 import org.wcs.lemursportal.service.user.UserInfoService;
 
 /**
@@ -43,6 +47,7 @@ public class BaseController {
 	@Autowired PostRepository postRepository;
 	@Autowired PostService postService;
 	@Autowired UserInfoService userInfoService;
+	@Autowired DocumentRepository documentRepository;
 	@Autowired
 	protected SessionRegistry sessionRegistry;
 	@Autowired 
@@ -53,7 +58,9 @@ public class BaseController {
 	public static final int TOP_QUESTIONS_PAGE_SIZE = 20;
 	public static final int TOP_THEMATIQUES_PAGE_SIZE = 20;
 	public static final int TOP_DOCUMENT_PAGE_SIZE = 20;
+	public static final int TOP_DOCUMENT_ACCUEIL_SIZE = 6;
 	public static final int DERNIERES_QUESTIONS_PAGE_SIZE = 20;
+
 //	public static final String USER_PROFIL_IMAGE_RESOURCE_PATH = "/resources/profil/";
 	public static final String USER_PROFIL_IMAGE_RESOURCE_PATH = "/profil/";
 //	public static final String FILE_UPLOAD_LOCATION="G:/Rebioma/lemursPortal/workspaces/LemursPortal/LemursPortal-web/src/main/webapp/resources/" + USER_PROFIL_IMAGE_RESOURCE_PATH ;//TODO: à externaliser !
@@ -89,6 +96,19 @@ public class BaseController {
 //		Page<TopThematique> page = thematiqueRepository.findTopThematique(new PageRequest(0, TOP_THEMATIQUES_PAGE_SIZE));
 		Page<TopThematique> page = thematiqueRepository.findTopThematique((PageRequest)null);
 		return page.getContent();
+	}
+	
+	@ModelAttribute("topDocuments")
+	public List<Document> getTopDocument(Integer page, Model model,DOCTYPE docType ){
+		if(page == null || page < 1){
+			page = 0;
+		}else{
+			page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+		}
+		Pageable pageable = new PageRequest(0, TOP_DOCUMENT_ACCUEIL_SIZE);
+		Page<Document> pageDocuments = documentRepository.findTopDocuments(pageable);
+		if(null != pageDocuments) return pageDocuments.getContent();
+		return null;
 	}
 	
 	@ModelAttribute("lastestPosts")

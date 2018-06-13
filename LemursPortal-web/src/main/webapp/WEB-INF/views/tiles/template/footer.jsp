@@ -14,15 +14,19 @@
                 </div>
                 <div class="col-xs-5">
                     <ul>
-                    	<li><a href="#"><spring:message code="home.menu.accueil"/></a></li>
-                        <li><a href="#"><spring:message code="home.menu.questions"/></a></li>
-                        <li><a href="#"><spring:message code="home.menu.documents"/></a></li>
-                        <li><a href="#"><spring:message code="home.menu.experts"/></a></li>
+                    	<c:url value="/" var="homePage"/>
+                    	<li><a href="${homePage}"><spring:message code="home.menu.accueil"/></a></li>
+                        <li><a href="${homePage}"><spring:message code="home.menu.questions"/></a></li>
+                        <c:url value="/documents" var="documentsUrl"/>
+                        <li><a href="${documentsUrl}"><spring:message code="home.menu.documents"/></a></li>
+                        <c:url value="/experts" var="expertsUrl"/>
+                        <li><a href="${expertsUrl}"><spring:message code="home.menu.experts"/></a></li>
                     </ul>
                 </div>
                 <div class="col-xs-5">
                     <ul>
-                    	<li><a href="#"><spring:message code="home.menu.formations"/></a></li>
+                    	<c:url value="/formation/" var="formationsUrl"/>
+                    	<li><a href="${formationsUrl}"><spring:message code="home.menu.formations"/></a></li>
                         <li><a href="#"><spring:message code="home.menu.aide"/></a></li>
                         <li><a href="#"><spring:message code="home.menu.mentionslegales"/></a></li>
                         <li><a href="#"><spring:message code="home.menu.contact"/></a></li>
