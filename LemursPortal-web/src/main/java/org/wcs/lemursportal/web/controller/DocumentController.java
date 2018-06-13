@@ -220,16 +220,16 @@ public class DocumentController extends BaseController {
         Date now = Calendar.getInstance().getTime();
 
         //handle file upload
-        if (!file.isEmpty()) {
+        if (null != file && !file.isEmpty()) {
             String filename = file.getOriginalFilename().replaceAll("\\s+", "");
             filename = Normalizer.normalize(filename, Normalizer.Form.NFD);
             filename = filename.replaceAll("[^\\p{ASCII}]", "");
 //			System.out.println("filename " + filename);
             String path = context.getRealPath("/") + File.separator + "resources" + File.separator + "upload" + File.separator + filename;
             // Add the url path 
-            if (null == post.getUrl() || post.getUrl().isEmpty()) {
+//            if (null == post.getUrl() || post.getUrl().isEmpty()) {
                 post.setUrl(path);
-            }
+//            }
             if (!Files.exists(Paths.get(context.getRealPath("/"), File.separator, "resources", File.separator, "upload"), LinkOption.NOFOLLOW_LINKS)) {
                 try {
                     Files.createDirectories(Paths.get(context.getRealPath("/"), File.separator, "resources", File.separator, "upload"));
@@ -258,6 +258,15 @@ public class DocumentController extends BaseController {
                 return "You failed to upload " + filename + " => " + e.getMessage();
             }
         } else {
+            Document doc = new Document();
+            doc.setAuthor(currentUser);
+            doc.setCreationDate(now);
+            // doc.setUploadDate(now);
+            doc.setFilename(post.getTitle());
+            doc.setUrl(post.getUrl());
+            doc.setAuthorId(currentUser.getId());
+            doc.setTypeId(4);
+            post.setDocument(doc);
             System.out.println("filefile empty");
         }
 
