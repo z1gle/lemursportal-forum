@@ -9,145 +9,152 @@
 <c:url value="/resources" var="resourcesPath"/>
 
 <!-- Navigation -->
-    <nav id="navigation" class="navbar navbar-inverse navbar-fixed-top animated-header" role="navigation">
-        <div class="container">
-            <!-- D menu mobile  -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only"><spring:message code="home.togglenavigation"/></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <c:url value="/" var="homePage"/>
-                <a class="navbar-brand" href="${homePage}"><img class="img-responsive" src="${resourcesPath}/images/logo-lemursportal.png" alt="Lemurs Portal"/></a>
-            </div>
-            <!-- F menu mobile  -->
-            
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav top-nav navbar-right">
-                    <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
-                    <c:choose>
-                    	<c:when test="${isLoggedInUser}">
-	                    	<li>
-	                    		<c:url var="viewProfilUrl" value="/user/profil"></c:url>
-		                        <a href="${viewProfilUrl}">
-		                        <user:profilImage src="${currentUser.photoProfil}" cssClass="img-circle"/>
-<%-- 		                        <spring:message code="home.monprofile"/> --%>
-		                        <sec:authentication property="principal.username" />
-		                        </a>
-		                    </li>
-                    		<li class="dropdown">
-                    			<c:url value="/secured/notification/list" var="notificationListUrl"/>
-                    			<a href="${notificationListUrl}" class="notif"><spring:message code="home.notification"/><span class="rond">
-		                        <c:out value="${nombreNotification}"/></span></a>
-<%-- 		                        <a href="${notificationListUrl}" class="notif dropdown-toggle" data-toggle="dropdown"><spring:message code="home.notification"/><span class="rond"> --%>
-<%-- 		                        <c:out value="${nombreNotification}"></c:out></span></a> --%>
-<!-- 		                        <ul class="dropdown-menu" role="menu"> -->
-<!-- 		                        	<li>Vous avez 1 réponse(s)</li> -->
-<!-- 		                            <li>Vous êtes maintenant devenu modérateur</li> -->
-<!-- 		                            <li>3 lecture(s) de votre question</li> -->
-<!-- 		                            <li>Votre question a été validée</li> -->
-<!-- 		                            <li>Vous avez 36 réponse(s)</li> -->
-<!-- 		                            <li>Vous êtes maintenant devenu modérateur</li> -->
-<!-- 		                            <li>8 lecture(s) de votre question</li> -->
-<!-- 		                            <li>Votre question a été validée</li> -->
-<!-- 		                            <li>Vous avez 11 réponse(s)</li> -->
-<!-- 		                            <li>Vous êtes maintenant devenu modérateur</li> -->
-<!-- 		                            <li>45 lecture(s) de votre question</li> -->
-<!-- 		                            <li>Votre question a été validée</li> -->
-<!-- 		                        </ul> -->
-		                    </li>
-		                    
-		                    <li class="dropdown">
-		                    	<c:url value="/secured/pmessage/list" var="listMessagePriveUrl"/>
-		                    	<a class="notif" href="${listMessagePriveUrl}"><spring:message code="home.messages"/><span class="rond"><c:out value="${nombrePrivateMessage}"/></span></a>
-<%-- 		                        <a class="notif dropdown-toggle" data-toggle="dropdown" href="#"><spring:message code="home.messages"/><span class="rond"><c:out value="${nombrePrivateMessage}"/></span></a> --%>
-<!-- 		                        <ul class="dropdown-menu" role="menu"> -->
-<!-- 		                        	<li><a href="#">Bonjour, je suis...</a></li> -->
-<!-- 		                            <li><a href="#">Veuillez marquer votre sujet...</a></li> -->
-<!-- 		                            <li><a href="#">Madame, suite à votre visite...</a></li> -->
-<!-- 		                        </ul> -->
-		                    </li>
-		                   	
-                    		<li>
-                    			<span style="display:none;">
-                    			<c:url value="/logout" var="logoutUrl" />
-								<form action="${logoutUrl}" method="post" id="logoutForm">
-									<input type="hidden" name="${_csrf.parameterName}"
-										value="${_csrf.token}" />
-								</form>
-								<script>
-									function formSubmit() {
-										document.getElementById("logoutForm").submit();
-									}
-								</script>
-								</span>
-                    			<a href="javascript:formSubmit();"><spring:message code="home.logout"/></a>
-                    		</li>
-                    	</c:when>
-                    	<c:otherwise>
-                    		<c:url value="/signup" var="signupUrl"/>
-                    		<li><a href="${signupUrl}"><spring:message code="login.signup"/></a></li>
-                    		<c:url value="/login" var="loginUrl"/>
-                    		<li><a href="${loginUrl}"><spring:message code="home.login"/></a></li>
-                    	</c:otherwise>
+<nav id="navigation" class="navbar navbar-inverse navbar-fixed-top animated-header" role="navigation">
+    <div class="container">
+        <!-- D menu mobile  -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only"><spring:message code="home.togglenavigation"/></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <c:url value="/" var="homePage"/>
+            <a class="navbar-brand" href="${homePage}"><img class="img-responsive" src="${resourcesPath}/images/logo-lemursportal.png" alt="Lemurs Portal"/></a>
+        </div>
+        <!-- F menu mobile  -->
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav top-nav navbar-right">
+                <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
+                <c:choose>
+                    <c:when test="${isLoggedInUser}">
+                        <li>
+                            <c:url var="viewProfilUrl" value="/user/profil"></c:url>
+                            <a href="${viewProfilUrl}">
+                                <user:profilImage src="${currentUser.photoProfil}" cssClass="img-circle"/>
+                                <%-- 		                        <spring:message code="home.monprofile"/> --%>
+                                <sec:authentication property="principal.username" />
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <c:url value="/secured/notification/list" var="notificationListUrl"/>
+                            <a href="${notificationListUrl}" class="notif"><spring:message code="home.notification"/><span class="rond">
+                                    <c:out value="${nombreNotification}"/></span></a>
+                                    <%-- 		                        <a href="${notificationListUrl}" class="notif dropdown-toggle" data-toggle="dropdown"><spring:message code="home.notification"/><span class="rond"> --%>
+                                    <%-- 		                        <c:out value="${nombreNotification}"></c:out></span></a> --%>
+                            <!-- 		                        <ul class="dropdown-menu" role="menu"> -->
+                            <!-- 		                        	<li>Vous avez 1 réponse(s)</li> -->
+                            <!-- 		                            <li>Vous êtes maintenant devenu modérateur</li> -->
+                            <!-- 		                            <li>3 lecture(s) de votre question</li> -->
+                            <!-- 		                            <li>Votre question a été validée</li> -->
+                            <!-- 		                            <li>Vous avez 36 réponse(s)</li> -->
+                            <!-- 		                            <li>Vous êtes maintenant devenu modérateur</li> -->
+                            <!-- 		                            <li>8 lecture(s) de votre question</li> -->
+                            <!-- 		                            <li>Votre question a été validée</li> -->
+                            <!-- 		                            <li>Vous avez 11 réponse(s)</li> -->
+                            <!-- 		                            <li>Vous êtes maintenant devenu modérateur</li> -->
+                            <!-- 		                            <li>45 lecture(s) de votre question</li> -->
+                            <!-- 		                            <li>Votre question a été validée</li> -->
+                            <!-- 		                        </ul> -->
+                        </li>
+
+                        <li class="dropdown">
+                            <c:url value="/secured/pmessage/list" var="listMessagePriveUrl"/>
+                            <a class="notif" href="${listMessagePriveUrl}"><spring:message code="home.messages"/><span class="rond"><c:out value="${nombrePrivateMessage}"/></span></a>
+                                <%-- 		                        <a class="notif dropdown-toggle" data-toggle="dropdown" href="#"><spring:message code="home.messages"/><span class="rond"><c:out value="${nombrePrivateMessage}"/></span></a> --%>
+                            <!-- 		                        <ul class="dropdown-menu" role="menu"> -->
+                            <!-- 		                        	<li><a href="#">Bonjour, je suis...</a></li> -->
+                            <!-- 		                            <li><a href="#">Veuillez marquer votre sujet...</a></li> -->
+                            <!-- 		                            <li><a href="#">Madame, suite à votre visite...</a></li> -->
+                            <!-- 		                        </ul> -->
+                        </li>
+
+                        <li>
+                            <span style="display:none;">
+                                <c:url value="/logout" var="logoutUrl" />
+                                <form action="${logoutUrl}" method="post" id="logoutForm">
+                                    <input type="hidden" name="${_csrf.parameterName}"
+                                           value="${_csrf.token}" />
+                                </form>
+                                <script>
+                                    function formSubmit() {
+                                        //logout also species databases by Zacharie                                        
+                                        $.ajax({
+                                            type: 'post',
+                                            url: 'http://localhost:8085/lemurs/logout',
+                                            success: function (json) {
+                                                document.getElementById("logoutForm").submit();
+                                            }
+                                        });
+                                    }
+                                </script>
+                            </span>
+                            <a href="javascript:formSubmit();"><spring:message code="home.logout"/></a>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <c:url value="/signup" var="signupUrl"/>
+                        <li><a href="${signupUrl}"><spring:message code="login.signup"/></a></li>
+                            <c:url value="/login" var="loginUrl"/>
+                        <li><a href="${loginUrl}"><spring:message code="home.login"/></a></li>
+                        </c:otherwise>
                     </c:choose>
-                    <li>
-                    	<c:url value="/" var="baseUrl"/>
-                    	<page:lang/>
-<!-- 						<div class="lang"> -->
-<!-- 						    <select onchange="javascript:alert(this.value);"> -->
-<%-- 						        <option value="fr"><spring:message code="global.lang.french"/></option> --%>
-<%-- 						        <option value="en"><spring:message code="global.lang.english"/></option> --%>
-<%-- 						        <option value="mg"><spring:message code="global.lang.malagasy"/></option> --%>
-<!-- 						    </select> -->
-<!-- 						</div> -->
-                    </li>
-                </ul>
-                
-                <div class="clear"></div>
-                
-                <ul class="nav navbar-nav navbar-left">
-                	<li>
-                        <a href="${homePage}"><spring:message code="home.menu.questions"/></a>
-                    </li>
-                    <li>
-                    	<c:url value="/documents" var="documentsUrl"/>
-                        <a href="${documentsUrl}"><spring:message code="home.menu.documents"/></a>
-                    </li>
-                     <li>
+                <li>
+                    <c:url value="/" var="baseUrl"/>
+                    <page:lang/>
+                    <!-- 						<div class="lang"> -->
+                    <!-- 						    <select onchange="javascript:alert(this.value);"> -->
+                    <%-- 						        <option value="fr"><spring:message code="global.lang.french"/></option> --%>
+                    <%-- 						        <option value="en"><spring:message code="global.lang.english"/></option> --%>
+                    <%-- 						        <option value="mg"><spring:message code="global.lang.malagasy"/></option> --%>
+                    <!-- 						    </select> -->
+                    <!-- 						</div> -->
+                </li>
+            </ul>
+
+            <div class="clear"></div>
+
+            <ul class="nav navbar-nav navbar-left">
+                <li>
+                    <a href="${homePage}"><spring:message code="home.menu.questions"/></a>
+                </li>
+                <li>
+                    <c:url value="/documents" var="documentsUrl"/>
+                    <a href="${documentsUrl}"><spring:message code="home.menu.documents"/></a>
+                </li>
+                <li>
                     <c:url value="/experts" var="expertsUrl"/>
-                        <a href="${expertsUrl}"><spring:message code="home.menu.experts"/></a>
-                    </li>
+                    <a href="${expertsUrl}"><spring:message code="home.menu.experts"/></a>
+                </li>
+                <li>
+                    <c:url value="/formation/" var="formationsUrl"/>
+                    <a href="${formationsUrl}"><spring:message code="home.menu.formations"/></a>
+                </li>
+                <sec:authorize access="hasRole('ADMIN')">
                     <li>
-                        <c:url value="/formation/" var="formationsUrl"/>
-                        <a href="${formationsUrl}"><spring:message code="home.menu.formations"/></a>
-                    </li>
-                    <sec:authorize access="hasRole('ADMIN')">
-                    <li>
-                    	<c:url value="/admin/user/list" var="userAdminitrationUrl"/>
+                        <c:url value="/admin/user/list" var="userAdminitrationUrl"/>
                         <a href="${userAdminitrationUrl}">Roles des Utilisateurs</a>
                     </li>
-                    </sec:authorize>
-                </ul>
-                
-                <ul class="nav navbar-nav navbar-right">
-                	<li>
-                        <c:url value="/post/search" var="formAction"></c:url>
-                	<form  class="create-quest-form"  action="${formAction}"  method="POST"   >
-                	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                </sec:authorize>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <c:url value="/post/search" var="formAction"></c:url>
+                    <form  class="create-quest-form"  action="${formAction}"  method="POST"   >
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                         <div class="input-group">
-                        <spring:message code="home.search.placeholder" var="searchPlaceholder"/>
-                          <input type="text" name="pattern" class="form-control" placeholder="${searchPlaceholder}"/>
-                          	<span class="input-group-btn">
-                            <button class="btn btn-default" type="submit"><spring:message code="home.search.btn" /></button>
-                          </span>
+                            <spring:message code="home.search.placeholder" var="searchPlaceholder"/>
+                            <input type="text" name="pattern" class="form-control" placeholder="${searchPlaceholder}"/>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="submit"><spring:message code="home.search.btn" /></button>
+                            </span>
                         </div>
                     </form>
-                    </li>
-                </ul>
-               
-            </div>
+                </li>
+            </ul>
+
         </div>
-    </nav>
+    </div>
+</nav>

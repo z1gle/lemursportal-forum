@@ -43,6 +43,8 @@ public interface UserInfoService {
 
 	@PostAuthorize ("returnObject.email == authentication.name or hasRole('ADMIN')")
 	UserInfo getById(Integer id);
+        
+        UserInfo getByIdNonSecured(Integer id);
 	
 	
 	UserInfo getExpertById(Integer id);

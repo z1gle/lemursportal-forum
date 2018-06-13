@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.logging.Level;
 
 import javax.servlet.ServletContext;
 import javax.validation.Valid;
@@ -31,6 +30,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
@@ -337,9 +337,10 @@ public class RegistrationController extends BaseController {
         result.addError(error);
         LOGGER.debug("Field error: {} to binding result: {}", error, result);
     }
-    
+
     @PostMapping(value = "/user/profil/password/edit")
-    public @ResponseBody HashMap<String, Object> editPasswordSubmit(Locale locale, Model model, @ModelAttribute("changePasswordForm") ChangePasswordForm changePasswordForm, BindingResult results) throws IOException {
+    public @ResponseBody
+    HashMap<String, Object> editPasswordSubmit(Locale locale, Model model, @ModelAttribute("changePasswordForm") ChangePasswordForm changePasswordForm, BindingResult results) throws IOException {
         UserInfo user = UserInfoFactory.toEntity(changePasswordForm);
         LOGGER.debug(user.getPublication() + "######################");
         try {
@@ -347,7 +348,35 @@ public class RegistrationController extends BaseController {
             super.setResultat(Boolean.TRUE, messageSource.getMessage("message.edit.successMessage", new Object[]{}, locale));
         } catch (Exception ex) {
             super.setResultat(Boolean.FALSE, ex.getMessage());
-        }        
+        }
+        return super.returnResultat();
+    }
+
+    @PostMapping(value = "/ckSD")
+    public @ResponseBody
+    HashMap<String, Object> checkSessSpeciesDatabase(Authentication authentication) throws IOException {
+        SecurityUtil su = new SecurityUtil();
+        try {
+            String email = authentication.getName();
+            UserInfo userInfo = userInfoService.getByEmail(email);
+            super.setResultat(Boolean.TRUE, su.encrypte(userInfo.getId().toString()));
+        } catch (Exception e) {
+            super.setResultat(Boolean.FALSE, "il se peut que votre session ait été fermé");
+        }
+        return super.returnResultat();
+    }
+    
+    @PostMapping(value = "/logg")
+    public @ResponseBody
+    HashMap<String, Object> logg(Authentication authentication, @RequestParam("token") String id) throws IOException {         
+        try {
+            UserInfo user = userInfoService.getByIdNonSecured(SecurityUtil.decrypte(id));
+            SecurityUtil.authenticateUser(user);
+            super.setResultat(Boolean.TRUE, "done");
+        } catch (Exception e) {
+            e.printStackTrace();
+            super.setResultat(Boolean.FALSE, "il se peut que votre session ait été fermé");
+        }
         return super.returnResultat();
     }
 }

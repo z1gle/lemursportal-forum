@@ -93,6 +93,14 @@ public class UserInfoServiceImpl implements UserInfoService {
         UserInfo user = userRepository.findOne(id);
         return user;
     }
+    
+    
+    @Override
+    @Transactional(readOnly = true)
+    public UserInfo getByIdNonSecured(Integer id) {
+        UserInfo user = userRepository.findOne(id);
+        return user;
+    }    
 
     @Override
     public void updateUserRoles(Integer userId, Set<UserType> roles) {

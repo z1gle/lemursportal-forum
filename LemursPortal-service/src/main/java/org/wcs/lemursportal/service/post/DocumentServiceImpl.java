@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.model.post.Document;
+import org.wcs.lemursportal.model.post.Metadata;
 import org.wcs.lemursportal.repository.post.DocumentCrudRepository;
+import org.wcs.lemursportal.repository.post.MetadataRepository;
 import org.wcs.lemursportal.service.common.GenericCRUDServiceImpl;
 
 @Service
@@ -15,6 +17,7 @@ import org.wcs.lemursportal.service.common.GenericCRUDServiceImpl;
 public class DocumentServiceImpl extends
 GenericCRUDServiceImpl<Document, Integer> implements DocumentService{
 	@Autowired DocumentCrudRepository documentCrudRepository;
+        @Autowired MetadataRepository metadataRepository;
 	
 	@Override
 	protected JpaRepository<Document, Integer> getJpaRepository() {
@@ -31,6 +34,11 @@ GenericCRUDServiceImpl<Document, Integer> implements DocumentService{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+    @Override
+    public void addDocument(Metadata metadata) {
+        metadataRepository.insert(metadata);
+    }
 
 	
 
