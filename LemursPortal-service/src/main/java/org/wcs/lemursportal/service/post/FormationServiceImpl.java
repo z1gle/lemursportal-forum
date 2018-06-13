@@ -90,7 +90,6 @@ public class FormationServiceImpl implements FormationService {
 		
 	}
 
-
 	@Override
 	@Transactional
 	public Formation getFormation(Long formationId, String email) {

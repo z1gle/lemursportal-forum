@@ -7,10 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.wcs.lemursportal.model.authentication.UserRole;
+import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
@@ -18,6 +20,7 @@ import org.wcs.lemursportal.repository.user.UserTypeRepository;
 import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
 import org.wcs.lemursportal.service.user.UserInfoService;
+import org.wcs.lemursportal.web.form.DExpertiseEditForm;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>
@@ -57,8 +60,18 @@ public class ExpertController extends BaseController {
 		UserInfo userInfo = userInfoService.getExpertById(idExpert);
 		if(userInfo == null){
 			return "redirect:/experts";
-		}
+		}	
+
+		DExpertiseEditForm form = new DExpertiseEditForm(userInfo);
+		model.addAttribute("dExpertiseForm", form);
+		
 		model.addAttribute("userInfo",userInfo);
 		return "expertdetail";
+	}
+	
+	@ModelAttribute("listeThematique")
+	public List<Thematique> getAllThematiques(){
+		List<Thematique> listethematique = thematiqueService.findAll();
+		return listethematique;
 	}
 }

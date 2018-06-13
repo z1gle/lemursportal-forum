@@ -46,8 +46,16 @@
                             <div class="col-md-3">
                                 <div class="expert-sidebar">
                                     <div class="image expert-userpic">
-                                    <user:profilImage src="${expert.photoProfil}" cssClass="img-responsive"/>
-                          
+									<c:choose>
+										<c:when test="${empty expert.photoProfil}">
+											<img src="/forum/resources/profil/blanc.png" alt="<c:out value="${expert.prenom}" /> " style="background-position: center; margin: auto;/* width: 100%; */height: 100%; background-image: url('/forum/resources/profil/default.png'); background-repeat: no-repeat; background-size: auto 100%;" class="img-responsive"/>
+										</c:when>
+										<c:otherwise>
+											<img src="/forum/resources/profil/blanc.png" alt="<c:out value="${expert.prenom}" /> " style="background-position: center; margin: auto;/* width: 100%; */height: 100%; background-image: url('/forum/resources<c:out value="${expert.photoProfil}" />'); background-repeat: no-repeat; background-size: auto 100%;" class="img-responsive"/>
+										</c:otherwise>
+									</c:choose>
+                                    
+									
                                         <a href="#envoi-msg" class="send" role="button" class="btn btn-custom" data-toggle="modal" title="Envoyer un message">
                                             <i class="fa fa-envelope"></i>
                                         </a>

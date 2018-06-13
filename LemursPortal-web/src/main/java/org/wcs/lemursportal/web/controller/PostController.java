@@ -80,7 +80,7 @@ public class PostController extends BaseController{
 		ValidationUtils.rejectIfEmptyOrWhitespace(results, "thematiqueId", "validation.mandatory");
 		ValidationUtils.rejectIfEmptyOrWhitespace(results, "body", "validation.mandatory");
 		ValidationUtils.rejectIfEmptyOrWhitespace(results, "title", "validation.mandatory");
-		 System.out.println("gffghgfh");
+		 
 		//validate url youtube video
 		if(null!=post.getUriYoutube()&& !post.getUriYoutube().isEmpty()){
 			Pattern pattern =  Pattern.compile(URL_YOUTUBE_PATTERN);  

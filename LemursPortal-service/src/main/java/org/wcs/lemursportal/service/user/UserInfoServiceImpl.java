@@ -4,6 +4,7 @@
 package org.wcs.lemursportal.service.user;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ import org.wcs.lemursportal.dto.user.SocialProvider;
 import org.wcs.lemursportal.dto.user.UserRegistrationForm;
 import org.wcs.lemursportal.exception.RegistrationException;
 import org.wcs.lemursportal.model.authentication.UserRole;
+import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.model.user.UserType;
 import org.wcs.lemursportal.repository.user.UserRepository;
@@ -94,11 +96,17 @@ public class UserInfoServiceImpl implements UserInfoService {
 		return user;
 	}
 
-
 	@Override
 	public void updateUserRoles(Integer userId, Set<UserType> roles) {
 		UserInfo user = getById(userId);
 		user.setRoles(roles);
+		userRepository.save(user);
+	}
+
+	@Override
+	public void updateDExpertise(Integer userId, Set<Thematique> thematique) {
+		UserInfo user = getById(userId);
+		user.setdExpertise(thematique);
 		userRepository.save(user);
 	}
 
@@ -117,18 +125,38 @@ public class UserInfoServiceImpl implements UserInfoService {
 		persistUser.setInstitution(user.getInstitution());
 		persistUser.setPostOccupe(user.getPostOccupe());
 		persistUser.setPublication(user.getPublication());
+		persistUser.setResetToken(user.getResetToken());
+		persistUser.setExpiryDate(user.getExpiryDate());
 		if(StringUtils.isNotBlank(user.getPhotoProfil())){
 			persistUser.setPhotoProfil(user.getPhotoProfil());
 		}
+		persistUser.setdExpertise(user.getdExpertise());
 //		persistUser.setLogin(user.getLogin());
 		userRepository.save(persistUser);
 	}
 
+	@Override
+	public void updatePass(UserInfo user) {
+		UserInfo persistUser = getById(user.getId());
+		//bien s'assurer qu'on ne modifie que les champs modifiable.
+		persistUser.setPassword(user.getPassword());
+		persistUser.setResetToken(user.getResetToken());;
+		System.out.println(user.getEmail() + " " + persistUser.getdExpertise().size() + "=====");
+		userRepository.save(persistUser);
+		
+	}
+
 
 	@Override
-	@PostAuthorize("returnObject.email == authentication.name")
+//	@PostAuthorize("returnObject.email == authentication.name")
 	public UserInfo getByEmail(String email) {
 		return userRepository.findByEmailAndEnabled(email, Boolean.TRUE);
+	}
+
+	@Override
+//	@PostAuthorize("returnObject.email == authentication.name")
+	public UserInfo findUserByResetToken(String token) {
+		return userRepository.findByResetTokenAndExpiryDate(token, new Date());
 	}
 
 

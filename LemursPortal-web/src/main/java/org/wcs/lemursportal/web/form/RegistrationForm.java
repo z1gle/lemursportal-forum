@@ -5,8 +5,10 @@ package org.wcs.lemursportal.web.form;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.wcs.lemursportal.dto.user.SocialProvider;
+import org.wcs.lemursportal.model.post.Thematique;
 
 /**
  * @author mikajy.hery
@@ -28,6 +30,7 @@ public class RegistrationForm extends FileBucket {
 	private String biographie;
 	private String publication;	
 	private List<Integer> userTypeIds;
+	private List<Integer> dExpertises;
 	private String photoProfil;
 	private SocialProvider socialProvider;
 	public Integer getId() {
@@ -126,6 +129,12 @@ public class RegistrationForm extends FileBucket {
 	}
 	public void setPublication(String publication) {
 		this.publication = publication;
+	}
+	public List<Integer> getdExpertises() {
+		return dExpertises;
+	}
+	public void setdExpertises(List<Integer> dExpertises) {
+		this.dExpertises = dExpertises;
 	}
 	
 }

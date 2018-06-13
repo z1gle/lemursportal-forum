@@ -1,5 +1,7 @@
 package org.wcs.lemursportal.model.user;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Set;
 
@@ -28,6 +30,8 @@ public class UserInfo implements IUserInfo {
 	 * 
 	 */
 	private static final long serialVersionUID = 7606421457192166667L;
+	
+	private static final int EXPIRATION = 60*24;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -84,8 +88,19 @@ public class UserInfo implements IUserInfo {
 	)
 	private Set<UserType> roles;
 	
+	@ManyToMany(fetch=FetchType.EAGER)
+	@JoinTable(
+		name="domaine_expertise", 
+		joinColumns = {@JoinColumn(name="iduser", referencedColumnName = "id")},
+		inverseJoinColumns= {@JoinColumn(name = "idthematique", referencedColumnName = "id")}
+	)
+	private Set<Thematique> dExpertise;
+	
 	@ManyToMany(mappedBy="managers")
 	private Set<Thematique> managedThematiques;
+	
+	@Column(name = "reset_token")
+	private String resetToken;
 	
 //	public String getLogin() {
 //		return login;
@@ -93,6 +108,17 @@ public class UserInfo implements IUserInfo {
 //	public void setLogin(String login) {
 //		this.login = login;
 //	}
+	
+	@Column(name="ExpiryDate")
+    private Date expiryDate;
+ 
+    private Date calculateExpiryDate(int expiryTimeInMinutes) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Timestamp(cal.getTime().getTime()));
+        cal.add(Calendar.MINUTE, expiryTimeInMinutes);
+        return new Date(cal.getTime().getTime());
+    }
+    
 	public String getPassword() {
 		return password;
 	}
@@ -250,6 +276,29 @@ public class UserInfo implements IUserInfo {
 	}
 	public void setPublication(String publication) {
 		this.publication = publication;
+	}
+	public Set<Thematique> getdExpertise() {
+		return dExpertise;
+	}
+	public void setdExpertise(Set<Thematique> dExpertise) {
+		this.dExpertise = dExpertise;
+	}
+
+	public String getResetToken() {
+		return resetToken;
+	}
+
+	public void setResetToken(String resetToken) {
+		this.expiryDate = calculateExpiryDate(EXPIRATION);
+		this.resetToken = resetToken;
+	}
+
+	public Date getExpiryDate() {
+		return expiryDate;
+	}
+
+	public void setExpiryDate(Date expiryDate) {
+		this.expiryDate = expiryDate;
 	}
 	
 }

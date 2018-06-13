@@ -53,7 +53,7 @@ public class UserTypeRepositoryImpl implements UserTypeRepository {
 	@Override
 	@Transactional(readOnly=true)
 	public List<UserInfo> findUsers(UserRole userRole) {
-		TypedQuery<UserType> query = em.createQuery("Select t from  UserType t left join fetch t.users where t.id=:usertype", UserType.class);
+		TypedQuery<UserType> query = em.createQuery("Select t from  UserType t left join fetch t.users where t.id=:usertype order by random()", UserType.class);
 		query.setParameter("usertype", userRole.getId());
 		UserType type = query.getSingleResult();
 		return new ArrayList<>(type.getUsers());

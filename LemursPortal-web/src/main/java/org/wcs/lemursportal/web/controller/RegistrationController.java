@@ -5,7 +5,10 @@ package org.wcs.lemursportal.web.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.validation.Valid;
@@ -33,7 +36,9 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.wcs.lemursportal.dto.user.UserRegistrationForm;
 import org.wcs.lemursportal.factory.UserInfoFactory;
+import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
+import org.wcs.lemursportal.model.user.UserType;
 import org.wcs.lemursportal.service.authentication.AuthenticationService;
 import org.wcs.lemursportal.service.exception.UserAlreadyExistAuthenticationException;
 import org.wcs.lemursportal.service.util.SecurityUtil;
@@ -280,7 +285,17 @@ public class RegistrationController extends BaseController {
 		UserInfo userInfo = userInfoService.getByEmail(email);
 		RegistrationForm registrationForm = UserInfoFactory.toForm(userInfo);
 		model.addAttribute("registrationForm", registrationForm);
+		
+//		List<Thematique> listethematique = thematiqueService.findAll();
+//		model.addAttribute("listeThematique", listethematique);
+		
 		return "profil.edit.page";
+	}
+	
+	@ModelAttribute("listeThematique")
+	public List<Thematique> getAllThematiques(){
+		List<Thematique> listethematique = thematiqueService.findAll();
+		return listethematique;
 	}
 	
 	@PostMapping(value="/user/profil/edit")
@@ -303,7 +318,19 @@ public class RegistrationController extends BaseController {
 //            model.addAttribute("fileName", fileName);
 		}
 		UserInfo user = UserInfoFactory.toEntity(registrationForm);
-		LOGGER.debug(user.getPublication() + "######################");
+		
+		Set<Thematique> thematiqueToSave = new HashSet<>();
+		List<Thematique> thematiques = getAllThematiques();
+		for(Thematique thematique : thematiques){
+			if(registrationForm.getdExpertises().contains(thematique.getId())){
+				thematiqueToSave.add(thematique);
+				LOGGER.debug(thematique.getLibelle() + "<=###################");
+			}
+		}
+		
+		user.setdExpertise(thematiqueToSave);
+		
+		LOGGER.debug(user.getdExpertise().size() + "######################");
 		userInfoService.update(user);
 		model.addAttribute("successMessage", messageSource.getMessage("message.edit.successMessage",new Object[]{} ,locale));
 		return "redirect:/user/profil";

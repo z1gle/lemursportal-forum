@@ -41,13 +41,14 @@
                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                   <spring:message code="signup.email.placeholder" var="loginPlaceholder"/>
                   <spring:message code="login.password.placeholder" var="pwdPlaceholder"/>
-                  <input class="email" type="text" name="email" placeholder="${loginPlaceholder}"/>
-                  <input class="pwd" type="password" name="password" placeholder="${pwdPlaceholder}"/>
-                  <button type="submit"><spring:message code="login.btn.connect"/></button>
+                  <input class="email" style="border: 1px solid #ccc/*#a38000*/;" type="text" name="email" placeholder="${loginPlaceholder}"/>
+                  <input class="pwd"  style="border: 1px solid #ccc/*#a38000*/;" type="password" name="password" placeholder="${pwdPlaceholder}"/>
+                  <button type="submit" style="margin-top: 5px"><spring:message code="login.btn.connect"/></button>
                   <p class="message">
                   <c:url value="/signup" var="signupUrl"/>
-                  <a href="${signupUrl}" class="left"><spring:message code="login.signup"/> ?</a> 
-                  <a href="#" class="right"><spring:message code="login.forgot.password"/> ?</a></p>
+                  <c:url value="/forgot" var="forgotUrl"/>
+                  <a href="${signupUrl}" style="float:left"><spring:message code="login.signup"/> ?</a> 
+                  <a href="${forgotUrl}" class="right"><spring:message code="login.forgot.password"/> ?</a></p>
                 </form>
               </div>
             </div>

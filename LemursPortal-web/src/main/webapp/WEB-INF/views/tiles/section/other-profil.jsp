@@ -60,6 +60,28 @@
                         <div class="name"><strong><c:out value="${userInfo.prenom}"/> <c:out value="${userInfo.nom}"/></strong></div>
                         
                     </div>
+                    <sec:authorize access="hasRole('ADMIN')">
+                    	<c:url value="/admin/de/expert" var="userFormAction" />
+                    	<form:form modelAttribute="dExpertiseForm"
+								action="${userFormAction}" name="dExpertiseEditForm" 
+								method="POST" cssClass="edit-profil-form">
+						<input type="hidden" name="${_csrf.parameterName}"
+									value="${_csrf.token}" />
+						<label>Domaine d'expertise <sup>*</sup></label>
+						<div>
+							<form:hidden path="userId"/>
+							<form:select path="dExpertise">
+								<form:options items="${listeThematique}"
+									itemLabel="libelle" itemValue="id" />
+							</form:select>
+						</div>
+						<div class="form">
+							<form:button value="Mettre à jour" class="right">
+								<spring:message code="profil.edit.maj.btn" />
+							</form:button>
+						</div>
+						</form:form>
+					</sec:authorize>
                 </div>
             </div>
     

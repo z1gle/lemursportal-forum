@@ -18,6 +18,7 @@ import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -239,6 +240,17 @@ public class MailServiceImpl implements MailService {
 				mailQueue.setSendingErrors(e.getMessage());
 			}
 			mailQueueRepository.update(mailQueue);
+		}
+	}
+
+	@Override
+	public void sendEmail(SimpleMailMessage passwordResetEmail) {
+		try {
+			mailSender.send(passwordResetEmail);
+			System.out.println("Message has been sent.............................");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			System.err.println(ex.getMessage());
 		}
 	}
 

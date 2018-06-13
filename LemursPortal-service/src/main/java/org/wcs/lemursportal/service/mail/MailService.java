@@ -6,6 +6,7 @@ package org.wcs.lemursportal.service.mail;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.mail.SimpleMailMessage;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
@@ -50,5 +51,7 @@ public interface MailService {
 	void saveMail(Post question, UserInfo owner, List<UserInfo> thematiqueManager, String questionUrl) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException;
 	
 	public void sendMails();
+	
+	public void sendEmail(SimpleMailMessage passwordResetEmail);
 
 }

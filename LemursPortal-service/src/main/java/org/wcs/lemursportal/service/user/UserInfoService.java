@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.wcs.lemursportal.dto.user.UserRegistrationForm;
+import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.model.user.UserType;
 import org.wcs.lemursportal.service.exception.UserAlreadyExistAuthenticationException;
@@ -33,7 +34,7 @@ public interface UserInfoService {
 	 * @param email
 	 * @return
 	 */
-	@PostAuthorize ("returnObject.email == authentication.name")
+//	@PostAuthorize ("returnObject.email == authentication.name")
 	UserInfo getByEmail(String email);
 	/**
 	 * 
@@ -59,6 +60,9 @@ public interface UserInfoService {
 	 */
 	//@PreAuthorize ("#user.email == authentication.name")
 	void update(UserInfo user);
+
+	//@PreAuthorize ("#user.email == authentication.name")
+	void updatePass(UserInfo user);
 	
 	/**
 	 * 
@@ -77,5 +81,10 @@ public interface UserInfoService {
 	Page<UserInfo> findByPagination(Pageable pageable);
 	
 	UserInfo registerNewUser(UserRegistrationForm userRegistrationForm)throws UserAlreadyExistAuthenticationException;
+	
+	@PreAuthorize("hasAnyRole('ADMIN', 'MODERATEUR')")
+	void updateDExpertise(Integer userId, Set<Thematique> thematique);
+	
+	UserInfo findUserByResetToken(String token);
 
 }

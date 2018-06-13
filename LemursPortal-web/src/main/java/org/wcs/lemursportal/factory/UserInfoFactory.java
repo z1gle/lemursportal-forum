@@ -3,7 +3,11 @@
  */
 package org.wcs.lemursportal.factory;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.model.user.UserType;
 import org.wcs.lemursportal.web.form.RegistrationForm;
@@ -35,6 +39,13 @@ public abstract class UserInfoFactory {
 			for(UserType role: user.getRoles()){
 				form.getUserTypeIds().add(role.getId());
 			}
+			List<Integer> dExpertises = new ArrayList<Integer>();
+			if(user.getdExpertise() != null){
+				for(Thematique dExpertise: user.getdExpertise()){
+					dExpertises.add(dExpertise.getId());
+				}
+			}
+			form.setdExpertises(dExpertises);
 		}
 		return form;
 	}
@@ -57,7 +68,16 @@ public abstract class UserInfoFactory {
 			entity.setPostOccupe(form.getPostOccupe());
 			entity.setPhotoProfil(form.getPhotoProfil());
 			//entity.setRoles(form.get);
-			
+
+//			Set<Thematique> dExpertises = new HashSet();
+//			if(form.getdExpertises() != null){
+//				for(Integer id: form.getdExpertises()){
+//					Thematique dExpertise = new Thematique();
+//					dExpertise.setId(id);
+//					dExpertises.add(dExpertise);
+//				}
+//			}
+//			entity.setdExpertise(dExpertises);
 		}
 		return entity;
 	}
