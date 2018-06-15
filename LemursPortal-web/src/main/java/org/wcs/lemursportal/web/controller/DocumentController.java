@@ -163,7 +163,7 @@ public class DocumentController extends BaseController {
             return "redirect:/login";
         }
         Metadata post = new Metadata();
-        post.setBibliographicResource(date);
+        post.setBibliographicResource(bibliographicResource);
         post.setIdThematique(idThematique);
         post.setDate(date);
         post.setCoverage(coverage);
@@ -184,37 +184,6 @@ public class DocumentController extends BaseController {
         post.setType(type);
         post.setUrl(url);
 
-        //ValidationUtils.rejectIfEmptyOrWhitespace(results, "libelle", "validation.mandatory");
-//        ValidationUtils.rejectIfEmptyOrWhitespace(results, "thematiqueId", "validation.mandatory");
-//        ValidationUtils.rejectIfEmptyOrWhitespace(results, "body", "validation.mandatory");
-//        ValidationUtils.rejectIfEmptyOrWhitespace(results, "title", "validation.mandatory");
-//        System.out.println("gffghgfh");
-        //validate url youtube video
-//        if (null != post.getUrl() && !post.getUrl().isEmpty()) {
-//            Pattern pattern = Pattern.compile(URL_YOUTUBE_PATTERN);
-//            Matcher matcher = pattern.matcher(post.getUriYoutube().trim());
-//            if (!matcher.matches()) {
-//                model.addAttribute("error_youtube", "invalid url youtube");
-//                List<Thematique> listethematique = thematiqueService.findAll();
-//                model.addAttribute("listeThematique", listethematique);
-//                model.addAttribute(post);
-//                return "getFormPost";
-//            }
-//        }
-//        if (results.hasErrors()) {
-//
-//            List<String> errors = new ArrayList<>();
-//            for (FieldError fieldError : results.getFieldErrors()) {
-//                errors.add(fieldError.getCode());
-//
-//            }
-//            List<Thematique> listethematique = thematiqueService.findAll();
-//            model.addAttribute("listeThematique", listethematique);
-//            model.addAttribute(post);
-//            model.addAttribute("errors", errors);
-//            return "getFormPost";
-//        }
-        //thematiqueService.saveOrUpdate(authentication.getName(), thematique);
         UserInfo currentUser = userInfoService.getByEmail(authentication.getName());
         System.out.println("mail");
         Date now = Calendar.getInstance().getTime();
@@ -224,12 +193,9 @@ public class DocumentController extends BaseController {
             String filename = file.getOriginalFilename().replaceAll("\\s+", "");
             filename = Normalizer.normalize(filename, Normalizer.Form.NFD);
             filename = filename.replaceAll("[^\\p{ASCII}]", "");
-//			System.out.println("filename " + filename);
             String path = context.getRealPath("/") + File.separator + "resources" + File.separator + "upload" + File.separator + filename;
             // Add the url path 
-//            if (null == post.getUrl() || post.getUrl().isEmpty()) {
-                post.setUrl(path);
-//            }
+            post.setUrl(path);
             if (!Files.exists(Paths.get(context.getRealPath("/"), File.separator, "resources", File.separator, "upload"), LinkOption.NOFOLLOW_LINKS)) {
                 try {
                     Files.createDirectories(Paths.get(context.getRealPath("/"), File.separator, "resources", File.separator, "upload"));
@@ -240,36 +206,34 @@ public class DocumentController extends BaseController {
             }
             try {
                 byte[] bytes = file.getBytes();
-                BufferedOutputStream stream
-                        = new BufferedOutputStream(new FileOutputStream(new File(path)));
+                BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path)));
                 stream.write(bytes);
                 stream.close();
                 Document doc = new Document();
                 doc.setAuthor(currentUser);
-                doc.setCreationDate(now);
-                // doc.setUploadDate(now);
+                doc.setCreationDate(now);                
                 doc.setFilename(filename);
                 doc.setUrl("/" + "resources" + "/" + "upload" + "/" + filename);
                 doc.setAuthorId(currentUser.getId());
+                //typeId is 4 for publication 
                 doc.setTypeId(4);
-                post.setDocument(doc);
-                // System.out.println("filefile : " + context.getRealPath("/")+ File.separator +filename);
+                post.setDocument(doc);                
             } catch (Exception e) {
                 return "You failed to upload " + filename + " => " + e.getMessage();
             }
         } else {
             Document doc = new Document();
             doc.setAuthor(currentUser);
-            doc.setCreationDate(now);
-            // doc.setUploadDate(now);
+            doc.setCreationDate(now);            
             doc.setFilename(post.getTitle());
             doc.setUrl(post.getUrl());
             doc.setAuthorId(currentUser.getId());
+            //typeId is 4 for publication 
             doc.setTypeId(4);
             post.setDocument(doc);
             System.out.println("filefile empty");
         }
-
+        // Save the document and the metadata in BDD
         post.setIdUtilisateur(currentUser.getId());
         documentService.addDocument(post);
         return "success";

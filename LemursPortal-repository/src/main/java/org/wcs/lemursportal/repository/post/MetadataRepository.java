@@ -20,7 +20,7 @@ public interface MetadataRepository {
 	 * @return
 	 */
     
-//	List<Document> findAllDocuments();
+        List<String> findOneElementOfMetadata(Metadata metadata);
 	Page<Document> findDocuments(Metadata metadata, Pageable pageable);
 //	Page<Document> findTopDocuments(Pageable pageable);
         void insert(Metadata metadata);	

@@ -22,7 +22,14 @@
                     <li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false">Audios</a></li>
                     <li role="presentation" class=""><a href="#tab-item-4" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false">Publications</a></li>
                     <li role="presentation" class=""><a href="#tab-item-5" aria-controls="tab-item-5" role="tab" data-toggle="tab" aria-expanded="false">Youtube</a></li>
-                    <li style="float: right;"><button style="color: white;" class="btn" aria-controls="tab-item-5" role="tab" aria-expanded="false" onclick="openModal('modal-ajout-document')">Ajouter</button></li>
+                        <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
+                        <c:choose>
+                            <c:when test="${isLoggedInUser}">
+                            <li style="float: right;"><button style="color: white;" class="btn" aria-controls="tab-item-5" role="tab" aria-expanded="false" onclick="openModal('modal-ajout-document')">Ajouter</button></li>
+                            </c:when>
+                            <c:otherwise>                            
+                            </c:otherwise>
+                        </c:choose>                    
                 </ul>
                 <!-- F Tab -->
 
@@ -179,7 +186,40 @@
                 </div>
             </div>
         </div>
-        <div id="modal-ajout-document" class="modal">
+
+        <style>            
+            .autocomplete {                
+                position: relative;
+                display: inline-block;
+            }            
+            .autocomplete-items {
+                position: absolute;
+                border: 1px solid #d4d4d4;
+                border-bottom: none;
+                border-top: none;
+                z-index: 99;                
+                top: 100%;
+                left: 0;
+                right: 0;
+            }
+            .autocomplete-items div {
+                padding: 10px;
+                cursor: pointer;
+                background-color: #EEE; 
+                border-bottom: 1px solid #d4d4d4; 
+            }
+            .autocomplete-items div:hover {
+                /*when hovering an item:*/
+                background-color: #e9e9e9; 
+            }
+            .autocomplete-active {
+                /*when navigating through the items using the arrow keys:*/
+                background-color: DodgerBlue !important; 
+                color: #ffffff; 
+            }
+        </style>
+
+        <div id="modal-ajout-document" class="modal edit-profil-form">
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -190,10 +230,16 @@
                     <div class="modal-body" style="overflow-y: auto;max-height:  500px;">
                         Fichier<sup>*</sup>
                         <input type="file" class="form-control" id="document">
-                        Bibliographic resource<sup>*</sup>
-                        <input type="text" class="form-control" id="bibliographic_resource">
-                        Date<sup>*</sup>
+                        <div class="autocomplete" style="width: 100%;">
+                            year<sup>*</sup>                        
+                            <input type="text" class="form-control" id="year">
+                        </div>
+                        Date
                         <input type="date" class="form-control" id="datePublication">
+                        <div class="autocomplete" style="width: 100%;">
+                            Bibliographic resource
+                            <input type="text" class="form-control" id="bibliographic_resource">
+                        </div>
                         Topics<sup>*</sup>
                         <select id="id_thematique" class="form-control">
                             <option value="797277">Behavior </option>
@@ -219,41 +265,70 @@
                             <option value="797297">Parasites</option>
                             <option value="797298">Others</option>
                         </select>
-                        <!--<input type="text" class="form-control" id="id_thematique">-->
-                        url<sup>*</sup>
-                        <input type="text" class="form-control" id="url">
-                        coverage<sup>*</sup>
-                        <input type="text" class="form-control" id="coverage">
-                        description<sup>*</sup>
-                        <input type="text" class="form-control" id="description">
-                        language<sup>*</sup>
-                        <input type="text" class="form-control" id="language">
-                        relation<sup>*</sup>
-                        <input type="text" class="form-control" id="relation">
-                        source<sup>*</sup>
-                        <input type="text" class="form-control" id="source">
-                        subject<sup>*</sup>
-                        <input type="text" class="form-control" id="subject">
-                        title<sup>*</sup>
-                        <input type="text" class="form-control" id="title">
-                        format<sup>*</sup>
-                        <input type="text" class="form-control" id="format">
-                        fileFormat<sup>*</sup>
-                        <input type="text" class="form-control" id="fileFormat">
-                        identifier<sup>*</sup>
-                        <input type="text" class="form-control" id="identifier">
-                        type<sup>*</sup>
-                        <input type="text" class="form-control" id="type">
-                        contributor<sup>*</sup>
-                        <input type="text" class="form-control" id="contributor">
-                        creator<sup>*</sup>
-                        <input type="text" class="form-control" id="creator">
-                        publisher<sup>*</sup>
-                        <input type="text" class="form-control" id="publisher">
-                        rights<sup>*</sup>
-                        <input type="text" class="form-control" id="rights">
-                        year<sup>*</sup>
-                        <input type="text" class="form-control" id="year">
+                        <div class="autocomplete" style="width: 100%;">
+                            url                        
+                            <input type="text" class="form-control" id="url">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            coverage                        
+                            <input type="text" class="form-control" id="coverage">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            description                        
+                            <input type="text" class="form-control" id="description">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            language                        
+                            <input type="text" class="form-control" id="language">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            relation                        
+                            <input type="text" class="form-control" id="relation">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            source                        
+                            <input type="text" class="form-control" id="source">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            subject                        
+                            <input type="text" class="form-control" id="subject">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            title
+                            <input type="text" class="form-control" id="title">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            format
+                            <input type="text" class="form-control" id="format">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            fileFormat
+                            <input type="text" class="form-control" id="fileFormat">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            identifier
+                            <input type="text" class="form-control" id="identifier">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            type
+                            <input type="text" class="form-control" id="type">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            contributor
+                            <input type="text" class="form-control" id="contributor">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            creator
+                            <input type="text" class="form-control" id="creator">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            publisher
+                            <input type="text" class="form-control" id="publisher">
+                        </div>
+                        <div class="autocomplete" style="width: 100%;">
+                            rights
+                            <input type="text" class="form-control" id="rights">                        
+                        </div>
                         <div id="errorMdp"></div>
                     </div>
                     <div class="modal-footer">
@@ -261,67 +336,92 @@
                         <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="sendAddDocument()">Enregistrer</button>
                     </div>
                 </div>
-            </div>            
-            <script>
-                function sendAddDocument() {
-                    var formData = new FormData();
-                    formData.append('file', $('#document').get(0).files[0]);
-                    formData.append('bibliographicResource', parseInt($('#bibliographic_resource').val()));
-                    formData.append('date', $('#datePublication').val());
-                    formData.append('idThematique', $('#id_thematique').val());
-                    formData.append('coverage', $('#coverage').val());
-                    formData.append('description', $('#description').val());
-                    formData.append('language', $('#language').val());
-                    formData.append('relation', $('#relation').val());
-                    formData.append('source', $('#source').val());
-                    formData.append('subject', $('#subject').val());
-                    formData.append('title', $('#title').val());
-                    formData.append('format', $('#format').val());
-                    formData.append('fileFormat', $('#fileFormat').val());
-                    formData.append('identifier', $('#identifier').val());
-                    formData.append('type', $('#type').val());
-                    formData.append('contributor', $('#contributor').val());
-                    formData.append('creator', $('#creator').val());
-                    formData.append('publisher', $('#publisher').val());
-                    formData.append('rights', $('#rights').val());
-                    formData.append('year', $('#year').val());
-                    formData.append('url', $('#url').val());
-                    $.ajax({
-                        method: 'POST',
-                        data: formData,
-                        contentType: false,
-                        processData: false,
-                        url: 'secured/document/post',
-                        success: function (json) {
-                            $('#bibliographic_resource').val('');
-                            $('#datePublication').val('');
-                            $('#id_thematique').val('');
-                            $('#coverage').val('');
-                            $('#description').val('');
-                            $('#language').val('');
-                            $('#relation').val('');
-                            $('#source').val('');
-                            $('#subject').val('');
-                            $('#title').val('');
-                            $('#format').val('');
-                            $('#fileFormat').val('');
-                            $('#identifier').val('');
-                            $('#contributor').val('');
-                            $('#creator').val('');
-                            $('#publisher').val('');
-                            $('#rights').val('');
-                            $('#year').val('');
-                            $('#url').val('');
-                            $('#errorMdp').html("<p style='color: red;'> " + "</p>");
-                            closeModal('modal-ajout-document');
-                        },
-                        error: function (json) {
-                            $('#errorMdp').html("<p style='color: red;'> " + "le telechargement du document est un échec. Veuiller réessayer." + json + "</p>");
-                        }
-                    });
-                }
-            </script>
+            </div>                        
         </div>
     </div>        
 </div>
+<script>
+    function sendAddDocument() {
+        var formData = new FormData();
+        formData.append('file', $('#document').get(0).files[0]);
+        formData.append('bibliographicResource', $('#bibliographic_resource').val());
+        formData.append('date', $('#datePublication').val());
+        formData.append('idThematique', $('#id_thematique').val());
+        formData.append('coverage', $('#coverage').val());
+        formData.append('description', $('#description').val());
+        formData.append('language', $('#language').val());
+        formData.append('relation', $('#relation').val());
+        formData.append('source', $('#source').val());
+        formData.append('subject', $('#subject').val());
+        formData.append('title', $('#title').val());
+        formData.append('format', $('#format').val());
+        formData.append('fileFormat', $('#fileFormat').val());
+        formData.append('identifier', $('#identifier').val());
+        formData.append('type', $('#type').val());
+        formData.append('contributor', $('#contributor').val());
+        formData.append('creator', $('#creator').val());
+        formData.append('publisher', $('#publisher').val());
+        formData.append('rights', $('#rights').val());
+        formData.append('year', $('#year').val());
+        formData.append('url', $('#url').val());
+        $.ajax({
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            url: 'secured/document/post',
+            success: function (json) {
+                $('#bibliographic_resource').val('');
+                $('#datePublication').val('');
+                $('#id_thematique').val('');
+                $('#coverage').val('');
+                $('#description').val('');
+                $('#language').val('');
+                $('#relation').val('');
+                $('#source').val('');
+                $('#subject').val('');
+                $('#title').val('');
+                $('#format').val('');
+                $('#fileFormat').val('');
+                $('#identifier').val('');
+                $('#contributor').val('');
+                $('#creator').val('');
+                $('#publisher').val('');
+                $('#rights').val('');
+                $('#year').val('');
+                $('#url').val('');
+                $('#errorMdp').html("<p style='color: red;'> " + "</p>");
+                closeModal('modal-ajout-document');
+            },
+            error: function (json) {
+                $('#errorMdp').html("<p style='color: red;'> " + "le telechargement du document est un échec. Veuiller réessayer." + json + "</p>");
+            }
+        });
+    }
+</script>
+<script src="${resourcesPath}/js/autocompleteForLemurs.min.js"></script>
+<!--Appel de la fonction-->
+<script>
+    autocomplete(document.getElementById("year"), 'year');
+    autocomplete(document.getElementById("datePublication"), 'date');
+    autocomplete(document.getElementById("bibliographic_resource"), 'bibliographicResource');
+    autocomplete(document.getElementById("id_thematique"), 'idThematique');
+    autocomplete(document.getElementById("url"), 'url');
+    autocomplete(document.getElementById("coverage"), 'coverage');
+    autocomplete(document.getElementById("description"), 'description');
+    autocomplete(document.getElementById("language"), 'language');
+    autocomplete(document.getElementById("relation"), 'relation');
+    autocomplete(document.getElementById("source"), 'source');
+    autocomplete(document.getElementById("subject"), 'subject');
+    autocomplete(document.getElementById("title"), 'title');
+    autocomplete(document.getElementById("format"), 'format');
+    autocomplete(document.getElementById("fileFormat"), 'fileFormat');
+    autocomplete(document.getElementById("identifier"), 'identifier');
+    autocomplete(document.getElementById("type"), 'type');
+    autocomplete(document.getElementById("contributor"), 'contributor');
+    autocomplete(document.getElementById("creator"), 'creator');
+    autocomplete(document.getElementById("publisher"), 'publisher');
+    autocomplete(document.getElementById("rights"), 'rights');
+</script>
+
 
