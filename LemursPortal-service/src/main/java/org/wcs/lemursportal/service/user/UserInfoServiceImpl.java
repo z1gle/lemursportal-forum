@@ -70,7 +70,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		UserInfo userEmailExample = new UserInfo();
 		userEmailExample.setEmail(user.getEmail());
 		boolean emailExist = userRepository.exists(Example.of(userEmailExample));
-		if(emailExist){
+		if(emailExist) {
 			throw new RegistrationException(RegistrationException.LOGIN_ALREADY_EXIST_EXCEPTION);
 		}
 		String cryptedPassword = encodePassword(user.getPassword(), user.getProvider() == null || user.getProvider().equalsIgnoreCase("NONE"));
@@ -90,11 +90,19 @@ public class UserInfoServiceImpl implements UserInfoService {
         return encodedPassword;
     }
 
-	@Override @Transactional(readOnly=true)
+	@Override
+	@Transactional(readOnly=true)
 	public UserInfo getById(Integer id) {
 		UserInfo user = userRepository.findOne(id);
 		return user;
 	}
+	
+	@Override
+    @Transactional(readOnly = true)
+    public UserInfo getByIdNonSecured(Integer id) {
+        UserInfo user = userRepository.findOne(id);
+        return user;
+    }    
 
 	@Override
 	public void updateUserRoles(Integer userId, Set<UserType> roles) {
@@ -135,6 +143,20 @@ public class UserInfoServiceImpl implements UserInfoService {
 		userRepository.save(persistUser);
 	}
 
+	@Override
+    public void updatePassword(UserInfo user, String newPassword) throws Exception {
+        UserInfo persistUser = getById(user.getId());
+        //vérifier si le mot de passe proposé par l'utilisateur est bien son ancien mot de passe
+        if (bCryptPasswordEncoder.matches(user.getPassword(), persistUser.getPassword())) {
+            //bien s'assurer qu'on ne modifie que le champs du mot de passe.
+            String cryptedPassword = encodePassword(newPassword, user.getProvider() == null || user.getProvider().equalsIgnoreCase("NONE"));
+            persistUser.setPassword(cryptedPassword);
+            userRepository.save(persistUser);
+        } else {
+            throw new Exception("l'ancien mot de passe est incorrecte");
+        }
+    }
+    
 	@Override
 	public void updatePass(UserInfo user) {
 		UserInfo persistUser = getById(user.getId());
@@ -183,7 +205,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	 * @see org.wcs.lemursportal.service.user.UserInfoService#getExpertById(java.lang.Integer)
 	 */
 	@Override
-	@Transactional(readOnly=true)
+	@Transactional(readOnly = true)
 	public UserInfo getExpertById(Integer id) {
 		UserInfo user = userRepository.findOne(id);
 		return user;

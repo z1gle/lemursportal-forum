@@ -1,5 +1,7 @@
 package org.wcs.lemursportal.web.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +23,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.wcs.lemursportal.exception.RegistrationException;
 import org.wcs.lemursportal.model.authentication.UserRole;
-import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.post.TopQuestion;
 import org.wcs.lemursportal.model.post.TopThematique;
@@ -99,6 +101,19 @@ public class ThematiqueController extends BaseController{
 		//Page<Thematique> page = thematiqueService.findAll(pageable);
 		model.addAttribute("topThematiquePage", topThematiquePage);
 		return "thematique-list";
+	}
+        
+        @GetMapping(value={"/thematiques"}, headers = "Accept=application/json")
+	public @ResponseBody List<HashMap<String, Object>> lister(){		
+		List<Thematique> valiny = thematiqueRepository.findAll();
+                List<HashMap<String, Object>> farany = new ArrayList<>();
+                for (Thematique t : valiny) {
+                    HashMap<String, Object> temp = new HashMap<>();
+                    temp.put("id", t.getId());
+                    temp.put("libelle", t.getLibelle());
+                    farany.add(temp);
+                }
+                return farany;
 	}
 
 	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")

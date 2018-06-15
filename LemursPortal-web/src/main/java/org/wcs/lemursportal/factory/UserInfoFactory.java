@@ -10,6 +10,7 @@ import java.util.Set;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.model.user.UserType;
+import org.wcs.lemursportal.web.form.ChangePasswordForm;
 import org.wcs.lemursportal.web.form.RegistrationForm;
 
 /**
@@ -81,5 +82,24 @@ public abstract class UserInfoFactory {
 		}
 		return entity;
 	}
-	
+
+    //Added by Zacharie: For changing password
+    public static UserInfo toEntity(ChangePasswordForm form) {
+        UserInfo entity = null;
+        if (form != null) {
+            entity = new UserInfo();
+            entity.setId(form.getId());            
+            entity.setPassword(form.getPassword());            
+        }
+        return entity;
+    }
+    
+    public static ChangePasswordForm toChangePasswordForm(UserInfo user) {
+        ChangePasswordForm form = null;
+        if (user != null) {
+            form = new ChangePasswordForm();            
+            form.setId(user.getId());            
+        }
+        return form;
+    }
 }

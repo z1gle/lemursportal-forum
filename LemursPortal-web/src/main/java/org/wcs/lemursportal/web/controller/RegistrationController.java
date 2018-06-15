@@ -5,6 +5,7 @@ package org.wcs.lemursportal.web.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -32,6 +33,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.wcs.lemursportal.dto.user.UserRegistrationForm;
@@ -43,6 +46,7 @@ import org.wcs.lemursportal.service.authentication.AuthenticationService;
 import org.wcs.lemursportal.service.exception.UserAlreadyExistAuthenticationException;
 import org.wcs.lemursportal.service.util.SecurityUtil;
 import org.wcs.lemursportal.service.user.UserInfoService;
+import org.wcs.lemursportal.web.form.ChangePasswordForm;
 import org.wcs.lemursportal.web.form.RegistrationForm;
 import org.wcs.lemursportal.web.validator.RegistrationFormValidator;
 
@@ -266,7 +270,7 @@ public class RegistrationController extends BaseController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping(value="/user/profil")
+	@GetMapping(value = "/user/profil")
 	public String viewProfil(Authentication authentication, Model model){
 		String email = authentication.getName();
 		UserInfo userInfo = userInfoService.getByEmail(email);
@@ -279,15 +283,14 @@ public class RegistrationController extends BaseController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping(value="/user/profil/edit")
+	@GetMapping(value = "/user/profil/edit")
 	public String editProfil(Authentication authentication, Model model){
 		String email = authentication.getName();
 		UserInfo userInfo = userInfoService.getByEmail(email);
 		RegistrationForm registrationForm = UserInfoFactory.toForm(userInfo);
+		ChangePasswordForm changePasswordForm = UserInfoFactory.toChangePasswordForm(userInfo);
 		model.addAttribute("registrationForm", registrationForm);
-		
-//		List<Thematique> listethematique = thematiqueService.findAll();
-//		model.addAttribute("listeThematique", listethematique);
+		model.addAttribute("changePasswordForm", changePasswordForm);
 		
 		return "profil.edit.page";
 	}
@@ -357,4 +360,45 @@ public class RegistrationController extends BaseController {
         LOGGER.debug("Field error: {} to binding result: {}", error, result);
     }
 
+    @PostMapping(value = "/user/profil/password/edit")
+    public @ResponseBody
+    HashMap<String, Object> editPasswordSubmit(Locale locale, Model model, @ModelAttribute("changePasswordForm") ChangePasswordForm changePasswordForm, BindingResult results) throws IOException {
+        UserInfo user = UserInfoFactory.toEntity(changePasswordForm);
+        LOGGER.debug(user.getPublication() + "######################");
+        try {
+            userInfoService.updatePassword(user, changePasswordForm.getNewPassword());
+            super.setResultat(Boolean.TRUE, messageSource.getMessage("message.edit.successMessage", new Object[]{}, locale));
+        } catch (Exception ex) {
+            super.setResultat(Boolean.FALSE, ex.getMessage());
+        }
+        return super.returnResultat();
+    }
+
+    @PostMapping(value = "/ckSD")
+    public @ResponseBody
+    HashMap<String, Object> checkSessSpeciesDatabase(Authentication authentication) throws IOException {
+        SecurityUtil su = new SecurityUtil();
+        try {
+            String email = authentication.getName();
+            UserInfo userInfo = userInfoService.getByEmail(email);
+            super.setResultat(Boolean.TRUE, su.encrypte(userInfo.getId().toString()));
+        } catch (Exception e) {
+            super.setResultat(Boolean.FALSE, "il se peut que votre session ait été fermé");
+        }
+        return super.returnResultat();
+    }
+    
+    @PostMapping(value = "/logg")
+    public @ResponseBody
+    HashMap<String, Object> logg(Authentication authentication, @RequestParam("token") String id) throws IOException {         
+        try {
+            UserInfo user = userInfoService.getByIdNonSecured(SecurityUtil.decrypte(id));
+            SecurityUtil.authenticateUser(user);
+            super.setResultat(Boolean.TRUE, "done");
+        } catch (Exception e) {
+            e.printStackTrace();
+            super.setResultat(Boolean.FALSE, "il se peut que votre session ait été fermé");
+        }
+        return super.returnResultat();
+    }
 }

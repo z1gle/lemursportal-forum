@@ -44,6 +44,8 @@ public interface UserInfoService {
 
 	@PostAuthorize ("returnObject.email == authentication.name or hasRole('ADMIN')")
 	UserInfo getById(Integer id);
+        
+        UserInfo getByIdNonSecured(Integer id);
 	
 	
 	UserInfo getExpertById(Integer id);
@@ -63,6 +65,8 @@ public interface UserInfoService {
 
 	//@PreAuthorize ("#user.email == authentication.name")
 	void updatePass(UserInfo user);
+	
+	void updatePassword(UserInfo user, String newPassword) throws Exception;
 	
 	/**
 	 * 
