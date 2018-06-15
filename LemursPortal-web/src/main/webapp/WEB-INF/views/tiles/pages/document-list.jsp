@@ -195,7 +195,8 @@
             .autocomplete-items {
                 position: absolute;
                 border: 1px solid #d4d4d4;
-                border-bottom: none;
+                border-radius: 4px;
+                border-color: #584419;
                 border-top: none;
                 z-index: 99;                
                 top: 100%;
@@ -205,8 +206,8 @@
             .autocomplete-items div {
                 padding: 10px;
                 cursor: pointer;
-                background-color: #EEE; 
-                border-bottom: 1px solid #d4d4d4; 
+                background-color: #f9efc8fa;                
+                border-bottom: 1px solid #d4d4d4;                 
             }
             .autocomplete-items div:hover {
                 /*when hovering an item:*/
@@ -214,7 +215,7 @@
             }
             .autocomplete-active {
                 /*when navigating through the items using the arrow keys:*/
-                background-color: DodgerBlue !important; 
+                background-color: #584419 !important; 
                 color: #ffffff; 
             }
         </style>
