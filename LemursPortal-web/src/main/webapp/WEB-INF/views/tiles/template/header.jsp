@@ -80,13 +80,13 @@
                                 <script>
                                     function formSubmit() {
                                         //logout also species databases by Zacharie                                        
-                                        $.ajax({
-                                            type: 'post',
-                                            url: 'http://localhost:8085/lemurs/logout',
-                                            success: function (json) {
+//                                        $.ajax({
+//                                            type: 'post',
+//                                            url: 'http://localhost:8085/lemurs/logout',
+//                                            success: function (json) {
                                                 document.getElementById("logoutForm").submit();
-                                            }
-                                        });
+//                                            }
+//                                        });
                                     }
                                 </script>
                             </span>
