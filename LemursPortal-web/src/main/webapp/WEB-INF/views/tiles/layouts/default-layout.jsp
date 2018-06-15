@@ -11,6 +11,7 @@
 <html>
 
 <head>
+	<link rel="icon" href="${resourcesPath}/favicon.ico" type="image/x-icon">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><tiles:getAsString name="title" /></title>
 	<link href="${resourcesPath}/css/styles.css" rel="stylesheet"/>

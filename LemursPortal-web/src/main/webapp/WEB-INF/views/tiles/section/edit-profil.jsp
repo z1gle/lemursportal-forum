@@ -156,7 +156,7 @@
 										<form:button value="Mettre à jour" class="right">
 											<spring:message code="profil.edit.maj.btn" />
 										</form:button>
-										<button type="button" class="btn-info" style="float: right; margin-right: 1px; background-color: #a36000;" onclick="openModal()"> <spring:message code="profil.btn.changePassword"/> </button>
+										<button type="button" class="btn-info" style="float: right; margin-right: 1px; background-color: #a36000;" onclick="openModal('myModal')"> <spring:message code="profil.btn.changePassword"/> </button>
 									</div>
 								</div>
 							</form:form>
@@ -257,7 +257,7 @@
                 url: 'password/edit',
                 success: function (json) {
                     if (json.etat) {
-                        closeModal();
+                        closeModal('myModal');
                     } else {
                         $('#errorMdp').html("<p style='color: red;'> " + json.message + "</p>");
                     }
