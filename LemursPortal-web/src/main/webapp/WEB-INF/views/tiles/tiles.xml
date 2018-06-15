@@ -34,6 +34,21 @@
    		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/login.jsp" />
    </definition>
    
+   <!-- forgot-passwd page -->
+   <definition name="forgot-passwd" extends="page-entier">  
+   		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/forgot-passwd.jsp" />
+   </definition>
+   
+   <!-- forgot-passwd confirmation page -->
+   <definition name="forgot-passwdconf" extends="page-entier">  
+   		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/forgot-passwdconf.jsp" />
+   </definition>
+   
+   <!-- reset pass page -->
+   <definition name="reset-passwd" extends="page-entier">  
+   		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/new-passwd.jsp" />
+   </definition>
+   
    <!-- Error page -->
    <definition name="global-error" extends="page-entier">  
    		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/global-error.jsp" />
