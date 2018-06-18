@@ -21,15 +21,15 @@
   </ol>
   <div class="carousel-inner">
     <div class="item active"> 
-		<!--img src="/lemursPortal/resources/images/0270_ruffed_lemur.jpg" alt="Sauvons les l&eacute;muriens &agrave; travers des &eacute;changes/partages de connaissances et de comp&eacute;tences"-->
-		<div class="bg-img" style="height: 430px;background-image: url(/lemursPortal/resources/images/0270_ruffed_lemur.jpg);">&nbsp;</div>
+		<!--img src="${resourcesPath}/images/0270_ruffed_lemur.jpg" alt="Sauvons les l&eacute;muriens &agrave; travers des &eacute;changes/partages de connaissances et de comp&eacute;tences"-->
+		<div class="bg-img" style="height: 430px;background-image: url(${resourcesPath}/images/0270_ruffed_lemur.jpg);">&nbsp;</div>
         <div class="carousel-caption">
         <p>Sauvons les l&eacute;muriens &agrave; travers des &eacute;changes/partages de connaissances et de comp&eacute;tences</p>
         </div>
     </div>
     <div class="item"> 
 		<!--img src="/lemursPortal/resources/images/Baby_Propithecus_diadema_Waking_Up.jpg" data-src="" alt="" style="height: 430px"-->
-		<div class="bg-img" style="height: 430px;background-image: url(/lemursPortal/resources/images/Baby_Propithecus_diadema_Waking_Up.jpg);">&nbsp;</div>
+		<div class="bg-img" style="height: 430px;background-image: url(${resourcesPath}/images/Baby_Propithecus_diadema_Waking_Up.jpg);">&nbsp;</div>
 		<div class="carousel-caption">
 		  <h2>Les l&eacute;muriens</h2>
           <p>Primates embl&eacute;matiques de Madagascar  dont 94 % des esp&egrave;ces sont menac&eacute;es d'extinction</p>
@@ -37,14 +37,14 @@
     </div>
     <div class="item"> 
 		<!--img src="/lemursPortal/resources/images/Bandro_Alice_Smith.jpg" data-src="" alt=""-->
-		<div class="bg-img" style="height: 430px;background-image: url(/lemursPortal/resources/images/Bandro_Alice_Smith.jpg);">&nbsp;</div><div class="carousel-caption">
+		<div class="bg-img" style="height: 430px;background-image: url(${resourcesPath}/images/Bandro_Alice_Smith.jpg);">&nbsp;</div><div class="carousel-caption">
 		  <h2>Le portail des l&eacute;muriens</h2>	
 		  <p>Un appel &agrave; l'unit&eacute; pour sauver notre identit&eacute; </p>
         </div>
     </div>
     <div class="item"> 
 		<!--img src="/lemursPortal/resources/images/Varikamena_Inaki_Relanzon.jpg" data-src="" alt=""-->
-		<div class="bg-img" style="height: 430px;background-image: url(/lemursPortal/resources/images/Varikamena_Inaki_Relanzon.jpg);">&nbsp;</div><div class="carousel-caption">
+		<div class="bg-img" style="height: 430px;background-image: url(${resourcesPath}/images/Varikamena_Inaki_Relanzon.jpg);">&nbsp;</div><div class="carousel-caption">
         <div class="carousel-caption">
 		<h2>Vision</h2>
 		<p>Madagascar sera un pays de l'excellence ou s'instaure la protection et la conservation durable des l&eacute;muriens</p>

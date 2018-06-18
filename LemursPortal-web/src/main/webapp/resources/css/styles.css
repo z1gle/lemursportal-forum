@@ -966,12 +966,12 @@ a.forum-item-title:hover {
 }
 
 .popup-gallery {
-	padding:5% 10%;
+	padding: 5px 6px/*5% 10%*/;
 }
 
 .popup-gallery a img {
-    margin: 4px;
-    width:45px;
+    margin: 4px 2px;
+    width: 55px;
     height:auto;
     display: inline-block;
     line-height: 1.42857143;
@@ -1033,12 +1033,30 @@ footer a:hover {
 	text-decoration:none!important;
 }
 
+footer a img {
+    border-radius: 50%;
+    width: 100%;
+}
+
+footer a img:hover {
+    border: 2px solid #ccc;
+    background: #ccc;
+}
+
+footer .col-md-4 .col-xs-2 {
+    border-radius: 50%;
+    height: 100%;
+    padding: 1%;
+    width: 19%;
+}
+
 footer .copy {
 	text-align:center;
-	padding:15px 0;
+	padding:5px 0;
 	background:#000;
 	margin-top:25px;
 	font-size:12px;
+	font-family: "montserratlight";
 	color:#fff!important;
 }
 
@@ -1786,6 +1804,11 @@ a.btn:hover {
 		background: white;
 		height: 98px;
 	}
+	
+	footer .col-md-4 .col-xs-2 {
+		background: none !important;
+	}
+	
 	#partenaire .col-xs-2:first-child {
 		margin-left: 20px;
 		/*background: none !important;*/		

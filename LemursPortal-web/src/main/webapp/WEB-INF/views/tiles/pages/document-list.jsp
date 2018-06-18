@@ -8,6 +8,73 @@
 <%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
 <spring:message code="date.format" var="dateFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
+<style>
+<!--
+.project-wrapper {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+}
+
+.project-wrapper li {
+    display: inline-block;
+}
+
+.species-item {
+    cursor: pointer;
+    margin: 0 1% 1% 0;
+    overflow: hidden;
+    position: relative;
+    width: 32%;
+}
+
+figcaption.mask {
+    background-color: rgba(54, 55, 50, 0.79);
+    bottom: -126px;
+    color: #fff;
+    padding: 25px;
+    position: absolute;
+    width: 100%;
+    text-align: left;
+    -webkit-transition: all 0.4s ease 0s;
+    -moz-transition: all 0.4s ease 0s;
+    -ms-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+}
+
+figcaption.mask h3 {
+    margin: 0;
+    color: #fff;
+}
+
+p {
+    line-height: 25px;
+}
+figure, p, address {
+    margin: 0;
+}
+
+ul.external {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: -47px;
+    -webkit-transition: all 0.4s ease 0s;
+    -moz-transition: all 0.4s ease 0s;
+    -ms-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+}
+.species-item img {
+	background-size: cover;
+	background-position: 50% 25%;
+}
+-->
+</style>
 <div class="forum-container page-document">
     <div class="row">
         <div class="page-title">
@@ -38,17 +105,36 @@
                         <div class="txt-content">
 
                             <div class="col-md-offset custyle">
-
+                            
                                 </br>
                                 <div class="row">
                                     <c:set var="isa" value="1"/>
+                                    <ul class="project-wrapper animated fadeInUp" style="text-align: left !important">
                                     <c:forEach items="${docIMAGE}" var="pic">
-                                        <div class="column">
-                                            <img src="${resourcesPath}/upload/${pic.filename}" style="width:100%" onclick="openModal();currentSlide(${isa})" class="hover-shadow cursor">
-                                        </div>
+                                        <li class="species-item">
+									<img src="${resourcesPath}/images/l-blank.png" style="background-image: url('${resourcesPath}/upload/${pic.filename}'); " class="img-responsive" alt="--">
+									<figcaption class="mask">
+										<h3>
+											<i>${pic.filename}</i>
+										</h3>
+										<p>--</p>
+									</figcaption>
+									<ul class="external">
+										<li><a class="fancybox" title="<i>Varecia variegata subcincta</i>" data-fancybox-group="works" src="${resourcesPath}/images/l_blank.png" style="background-image: url('${resourcesPath}/upload/${pic.filename}')"><i class="fa fa-search"></i></a></li>
+									</ul></li>
                                         <c:set var="isa" value="${isa+1}"/>
                                     </c:forEach>
+                                    </ul>
                                 </div>
+<!--                                 <div class="row"> -->
+<%--                                     <c:set var="isa" value="1"/> --%>
+<%--                                     <c:forEach items="${docIMAGE}" var="pic"> --%>
+<!--                                         <div class="column"> -->
+<%--                                             <img src="${resourcesPath}/upload/${pic.filename}" style="width:100%" onclick="openModal();currentSlide(${isa})" class="hover-shadow cursor"> --%>
+<!--                                         </div> -->
+<%--                                         <c:set var="isa" value="${isa+1}"/> --%>
+<%--                                     </c:forEach> --%>
+<!--                                 </div> -->
                                 <div id="myModal" class="modal">
                                     <span class="close cursor" onclick="closeModal()">&times;</span>
                                     <div class="modal-content">

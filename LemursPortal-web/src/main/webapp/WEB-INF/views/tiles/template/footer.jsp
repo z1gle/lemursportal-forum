@@ -7,13 +7,15 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-5">
         	<div class="row">
+        	
                 <div class="col-xs-2">
                     <img src="${resourcesPath}/images/logo-lemurs-blanc.png" style="width: 48px" alt="">
                 </div>
-                <div class="col-xs-5">
-                    <ul>
+                
+                <div class="col-xs-4">
+                    <ul  style="padding-left: 20px;">
                     	<c:url value="/" var="homePage"/>
                     	<li><a href="${homePage}"><spring:message code="home.menu.accueil"/></a></li>
                         <li><a href="${homePage}"><spring:message code="home.menu.questions"/></a></li>
@@ -23,8 +25,8 @@
                         <li><a href="${expertsUrl}"><spring:message code="home.menu.experts"/></a></li>
                     </ul>
                 </div>
-                <div class="col-xs-5">
-                    <ul>
+                <div class="col-xs-3">
+                    <ul style="padding-left: 20px;">
                     	<c:url value="/formation/" var="formationsUrl"/>
                     	<li><a href="${formationsUrl}"><spring:message code="home.menu.formations"/></a></li>
                         <li><a href="#"><spring:message code="home.menu.aide"/></a></li>
@@ -35,7 +37,7 @@
             </div>
         </div>
         
-        <div id="partenaire" class="col-md-6">
+        <div id="partenaire" class="col-md-4">
         	<div class="row">
                 <div class="col-xs-2">
                 	<c:url value="http://www.fapbm.org/" var="fapbmUrl"/>
@@ -59,6 +61,13 @@
                 </div>
             </div>
         </div>
+        
+				<div class="col-md-3 animated fadeInUp" data-wow-delay="0.8s">
+					<a href="http://jrsbiodiversity.org/" target="_blank"><img
+						src="http://jrsbiodiversity.org/wp-content/themes/zero/images/jrs-logo.svg"
+						style="border-radius: 4%; margin-top: 3%;padding:2%;"></a>
+				</div>
  	</div>
 </div> 
-<div class="copy">Copyright - Lemurs Portal 2017</div>  
+<div class="copy">Copyright &copy; - Lemurs Portal 2017</div> 
+

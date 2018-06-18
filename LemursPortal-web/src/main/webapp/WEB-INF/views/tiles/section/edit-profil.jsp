@@ -175,7 +175,7 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" onclick="closeModal()">&times;</button>
+                <button type="button" class="close" onclick="closeModal('myModal')">&times;</button>
                 <h4 class="modal-title">Modifier le mot de passe</h4>
             </div>
             <div class="modal-body">
@@ -191,8 +191,8 @@
                 <div id="errorMdp"></div>
             </div>
             <div class="modal-footer">
-                <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal()">Annuler</button>
-                <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="sendChangePasswordForm()">Enregistrer</button>
+                <button style="/*float: right;*/" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal('myModal')">Annuler</button>
+                <button style="/*float: right;*/" type="button" class="btn btn-default" data-dismiss="modal" onclick="sendChangePasswordForm()">Enregistrer</button>
             </div>
         </div>
     </div>

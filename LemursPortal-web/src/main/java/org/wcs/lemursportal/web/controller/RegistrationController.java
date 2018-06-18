@@ -37,15 +37,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.wcs.lemursportal.dto.user.UserRegistrationForm;
 import org.wcs.lemursportal.factory.UserInfoFactory;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
-import org.wcs.lemursportal.model.user.UserType;
 import org.wcs.lemursportal.service.authentication.AuthenticationService;
 import org.wcs.lemursportal.service.exception.UserAlreadyExistAuthenticationException;
-import org.wcs.lemursportal.service.util.SecurityUtil;
 import org.wcs.lemursportal.service.user.UserInfoService;
+import org.wcs.lemursportal.service.util.SecurityUtil;
 import org.wcs.lemursportal.web.form.ChangePasswordForm;
 import org.wcs.lemursportal.web.form.RegistrationForm;
 import org.wcs.lemursportal.web.validator.RegistrationFormValidator;
@@ -151,10 +151,14 @@ public class RegistrationController extends BaseController {
      */
     @RequestMapping(value ="/register", method = RequestMethod.POST)
     public String registerUserAccount(@Valid @ModelAttribute("registrationForm") RegistrationForm userAccountData,
-                                      BindingResult result,
+                                      BindingResult result, RedirectAttributes attr,
                                       WebRequest request) throws UserAlreadyExistAuthenticationException {
         LOGGER.debug("Registering user account with information: {}", userAccountData);
+//        registrationFormValidator.validate(userAccountData, result);
         if (result.hasErrors()) {
+        	attr.addFlashAttribute(
+					"org.springframework.validation.BindingResult.user", result);
+        	attr.addFlashAttribute("registrationForm", userAccountData);
             LOGGER.debug("Validation errors found. Rendering form view.");
             return "registration";
         }
@@ -401,4 +405,16 @@ public class RegistrationController extends BaseController {
         }
         return super.returnResultat();
     }
+    
+    /**
+	 * Check if e-mail is free
+	 */
+	@RequestMapping(method=RequestMethod.GET, value = "/check-email")
+	@ResponseBody
+	public String checkEmail(@RequestParam String email) {
+		
+		return userInfoService.getByEmail(email) == null
+			? "true"
+			: "false";
+	}
 }

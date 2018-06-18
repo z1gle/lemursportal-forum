@@ -20,7 +20,7 @@
                 <span class="icon-bar"></span>
             </button>
             <c:url value="/" var="homePage"/>
-            <a class="navbar-brand" href="${homePage}"><img class="img-responsive" src="${resourcesPath}/images/logo-lemursportal.png" alt="Lemurs Portal"/></a>
+            <a class="navbar-brand" href="//www.lemursportal.org"><img class="img-responsive" src="${resourcesPath}/images/logo-lemursportal.png" alt="Lemurs Portal"/></a>
         </div>
         <!-- F menu mobile  -->
 

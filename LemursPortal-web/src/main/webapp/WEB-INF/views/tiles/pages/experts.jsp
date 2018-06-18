@@ -48,10 +48,10 @@
                                     <div class="image expert-userpic">
 									<c:choose>
 										<c:when test="${empty expert.photoProfil}">
-											<img src="/forum/resources/profil/blanc.png" alt="<c:out value="${expert.prenom}" /> " style="background-position: center; margin: auto;/* width: 100%; */height: 100%; background-image: url('/forum/resources/profil/default.png'); background-repeat: no-repeat; background-size: auto 100%;" class="img-responsive"/>
+											<img src="${resourcesPath}/profil/blanc.png" alt="<c:out value="${expert.prenom}" /> " style="background-position: center; margin: auto;/* width: 100%; */height: 100%; background-image: url('${resourcesPath}/profil/default.png'); background-repeat: no-repeat; background-size: auto 100%;" class="img-responsive"/>
 										</c:when>
 										<c:otherwise>
-											<img src="/forum/resources/profil/blanc.png" alt="<c:out value="${expert.prenom}" /> " style="background-position: center; margin: auto;/* width: 100%; */height: 100%; background-image: url('/forum/resources<c:out value="${expert.photoProfil}" />'); background-repeat: no-repeat; background-size: auto 100%;" class="img-responsive"/>
+											<img src="${resourcesPath}/profil/blanc.png" alt="<c:out value="${expert.prenom}" /> " style="background-position: center; margin: auto;/* width: 100%; */height: 100%; background-image: url('${resourcesPath}<c:out value="${expert.photoProfil}" />'); background-repeat: no-repeat; background-size: auto 100%;" class="img-responsive"/>
 										</c:otherwise>
 									</c:choose>
                                     
