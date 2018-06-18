@@ -58,14 +58,24 @@
                     <script src="http://malsup.github.com/jquery.form.js"></script> 
                     <script>
                         // wait for the DOM to be loaded 
+//                        $(document).ready(function () {
+//                            // bind 'myForm' and provide a simple callback function 
+//                            $('#form-login').ajaxForm(function () {
+//                                $.post("http://localhost:8085/lemurs/autentification", { login: $('#email').val(), password: $('#pwd').val() }, function () {
+//                                    window.history.back();
+//                                }).fail(function () {
+//                                    $('.message').html("Erreur lors de l'autentification, veuiller vérifier votre e-mail et mot de passe");
+//                                });                                
+//                            });
+//                        });
                         $(document).ready(function () {
                             // bind 'myForm' and provide a simple callback function 
                             $('#form-login').ajaxForm(function () {
-                                $.post("http://localhost:8085/lemurs/autentification", { login: $('#email').val(), password: $('#pwd').val() }, function () {
+                                $.post("species/autentification", {login: $('#email').val(), password: $('#pwd').val()}, function () {
                                     window.history.back();
                                 }).fail(function () {
                                     $('.message').html("Erreur lors de l'autentification, veuiller vérifier votre e-mail et mot de passe");
-                                });                                
+                                });
                             });
                         });
                     </script> 
