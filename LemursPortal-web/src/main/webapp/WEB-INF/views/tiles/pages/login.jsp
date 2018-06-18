@@ -67,5 +67,16 @@
             </div>
         </div>
     </div>
+    				<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
+                    <script src="http://malsup.github.com/jquery.form.js"></script> 
+                    <script>
+                        // wait for the DOM to be loaded 
+                        $(document).ready(function () {
+                            // bind 'myForm' and provide a simple callback function 
+                            $('#form-login').ajaxForm(function () {
+                                window.history.back();
+                            });
+                        });
+                    </script>
 </body>
 </html>
