@@ -84,9 +84,17 @@
 //                                            type: 'post',
 //                                            url: 'http://localhost:8085/lemurs/logout',
 //                                            success: function (json) {
-                                                document.getElementById("logoutForm").submit();
+//                                        document.getElementById("logoutForm").submit();
 //                                            }
 //                                        });
+                                        //logout also species databases by Zacharie
+                                                $.ajax({
+                                                    type: 'post',
+                                                    url: 'species/logout',
+                                                    success: function (json) {
+                                                        document.getElementById("logoutForm").submit();
+                                                    }
+                                                });
                                     }
                                 </script>
                             </span>

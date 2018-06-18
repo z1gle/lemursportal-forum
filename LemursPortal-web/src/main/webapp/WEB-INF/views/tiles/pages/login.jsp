@@ -41,8 +41,8 @@
                                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                             <spring:message code="signup.email.placeholder" var="loginPlaceholder"/>
                                             <spring:message code="login.password.placeholder" var="pwdPlaceholder"/>
-                                            <input class="email" style="border: 1px solid #ccc/*#a38000*/;" type="text" name="email" placeholder="${loginPlaceholder}"/>
-                                            <input class="pwd"  style="border: 1px solid #ccc/*#a38000*/;" type="password" name="password" placeholder="${pwdPlaceholder}"/>
+                                            <input id="email" class="email" style="border: 1px solid #ccc/*#a38000*/;" type="text" name="email" placeholder="${loginPlaceholder}"/>
+                                            <input id="pwd" class="pwd"  style="border: 1px solid #ccc/*#a38000*/;" type="password" name="password" placeholder="${pwdPlaceholder}"/>
                                             <button type="submit" style="margin-top: 5px"><spring:message code="login.btn.connect"/></button>
                                             <p class="message">
                                                 <c:url value="/signup" var="signupUrl"/>
@@ -61,7 +61,11 @@
                         $(document).ready(function () {
                             // bind 'myForm' and provide a simple callback function 
                             $('#form-login').ajaxForm(function () {
-                                window.history.back();
+                                $.post("http://localhost:8085/lemurs/autentification", { login: $('#email').val(), password: $('#pwd').val() }, function () {
+                                    window.history.back();
+                                }).fail(function () {
+                                    $('.message').html("Erreur lors de l'autentification, veuiller vérifier votre e-mail et mot de passe");
+                                });                                
                             });
                         });
                     </script> 
