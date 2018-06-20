@@ -79,7 +79,7 @@ public class DocumentController extends BaseController {
         }
         model.addAttribute("docAUDIO", listDocs(page, model, DOCTYPE.AUDIO));
         model.addAttribute("docVIDEO", listDocs(page, model, DOCTYPE.VIDEO));
-        model.addAttribute("docIMAGE", listDocs(page, model, DOCTYPE.PHOTO));
+        model.addAttribute("docIMAGE", listMetadata(page, model, "1"));
         model.addAttribute("docAUTRES", listMetadata(page, model, "4"));
         model.addAttribute("metadata", new Metadata());
         return "document-list";

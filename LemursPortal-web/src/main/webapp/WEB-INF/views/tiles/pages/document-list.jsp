@@ -8,6 +8,7 @@
 <%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
 <spring:message code="date.format" var="dateFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
+<c:url value="/" var="basePath"/>
 <div class="forum-container page-document">
     <div class="row">
         <div class="page-title">
@@ -17,7 +18,7 @@
             <div class="box">
                 <!-- D Tab -->
                 <ul class="nav nav-tabs userProfileTabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false">Publications</a></li>
+                    <li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false">Documents</a></li>
                     <li role="presentation" class=""><a href="#tab-item-4" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="true">Photos</a></li>
                     <li role="presentation" class=""><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="false">Videos</a></li>
                     <li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false">Audios</a></li>                    
@@ -73,7 +74,7 @@
                                     <c:set var="isa" value="1"/>
                                     <c:forEach items="${docIMAGE}" var="pic">
                                         <div class="column col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                            <a href="#" onclick="showPhoto('${pic.filename}')"><img src="${resourcesPath}/upload/${pic.filename}" style="width:100%" onclick="openModal();currentSlide(${isa})" class="hover-shadow cursor"></a>
+                                            <a href="#" onclick="showPhoto('${pic.title}', '${basePath}${pic.url}')"><img src="${basePath}${pic.url}" style="width:100%" onclick="openModal();currentSlide(${isa})" class="hover-shadow cursor"></a>
                                         </div>
                                         <c:set var="isa" value="${isa+1}"/>
                                     </c:forEach>
@@ -85,7 +86,7 @@
                                         <c:forEach items="${docIMAGE}" var="pic">
                                             <div class="mySlides">
                                                 <div class="numbertext"><c:out value="${isa1 }"/> /<c:out value="${isa }"/></div>
-                                                <img src="${resourcesPath}/upload/${pic.filename}" style="width:100%">
+                                                <img src="${pic.url}" style="width:100%">
                                                 <c:set var="isa1" value="${isa1+1}"/>
                                             </div>
                                         </c:forEach>
@@ -251,120 +252,119 @@
                         <button type="button" class="close" onclick="closeModal('modal-ajout-document')">&times;</button>
                         <h4 class="modal-title">Ajouter un document</h4>
                     </div>
-                    <div class="modal-body" style="overflow-y: auto;max-height:  500px;">
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.type"/>
-                            <select class="form-control" id="type">
-                                <option value="4">Document</option>
-                                <option value="1">Photo</option>
-                                <option value="2">Video</option>
-                                <option value="3">Audio</option>
-                            </select>
-                            <!--<input type="text" class="form-control" id="type">-->
+                    <form action="javascript:sendAddDocument();">
+                        <div class="modal-body" style="overflow-y: auto;max-height:  500px;">
+                            <div id="errorMdp"></div>
+                            <spring:message code="metadata.topics"/><sup>*</sup><br>
+                            <select required multiple="" id="id_thematique" class="form-control">
+                                <option value="797277">Behavior </option>
+                                <option value="797278">Threats /conservation issues </option>
+                                <option value="797279">Vocalization </option>
+                                <option value="797280">Ecology </option>
+                                <option value="797281">Genetics </option>
+                                <option value="797282">Locomotion </option>                            
+                                <option value="797283">Taxonomy</option>
+                                <option value="797284">Conservation Status</option>
+                                <option value="797285">Subfossiles</option>
+                                <option value="797286">Lemur conservation and research adminsistrative </option>
+                                <option value="797287">Environmental Education</option>
+                                <option value="797288">Lemur in captivity</option>
+                                <option value="797289">Lemur Medicine/Biomedical assessement</option>
+                                <option value="797290">Species disstribution and occurences</option>
+                                <option value="797291">Nocturnal species</option>
+                                <option value="797292">Diurnal species</option>
+                                <option value="797293">Reintroduction and translocation</option>
+                                <option value="797294">Lemur conservation success</option>
+                                <option value="797295">Nutrition</option>
+                                <option value="797296">Forest fragment</option>
+                                <option value="797297">Parasites</option>
+                                <option value="797298">Others</option>
+                            </select>                            
+                            <spring:message code="metadata.type"/><sup>*</sup>
+                            <select class="form-control" id="type" style="width: 100%!important;">
+                                <option style="background-color: #f9efc9;" value="4">Document</option>
+                                <option style="background-color: #f9efc9;" value="1">Photo</option>
+                                <option style="background-color: #f9efc9;" value="2">Video</option>
+                                <option style="background-color: #f9efc9;" value="3">Audio</option>
+                            </select>                            
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.year"/><sup>*</sup>                        
+                                <input required type="text" class="form-control" id="year">
+                            </div>
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.title"/><sup>*</sup>
+                                <input required type="text" class="form-control" id="title">
+                            </div>
+                            <spring:message code="global.label.file"/>
+                            <input type="file" class="form-control" id="document">
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.url"/>
+                                <input type="text" class="form-control" id="url">
+                            </div>
+                            <spring:message code="metadata.date"/>
+                            <input type="date" class="form-control" id="datePublication">
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.bibliographicResource"/>
+                                <input type="text" class="form-control" id="bibliographic_resource">
+                            </div>                                                
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.coverage"/>
+                                <input type="text" class="form-control" id="coverage">
+                            </div>
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.description"/>
+                                <input type="text" class="form-control" id="description">
+                            </div>
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.language"/>
+                                <input type="text" class="form-control" id="language">
+                            </div>
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.relation"/>
+                                <input type="text" class="form-control" id="relation">
+                            </div>
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.source"/>
+                                <input type="text" class="form-control" id="source">
+                            </div>
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.subject"/>
+                                <input type="text" class="form-control" id="subject">
+                            </div>                        
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.format"/>
+                                <input type="text" class="form-control" id="format">
+                            </div>
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.fileFormat"/>
+                                <input type="text" class="form-control" id="fileFormat">
+                            </div>
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.identifier"/>
+                                <input type="text" class="form-control" id="identifier">
+                            </div>                        
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.contributor"/>
+                                <input type="text" class="form-control" id="contributor">
+                            </div>
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.creator"/>
+                                <input type="text" class="form-control" id="creator">
+                            </div>
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.publisher"/>
+                                <input type="text" class="form-control" id="publisher">
+                            </div>
+                            <div class="autocomplete" style="width: 100%;">
+                                <spring:message code="metadata.rights"/>
+                                <input type="text" class="form-control" id="rights">                        
+                            </div>                            
                         </div>
-                        <spring:message code="global.label.file"/>
-                        <input type="file" class="form-control" id="document">
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.year"/><sup>*</sup>                        
-                            <input required type="text" class="form-control" id="year">
+                        <div class="modal-footer">
+                            <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal('modal-ajout-document')">Annuler</button>
+                            <button style="float: right;" type="submit" class="btn btn-default" data-dismiss="modal">Enregistrer</button>
                         </div>
-                        <spring:message code="metadata.date"/>
-                        <input type="date" class="form-control" id="datePublication">
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.bibliographicResource"/>
-                            <input type="text" class="form-control" id="bibliographic_resource">
-                        </div>
-                        <spring:message code="metadata.topics"/><sup>*</sup><br>
-                        <select multiple="" id="id_thematique" class="form-control">
-                            <option value="797277">Behavior </option>
-                            <option value="797278">Threats /conservation issues </option>
-                            <option value="797279">Vocalization </option>
-                            <option value="797280">Ecology </option>
-                            <option value="797281">Genetics </option>
-                            <option value="797282">Locomotion </option>                            
-                            <option value="797283">Taxonomy</option>
-                            <option value="797284">Conservation Status</option>
-                            <option value="797285">Subfossiles</option>
-                            <option value="797286">Lemur conservation and research adminsistrative </option>
-                            <option value="797287">Environmental Education</option>
-                            <option value="797288">Lemur in captivity</option>
-                            <option value="797289">Lemur Medicine/Biomedical assessement</option>
-                            <option value="797290">Species disstribution and occurences</option>
-                            <option value="797291">Nocturnal species</option>
-                            <option value="797292">Diurnal species</option>
-                            <option value="797293">Reintroduction and translocation</option>
-                            <option value="797294">Lemur conservation success</option>
-                            <option value="797295">Nutrition</option>
-                            <option value="797296">Forest fragment</option>
-                            <option value="797297">Parasites</option>
-                            <option value="797298">Others</option>
-                        </select>
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.url"/>
-                            <input type="text" class="form-control" id="url">
-                        </div>
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.coverage"/>
-                            <input type="text" class="form-control" id="coverage">
-                        </div>
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.description"/>
-                            <input type="text" class="form-control" id="description">
-                        </div>
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.language"/>
-                            <input type="text" class="form-control" id="language">
-                        </div>
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.relation"/>
-                            <input type="text" class="form-control" id="relation">
-                        </div>
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.source"/>
-                            <input type="text" class="form-control" id="source">
-                        </div>
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.subject"/>
-                            <input type="text" class="form-control" id="subject">
-                        </div>
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.title"/>
-                            <input type="text" class="form-control" id="title">
-                        </div>
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.format"/>
-                            <input type="text" class="form-control" id="format">
-                        </div>
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.fileFormat"/>
-                            <input type="text" class="form-control" id="fileFormat">
-                        </div>
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.identifier"/>
-                            <input type="text" class="form-control" id="identifier">
-                        </div>                        
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.contributor"/>
-                            <input type="text" class="form-control" id="contributor">
-                        </div>
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.creator"/>
-                            <input type="text" class="form-control" id="creator">
-                        </div>
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.publisher"/>
-                            <input type="text" class="form-control" id="publisher">
-                        </div>
-                        <div class="autocomplete" style="width: 100%;">
-                            <spring:message code="metadata.rights"/>
-                            <input type="text" class="form-control" id="rights">                        
-                        </div>
-                        <div id="errorMdp"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal('modal-ajout-document')">Annuler</button>
-                        <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="sendAddDocument()">Enregistrer</button>
-                    </div>
+                    </form>
                 </div>
             </div>                        
         </div>
@@ -387,9 +387,9 @@
     </div>        
 </div>
 <script>
-    function showPhoto(id) {
-        $('#modal-detail-body').html('<img class="col-md-12" src="${resourcesPath}/upload/' + id + '">');
-        $('#title-modal-details').html(id);
+    function showPhoto(title, url) {
+        $('#modal-detail-body').html('<img class="col-md-12" src="' + url + '">');
+        $('#title-modal-details').html(title);
         openModal('modal-detail');
     }
     function showDetail(id) {
@@ -477,7 +477,7 @@
                 closeModal('modal-ajout-document');
             },
             error: function (json) {
-                $('#errorMdp').html("<p style='color: red;'> " + "le telechargement du document est un échec. Veuiller réessayer." + json + "</p>");
+                $('#errorMdp').html("<p style='color: red;'> " + "Le téléchargement du document est un échec. Veuiller réessayer.</p>");
             }
         });
     }
