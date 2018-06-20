@@ -8,52 +8,65 @@
 
 <div class="container lemurs-page">
     <div class="row">
-    <!-- Début Ajouter Question -->
+        <!-- Début Ajouter Question -->
         <div class="full-width">
             <div class="wrapper wrapper-content animated fadeInRight">
-    
+
                 <div class="forum-container create-quest">
-    
+
                     <div class="forum-title">
                         <h2>Nouvelle question</h2>
                     </div>
-    				<!-- D Poser quest -->
+                    <!-- D Poser quest -->
                     <div class="cadre">
-                    <c:url value="/secured/post/" var="formAction"></c:url>
-                   	  <div class="form">
-                        	<form:form  class="create-quest-form" modelAttribute="post" action="${formAction}"  method="POST"  enctype="multipart/form-data"  >
-                        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-	
-                            <div class="row">
-                            	
-                                  <label>Choisir un thématique <sup>*</sup></label>
-                                  <form:select path="thematiqueId">  
-                                  	<form:options items="${listeThematique}" itemLabel="libelle" itemValue="id"/> 
-                                  </form:select>
-                                  <form:errors path="thematiqueId"/>
-                                  <br/>
-                                  <label>Titre de la question <sup>*</sup></label><span class="rouge"><form:errors path="title"/></span>
-                                  <form:input path="title"/>
-                                  
-                                  <label>Ajouter un fichier (photos, documents, videos, audios...)</label>
-                                  <input type="file" name="file" class="fisie" />
-                                  
-                                   <label>Url youtube  <span class="rouge"><c:out value="${error_youtube}" /></span></label>  
-                                  <form:input path="uriYoutube"/>
-                                  
-                                  <label>Votre question <sup>*</sup></label><span class="rouge"><form:errors path="body"/>  </span>                                
-                                  <form:textarea path="body"/>
-                                  <form:button value="save">Poster</form:button>
-                            </div>
+                        <c:url value="/secured/post/" var="formAction"></c:url>
+                            <div class="form">
+                            <form:form  class="create-quest-form" modelAttribute="post" action="${formAction}"  method="POST"  enctype="multipart/form-data"  >
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+
+                                <div class="row">
+
+                                    <label>Choisir un thématique <sup>*</sup></label>
+                                    <form:select path="thematiqueId">  
+                                        <form:options items="${listeThematique}" itemLabel="libelle" itemValue="id"/> 
+                                    </form:select>
+                                    <form:errors path="thematiqueId"/>
+                                    <br/>
+                                    <label>Titre de la question <sup>*</sup></label><span class="rouge"><form:errors path="title"/></span>
+                                    <form:input path="title"/>
+
+                                    <label>Ajouter une photo</label>
+                                    <input type="file" name="file" class="fisie" />
+
+                                    <label>Url youtube  <span class="rouge"><c:out value="${error_youtube}" /></span></label>  
+                                        <form:input path="uriYoutube"/>
+
+                                    <label>Votre question <sup>*</sup></label><span class="rouge"><form:errors path="body"/>  </span>                                
+                                    <form:textarea path="body"/>
+                                    <form:button value="save">Poster</form:button>
+                                    </div>
                             </form:form> 
                         </div>
                     </div>
                     <!-- F Poser quest -->
-                   
+
                 </div>
             </div>
         </div>    
-    <!-- Fin Ajouter Question -->           
+        <!-- Fin Ajouter Question -->           
+        <script type="text/javascript">
+            $(function () {
+                $('input[type=file]').change(function () {
+                    var val = $(this).val().toLowerCase(),
+                            regex = new RegExp("(.*?)\.(jpg|jpeg|png|gif)$");
+
+                    if (!(regex.test(val))) {
+                        $(this).val('');
+                        alert('Please select correct file format');
+                    }
+                });
+            });
+        </script>
     </div>
 </div>
 

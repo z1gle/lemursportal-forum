@@ -8,88 +8,6 @@
 <%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
 <spring:message code="date.format" var="dateFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
-<style>
-<!--
-.project-wrapper {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    text-align: center;
-}
-
-.project-wrapper li {
-    display: inline-block;
-}
-
-.species-item {
-    cursor: pointer;
-    margin: 0 1% 1% 0;
-    overflow: hidden;
-    position: relative;
-    width: 32%;
-}
-
-p {
-    line-height: 25px;
-}
-figure, p, address {
-    margin: 0;
-}
-
-ul.external {
-    list-style: outside none none;
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    right: 0;
-    top: -47px;
-    -webkit-transition: all 0.4s ease 0s;
-    -moz-transition: all 0.4s ease 0s;
-    -ms-transition: all 0.4s ease 0s;
-    -o-transition: all 0.4s ease 0s;
-    transition: all 0.4s ease 0s;
-}
-.species-item img {
-	background-size: cover;
-	background-position: 50% 25%;
-}
-
-figcaption.mask {
-    /* background-color: rgba(54, 55, 50, 0.79); */
-/* 	background-image: url('${resourcesPath}/images/gradient.png');  */
-    background: linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 100%);
-    bottom: -126px;
-    color: #fff;
-    padding: 25px;
-    position: absolute;
-    width: 100%;
-    text-align: left;
-    -webkit-transition: all 0.4s ease 0s;
-    -moz-transition: all 0.4s ease 0s;
-    -ms-transition: all 0.4s ease 0s;
-    -o-transition: all 0.4s ease 0s;
-    transition: all 0.4s ease 0s;
-}
-
-.species-item:hover figcaption.mask {
-    bottom: 0;
-}
-
-figcaption.mask h3, figcaption.mask p {
-    margin: 0;
-    color: #fff;
-    font-size: 12px;
-    text-overflow: ellipsis;
-    overflow: hidden;
-}
-.species-item img:hover {
-	opacity:1;
-}
-.species-item img:hover, .species-item img {
-	border: 1px solid #d7d7d7;
-}
--->
-</style>
 <div class="forum-container page-document">
     <div class="row">
         <div class="page-title">
@@ -99,10 +17,10 @@ figcaption.mask h3, figcaption.mask p {
             <div class="box">
                 <!-- D Tab -->
                 <ul class="nav nav-tabs userProfileTabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="true">Photos</a></li>
+                    <li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false">Publications</a></li>
+                    <li role="presentation" class=""><a href="#tab-item-4" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="true">Photos</a></li>
                     <li role="presentation" class=""><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="false">Videos</a></li>
-                    <li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false">Audios</a></li>
-                    <li role="presentation" class=""><a href="#tab-item-4" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false">Publications</a></li>
+                    <li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false">Audios</a></li>                    
                     <li role="presentation" class=""><a href="#tab-item-5" aria-controls="tab-item-5" role="tab" data-toggle="tab" aria-expanded="false">Youtube</a></li>
                         <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
                         <c:choose>
@@ -116,40 +34,50 @@ figcaption.mask h3, figcaption.mask p {
                 <!-- F Tab -->
 
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade active in" id="tab-item-1">
+                    <div role="tabpanel" class="tab-pane active fade in" id="tab-item-1">
+                        <div class="txt-content">
+                            <div class="col-md-offset custyle">
+                                <table class="table table-striped custab">
+                                    <c:forEach items="${docAUTRES}" var="publication">
+                                        <tr>                                            
+                                            <td><img src="${resourcesPath}/images/icon-thema.png" alt=""></td>
+                                            <td class="text-center">${publication.year}</td>
+                                            <td><a href="#" onclick="showDetail(${publication.id})"><c:out	value="${publication.title}" /></a></td>
+                                            <td><c:out	value="${publication.date}" /></td>
+                                            <td><c:out	value="${publication.creator}" /></td>
+                                            <td class="text-center">
+                                                <%--<c:url var="publicationPageUrl" value="/files/${publication.idDocument}"/>--%>
+                                                <c:url var="publicationPageUrl" value="${publication.url}"/>
+                                                <!--<a class='btn btn-info btn-xs' href="${publicationPageUrl}" download="${publication.title}.pdf"><span class="glyphicont"></span>Télécharger</a></td>-->
+                                                <a class='btn btn-info btn-xs' href="${publicationPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
+                                        </tr>
+                                    </c:forEach>
+                                </table>
+
+                                <!-- D Pagination -->
+                                <ul class="pagination">
+                                    <li class="disabled"><a href="#">&laquo;</a></li>
+                                    <li class="active"><a href="#">1</a></li>
+                                </ul>
+                                <!-- F Pagination -->
+                            </div>
+                        </div>
+                    </div>   
+                    <div role="tabpanel" class="tab-pane fade" id="tab-item-4">
                         <div class="txt-content">
 
                             <div class="col-md-offset custyle">
-                            
+
                                 </br>
                                 <div class="row">
                                     <c:set var="isa" value="1"/>
-                                    <ul class="project-wrapper animated fadeInUp" style="text-align: left !important">
                                     <c:forEach items="${docIMAGE}" var="pic">
-                                        <li class="species-item">
-									<img src="${resourcesPath}/images/l-blank.png" style="background-image: url('${resourcesPath}/upload/${pic.filename}'); " class="img-responsive" alt="--">
-									<figcaption class="mask">
-										<p>
-											<i>${pic.filename}</i>
-										</p>
-										<p>--</p>
-									</figcaption>
-									<ul class="external">
-										<li><a class="fancybox" title="<i>Varecia variegata subcincta</i>" data-fancybox-group="works" src="${resourcesPath}/images/l_blank.png" style="background-image: url('${resourcesPath}/upload/${pic.filename}')"><i class="fa fa-search"></i></a></li>
-									</ul></li>
+                                        <div class="column col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                            <a href="#" onclick="showPhoto('${pic.filename}')"><img src="${resourcesPath}/upload/${pic.filename}" style="width:100%" onclick="openModal();currentSlide(${isa})" class="hover-shadow cursor"></a>
+                                        </div>
                                         <c:set var="isa" value="${isa+1}"/>
                                     </c:forEach>
-                                    </ul>
                                 </div>
-<!--                                 <div class="row"> -->
-<%--                                     <c:set var="isa" value="1"/> --%>
-<%--                                     <c:forEach items="${docIMAGE}" var="pic"> --%>
-<!--                                         <div class="column"> -->
-<%--                                             <img src="${resourcesPath}/upload/${pic.filename}" style="width:100%" onclick="openModal();currentSlide(${isa})" class="hover-shadow cursor"> --%>
-<!--                                         </div> -->
-<%--                                         <c:set var="isa" value="${isa+1}"/> --%>
-<%--                                     </c:forEach> --%>
-<!--                                 </div> -->
                                 <div id="myModal" class="modal">
                                     <span class="close cursor" onclick="closeModal()">&times;</span>
                                     <div class="modal-content">
@@ -232,48 +160,29 @@ figcaption.mask h3, figcaption.mask p {
                             </div>
 
                         </div>
-                    </div>
-
-                    <div role="tabpanel" class="tab-pane fade" id="tab-item-4">
-                        <div class="txt-content">
-                            <div class="col-md-offset custyle">
-                                <table class="table table-striped custab">
-                                    <c:forEach items="${docAUTRES}" var="publication">
-
-                                        <tr>
-                                            <td><img src="${resourcesPath}/images/icon-thema.png" alt=""></td>
-                                            <td><c:out	value="${publication.filename}" /></td>
-                                            <td class="text-center">
-                                                <c:url var="publicationPageUrl" value="/files/${publication.id}"/>
-                                                <a class='btn btn-info btn-xs' href="${publicationPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
-                                        </tr>
-                                    </c:forEach>
-                                </table>
-
-                                <!-- D Pagination -->
-                                <ul class="pagination">
-                                    <li class="disabled"><a href="#">&laquo;</a></li>
-                                    <li class="active"><a href="#">1</a></li>
-                                </ul>
-                                <!-- F Pagination -->
-                            </div>
-                        </div>
-                    </div>                                        
+                    </div>                                                         
                     <div role="tabpanel" class="tab-pane fade" id="tab-item-5">
                         <div class="txt-content">
                             <div class="col-md-offset custyle">
-                                <table class="table table-striped custab">
-                                    <c:forEach items="${youtubeFiles}" var="youtubFile">
-
-                                        <tr>
-                                            <td><img src="${resourcesPath}/images/youtube-icon.png" alt=""></td>
-                                            <td><c:out	value="${youtubFile.title}" /></td>
-                                            <td class="text-center">
-                                                <c:url var="publicationPageUrl" value="${youtubFile.uriYoutube}"/>
-                                                <a class='btn btn-info btn-xs' href="${publicationPageUrl}"  target="_blank"><span class="glyphicont"></span>Voir</a></td>
-                                        </tr>
-                                    </c:forEach>
-                                </table>
+                                <!--                                <table class="table table-striped custab">-->
+                                <c:forEach items="${youtubeFiles}" var="youtubFile">
+                                    <!--                                        <tr>
+                                                                                <td>-->
+                                    <div class="row" style="margin-top: 10px;">
+                                        <div class="col-md-6 col-lg-6">
+                                            <iframe class="img-responsive"
+                                                    src="${youtubFile.uriYoutube}">
+                                            </iframe>
+                                        </div>
+                                        <div class="col-md-6 col-lg-6">
+                                            <c:out	value="${youtubFile.title}" />
+                                        </div>                                        
+                                    </div>
+                                    <!--                                            </td>                                            
+                                                                                <td></td>                                            
+                                                                            </tr>-->
+                                </c:forEach>
+                                <!--</table>-->
 
                                 <!-- D Pagination -->
                                 <ul class="pagination">
@@ -319,6 +228,19 @@ figcaption.mask h3, figcaption.mask p {
                 background-color: #584419 !important; 
                 color: #ffffff; 
             }
+            .dropdown-menu {
+                background-color: #f9efc8fa;
+            }
+            .multiselect-container>li.active>a {
+                background-color: #584419!important;
+            }        
+            .multiselect-selected-text {
+                float: left;
+            }
+            .caret {
+                float: right;
+                margin: 8px;
+            }            
         </style>
 
         <div id="modal-ajout-document" class="modal edit-profil-form">
@@ -330,20 +252,30 @@ figcaption.mask h3, figcaption.mask p {
                         <h4 class="modal-title">Ajouter un document</h4>
                     </div>
                     <div class="modal-body" style="overflow-y: auto;max-height:  500px;">
-                        Fichier<sup>*</sup>
+                        <div class="autocomplete" style="width: 100%;">
+                            <spring:message code="metadata.type"/>
+                            <select class="form-control" id="type">
+                                <option value="4">Document</option>
+                                <option value="1">Photo</option>
+                                <option value="2">Video</option>
+                                <option value="3">Audio</option>
+                            </select>
+                            <!--<input type="text" class="form-control" id="type">-->
+                        </div>
+                        <spring:message code="global.label.file"/>
                         <input type="file" class="form-control" id="document">
                         <div class="autocomplete" style="width: 100%;">
-                            year<sup>*</sup>                        
-                            <input type="text" class="form-control" id="year">
+                            <spring:message code="metadata.year"/><sup>*</sup>                        
+                            <input required type="text" class="form-control" id="year">
                         </div>
-                        Date
+                        <spring:message code="metadata.date"/>
                         <input type="date" class="form-control" id="datePublication">
                         <div class="autocomplete" style="width: 100%;">
-                            Bibliographic resource
+                            <spring:message code="metadata.bibliographicResource"/>
                             <input type="text" class="form-control" id="bibliographic_resource">
                         </div>
-                        Topics<sup>*</sup>
-                        <select id="id_thematique" class="form-control">
+                        <spring:message code="metadata.topics"/><sup>*</sup><br>
+                        <select multiple="" id="id_thematique" class="form-control">
                             <option value="797277">Behavior </option>
                             <option value="797278">Threats /conservation issues </option>
                             <option value="797279">Vocalization </option>
@@ -368,67 +300,63 @@ figcaption.mask h3, figcaption.mask p {
                             <option value="797298">Others</option>
                         </select>
                         <div class="autocomplete" style="width: 100%;">
-                            url                        
+                            <spring:message code="metadata.url"/>
                             <input type="text" class="form-control" id="url">
                         </div>
                         <div class="autocomplete" style="width: 100%;">
-                            coverage                        
+                            <spring:message code="metadata.coverage"/>
                             <input type="text" class="form-control" id="coverage">
                         </div>
                         <div class="autocomplete" style="width: 100%;">
-                            description                        
+                            <spring:message code="metadata.description"/>
                             <input type="text" class="form-control" id="description">
                         </div>
                         <div class="autocomplete" style="width: 100%;">
-                            language                        
+                            <spring:message code="metadata.language"/>
                             <input type="text" class="form-control" id="language">
                         </div>
                         <div class="autocomplete" style="width: 100%;">
-                            relation                        
+                            <spring:message code="metadata.relation"/>
                             <input type="text" class="form-control" id="relation">
                         </div>
                         <div class="autocomplete" style="width: 100%;">
-                            source                        
+                            <spring:message code="metadata.source"/>
                             <input type="text" class="form-control" id="source">
                         </div>
                         <div class="autocomplete" style="width: 100%;">
-                            subject                        
+                            <spring:message code="metadata.subject"/>
                             <input type="text" class="form-control" id="subject">
                         </div>
                         <div class="autocomplete" style="width: 100%;">
-                            title
+                            <spring:message code="metadata.title"/>
                             <input type="text" class="form-control" id="title">
                         </div>
                         <div class="autocomplete" style="width: 100%;">
-                            format
+                            <spring:message code="metadata.format"/>
                             <input type="text" class="form-control" id="format">
                         </div>
                         <div class="autocomplete" style="width: 100%;">
-                            fileFormat
+                            <spring:message code="metadata.fileFormat"/>
                             <input type="text" class="form-control" id="fileFormat">
                         </div>
                         <div class="autocomplete" style="width: 100%;">
-                            identifier
+                            <spring:message code="metadata.identifier"/>
                             <input type="text" class="form-control" id="identifier">
-                        </div>
+                        </div>                        
                         <div class="autocomplete" style="width: 100%;">
-                            type
-                            <input type="text" class="form-control" id="type">
-                        </div>
-                        <div class="autocomplete" style="width: 100%;">
-                            contributor
+                            <spring:message code="metadata.contributor"/>
                             <input type="text" class="form-control" id="contributor">
                         </div>
                         <div class="autocomplete" style="width: 100%;">
-                            creator
+                            <spring:message code="metadata.creator"/>
                             <input type="text" class="form-control" id="creator">
                         </div>
                         <div class="autocomplete" style="width: 100%;">
-                            publisher
+                            <spring:message code="metadata.publisher"/>
                             <input type="text" class="form-control" id="publisher">
                         </div>
                         <div class="autocomplete" style="width: 100%;">
-                            rights
+                            <spring:message code="metadata.rights"/>
                             <input type="text" class="form-control" id="rights">                        
                         </div>
                         <div id="errorMdp"></div>
@@ -440,8 +368,61 @@ figcaption.mask h3, figcaption.mask p {
                 </div>
             </div>                        
         </div>
+        <!--modal for detail-->
+        <div id="modal-detail" class="modal edit-profil-form">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" onclick="closeModal('modal-detail')">&times;</button>
+                        <h4 class="modal-title" id="title-modal-details"></h4>
+                    </div>
+                    <div id="modal-detail-body" class="modal-body" style="overflow-y: auto;max-height:  500px;"></div>
+                    <div class="modal-footer">
+                        <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal('modal-detail')">Fermer</button>                        
+                    </div>
+                </div>
+            </div>                        
+        </div>
     </div>        
 </div>
+<script>
+    function showPhoto(id) {
+        $('#modal-detail-body').html('<img class="col-md-12" src="${resourcesPath}/upload/' + id + '">');
+        $('#title-modal-details').html(id);
+        openModal('modal-detail');
+    }
+    function showDetail(id) {
+        $('.removable-row').remove();
+        $('#modal-detail-body').html('<table id="table-detail-metadata" class="table"></table>');
+        openModal('modal-detail');
+        $.get("metadata/" + id, function (data) {
+            drawTable(data[0].value, 'table-detail-metadata');
+            $('#title-modal-details').html(data[0].value.title);
+        }).done(function () {
+        });
+    }
+    function drawTable(data, table) {
+        $.each(data, function (key, value) {
+            if (key !== 'id' && key !== 'idDocument' && key !== 'idUtilisateur' && key !== 'document' && key !== 'listeAssociationMetadataTopic') {
+                if (key === 'url') {
+                    if (value.indexOf("/resources/upload/") === 0) {
+                        value = value.substring(1);
+                    }
+                    value = '<a href="' + value + '">' + value + '</a>';
+                }
+                drawRow(key + ":", value, table);
+            }
+        });
+    }
+
+    function drawRow(key, value, table) {
+        var row = $("<tr class='removable-row' />");
+        $("#" + table).append(row);
+        row.append($("<td>" + key + "</td>"));
+        row.append($("<th>" + value + "</th>"));
+    }
+</script>
 <script>
     function sendAddDocument() {
         var formData = new FormData();
@@ -525,5 +506,13 @@ figcaption.mask h3, figcaption.mask p {
     autocomplete(document.getElementById("publisher"), 'publisher');
     autocomplete(document.getElementById("rights"), 'rights');
 </script>
-
-
+<link rel="stylesheet" href="${resourcesPath}/css/bootstrap-multiselect.css" type="text/css">
+<script type="text/javascript" src="${resourcesPath}/js/bootstrap-multiselect.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#id_thematique').multiselect({
+            maxHeight: 158,
+            buttonWidth: '100%'
+        });
+    });
+</script>

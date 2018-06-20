@@ -1,6 +1,7 @@
 package org.wcs.lemursportal.model.post;
 
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import javax.persistence.Transient;
+import org.wcs.lemursportal.model.association.AssociationMetadataTopic;
 
 @Entity
 @Table(name = "metadata")
@@ -44,7 +46,7 @@ public class Metadata {
 
     @Column(name = "date_publication", insertable = true, updatable = true)
     private String date;
-    
+
     @Column(name = "year", insertable = true, updatable = true)
     private String year;
 
@@ -74,20 +76,31 @@ public class Metadata {
 
     @Column(name = "id_document", insertable = true, updatable = true)
     private Integer idDocument;
-    
-    @Column(name = "id_thematique", insertable = true, updatable = true)
-    private Integer idThematique;
-    
+
     @Column(name = "id_utilisateur", insertable = true, updatable = true)
     private Integer idUtilisateur;
-    
+
     @Column(name = "bibliographic_resource", insertable = true, updatable = true)
     private String bibliographicResource;
-        
+
     @Transient
     private Document document;
-    
-    
+
+    @Transient
+    private List<AssociationMetadataTopic> listeAssociationMetadataTopic;
+
+    //Utils method
+    public void addListeAssociationMetadataTopic(AssociationMetadataTopic associationMetadataTopic) {
+        try {
+            this.listeAssociationMetadataTopic.add(associationMetadataTopic);
+        } catch (NullPointerException e) {
+            this.listeAssociationMetadataTopic = new ArrayList<>();
+            this.listeAssociationMetadataTopic.add(associationMetadataTopic);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     //Getters and setters
     public Integer getId() {
         return id;
@@ -167,7 +180,7 @@ public class Metadata {
 
     public void setDate(String date) {
         this.date = date;
-    }    
+    }
 
     public String getFormat() {
         return format;
@@ -249,14 +262,6 @@ public class Metadata {
         this.year = year;
     }
 
-    public Integer getIdThematique() {
-        return idThematique;
-    }
-
-    public void setIdThematique(Integer idThematique) {
-        this.idThematique = idThematique;
-    }
-
     public Document getDocument() {
         return document;
     }
@@ -280,6 +285,12 @@ public class Metadata {
     public void setIdUtilisateur(Integer idUtilisateur) {
         this.idUtilisateur = idUtilisateur;
     }
-    
-    
+
+    public List<AssociationMetadataTopic> getListeAssociationMetadataTopic() {
+        return listeAssociationMetadataTopic;
+    }
+
+    public void setListeAssociationMetadataTopic(List<AssociationMetadataTopic> listeAssociationMetadataTopic) {
+        this.listeAssociationMetadataTopic = listeAssociationMetadataTopic;
+    }
 }

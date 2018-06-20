@@ -25,19 +25,18 @@ import org.wcs.lemursportal.model.user.UserType;
 import org.wcs.lemursportal.repository.user.UserRepository;
 import org.wcs.lemursportal.service.authentication.AuthenticationService;
 
-
 /**
- * 
+ *
  * @author z
  *
  */
 @Service("localUserDetailService")
 public class LocalUserDetailService implements AuthenticationService {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(LocalUserDetailService.class); 
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LocalUserDetailService.class);
 
     private UserRepository userRepository;
-    
+
     @Autowired
     public LocalUserDetailService(UserRepository repository) {
         this.userRepository = repository;
@@ -51,17 +50,17 @@ public class LocalUserDetailService implements AuthenticationService {
             return null;
         }
         List<SimpleGrantedAuthority> simpleGrantedAuthorities = buildSimpleGrantedAuthorities(user);
-        
+
         SocialUser principal = SocialUser.getBuilder()
                 .firstName(user.getNom())
                 .id(user.getId())
                 .lastName(user.getPrenom())
                 .password(user.getPassword())
                 .role(user.getRoles())
-                .socialProvider(user.getProvider()==null?SocialProvider.NONE:SocialProvider.valueOf(user.getProvider()))
+                .socialProvider(user.getProvider() == null ? SocialProvider.NONE : SocialProvider.valueOf(user.getProvider()))
                 .username(user.getEmail())
                 .build();
-        
+
         return principal;
     }
 
@@ -76,11 +75,11 @@ public class LocalUserDetailService implements AuthenticationService {
     }
 
     @Autowired
-	private AuthenticationManager authenticationManager;
-    
+    private AuthenticationManager authenticationManager;
+
     @Override
     public void autoLogin(String email, String password, HttpServletRequest request) {
-		UserDetails userDetails = this.loadUserByUsername(email);
+        UserDetails userDetails = this.loadUserByUsername(email);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
         request.getSession();//créer une session si ce n'est pas déjà fait
         usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetails(request));
@@ -89,10 +88,10 @@ public class LocalUserDetailService implements AuthenticationService {
         if (usernamePasswordAuthenticationToken.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
             LOGGER.debug(String.format("Auto login '%s' successfully!", email));
-        } else{
-        	LOGGER.debug(String.format("Auto login '%s' failed!", email));
+        } else {
+            LOGGER.debug(String.format("Auto login '%s' failed!", email));
         }
-		
-	}
+
+    }
 
 }
