@@ -7,6 +7,7 @@
 <%@taglib prefix="page" tagdir="/WEB-INF/tags/page" %>
 <spring:message code="datetime.format" var="datetimeFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
+<c:set var="req" value="${pageContext.request}" />
 
 <!-- Navigation -->
 <nav id="navigation" class="navbar navbar-inverse navbar-fixed-top animated-header" role="navigation">
@@ -77,24 +78,21 @@
                                     <input type="hidden" name="${_csrf.parameterName}"
                                            value="${_csrf.token}" />
                                 </form>
+<!--                                 verification dev mode -->
+                                <c:set var="port" value="" />
+								<c:if test="${req.getServerPort() != '80'}">
+									<c:set var="port" value=":${req.getServerPort()}" />
+								</c:if>
                                 <script>
                                     function formSubmit() {
-                                        //logout also species databases by Zacharie                                        
-//                                        $.ajax({
-//                                            type: 'post',
-//                                            url: 'http://localhost:8085/lemurs/logout',
-//                                            success: function (json) {
-//                                        document.getElementById("logoutForm").submit();
-//                                            }
-//                                        });
                                         //logout also species databases by Zacharie
-                                                $.ajax({
-                                                    type: 'post',
-                                                    url: 'species/logout',
-                                                    success: function (json) {
-                                                        document.getElementById("logoutForm").submit();
-                                                    }
-                                                });
+                                        $.ajax({
+                                            type: 'post',
+                                            url: '${req.getScheme()}://${req.getServerName()}${port}/species/logout',
+                                            success: function (json) {
+                                                document.getElementById("logoutForm").submit();
+                                            }
+                                        });
                                     }
                                 </script>
                             </span>
