@@ -88,7 +88,7 @@ public class FormationController extends BaseController {
 		return "redirect:/formation/" + formation.getId();
 	}
 	
-	@PreAuthorize("hasAnyRole('USER', 'EXPERT','MODERATEUR', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
 	@RequestMapping(method = RequestMethod.POST, value = URL.ADD_FORMATION)
 	public String addFormationSubmit(Authentication authentication, Model model, @Valid @ModelAttribute("formation") Formation formation,
 			BindingResult result, HttpSession session, SessionStatus status) {

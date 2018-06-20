@@ -20,8 +20,8 @@
                     <div class="page-title">
                         <div class="pull-right forum-desc">
                         	<c:set var="uLogin" value="" />
-							<sec:authorize access="hasRole('EXPERT')">
-								<a class="btn btn-primary btn-xs pull-right" href="${newFormation}">Ajouter une formation</a>
+							<sec:authorize access="hasAnyRole('EXPERT', 'ADMIN', 'MODERATEUR')">
+								<a class="btn btn-primary btn-xs pull-right" href="${newFormation}">Ajouter une opportunité</a>
 								<c:set var="uLogin">
 									<sec:authentication property="principal.username" /> 
 								</c:set>

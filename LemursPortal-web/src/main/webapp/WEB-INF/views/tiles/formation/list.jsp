@@ -18,8 +18,8 @@
                     <div class="page-title">
                         <div class="pull-right forum-desc">
                         	<c:url value="/formation/new" var="newFormation"></c:url>
-                        	<sec:authorize access="hasRole('EXPERT')">
-                            <a class="btn btn-primary btn-xs pull-right" href="${newFormation}">Ajouter une formation</a>
+                        	<sec:authorize access="hasAnyRole('EXPERT', 'ADMIN', 'MODERATEUR')">
+                            <a class="btn btn-primary btn-xs pull-right" href="${newFormation}">Ajouter une opportunité</a>
                             </sec:authorize>
                         </div>
                         <h2 class="formation">Liste des formations</h2>

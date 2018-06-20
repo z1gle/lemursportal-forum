@@ -29,26 +29,6 @@
     width: 32%;
 }
 
-figcaption.mask {
-    background-color: rgba(54, 55, 50, 0.79);
-    bottom: -126px;
-    color: #fff;
-    padding: 25px;
-    position: absolute;
-    width: 100%;
-    text-align: left;
-    -webkit-transition: all 0.4s ease 0s;
-    -moz-transition: all 0.4s ease 0s;
-    -ms-transition: all 0.4s ease 0s;
-    -o-transition: all 0.4s ease 0s;
-    transition: all 0.4s ease 0s;
-}
-
-figcaption.mask h3 {
-    margin: 0;
-    color: #fff;
-}
-
 p {
     line-height: 25px;
 }
@@ -72,6 +52,41 @@ ul.external {
 .species-item img {
 	background-size: cover;
 	background-position: 50% 25%;
+}
+
+figcaption.mask {
+    /* background-color: rgba(54, 55, 50, 0.79); */
+/* 	background-image: url('${resourcesPath}/images/gradient.png');  */
+    background: linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 100%);
+    bottom: -126px;
+    color: #fff;
+    padding: 25px;
+    position: absolute;
+    width: 100%;
+    text-align: left;
+    -webkit-transition: all 0.4s ease 0s;
+    -moz-transition: all 0.4s ease 0s;
+    -ms-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+}
+
+.species-item:hover figcaption.mask {
+    bottom: 0;
+}
+
+figcaption.mask h3, figcaption.mask p {
+    margin: 0;
+    color: #fff;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.species-item img:hover {
+	opacity:1;
+}
+.species-item img:hover, .species-item img {
+	border: 1px solid #d7d7d7;
 }
 -->
 </style>
@@ -114,9 +129,9 @@ ul.external {
                                         <li class="species-item">
 									<img src="${resourcesPath}/images/l-blank.png" style="background-image: url('${resourcesPath}/upload/${pic.filename}'); " class="img-responsive" alt="--">
 									<figcaption class="mask">
-										<h3>
+										<p>
 											<i>${pic.filename}</i>
-										</h3>
+										</p>
 										<p>--</p>
 									</figcaption>
 									<ul class="external">
