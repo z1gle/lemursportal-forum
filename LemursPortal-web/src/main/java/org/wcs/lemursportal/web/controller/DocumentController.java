@@ -42,6 +42,7 @@ import org.wcs.lemursportal.model.association.AssociationMetadataTopic;
 import org.wcs.lemursportal.model.post.Document;
 import org.wcs.lemursportal.model.post.Metadata;
 import org.wcs.lemursportal.model.post.Post;
+import org.wcs.lemursportal.model.post.TopThematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.post.DocumentRepository;
 import org.wcs.lemursportal.repository.post.MetadataRepository;
@@ -71,17 +72,25 @@ public class DocumentController extends BaseController {
     private static final int BUFFER_SIZE = 4096;
 
     @GetMapping(value = {"/documents"})
-    public String list(@RequestParam(required = false, defaultValue = "0") Integer page, Model model) {
+    public String list(@RequestParam(required = false, defaultValue = "0") Integer page, @RequestParam(required = false, value = "topic") Integer thematique, Model model) {
         if (page == null || page < 1) {
             page = 0;
         } else {
             page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }
-        model.addAttribute("docAUDIO", listDocs(page, model, DOCTYPE.AUDIO));
-        model.addAttribute("docVIDEO", listDocs(page, model, DOCTYPE.VIDEO));
-        model.addAttribute("docIMAGE", listMetadata(page, model, "1"));
-        model.addAttribute("docAUTRES", listMetadata(page, model, "4"));
-        model.addAttribute("metadata", new Metadata());
+        if (thematique != null) {
+            model.addAttribute("docAUDIO", listDocs(page, model, DOCTYPE.AUDIO));
+            model.addAttribute("docVIDEO", listDocs(page, model, DOCTYPE.VIDEO));
+            model.addAttribute("docIMAGE", listMetadatas(page, model, "1", thematique));
+            model.addAttribute("docAUTRES", listMetadatas(page, model, "4", thematique));
+            model.addAttribute("metadata", new Metadata());
+        } else {
+            model.addAttribute("docAUDIO", listDocs(page, model, DOCTYPE.AUDIO));
+            model.addAttribute("docVIDEO", listDocs(page, model, DOCTYPE.VIDEO));
+            model.addAttribute("docIMAGE", listMetadata(page, model, "1"));
+            model.addAttribute("docAUTRES", listMetadata(page, model, "4"));
+            model.addAttribute("metadata", new Metadata());            
+        }
         return "document-list";
     }
 
@@ -98,7 +107,7 @@ public class DocumentController extends BaseController {
         }
         return null;
     }
-    
+
     public List<Metadata> listMetadata(Integer page, Model model) {
         if (page == null || page < 1) {
             page = 0;
@@ -112,7 +121,7 @@ public class DocumentController extends BaseController {
         }
         return null;
     }
-    
+
     public List<Metadata> listMetadata(Integer page, Model model, String metadataType) {
         if (page == null || page < 1) {
             page = 0;
@@ -123,6 +132,20 @@ public class DocumentController extends BaseController {
         metadata.setType(metadataType);
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
         Page<Metadata> pageMetadata = metadataRepository.findAll(pageable, metadata);
+        if (null != pageMetadata) {
+            return pageMetadata.getContent();
+        }
+        return null;
+    }
+
+    public List<Metadata> listMetadatas(Integer page, Model model, String metadataType, Integer thematique) {
+        if (page == null || page < 1) {
+            page = 0;
+        } else {
+            page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+        }
+        Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
+        Page<Metadata> pageMetadata = metadataRepository.findAll(pageable, metadataType, thematique);
         if (null != pageMetadata) {
             return pageMetadata.getContent();
         }
@@ -189,7 +212,7 @@ public class DocumentController extends BaseController {
             return "redirect:/login";
         }
         Metadata post = new Metadata();
-        post.setBibliographicResource(bibliographicResource);        
+        post.setBibliographicResource(bibliographicResource);
         post.setDate(date);
         post.setCoverage(coverage);
         post.setDescription(description);
@@ -208,7 +231,7 @@ public class DocumentController extends BaseController {
         post.setYear(year);
         post.setType(type);
         post.setUrl(url);
-        
+
         String[] idsThematique = null;
         try {
             idsThematique = idThematique.split(",");
@@ -247,20 +270,20 @@ public class DocumentController extends BaseController {
                 stream.close();
                 Document doc = new Document();
                 doc.setAuthor(currentUser);
-                doc.setCreationDate(now);                
+                doc.setCreationDate(now);
                 doc.setFilename(filename);
                 doc.setUrl("/" + "resources" + "/" + "upload" + "/" + filename);
                 doc.setAuthorId(currentUser.getId());
                 //typeId is 4 for publication 
                 doc.setTypeId(Integer.parseInt(post.getType()));
-                post.setDocument(doc);                
+                post.setDocument(doc);
             } catch (Exception e) {
                 return "You failed to upload " + filename + " => " + e.getMessage();
             }
         } else {
             Document doc = new Document();
             doc.setAuthor(currentUser);
-            doc.setCreationDate(now);            
+            doc.setCreationDate(now);
             doc.setFilename(post.getTitle());
             doc.setUrl(post.getUrl());
             doc.setAuthorId(currentUser.getId());
@@ -273,6 +296,17 @@ public class DocumentController extends BaseController {
         post.setIdUtilisateur(currentUser.getId());
         documentService.addDocument(post);
         return "success";
+    }
+    
+    /**
+     *
+     * @return
+     */
+    @ModelAttribute("topThematiques")
+    @Override
+    public List<TopThematique> getTopThematiques() {
+        Page<TopThematique> page = thematiqueRepository.findTopThematique((PageRequest) null, true);
+        return page.getContent();
     }
 
 }

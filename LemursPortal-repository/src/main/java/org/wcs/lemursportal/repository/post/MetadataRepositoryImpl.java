@@ -733,4 +733,18 @@ public class MetadataRepositoryImpl implements MetadataRepository {
         return new PageImpl<>(results);
     }
 
+    @Override
+    public Page<Metadata> findAll(Pageable pageable, String type, Integer idThematique) {
+        String qry = "select d.* from metadata d join association_metadata_topic a on d.id = a.id_metadata where a.id_topic = :idTopic and d.type = :type";
+        Query query = em.createNativeQuery(qry, Metadata.class);
+        query.setParameter("idTopic", idThematique);        
+        query.setParameter("type", type);        
+        if (pageable != null) {
+            query.setFirstResult(pageable.getOffset());
+            query.setMaxResults(pageable.getPageSize());
+        }
+        List<Metadata> results = query.getResultList();
+        return new PageImpl<>(results);
+    }
+
 }

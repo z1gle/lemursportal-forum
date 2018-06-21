@@ -27,11 +27,11 @@ import org.wcs.lemursportal.service.post.MetadataService;
 public class MetadataController extends BaseController {
 
     @Autowired
-    ServletContext context;
-    @Autowired
-    MetadataRepository metadataRepository;
+    ServletContext context;    
     @Autowired
     MetadataService metadataService;
+    @Autowired
+    MetadataRepository metadataRepository;
 
     private static final int BUFFER_SIZE = 4096;
 
@@ -91,4 +91,46 @@ public class MetadataController extends BaseController {
         }
         return valiny;
     }
+    
+    @GetMapping(value = {"/metadata/{id}"}, headers = "Accept=application/json")
+    public @ResponseBody List<HashMap<String, Object>> list(@PathVariable("id") Integer id) {
+        List<HashMap<String, Object>> valiny = new ArrayList<>();
+        try {
+            Metadata metadata = new Metadata();
+            metadata.setId(id);
+            metadata = metadataService.findById(metadata.getId());
+            HashMap<String, Object> temp = new HashMap<>();
+            temp.put("etat", Boolean.TRUE);
+            temp.put("value", metadata);
+            valiny.add(temp);
+        } catch (Exception ex) {
+            HashMap<String, Object> temp = new HashMap<>();
+            temp.put("etat", Boolean.FALSE);
+            temp.put("value", ex.getMessage());
+            valiny.add(temp);
+            //ex.printStackTrace();
+        }        
+        return valiny;
+    }
+    
+//    @GetMapping(value = {"/metadata/list"}, headers = "Accept=application/json")
+//    public @ResponseBody List<HashMap<String, Object>> lister(@RequestParam("element") String element, @RequestParam("valeur") String valeur) {
+//        List<HashMap<String, Object>> valiny = new ArrayList<>();
+//        try {
+//            Metadata metadata = new Metadata();
+//            metadata.getClass().getMethod("set" + element, String.class).invoke(metadata, valeur);            
+//            metadata = metadataService.findById(metadata.getId());
+//            HashMap<String, Object> temp = new HashMap<>();
+//            temp.put("etat", Boolean.TRUE);
+//            temp.put("value", metadata);
+//            valiny.add(temp);
+//        } catch (Exception ex) {
+//            HashMap<String, Object> temp = new HashMap<>();
+//            temp.put("etat", Boolean.FALSE);
+//            temp.put("value", ex.getMessage());
+//            valiny.add(temp);
+//            //ex.printStackTrace();
+//        }        
+//        return valiny;
+//    }
 }

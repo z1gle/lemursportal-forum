@@ -29,4 +29,10 @@ public class MetadataServiceImpl extends GenericCRUDServiceImpl<Metadata, Intege
         return metadataRepository.findOneElementOfMetadata(metadata);
     }
 
+//    @Override
+//    public void findById(Metadata metadata) throws Exception {
+//        Metadata temp = metadataRepository.findById(metadata.getId());
+//        metadata = temp;
+//    }
+    
 }
