@@ -38,19 +38,31 @@
                     <div role="tabpanel" class="tab-pane active fade in" id="tab-item-1">
                         <div class="txt-content">
                             <div class="col-md-offset custyle">
-                                <table class="table table-striped custab">
-                                    <c:forEach items="${docAUTRES}" var="publication">
-                                        <tr>                                            
-                                            <td><img src="${resourcesPath}/images/icon-thema.png" alt=""></td>
-                                            <td class="text-center">${publication.year}</td>
+                                <table style="border: 0px;" class="table table-striped custab">
+                                    <c:set var="years" value="${0}"/>
+                                    <c:forEach items="${docAUTRES}" var="publication">      
+                                        <c:choose>
+                                            <c:when test="${years != publication.year}">
+                                                <c:set var="years" value="${publication.year}"/>
+                                                <tr style="background-color: white;">
+                                                    <th style="color:  dodgerblue;font-size: 15px; border-color: white; padding-left: 20px;">${publication.year}</th>                                                                                                        
+                                                    <th style="color:  dodgerblue;font-size: 15px; border-color: white;"></th>                                                                                                        
+                                                    <th style="color:  dodgerblue;font-size: 15px; border-color: white;"></th>                                                                                                        
+                                                    <th style="color:  dodgerblue;font-size: 15px; border-color: white;"></th>                                                                                                        
+                                                </tr>
+                                            </c:when>
+                                            <c:otherwise>                                            
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <tr style="border:1px solid #ccc;">                                                                                        
                                             <td><a href="#" onclick="showDetail(${publication.id})"><c:out	value="${publication.title}" /></a></td>
-                                            <td><c:out	value="${publication.date}" /></td>
+                                            <td><c:out	value="${publication.coverage}" /></td>
                                             <td><c:out	value="${publication.creator}" /></td>
                                             <td class="text-center">
                                                 <%--<c:url var="publicationPageUrl" value="/files/${publication.idDocument}"/>--%>
                                                 <c:url var="publicationPageUrl" value="${publication.url}"/>
                                                 <!--<a class='btn btn-info btn-xs' href="${publicationPageUrl}" download="${publication.title}.pdf"><span class="glyphicont"></span>Télécharger</a></td>-->
-                                                <a class='btn btn-info btn-xs' href="${publicationPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
+                                                <a href="${publicationPageUrl}"><span class="glyphicont"></span><img src="${resourcesPath}/images/icon-thema.png" alt=""></a></td>
                                         </tr>
                                     </c:forEach>
                                 </table>
@@ -305,7 +317,19 @@
                             <input type="date" class="form-control" id="datePublication">
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.bibliographicResource"/>
-                                <input type="text" class="form-control" id="bibliographic_resource">
+                                <select class="form-control" id="bibliographic_resource" style="width: 100%!important;">
+                                    <option style="background-color: #f9efc9;" value="">none</option>                                    
+                                    <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.paper"/>"><spring:message code="metadata.bibliographicResource.paper"/></option>                                    
+                                    <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.journal"/>"><spring:message code="metadata.bibliographicResource.journal"/></option>                                    
+                                    <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.book"/>"><spring:message code="metadata.bibliographicResource.book"/></option>                                    
+                                    <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.report"/>"><spring:message code="metadata.bibliographicResource.report"/></option>                                    
+                                    <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.memory"/>"><spring:message code="metadata.bibliographicResource.memory"/></option>                                    
+                                    <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.thesis"/>"><spring:message code="metadata.bibliographicResource.thesis"/></option>                                    
+                                    <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.map"/>"><spring:message code="metadata.bibliographicResource.map"/></option>                                    
+                                    <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.poster"/>"><spring:message code="metadata.bibliographicResource.poster"/></option>                                    
+                                    <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.others"/>"><spring:message code="metadata.bibliographicResource.others"/></option>                                    
+                                </select>
+                                <!--<input type="text" class="form-control" id="bibliographic_resource">-->
                             </div>                                                
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.coverage"/>
