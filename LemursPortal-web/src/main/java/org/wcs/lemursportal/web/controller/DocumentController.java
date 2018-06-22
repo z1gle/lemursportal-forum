@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.wcs.lemursportal.model.association.AssociationMetadataTaxonomi;
 import org.wcs.lemursportal.model.association.AssociationMetadataTopic;
 import org.wcs.lemursportal.model.post.Document;
 import org.wcs.lemursportal.model.post.Metadata;
@@ -131,7 +132,7 @@ public class DocumentController extends BaseController {
         Metadata metadata = new Metadata();
         metadata.setType(metadataType);
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
-        Page<Metadata> pageMetadata = metadataRepository.findAll(pageable, metadata);
+        Page<Metadata> pageMetadata = metadataRepository.findAll(pageable, metadata, -2);
         if (null != pageMetadata) {
             return pageMetadata.getContent();
         }
@@ -207,7 +208,7 @@ public class DocumentController extends BaseController {
     }
 
     @PostMapping(value = "/secured/document/post")
-    public String submit(Authentication authentication, @RequestParam("bibliographicResource") String bibliographicResource, @RequestParam("url") String url, @RequestParam("date") String date, @RequestParam("idThematique") String idThematique, @RequestParam("coverage") String coverage, @RequestParam("description") String description, @RequestParam("language") String language, @RequestParam("relation") String relation, @RequestParam("source") String source, @RequestParam("subject") String subject, @RequestParam("title") String title, @RequestParam("format") String format, @RequestParam("fileFormat") String fileFormat, @RequestParam("identifier") String identifier, @RequestParam("type") String type, @RequestParam("contributor") String contributor, @RequestParam("creator") String creator, @RequestParam("publisher") String publisher, @RequestParam("rights") String rights, @RequestParam("year") String year, @RequestParam(name = "file", required = false) MultipartFile file, HttpServletRequest request) {
+    public String submit(Authentication authentication, @RequestParam("bibliographicResource") String bibliographicResource, @RequestParam("url") String url, @RequestParam("date") String date, @RequestParam("idThematique") String idThematique, @RequestParam(name = "species", required = false) String species, @RequestParam("coverage") String coverage, @RequestParam("description") String description, @RequestParam("language") String language, @RequestParam("relation") String relation, @RequestParam("source") String source, @RequestParam("subject") String subject, @RequestParam("title") String title, @RequestParam("format") String format, @RequestParam("fileFormat") String fileFormat, @RequestParam("identifier") String identifier, @RequestParam("type") String type, @RequestParam("contributor") String contributor, @RequestParam("creator") String creator, @RequestParam("publisher") String publisher, @RequestParam("rights") String rights, @RequestParam("year") String year, @RequestParam(name = "file", required = false) MultipartFile file, HttpServletRequest request) {
         if (authentication == null) {
             return "redirect:/login";
         }
@@ -242,6 +243,23 @@ public class DocumentController extends BaseController {
             AssociationMetadataTopic amt = new AssociationMetadataTopic();
             amt.setId2(Integer.parseInt(s));
             post.addListeAssociationMetadataTopic(amt);
+        }
+        String[] listSpecies = null;
+        try {
+            listSpecies = species.split(",");
+        } catch (PatternSyntaxException nse) {
+            listSpecies = new String[]{species};
+        } catch (NullPointerException npe) {
+            // If null, we don't care, we catch it later;
+        }
+        for (String s : listSpecies) {
+            AssociationMetadataTaxonomi amt = new AssociationMetadataTaxonomi();
+            try {
+                amt.setId2(Integer.parseInt(s));
+            } catch(Exception e) {
+                continue;
+            }            
+            post.addListeAssociationMetadataTaxonomi(amt);
         }
         UserInfo currentUser = userInfoService.getByEmail(authentication.getName());
         System.out.println("mail");

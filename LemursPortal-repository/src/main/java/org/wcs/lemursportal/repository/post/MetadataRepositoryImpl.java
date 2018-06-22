@@ -8,13 +8,13 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.wcs.lemursportal.model.association.AssociationMetadataTaxonomi;
 import org.wcs.lemursportal.model.association.AssociationMetadataTopic;
 import org.wcs.lemursportal.model.post.Document;
 import org.wcs.lemursportal.model.post.Metadata;
@@ -41,7 +41,7 @@ public class MetadataRepositoryImpl implements MetadataRepository {
     public Page<Document> findDocuments(Metadata metadata, Pageable pageable) {
         String qry = "select s.* from document s join metadata d where 1=1";
         if (metadata.getIdDocument() != null) {
-            qry += "and d.id = :idDoc";
+            qry += " and d.id = :idDoc";
             Query query = em.createNativeQuery(qry, Document.class);
             query.setParameter("idDoc", metadata.getIdDocument());
             if (pageable != null) {
@@ -75,87 +75,87 @@ public class MetadataRepositoryImpl implements MetadataRepository {
         Boolean bibliographicResource = Boolean.FALSE;
         Boolean idUtilisateur = Boolean.FALSE;
         if (metadata.getContributor() != null && !metadata.getContributor().isEmpty()) {
-            qry += "and d.contributor ilike :contributor";
+            qry += " and d.contributor ilike :contributor";
             contributor = Boolean.TRUE;
         }
         if (metadata.getCoverage() != null && !metadata.getCoverage().isEmpty()) {
-            qry += "and d.coverage ilike :coverage";
+            qry += " and d.coverage ilike :coverage";
             coverage = Boolean.TRUE;
         }
         if (metadata.getCreator() != null && !metadata.getCreator().isEmpty()) {
-            qry += "and d.creator ilike :creator";
+            qry += " and d.creator ilike :creator";
             creator = Boolean.TRUE;
         }
         if (metadata.getDate() != null && !metadata.getDate().isEmpty()) {
-            qry += "and d.date_publication ilike :date";
+            qry += " and d.date_publication ilike :date";
             date = Boolean.TRUE;
         }
         if (metadata.getDescription() != null && !metadata.getDescription().isEmpty()) {
-            qry += "and d.description ilike :description";
+            qry += " and d.description ilike :description";
             description = Boolean.TRUE;
         }
         if (metadata.getFileFormat() != null && !metadata.getFileFormat().isEmpty()) {
-            qry += "and d.file_format ilike :fileFormat";
+            qry += " and d.file_format ilike :fileFormat";
             fileFormat = Boolean.TRUE;
         }
         if (metadata.getFormat() != null && !metadata.getFormat().isEmpty()) {
-            qry += "and d.format ilike :format";
+            qry += " and d.format ilike :format";
             format = Boolean.TRUE;
         }
         if (metadata.getIdDocument() != null && metadata.getIdDocument() != 0) {
-            qry += "and d.id_document = :idDocument";
+            qry += " and d.id_document = :idDocument";
             idDocument = Boolean.TRUE;
         }
         if (metadata.getIdUtilisateur() != null && metadata.getIdUtilisateur() != 0) {
-            qry += "and d.id_utilisateur = :idUtilisateur";
+            qry += " and d.id_utilisateur = :idUtilisateur";
             idUtilisateur = Boolean.TRUE;
         }
         if (metadata.getIdentifier() != null && !metadata.getIdentifier().isEmpty()) {
-            qry += "and d.identifier ilike :identifier";
+            qry += " and d.identifier ilike :identifier";
             identifier = Boolean.TRUE;
         }
         if (metadata.getLanguage() != null && !metadata.getLanguage().isEmpty()) {
-            qry += "and d.language ilike :language";
+            qry += " and d.language ilike :language";
             language = Boolean.TRUE;
         }
         if (metadata.getPublisher() != null && !metadata.getPublisher().isEmpty()) {
-            qry += "and d.publisher ilike :publisher";
+            qry += " and d.publisher ilike :publisher";
             publisher = Boolean.TRUE;
         }
         if (metadata.getRelation() != null && !metadata.getRelation().isEmpty()) {
-            qry += "and d.relation ilike :relation";
+            qry += " and d.relation ilike :relation";
             relation = Boolean.TRUE;
         }
         if (metadata.getRights() != null && !metadata.getRights().isEmpty()) {
-            qry += "and d.rights ilike :rights";
+            qry += " and d.rights ilike :rights";
             rights = Boolean.TRUE;
         }
         if (metadata.getSource() != null && !metadata.getSource().isEmpty()) {
-            qry += "and d.source ilike :source";
+            qry += " and d.source ilike :source";
             source = Boolean.TRUE;
         }
         if (metadata.getSubject() != null && !metadata.getSubject().isEmpty()) {
-            qry += "and d.subject ilike :subject";
+            qry += " and d.subject ilike :subject";
             subject = Boolean.TRUE;
         }
         if (metadata.getTitle() != null && !metadata.getTitle().isEmpty()) {
-            qry += "and d.title ilike :title";
+            qry += " and d.title ilike :title";
             title = Boolean.TRUE;
         }
         if (metadata.getType() != null && !metadata.getType().isEmpty()) {
-            qry += "and d.type ilike :type";
+            qry += " and d.type ilike :type";
             type = Boolean.TRUE;
         }
         if (metadata.getUrl() != null && !metadata.getUrl().isEmpty()) {
-            qry += "and d.url ilike :url";
+            qry += " and d.url ilike :url";
             url = Boolean.TRUE;
         }
         if (metadata.getYear() != null && !metadata.getYear().isEmpty()) {
-            qry += "and d.year ilike:year";
+            qry += " and d.year ilike:year";
             year = Boolean.TRUE;
         }
         if (metadata.getBibliographicResource() != null && !metadata.getBibliographicResource().isEmpty()) {
-            qry += "and d.bibliographic_resource ilike:bibliographic_resource";
+            qry += " and d.bibliographic_resource ilike:bibliographic_resource";
             bibliographicResource = Boolean.TRUE;
         }
         Query query = em.createNativeQuery(qry, Document.class);
@@ -246,6 +246,11 @@ public class MetadataRepositoryImpl implements MetadataRepository {
         em.persist(metadata);
         List<AssociationMetadataTopic> listeAMT = metadata.getListeAssociationMetadataTopic();
         for (AssociationMetadataTopic amt : listeAMT) {
+            amt.setId1(metadata.getId());
+            em.persist(amt);
+        }
+        List<AssociationMetadataTaxonomi> listeAMTax = metadata.getListeAssociationMetadataTaxonomi();
+        for (AssociationMetadataTaxonomi amt : listeAMTax) {
             amt.setId1(metadata.getId());
             em.persist(amt);
         }
@@ -361,7 +366,7 @@ public class MetadataRepositoryImpl implements MetadataRepository {
     public Page<Metadata> findAll(Pageable pageable, Metadata metadata) {
         String qry = "select * from metadata d where 1=1";
         if (metadata.getId() != null) {
-            qry += "and d.id = :id";
+            qry += " and d.id = :id";
             Query query = em.createNativeQuery(qry, Metadata.class);
             query.setParameter("id", metadata.getId());
             List<Metadata> results = query.getResultList();
@@ -390,87 +395,87 @@ public class MetadataRepositoryImpl implements MetadataRepository {
         Boolean bibliographicResource = Boolean.FALSE;
         Boolean idUtilisateur = Boolean.FALSE;
         if (metadata.getContributor() != null && !metadata.getContributor().isEmpty()) {
-            qry += "and d.contributor ilike :contributor";
+            qry += " and d.contributor ilike :contributor";
             contributor = Boolean.TRUE;
         }
         if (metadata.getCoverage() != null && !metadata.getCoverage().isEmpty()) {
-            qry += "and d.coverage ilike :coverage";
+            qry += " and d.coverage ilike :coverage";
             coverage = Boolean.TRUE;
         }
         if (metadata.getCreator() != null && !metadata.getCreator().isEmpty()) {
-            qry += "and d.creator ilike :creator";
+            qry += " and d.creator ilike :creator";
             creator = Boolean.TRUE;
         }
         if (metadata.getDate() != null && !metadata.getDate().isEmpty()) {
-            qry += "and d.date_publication ilike :date";
+            qry += " and d.date_publication ilike :date";
             date = Boolean.TRUE;
         }
         if (metadata.getDescription() != null && !metadata.getDescription().isEmpty()) {
-            qry += "and d.description ilike :description";
+            qry += " and d.description ilike :description";
             description = Boolean.TRUE;
         }
         if (metadata.getFileFormat() != null && !metadata.getFileFormat().isEmpty()) {
-            qry += "and d.file_format ilike :fileFormat";
+            qry += " and d.file_format ilike :fileFormat";
             fileFormat = Boolean.TRUE;
         }
         if (metadata.getFormat() != null && !metadata.getFormat().isEmpty()) {
-            qry += "and d.format ilike :format";
+            qry += " and d.format ilike :format";
             format = Boolean.TRUE;
         }
         if (metadata.getIdDocument() != null && metadata.getIdDocument() != 0) {
-            qry += "and d.id_document = :idDocument";
+            qry += " and d.id_document = :idDocument";
             idDocument = Boolean.TRUE;
         }
         if (metadata.getIdUtilisateur() != null && metadata.getIdUtilisateur() != 0) {
-            qry += "and d.id_utilisateur = :idUtilisateur";
+            qry += " and d.id_utilisateur = :idUtilisateur";
             idUtilisateur = Boolean.TRUE;
         }
         if (metadata.getIdentifier() != null && !metadata.getIdentifier().isEmpty()) {
-            qry += "and d.identifier ilike :identifier";
+            qry += " and d.identifier ilike :identifier";
             identifier = Boolean.TRUE;
         }
         if (metadata.getLanguage() != null && !metadata.getLanguage().isEmpty()) {
-            qry += "and d.language ilike :language";
+            qry += " and d.language ilike :language";
             language = Boolean.TRUE;
         }
         if (metadata.getPublisher() != null && !metadata.getPublisher().isEmpty()) {
-            qry += "and d.publisher ilike :publisher";
+            qry += " and d.publisher ilike :publisher";
             publisher = Boolean.TRUE;
         }
         if (metadata.getRelation() != null && !metadata.getRelation().isEmpty()) {
-            qry += "and d.relation ilike :relation";
+            qry += " and d.relation ilike :relation";
             relation = Boolean.TRUE;
         }
         if (metadata.getRights() != null && !metadata.getRights().isEmpty()) {
-            qry += "and d.rights ilike :rights";
+            qry += " and d.rights ilike :rights";
             rights = Boolean.TRUE;
         }
         if (metadata.getSource() != null && !metadata.getSource().isEmpty()) {
-            qry += "and d.source ilike :source";
+            qry += " and d.source ilike :source";
             source = Boolean.TRUE;
         }
         if (metadata.getSubject() != null && !metadata.getSubject().isEmpty()) {
-            qry += "and d.subject ilike :subject";
+            qry += " and d.subject ilike :subject";
             subject = Boolean.TRUE;
         }
         if (metadata.getTitle() != null && !metadata.getTitle().isEmpty()) {
-            qry += "and d.title ilike :title";
+            qry += " and d.title ilike :title";
             title = Boolean.TRUE;
         }
         if (metadata.getType() != null && !metadata.getType().isEmpty()) {
-            qry += "and d.type = :type";
+            qry += " and d.type = :type";
             type = Boolean.TRUE;
         }
         if (metadata.getUrl() != null && !metadata.getUrl().isEmpty()) {
-            qry += "and d.url ilike :url";
+            qry += " and d.url ilike :url";
             url = Boolean.TRUE;
         }
         if (metadata.getYear() != null && !metadata.getYear().isEmpty()) {
-            qry += "and d.year ilike:year";
+            qry += " and d.year ilike:year";
             year = Boolean.TRUE;
         }
         if (metadata.getBibliographicResource() != null && !metadata.getBibliographicResource().isEmpty()) {
-            qry += "and d.bibliographic_resource ilike:bibliographic_resource";
+            qry += " and d.bibliographic_resource ilike:bibliographic_resource";
             bibliographicResource = Boolean.TRUE;
         }
         Query query = em.createNativeQuery(qry, Metadata.class);
@@ -549,7 +554,7 @@ public class MetadataRepositoryImpl implements MetadataRepository {
     public Page<Metadata> findAllExact(Pageable pageable, Metadata metadata) {
         String qry = "select * from metadata d where 1=1";
         if (metadata.getId() != null) {
-            qry += "and d.id = :id";
+            qry += " and d.id = :id";
             Query query = em.createNativeQuery(qry, Metadata.class);
             query.setParameter("id", metadata.getId());
             List<Metadata> results = query.getResultList();
@@ -578,87 +583,87 @@ public class MetadataRepositoryImpl implements MetadataRepository {
         Boolean bibliographicResource = Boolean.FALSE;
         Boolean idUtilisateur = Boolean.FALSE;
         if (metadata.getContributor() != null && !metadata.getContributor().isEmpty()) {
-            qry += "and d.contributor = :contributor";
+            qry += " and d.contributor = :contributor";
             contributor = Boolean.TRUE;
         }
         if (metadata.getCoverage() != null && !metadata.getCoverage().isEmpty()) {
-            qry += "and d.coverage = :coverage";
+            qry += " and d.coverage = :coverage";
             coverage = Boolean.TRUE;
         }
         if (metadata.getCreator() != null && !metadata.getCreator().isEmpty()) {
-            qry += "and d.creator = :creator";
+            qry += " and d.creator = :creator";
             creator = Boolean.TRUE;
         }
         if (metadata.getDate() != null && !metadata.getDate().isEmpty()) {
-            qry += "and d.date_publication = :date";
+            qry += " and d.date_publication = :date";
             date = Boolean.TRUE;
         }
         if (metadata.getDescription() != null && !metadata.getDescription().isEmpty()) {
-            qry += "and d.description = :description";
+            qry += " and d.description = :description";
             description = Boolean.TRUE;
         }
         if (metadata.getFileFormat() != null && !metadata.getFileFormat().isEmpty()) {
-            qry += "and d.file_format = :fileFormat";
+            qry += " and d.file_format = :fileFormat";
             fileFormat = Boolean.TRUE;
         }
         if (metadata.getFormat() != null && !metadata.getFormat().isEmpty()) {
-            qry += "and d.format = :format";
+            qry += " and d.format = :format";
             format = Boolean.TRUE;
         }
         if (metadata.getIdDocument() != null && metadata.getIdDocument() != 0) {
-            qry += "and d.id_document = :idDocument";
+            qry += " and d.id_document = :idDocument";
             idDocument = Boolean.TRUE;
         }
         if (metadata.getIdUtilisateur() != null && metadata.getIdUtilisateur() != 0) {
-            qry += "and d.id_utilisateur = :idUtilisateur";
+            qry += " and d.id_utilisateur = :idUtilisateur";
             idUtilisateur = Boolean.TRUE;
         }
         if (metadata.getIdentifier() != null && !metadata.getIdentifier().isEmpty()) {
-            qry += "and d.identifier = :identifier";
+            qry += " and d.identifier = :identifier";
             identifier = Boolean.TRUE;
         }
         if (metadata.getLanguage() != null && !metadata.getLanguage().isEmpty()) {
-            qry += "and d.language = :language";
+            qry += " and d.language = :language";
             language = Boolean.TRUE;
         }
         if (metadata.getPublisher() != null && !metadata.getPublisher().isEmpty()) {
-            qry += "and d.publisher = :publisher";
+            qry += " and d.publisher = :publisher";
             publisher = Boolean.TRUE;
         }
         if (metadata.getRelation() != null && !metadata.getRelation().isEmpty()) {
-            qry += "and d.relation = :relation";
+            qry += " and d.relation = :relation";
             relation = Boolean.TRUE;
         }
         if (metadata.getRights() != null && !metadata.getRights().isEmpty()) {
-            qry += "and d.rights = :rights";
+            qry += " and d.rights = :rights";
             rights = Boolean.TRUE;
         }
         if (metadata.getSource() != null && !metadata.getSource().isEmpty()) {
-            qry += "and d.source = :source";
+            qry += " and d.source = :source";
             source = Boolean.TRUE;
         }
         if (metadata.getSubject() != null && !metadata.getSubject().isEmpty()) {
-            qry += "and d.subject = :subject";
+            qry += " and d.subject = :subject";
             subject = Boolean.TRUE;
         }
         if (metadata.getTitle() != null && !metadata.getTitle().isEmpty()) {
-            qry += "and d.title = :title";
+            qry += " and d.title = :title";
             title = Boolean.TRUE;
         }
         if (metadata.getType() != null && !metadata.getType().isEmpty()) {
-            qry += "and d.type = :type";
+            qry += " and d.type = :type";
             type = Boolean.TRUE;
         }
         if (metadata.getUrl() != null && !metadata.getUrl().isEmpty()) {
-            qry += "and d.url = :url";
+            qry += " and d.url = :url";
             url = Boolean.TRUE;
         }
         if (metadata.getYear() != null && !metadata.getYear().isEmpty()) {
-            qry += "and d.year =:year";
+            qry += " and d.year =:year";
             year = Boolean.TRUE;
         }
         if (metadata.getBibliographicResource() != null && !metadata.getBibliographicResource().isEmpty()) {
-            qry += "and d.bibliographic_resource =:bibliographic_resource";
+            qry += " and d.bibliographic_resource =:bibliographic_resource";
             bibliographicResource = Boolean.TRUE;
         }
         Query query = em.createNativeQuery(qry, Metadata.class);
@@ -746,5 +751,220 @@ public class MetadataRepositoryImpl implements MetadataRepository {
         List<Metadata> results = query.getResultList();
         return new PageImpl<>(results);
     }
+
+    @Override
+    public Page<Metadata> findAll(Pageable pageable, Metadata metadata, int orderByYear) {
+        String qry = "select * from metadata d where 1=1";
+        if (metadata.getId() != null) {
+            qry += " and d.id = :id";
+            Query query = em.createNativeQuery(qry, Metadata.class);
+            query.setParameter("id", metadata.getId());
+            List<Metadata> results = query.getResultList();
+            return new PageImpl<>(results);
+        }
+        Boolean contributor = Boolean.FALSE;
+        Boolean coverage = Boolean.FALSE;
+        Boolean creator = Boolean.FALSE;
+        Boolean date = Boolean.FALSE;
+        Boolean description = Boolean.FALSE;
+        Boolean fileFormat = Boolean.FALSE;
+        Boolean format = Boolean.FALSE;
+        Boolean idDocument = Boolean.FALSE;
+        Boolean idThematique = Boolean.FALSE;
+        Boolean identifier = Boolean.FALSE;
+        Boolean language = Boolean.FALSE;
+        Boolean publisher = Boolean.FALSE;
+        Boolean relation = Boolean.FALSE;
+        Boolean rights = Boolean.FALSE;
+        Boolean source = Boolean.FALSE;
+        Boolean subject = Boolean.FALSE;
+        Boolean title = Boolean.FALSE;
+        Boolean type = Boolean.FALSE;
+        Boolean url = Boolean.FALSE;
+        Boolean year = Boolean.FALSE;
+        Boolean bibliographicResource = Boolean.FALSE;
+        Boolean idUtilisateur = Boolean.FALSE;
+        if (metadata.getContributor() != null && !metadata.getContributor().isEmpty()) {
+            qry += " and d.contributor ilike :contributor";
+            contributor = Boolean.TRUE;
+        }
+        if (metadata.getCoverage() != null && !metadata.getCoverage().isEmpty()) {
+            qry += " and d.coverage ilike :coverage";
+            coverage = Boolean.TRUE;
+        }
+        if (metadata.getCreator() != null && !metadata.getCreator().isEmpty()) {
+            qry += " and d.creator ilike :creator";
+            creator = Boolean.TRUE;
+        }
+        if (metadata.getDate() != null && !metadata.getDate().isEmpty()) {
+            qry += " and d.date_publication ilike :date";
+            date = Boolean.TRUE;
+        }
+        if (metadata.getDescription() != null && !metadata.getDescription().isEmpty()) {
+            qry += " and d.description ilike :description";
+            description = Boolean.TRUE;
+        }
+        if (metadata.getFileFormat() != null && !metadata.getFileFormat().isEmpty()) {
+            qry += " and d.file_format ilike :fileFormat";
+            fileFormat = Boolean.TRUE;
+        }
+        if (metadata.getFormat() != null && !metadata.getFormat().isEmpty()) {
+            qry += " and d.format ilike :format";
+            format = Boolean.TRUE;
+        }
+        if (metadata.getIdDocument() != null && metadata.getIdDocument() != 0) {
+            qry += " and d.id_document = :idDocument";
+            idDocument = Boolean.TRUE;
+        }
+        if (metadata.getIdUtilisateur() != null && metadata.getIdUtilisateur() != 0) {
+            qry += " and d.id_utilisateur = :idUtilisateur";
+            idUtilisateur = Boolean.TRUE;
+        }
+        if (metadata.getIdentifier() != null && !metadata.getIdentifier().isEmpty()) {
+            qry += " and d.identifier ilike :identifier";
+            identifier = Boolean.TRUE;
+        }
+        if (metadata.getLanguage() != null && !metadata.getLanguage().isEmpty()) {
+            qry += " and d.language ilike :language";
+            language = Boolean.TRUE;
+        }
+        if (metadata.getPublisher() != null && !metadata.getPublisher().isEmpty()) {
+            qry += " and d.publisher ilike :publisher";
+            publisher = Boolean.TRUE;
+        }
+        if (metadata.getRelation() != null && !metadata.getRelation().isEmpty()) {
+            qry += " and d.relation ilike :relation";
+            relation = Boolean.TRUE;
+        }
+        if (metadata.getRights() != null && !metadata.getRights().isEmpty()) {
+            qry += " and d.rights ilike :rights";
+            rights = Boolean.TRUE;
+        }
+        if (metadata.getSource() != null && !metadata.getSource().isEmpty()) {
+            qry += " and d.source ilike :source";
+            source = Boolean.TRUE;
+        }
+        if (metadata.getSubject() != null && !metadata.getSubject().isEmpty()) {
+            qry += " and d.subject ilike :subject";
+            subject = Boolean.TRUE;
+        }
+        if (metadata.getTitle() != null && !metadata.getTitle().isEmpty()) {
+            qry += " and d.title ilike :title";
+            title = Boolean.TRUE;
+        }
+        if (metadata.getType() != null && !metadata.getType().isEmpty()) {
+            qry += " and d.type = :type";
+            type = Boolean.TRUE;
+        }
+        if (metadata.getUrl() != null && !metadata.getUrl().isEmpty()) {
+            qry += " and d.url ilike :url";
+            url = Boolean.TRUE;
+        }
+        if (metadata.getYear() != null && !metadata.getYear().isEmpty()) {
+            qry += " and d.year ilike:year";
+            year = Boolean.TRUE;
+        }
+        if (metadata.getBibliographicResource() != null && !metadata.getBibliographicResource().isEmpty()) {
+            qry += " and d.bibliographic_resource ilike:bibliographic_resource";
+            bibliographicResource = Boolean.TRUE;
+        }
+        if (orderByYear > 0) {
+            qry += " order by d.year asc";
+        } else if (orderByYear < 0) {
+            qry += " order by d.year desc";
+        }
+        Query query = em.createNativeQuery(qry, Metadata.class);
+        if (contributor) {
+            query.setParameter("contributor", "%" + metadata.getContributor() + "%");
+        }
+        if (coverage) {
+            query.setParameter("coverage", "%" + metadata.getCoverage() + "%");
+        }
+        if (creator) {
+            query.setParameter("creator", "%" + metadata.getCreator() + "%");
+        }
+        if (date) {
+            query.setParameter("date", "%" + metadata.getDate() + "%");
+        }
+        if (description) {
+            query.setParameter("description", "%" + metadata.getDescription() + "%");
+        }
+        if (fileFormat) {
+            query.setParameter("fileFormat", "%" + metadata.getFileFormat() + "%");
+        }
+        if (format) {
+            query.setParameter("format", "%" + metadata.getFormat() + "%");
+        }
+        if (idDocument) {
+            query.setParameter("idDocument", metadata.getIdDocument());
+        }
+        if (identifier) {
+            query.setParameter("identifier", "%" + metadata.getIdentifier() + "%");
+        }
+        if (language) {
+            query.setParameter("language", "%" + metadata.getLanguage() + "%");
+        }
+        if (publisher) {
+            query.setParameter("publisher", "%" + metadata.getPublisher() + "%");
+        }
+        if (relation) {
+            query.setParameter("relation", "%" + metadata.getRelation() + "%");
+        }
+        if (rights) {
+            query.setParameter("rights", "%" + metadata.getRights() + "%");
+        }
+        if (source) {
+            query.setParameter("source", "%" + metadata.getSource() + "%");
+        }
+        if (subject) {
+            query.setParameter("subject", "%" + metadata.getSubject() + "%");
+        }
+        if (title) {
+            query.setParameter("title", "%" + metadata.getTitle() + "%");
+        }
+        if (type) {
+            query.setParameter("type", metadata.getType());
+        }
+        if (url) {
+            query.setParameter("url", "%" + metadata.getUrl() + "%");
+        }
+        if (year) {
+            query.setParameter("year", "%" + metadata.getYear() + "%");
+        }
+        if (bibliographicResource) {
+            query.setParameter("bibliographic_resource", "%" + metadata.getBibliographicResource() + "%");
+        }
+        if (idUtilisateur) {
+            query.setParameter("idUtilisateur", metadata.getIdUtilisateur());
+        }
+        if (pageable != null) {
+            query.setFirstResult(pageable.getOffset());
+            query.setMaxResults(pageable.getPageSize());
+        }
+        List<Metadata> results = query.getResultList();
+        return new PageImpl<>(results);
+    }
+
+    @Override
+    public Page<Metadata> findAll(Pageable pageable, String type, Integer idThematique, int orderByYear) {
+        String qry = "select d.* from metadata d join association_metadata_topic a on d.id = a.id_metadata where a.id_topic = :idTopic and d.type = :type";
+        if (orderByYear > 0) {
+            qry += " order by d.year asc";
+        }
+        else if (orderByYear < 0) {
+            qry += " order by d.year desc";
+        }
+        Query query = em.createNativeQuery(qry, Metadata.class);
+        query.setParameter("idTopic", idThematique);        
+        query.setParameter("type", type);        
+        if (pageable != null) {
+            query.setFirstResult(pageable.getOffset());
+            query.setMaxResults(pageable.getPageSize());
+        }
+        List<Metadata> results = query.getResultList();
+        return new PageImpl<>(results);
+    }
+    
+    
 
 }

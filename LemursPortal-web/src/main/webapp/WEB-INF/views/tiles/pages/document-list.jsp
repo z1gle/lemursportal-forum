@@ -42,7 +42,7 @@
                                     <c:set var="years" value="${0}"/>
                                     <c:forEach items="${docAUTRES}" var="publication">      
                                         <c:choose>
-                                            <c:when test="${years != publication.year}">
+                                            <c:when test="${years == 0}">
                                                 <c:set var="years" value="${publication.year}"/>
                                                 <tr style="background-color: white;">
                                                     <th style="color:  dodgerblue;font-size: 15px; border-color: white; padding-left: 20px;">${publication.year}</th>                                                                                                        
@@ -50,8 +50,20 @@
                                                     <th style="color:  dodgerblue;font-size: 15px; border-color: white;"></th>                                                                                                        
                                                     <th style="color:  dodgerblue;font-size: 15px; border-color: white;"></th>                                                                                                        
                                                 </tr>
-                                            </c:when>
-                                            <c:otherwise>                                            
+                                            </c:when>                                            
+                                            <c:otherwise>
+                                                <c:choose>
+                                                    <c:when test="${years != publication.year}">
+                                                        <c:set var="years" value="${publication.year}"/>
+                                                        <tr style="background-color: white;">
+                                                            <th style="color:  dodgerblue;font-size: 15px; border-color: white; padding-left: 20px; border-top-color: #dddddd;">${publication.year}</th>                                                                                                        
+                                                            <th style="color:  dodgerblue;font-size: 15px; border-color: white; border-top-color: #dddddd;"></th>                                                                                                        
+                                                            <th style="color:  dodgerblue;font-size: 15px; border-color: white; border-top-color: #dddddd;"></th>                                                                                                        
+                                                            <th style="color:  dodgerblue;font-size: 15px; border-color: white; border-top-color: #dddddd;"></th>                                                                                                        
+                                                        </tr>
+                                                    </c:when>
+                                                    <c:otherwise></c:otherwise>
+                                                </c:choose>
                                             </c:otherwise>
                                         </c:choose>
                                         <tr style="border:1px solid #ccc;">                                                                                        
@@ -264,7 +276,7 @@
                         <button type="button" class="close" onclick="closeModal('modal-ajout-document')">&times;</button>
                         <h4 class="modal-title">Ajouter un document</h4>
                     </div>
-                    <form action="javascript:sendAddDocument();">
+                    <form action="javascript:sendAddDocument();" autocomplete="off">
                         <div class="modal-body" style="overflow-y: auto;max-height:  500px;">
                             <div id="errorMdp"></div>
                             <spring:message code="metadata.topics"/><sup>*</sup><br>
@@ -312,6 +324,11 @@
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.url"/>
                                 <input type="text" class="form-control" id="url">
+                            </div>
+                            <div class="" style="width: 100%;">
+                                <spring:message code="metadata.species"/>
+                                <select multiple class="form-control" id="species" style="width: 100%!important;"></select>
+                                <!--<input type="text" class="form-control" id="bibliographic_resource">-->
                             </div>
                             <spring:message code="metadata.date"/>
                             <input type="date" class="form-control" id="datePublication">
@@ -471,6 +488,7 @@
         formData.append('rights', $('#rights').val());
         formData.append('year', $('#year').val());
         formData.append('url', $('#url').val());
+        formData.append('species', $('#species').val());
         $.ajax({
             method: 'POST',
             data: formData,
@@ -497,6 +515,7 @@
                 $('#rights').val('');
                 $('#year').val('');
                 $('#url').val('');
+                $('#species').val('');
                 $('#errorMdp').html("<p style='color: red;'> " + "</p>");
                 closeModal('modal-ajout-document');
             },
@@ -533,10 +552,28 @@
 <link rel="stylesheet" href="${resourcesPath}/css/bootstrap-multiselect.css" type="text/css">
 <script type="text/javascript" src="${resourcesPath}/js/bootstrap-multiselect.js"></script>
 <script type="text/javascript">
+    function populate() {
+//        $.getJSON('http://localhost:8084/lemurs/getallTaxo', {}, function (data, textStatus) {
+        $.getJSON('https://www.lemursportal.org/species/getallTaxo', {}, function (data, textStatus) {
+            var el = $('select#species');
+            el.html('');  // empty the select
+            $.each(data, function (idx, jsonData) {
+                el.append($('<option style="background-color: #f9efc9;"></option>').val(jsonData.id).html(jsonData.scientificname));
+            });
+            $('#species').multiselect({                
+                maxHeight: 316,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                buttonWidth: '100%'
+            });
+        });
+    }
+
     $(document).ready(function () {
         $('#id_thematique').multiselect({
             maxHeight: 158,
             buttonWidth: '100%'
         });
+        populate();
     });
 </script>
