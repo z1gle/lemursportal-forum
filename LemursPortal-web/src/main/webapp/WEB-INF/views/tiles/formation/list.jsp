@@ -19,10 +19,10 @@
                         <div class="pull-right forum-desc">
                         	<c:url value="/formation/new" var="newFormation"></c:url>
                         	<sec:authorize access="hasAnyRole('EXPERT', 'ADMIN', 'MODERATEUR')">
-                            <a class="btn btn-primary btn-xs pull-right" href="${newFormation}">Ajouter une opportunité</a>
+                            <a class="btn btn-primary btn-xs pull-right" href="${newFormation}"><spring:message code="add.opportunity" /></a>
                             </sec:authorize>
                         </div>
-                        <h2 class="formation">Liste des formations</h2>
+                        <h2 class="formation"><spring:message code="opportunity.list" /></h2>
                     </div>
     				
                     <c:forEach items="${formations}" var="formations">

@@ -37,6 +37,7 @@ public abstract class UserInfoFactory {
 			form.setPrenom(user.getPrenom());
 			form.setUserTypeIds(new ArrayList<Integer>());
 			form.setPhotoProfil(user.getPhotoProfil());
+			form.setTitle(user.getTitle());
 			for(UserType role: user.getRoles()){
 				form.getUserTypeIds().add(role.getId());
 			}
@@ -68,6 +69,7 @@ public abstract class UserInfoFactory {
 			entity.setInstitution(form.getInstitution());
 			entity.setPostOccupe(form.getPostOccupe());
 			entity.setPhotoProfil(form.getPhotoProfil());
+			entity.setTitle(form.getTitle());
 			//entity.setRoles(form.get);
 
 //			Set<Thematique> dExpertises = new HashSet();

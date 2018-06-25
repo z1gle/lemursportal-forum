@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.wcs.lemursportal.dto.user.UserRegistrationForm;
 import org.wcs.lemursportal.factory.UserInfoFactory;
 import org.wcs.lemursportal.model.post.Thematique;
@@ -151,11 +152,14 @@ public class RegistrationController extends BaseController {
      */
     @RequestMapping(value ="/register", method = RequestMethod.POST)
     public String registerUserAccount(@Valid @ModelAttribute("registrationForm") RegistrationForm userAccountData,
-                                      BindingResult result,
+                                      BindingResult result, RedirectAttributes attr,
                                       WebRequest request) throws UserAlreadyExistAuthenticationException {
         LOGGER.debug("Registering user account with information: {}", userAccountData);
+//      registrationFormValidator.validate(userAccountData, result);
         if (result.hasErrors()) {
-            LOGGER.debug("Validation errors found. Rendering form view.");
+        	attr.addFlashAttribute("org.springframework.validation.BindingResult.user", result);	
+        	attr.addFlashAttribute("registrationForm", userAccountData);
+        	LOGGER.debug("Validation errors found. Rendering form view.");
             return "registration";
         }
 
@@ -307,9 +311,12 @@ public class RegistrationController extends BaseController {
 			BindingResult results) throws IOException 
 	{
 		registrationFormValidator.validate(registrationForm, results);
+		LOGGER.error(registrationForm.getDateNaissance() + "1#####################" + registrationForm.getTitle());
 		if(results.hasErrors()){
 			return "profil.edit.page";
 		}
+
+		LOGGER.error(registrationForm.getDateNaissance() + "2#####################");
 		MultipartFile multipartFile = registrationForm.getFile();
 		if(multipartFile != null && !registrationForm.getFile().getOriginalFilename().isEmpty()){
 
@@ -327,13 +334,12 @@ public class RegistrationController extends BaseController {
 		for(Thematique thematique : thematiques){
 			if(registrationForm.getdExpertises().contains(thematique.getId())){
 				thematiqueToSave.add(thematique);
-				LOGGER.debug(thematique.getLibelle() + "<=###################");
 			}
 		}
-		
+
+		LOGGER.error(registrationForm.getDateNaissance() + "3#####################");
 		user.setdExpertise(thematiqueToSave);
 		
-		LOGGER.debug(user.getdExpertise().size() + "######################");
 		userInfoService.update(user);
 		model.addAttribute("successMessage", messageSource.getMessage("message.edit.successMessage",new Object[]{} ,locale));
 		return "redirect:/user/profil";
@@ -400,5 +406,16 @@ public class RegistrationController extends BaseController {
             super.setResultat(Boolean.FALSE, "il se peut que votre session ait été fermé");
         }
         return super.returnResultat();
+    }
+    
+    /**	
+     * Check if e-mail is free	
+     */	
+    @RequestMapping(method=RequestMethod.GET, value = "/check-email")	
+    @ResponseBody	
+    public String checkEmail(@RequestParam String email) {	
+
+    	return userInfoService.getByEmail(email) == null	
+    			? "true" : "false";	
     }
 }

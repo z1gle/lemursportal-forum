@@ -135,7 +135,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 		persistUser.setPublication(user.getPublication());
 		persistUser.setResetToken(user.getResetToken());
 		persistUser.setExpiryDate(user.getExpiryDate());
-		if(StringUtils.isNotBlank(user.getPhotoProfil())){
+		persistUser.setTitle(user.getTitle());
+		if(StringUtils.isNotBlank(user.getPhotoProfil())) {
 			persistUser.setPhotoProfil(user.getPhotoProfil());
 		}
 		persistUser.setdExpertise(user.getdExpertise());

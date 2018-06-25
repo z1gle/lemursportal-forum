@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -57,7 +58,7 @@
                         <!-- F S'affiche si un autre utilisateur visualise son profil -->
                     </div>
                     <div class="box">
-                        <div class="name"><strong><c:out value="${userInfo.prenom}"/> <c:out value="${userInfo.nom}"/></strong></div>
+                        <div class="name"><strong><c:out value="${userInfo.title}"/> <c:out value="${userInfo.prenom}"/> <c:out value="${userInfo.nom}"/></strong></div>
                         <div class="info">
                             <!-- D S'affiche si l'utilisateur lui-même est connecté -->
                             <c:url value="/user/profil/edit" var="userProfilUrl"/>
@@ -85,13 +86,14 @@
                             <div class="txt-content">
                                 <div class="info">
                                 	<div class="col-md-6">
-                                        <p><span><span><spring:message code="profil.role"/>:</span><br />
+                                        <p><span><spring:message code="profil.role"/> : </span><br />
                                         	<!-- Roles display -->
 											<sec:authentication property="authorities" var="roles" scope="page" />
-											    <c:forEach var="role" items="${roles}">
-											    	${role} 
-											    </c:forEach>
-                                        </span></p>
+                                        	<c:forEach var="role" items="${roles}">
+                                        		<c:set value="${fn:replace(role, 'ROLE_', '')}" var="role" />
+												<a class="btn-${fn:toLowerCase(role)} btn-xs">${role}</a>
+											</c:forEach>
+                                        </p>
                                         <p><span><span><spring:message code="profil.edit.institution"/>:</span><br /><c:out value="${userInfo.institution}"/></span></p>
                                         <p><span><span><spring:message code="profil.edit.postoccupe"/>:</span><br /><c:out value="${userInfo.postOccupe}"/></span></p>
                                         <p><span><span><spring:message code="signup.email.placeholder"/>:</span><br /><a href="#" title="#"><c:out value="${userInfo.email}"/></a></span></p>

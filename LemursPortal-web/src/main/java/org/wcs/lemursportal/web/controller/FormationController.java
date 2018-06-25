@@ -123,7 +123,7 @@ public class FormationController extends BaseController {
 	/**
 	 * Delete formation
 	 */
-	@PreAuthorize("hasAnyRole('USER', 'EXPERT','MODERATEUR', 'ADMIN')")
+	@PreAuthorize("hasAnyRole('EXPERT','MODERATEUR', 'ADMIN')")
 	@RequestMapping(method = RequestMethod.GET, value = URL.DELETE_FORMATION)
 	public ModelAndView deleteFormation(Authentication authentication, @PathVariable("id") Long id,
 			HttpSession session, SessionStatus status, HttpServletRequest request) {

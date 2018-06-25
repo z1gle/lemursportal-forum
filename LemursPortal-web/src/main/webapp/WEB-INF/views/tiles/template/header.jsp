@@ -80,7 +80,7 @@
                                 </form>
 <!--                                 verification dev mode -->
                                 <c:set var="port" value="" />
-								<c:if test="${req.getServerPort() != '80'}">
+								<c:if test="${req.getServerPort() != '80' || req.getServerPort() != '443'}">
 									<c:set var="port" value=":${req.getServerPort()}" />
 								</c:if>
                                 <script>

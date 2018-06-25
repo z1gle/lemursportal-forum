@@ -12,6 +12,7 @@
 
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="icon" href="${resourcesPath}/favicon.ico" type="image/x-icon">
 	<title><tiles:getAsString name="title" /></title>
 	<link href="${resourcesPath}/css/styles.css" rel="stylesheet"/>
 	<link href="${resourcesPath}/bootstrap/css/bootstrap.css" rel="stylesheet"/>

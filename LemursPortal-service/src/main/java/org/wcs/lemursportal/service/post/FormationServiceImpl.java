@@ -7,10 +7,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.model.Formation;
+import org.wcs.lemursportal.model.authentication.UserRole;
 import org.wcs.lemursportal.model.user.UserInfo;
+import org.wcs.lemursportal.model.user.UserType;
 import org.wcs.lemursportal.repository.post.FormationCrudRepository;
 import org.wcs.lemursportal.repository.post.FormationRepository;
 import org.wcs.lemursportal.repository.user.UserRepository;
@@ -84,7 +87,16 @@ public class FormationServiceImpl implements FormationService {
 	public void deleteById(Long id, String email) {
 		UserInfo user = userRepository.findByEmail(email);
 		Formation oldFormation = getFormation(id);
-		if(oldFormation.getOwnerId().equals(user.getId())) {
+		boolean isAdmin = false;
+		for (UserType role : user.getRoles()) {
+			if(role.getId() == UserRole.ADMINISTRATEUR.getUserType().getId()
+					|| role.getId().equals(UserRole.MODERATEUR.getUserType().getId())) {
+				isAdmin = true;
+				break;
+			}
+        }
+		
+		if(oldFormation.getOwnerId().equals(user.getId()) || isAdmin) {
 			formationCrudRepository.delete(id);
 		}
 		

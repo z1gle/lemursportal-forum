@@ -530,7 +530,7 @@ li .lang {
 
 .forum-item,
 .cadre {
-  margin: 10px 0;
+  margin: -6px 0 25px;/*10px 0;*/
   padding: 15px 20px;
   border: 1px solid #d7d7d7;
   background:#ede9e9;
@@ -577,7 +577,7 @@ li .lang {
   margin-top:10px;
   font-size:12px;
   /*width:75%;*/
-  width: 56%;
+  width: 65%;
   float:left;
 }
 
@@ -667,7 +667,7 @@ a.btn-info:hover {
 }
 
 .forum-item .forum-profil {
-  width:180px;
+  width:125px;
 }
 
 .img-circle {
@@ -966,12 +966,12 @@ a.forum-item-title:hover {
 }
 
 .popup-gallery {
-	padding:5% 10%;
+	padding:5px 6px/*5% 10%*/;
 }
 
 .popup-gallery a img {
-    margin: 4px;
-    width:45px;
+    margin: 4px 2px;
+    width: 55px;
     height:auto;
     display: inline-block;
     line-height: 1.42857143;
@@ -1033,12 +1033,30 @@ footer a:hover {
 	text-decoration:none!important;
 }
 
+footer a img {	
+    border-radius: 50%;	
+    width: 100%;	
+}	
+	
+footer a img:hover {	
+    border: 2px solid #ccc;	
+    background: #ccc;	
+}	
+	
+footer .col-md-4 .col-xs-2 {	
+    border-radius: 50%;	
+    height: 100%;	
+    padding: 1%;	
+    width: 19%;	
+}
+
 footer .copy {
 	text-align:center;
-	padding:15px 0;
-	background:#000;
-	margin-top:25px;
-	font-size:12px;
+	padding:5px 0;
+ 	background:#000;
+ 	margin-top:25px;
+ 	font-size:12px;
+	font-family: "montserratlight";
 	color:#fff!important;
 }
 
@@ -1055,12 +1073,17 @@ footer .copy {
 
 /* Ajouter question */
 .int input[type=text],
+.int input[type=date],
 .int input[type=password],
 .int input[type=email],
 .int input[type=tel],
 .int textarea,
 .int select {
 	border:1px solid #ccc!important;
+}
+
+input[type=date] {
+    line-height: normal !important;
 }
 
 .int .form,
@@ -1790,6 +1813,11 @@ a.btn:hover {
 		margin-left: 20px;
 		/*background: none !important;*/		
 	}
+	
+	footer .col-md-4 .col-xs-2 {	
+		background: none !important;	
+	}
+	
 }
 
 @media(max-width:767px) {
@@ -1882,4 +1910,37 @@ slider
 
 myCarousel.item p {
 	display: none;
+}
+
+.btn-admin {
+	color: #fff;
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+.btn-expert {
+	color: #fff;
+    background-color: #f0ad4e;
+    border-color: #eea236;
+}
+.btn-moderator {
+	color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+.btn-user {
+	color: #fff;
+    background-color: #a38000;
+    border-color: #937000;
+}
+.btn-moderateur {
+    color: #fff;
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+.btn-admin,
+.btn-expert,
+.btn-moderator,
+.btn-user, 
+.btn-moderateur {
+    color: #fff !important;
 }

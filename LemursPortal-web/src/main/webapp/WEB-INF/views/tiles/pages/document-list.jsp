@@ -8,6 +8,88 @@
 <%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
 <spring:message code="date.format" var="dateFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
+<style>	
+<!--	
+.project-wrapper {	
+    margin: 0;	
+    padding: 0;	
+    list-style: none;	
+    text-align: center;	
+}	
+	
+.project-wrapper li {	
+    display: inline-block;	
+}	
+	
+.species-item {	
+    cursor: pointer;	
+    margin: 0 1% 1% 0;	
+    overflow: hidden;	
+    position: relative;	
+    width: 32%;	
+}	
+	
+p {	
+    line-height: 25px;	
+}	
+figure, p, address {	
+    margin: 0;	
+}	
+	
+ul.external {	
+    list-style: outside none none;	
+    margin: 0;	
+    padding: 0;	
+    position: absolute;	
+    right: 0;	
+    top: -47px;	
+    -webkit-transition: all 0.4s ease 0s;	
+    -moz-transition: all 0.4s ease 0s;	
+    -ms-transition: all 0.4s ease 0s;	
+    -o-transition: all 0.4s ease 0s;	
+    transition: all 0.4s ease 0s;	
+}	
+.species-item img {	
+	background-size: cover;	
+	background-position: 50% 25%;	
+}	
+	
+figcaption.mask {	
+    /* background-color: rgba(54, 55, 50, 0.79); */	
+/* 	background-image: url('${resourcesPath}/images/gradient.png');  */	
+    background: linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 100%);	
+    bottom: 0;	
+    color: #fff;	
+    padding: 25px;	
+    position: absolute;	
+    width: 100%;	
+    text-align: left;	
+    -webkit-transition: all 0.4s ease 0s;	
+    -moz-transition: all 0.4s ease 0s;	
+    -ms-transition: all 0.4s ease 0s;	
+    -o-transition: all 0.4s ease 0s;	
+    transition: all 0.4s ease 0s;	
+}	
+	
+.species-item:hover figcaption.mask {	
+    bottom: -126px
+}	
+	
+figcaption.mask h3, figcaption.mask p {	
+    margin: 0;	
+    color: #fff;	
+    font-size: 12px;	
+    text-overflow: ellipsis;	
+    overflow: hidden;	
+}	
+.species-item img:hover {	
+	opacity:1;	
+}	
+.species-item img:hover, .species-item img, .species-item iframe {	
+	border: 1px solid #d7d7d7;	
+}	
+-->	
+</style>
 <div class="forum-container page-document">
     <div class="row">
         <div class="page-title">
@@ -71,12 +153,21 @@
                                 </br>
                                 <div class="row">
                                     <c:set var="isa" value="1"/>
+                                    <ul class="project-wrapper animated fadeInUp" style="text-align: left !important">
                                     <c:forEach items="${docIMAGE}" var="pic">
-                                        <div class="column col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                            <a href="#" onclick="showPhoto('${pic.filename}')"><img src="${resourcesPath}/upload/${pic.filename}" style="width:100%" onclick="openModal();currentSlide(${isa})" class="hover-shadow cursor"></a>
-                                        </div>
+                                    	<li class="species-item">
+                                    		<a href="#" onclick="showPhoto('${pic.filename}')">
+                                    		<img src="${resourcesPath}/images/l-blank.png" style="background-image: url('${resourcesPath}/upload/${pic.filename}'); " class="img-responsive" 
+                                    				onclick="openModal();currentSlide(${isa})" alt="--">
+                                    		</a>
+                                    		<figcaption class="mask">
+                                    			<p><i>${pic.filename}</i></p>
+                                    			<p>--</p>
+                                    		</figcaption>
+                                    	</li>
                                         <c:set var="isa" value="${isa+1}"/>
                                     </c:forEach>
+                                    </ul>
                                 </div>
                                 <div id="myModal" class="modal">
                                     <span class="close cursor" onclick="closeModal()">&times;</span>
@@ -164,26 +255,22 @@
                     <div role="tabpanel" class="tab-pane fade" id="tab-item-5">
                         <div class="txt-content">
                             <div class="col-md-offset custyle">
-                                <!--                                <table class="table table-striped custab">-->
-                                <c:forEach items="${youtubeFiles}" var="youtubFile">
-                                    <!--                                        <tr>
-                                                                                <td>-->
-                                    <div class="row" style="margin-top: 10px;">
-                                        <div class="col-md-6 col-lg-6">
-                                            <iframe class="img-responsive"
-                                                    src="${youtubFile.uriYoutube}">
+                                </br>
+                                <div class="row">
+								<ul class="project-wrapper animated fadeInUp" style="text-align: left !important">
+									<c:forEach items="${youtubeFiles}" var="youtubFile">
+										<li class="species-item">
+											<iframe class="img-responsive" height="250"
+                                                    src="${youtubFile.uriYoutube}?showinfo=0"/>
                                             </iframe>
-                                        </div>
-                                        <div class="col-md-6 col-lg-6">
-                                            <c:out	value="${youtubFile.title}" />
-                                        </div>                                        
-                                    </div>
-                                    <!--                                            </td>                                            
-                                                                                <td></td>                                            
-                                                                            </tr>-->
-                                </c:forEach>
-                                <!--</table>-->
-
+											<figcaption class="mask">
+												<p>
+													<i>${youtubFile.title}</i>
+												</p>
+											</figcaption></li>
+									</c:forEach>
+								</ul>
+								</div>
                                 <!-- D Pagination -->
                                 <ul class="pagination">
                                     <li class="disabled"><a href="#">&laquo;</a></li>

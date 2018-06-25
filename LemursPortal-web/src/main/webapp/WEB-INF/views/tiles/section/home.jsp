@@ -9,6 +9,21 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <spring:message code="datetime.format" var="datetimeFormat" />
 <c:url value="/resources" var="resourcesPath" />
+<style type="text/css">
+a.read-more {
+	color: black /*#74ac00*/;
+	cursor: pointer;
+}
+
+a.read-more:hover {
+	text-decoration: underline;
+	color: #000;
+}
+
+.show-read-more .more-text, .home-bio p .more-text {
+	display: none;
+}
+</style>
 	<div class="wrapper wrapper-content animated fadeInRight">
 
 		<div class="forum-container">
@@ -36,4 +51,38 @@
 		</div>
 	</div>
 
-
+<script type="text/javascript">
+	$(document)
+			.ready(
+					function() {
+						var maxLength = 320;
+// 						$('.show-read-more').contents().unwrap();
+						$(".show-read-more")
+								.each(
+										function() {
+											var myStr = $(this).text();
+											if ($.trim(myStr).length > maxLength) {
+												var newStr = myStr.substring(0,
+														maxLength);
+												var removedStr = myStr
+														.substring(
+																maxLength,
+																$.trim(myStr).length);
+												$(this).empty().html(
+														newStr);
+												$(this)
+														.append(
+																' <a class="read-more">... read more</a>');
+												$(this)
+														.append(
+																'<span class="more-text">'
+																		+ removedStr
+																		+ '</span>');
+											}
+										});
+						$(".read-more").click(function(){
+							$(this).siblings(".more-text").contents().unwrap();
+							$(this).remove();
+						});
+					});
+</script>

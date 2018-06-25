@@ -9,12 +9,14 @@
 <%@ taglib prefix="post" tagdir="/WEB-INF/tags/post" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <spring:message code="datetime.format" var="datetimeFormat" />
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:url value="/resources" var="resourcesPath" />
 
 <%@ attribute name="topQuestion" required="true" rtexprvalue="true"
               type="org.wcs.lemursportal.model.post.TopQuestion" description="L'url de page page courante"%>
 <%-- <%@ attribute name="showLastResponseInfo" required="false" rtexprvalue="true" --%>
 <!-- 	type="java.lang.Boolean" description="Un flag pour afficher ou pas les information sur la dernière reponse" %> -->
+
 <div class="forum-item">
     <div class="row">
 
@@ -33,7 +35,9 @@
             <c:url value="/post/show/${topQuestion.question.id}" var="questionPageUrl"/>
             <a href="${questionPageUrl}" class="forum-item-title"><c:out value="${topQuestion.question.title}" /></a>            
             <div class="forum-sub-title">
-                <c:out value="${topQuestion.question.body}" escapeXml="true" />
+                <p class="show-read-more">
+                	<c:out value="${topQuestion.question.body}" />
+                </p>
                 <p class="forum-date">
                     <fmt:formatDate pattern="${datetimeFormat}"
                                     value="${topQuestion.question.creationDate}" />
@@ -72,7 +76,7 @@
                         <c:set var="libelle" value="${role.libelle}" />
                     </c:if>
                 </c:forEach>
-                <i><c:out value="${libelle}" /></i>
+                <a class="btn-${fn:toLowerCase(libelle)} btn-xs" style="font-size: 10px;"><c:out value="${libelle}" /></a>
                 <br />
             </div>
         </div>
@@ -84,9 +88,10 @@
                 </c:if>
                 <c:if test="${not empty topQuestion.question.uriYoutube }">
                     <c:url var="publicationPageUrl" value="${topQuestion.question.uriYoutube}"/>
-                <a  href="${publicationPageUrl}"  target="_blank">
+                <a  href="${topQuestion.question.uriYoutube}"  target="_blank">
                     <img src="${resourcesPath}/images/icon-video-document.png" alt=""></a>
                 </c:if>
         </div>
     </div>
 </div>
+

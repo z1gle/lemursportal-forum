@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -8,6 +9,16 @@
 <%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
 <spring:message code="date.format" var="dateFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
+<style>
+<!--
+.radio, .checkbox {
+	margin-left: 15px;
+}
+.dropdown-menu > .active > a {
+    background-color: #a38000 !important;
+}
+-->
+</style>
 <div class="wrapper wrapper-content animated fadeInRight">
 <!-- D Profil -->
 <div class="forum-container page-profil">
@@ -60,6 +71,7 @@
                         <div class="name"><strong><c:out value="${userInfo.prenom}"/> <c:out value="${userInfo.nom}"/></strong></div>
                         
                     </div>
+                    
                     <sec:authorize access="hasRole('ADMIN')">
                     	<c:url value="/admin/de/expert" var="userFormAction" />
                     	<form:form modelAttribute="dExpertiseForm"
@@ -67,16 +79,16 @@
 								method="POST" cssClass="edit-profil-form">
 						<input type="hidden" name="${_csrf.parameterName}"
 									value="${_csrf.token}" />
-						<label>Domaine d'expertise <sup>*</sup></label>
+						<div style="text-align: center !important;margin-bottom: 10px;">Editer domaine d'expertise</div>
 						<div>
 							<form:hidden path="userId"/>
-							<form:select path="dExpertise">
+							<form:select path="dExpertise" id="dExpertise" style="display:none">
 								<form:options items="${listeThematique}"
 									itemLabel="libelle" itemValue="id" />
 							</form:select>
 						</div>
 						<div class="form">
-							<form:button value="Mettre à jour" class="right">
+							<form:button value="Mettre à jour">
 								<spring:message code="profil.edit.maj.btn" />
 							</form:button>
 						</div>
@@ -102,13 +114,14 @@
                             <div class="txt-content">
                                 <div class="info">
                                 	<div class="col-md-6">
-                                        <p><span><span>Rôle:</span><br />
-                                        	<!-- Roles display -->
-											<sec:authentication property="authorities" var="roles" scope="page" />
-											    <c:forEach var="role" items="${roles}">
-											    	${role} 
-											    </c:forEach>
-                                        </span></p>
+                                        <p><span>Rôle:</span><br>
+                                        <!-- Roles display -->
+                                        <sec:authentication property="authorities" var="roles" scope="page" />
+                                        <c:forEach var="role" items="${roles}">
+                                        	<c:set value="${fn:replace(role, 'ROLE_', '')}" var="role" />
+											<a class="btn-${fn:toLowerCase(role)} btn-xs">${role}</a>
+										</c:forEach>
+										</p>		
                                         <p><span><span>Institution:</span><br /><c:out value="${userInfo.institution}"/></span></p>
                                         <p><span><span>Poste occupé:</span><br /><c:out value="${userInfo.postOccupe}"/></span></p>
                                         <p><span><span>Email:</span><br /><a href="#" title="#"><c:out value="${userInfo.email}"/></a></span></p>
@@ -117,9 +130,15 @@
                                     <div class="col-md-6">
                                     
                                         <p><span><span>Inscrit(e) le:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.dateInscription}" /></span></p>
-                                        <p><span><span>Dernière activité le:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.lastAccessDate}" /></span></p>
+                                        <p><span><span>Dernière activité le:</span><br /><fmt:formatDate pattern="${dateFormat}" value="${userInfo.lastAccessDate}" />&nbsp;</span></p>
 <!--                                         <p><span><span>Nombre de questions :</span><br />18</span></p> -->
 <!--                                         <p><span><span>Nombre de réponses :</span><br />45</span></p> -->
+										<p><span><span>Domaine d'expertise :</span><br />
+												<c:forEach var="dExp" items="${userInfo.dExpertise}">
+													<a><c:out value="${dExp.libelle}" /></a>/&nbsp; 
+												</c:forEach>
+											</span>
+										</p>
                                     </div>
                                 </div>
                             </div>
@@ -145,3 +164,13 @@
 </div>
 <!-- F Profil -->
     </div>
+<script type="text/javascript" src="${resourcesPath}/js/bootstrap-multiselect.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#dExpertise').multiselect({
+            maxHeight: 158,
+            buttonWidth: '100%'
+        });
+    });
+</script>
+    

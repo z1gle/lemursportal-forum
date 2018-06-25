@@ -11,6 +11,29 @@
 
 <spring:message code="date.format" var="dateFormat" />
 <c:url value="/resources" var="resourcesPath" />
+<style>
+<!--
+.radio, .checkbox {
+	margin-left: 15px;
+}
+.dropdown-menu > .active > a {
+    background-color: #a38000 !important;
+}
+.note-editor .note-toolbar {
+    background-color: white;
+    border-bottom: 0px solid #a9a9a9;
+}
+.multiselect-native-select input {
+	width: auto !important;
+}
+.multiselect-native-select button {
+	margin-bottom: 0px;
+}
+.multiselect-native-select label {
+	float: none !important;
+}
+-->
+</style>
 <!-- Début Ajouter Question -->
 <div class="container lemurs-page">
 	<div class="row">
@@ -37,16 +60,24 @@
 										<label><spring:message code="profil.edit.change.photo" /></label>
 										<form:input type="file" path="file" class="pdp" />
 										<form:errors path="file" class="error" />
+										
+										<label>Titre<sup>*</sup></label>
+										<form:select path="title">
+											<form:option value="" disabled="true"> --SELECT--</form:option>
+											<form:option value="Mlle.">Mlle.</form:option>
+											<form:option value="Mme." >Mme.</form:option>
+											<form:option value="Mr.">Mr.</form:option>
+											<form:option value="Dr.">Dr.</form:option>
+											<form:option value="Pr.">Pr.</form:option>
+										</form:select>
+
 										<div style="margin-bottom: 15px; text-align: left !important">
-											<b><spring:message code="profil.role" /></b>
-											<sec:authentication property="authorities" var="roles"
-												scope="page" />
-											<span
-												style="font-weight: normal; padding-left: 20px; margin-bottom: 15px">
-												<c:forEach var="role" items="${roles}">
-													<c:out value="${fn:replace(role, 'ROLE_', '')}/ " />
-												</c:forEach>
-											</span>
+											<b><spring:message code="profil.role" /> : </b>
+											<sec:authentication property="authorities" var="roles" scope="page" />
+	                                        <c:forEach var="role" items="${roles}">
+	                                        	<c:set value="${fn:replace(role, 'ROLE_', '')}" var="role" />
+												<a class="btn-${fn:toLowerCase(role)} btn-xs">${role}</a>
+											</c:forEach>
 										</div>
 										
 											<script type="text/javascript">
@@ -102,7 +133,7 @@
 										<sec:authorize access="hasRole('EXPERT')">
 											<label>Choisir un thématique <sup>*</sup></label>
 											<div>
-												<form:select path="dExpertises">
+												<form:select id ="dExpertises" path="dExpertises" style="display: none">
 													<form:options items="${listeThematique}"
 														itemLabel="libelle" itemValue="id" />
 												</form:select>
@@ -131,13 +162,21 @@
 										<label><spring:message code="profil.edit.postoccupe" /></label>
 										<form:input path="postOccupe" />
 										<form:errors path="postOccupe" />
+										
+										<%-- date placeholder --%>
+										<jsp:useBean id="today" class="java.util.Date" />
+										<fmt:formatDate var="year" value="${today}" pattern="yyyy" />
+										<fmt:formatDate var="date" value="${today}" pattern="dd-MM" />
+										<fmt:parseDate var="dateN" value="${date}-${year-17}" pattern="dd-MM-yyyy" />
+										<fmt:formatDate var="dateNF" value="${dateN}" pattern="${dateFormat}" />
+										
 										<label><spring:message
 												code="signup.dateofbirth.placeholder" /> (<c:out
 												value="${dateFormat}" />)</label>
-										<form:input path="dateNaissance" />
+										<form:input type="text" id="dateNaissance" path="dateNaissance" placeholder="${dateNF}"/>
 										<form:errors path="dateNaissance" />
+										
 									</div>
-
 									<div class="col-md-8">
 										<div class="forma-style">
 											<label style="float: none !important; display: block"><spring:message
@@ -205,18 +244,25 @@
 
 	$('#biographie').summernote({
 		height: 200,
+// 		toolbar: [
+// 		          ['style', ['style']],
+// 		          ['font', ['bold', 'italic', 'underline', 'clear']],
+// 		          ['font', ['fontsize']],
+// 		          ['color', ['color']],
+// 		          ['para', ['ul', 'ol', 'paragraph']],
+// 		          ['height', ['height']],
+// 		          ['table', ['table']],
+// 		          ['insert', ['link', 'picture', 'video']],
+// 		          ['view', ['codeview']],
+// 		          ['help', ['help']]
+// 		        ],
+		styleTags: ['p', 'blockquote', 'pre', 'h2'],
 		toolbar: [
-		          ['style', ['style']],
-		          ['font', ['bold', 'italic', 'underline', 'clear']],
-		          ['font', ['fontsize']],
-		          ['color', ['color']],
-		          ['para', ['ul', 'ol', 'paragraph']],
-		          ['height', ['height']],
-		          ['table', ['table']],
-		          ['insert', ['link', 'picture', 'video']],
-		          ['view', ['codeview']],
-		          ['help', ['help']]
-		        ],
+          ['style', ['style']],
+          ['font', ['bold', 'italic', 'underline', 'clear']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['insert', ['link']]
+        ],
 		onImageUpload: function (files, editor, welEditable) {
 			sendFile(files[0], editor, welEditable);
 		}
@@ -224,18 +270,26 @@
 
 	$('#publication').summernote({
 		height: 200,
+//         airMode: true,
+		style: ['p', 'blockquote', 'pre', 'h2'],
 		toolbar: [
-		          ['style', ['style']],
-		          ['font', ['bold', 'italic', 'underline', 'clear']],
-		          ['font', ['fontsize']],
-		          ['color', ['color']],
-		          ['para', ['ul', 'ol', 'paragraph']],
-		          ['height', ['height']],
-		          ['table', ['table']],
-		          ['insert', ['link', 'picture', 'video']],
-		          ['view', ['codeview']],
-		          ['help', ['help']]
-		        ],
+          ['style', ['style']],
+          ['font', ['bold', 'italic', 'underline', 'clear']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['insert', ['link']]
+        ],
+// 		toolbar: [
+// 		          ['style', ['style']],
+// 		          ['font', ['bold', 'italic', 'underline', 'clear']],
+// 		          ['font', ['fontsize']],
+// 		          ['color', ['color']],
+// 		          ['para', ['ul', 'ol', 'paragraph']],
+// 		          ['height', ['height']],
+// 		          ['table', ['table']],
+// 		          ['insert', ['link', 'picture', 'video']],
+// 		          ['view', ['codeview']],
+// 		          ['help', ['help']]
+// 		        ],
 		onImageUpload: function (files, editor, welEditable) {
 			sendFile(files[0], editor, welEditable);
 		}
@@ -267,4 +321,13 @@
             $('#errorMdp').html("<p style='color: red;'> Les nouveaux mots de passes ne sont pas les mêmes</p>");
         }
     }
+</script>
+<script type="text/javascript" src="${resourcesPath}/js/bootstrap-multiselect.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#dExpertises').multiselect({
+            maxHeight: 158,
+            buttonWidth: '100%'
+        });
+    });
 </script>

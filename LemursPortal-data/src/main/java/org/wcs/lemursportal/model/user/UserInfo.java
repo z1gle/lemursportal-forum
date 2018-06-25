@@ -42,6 +42,9 @@ public class UserInfo implements IUserInfo {
 	@Column(name="prenoms")
 	private String prenom;
 	
+	@Column(name="titre")
+	private String title;
+	
 	@Column(name="date_naissance")
 	private Date dateNaissance;
 	
@@ -299,6 +302,14 @@ public class UserInfo implements IUserInfo {
 
 	public void setExpiryDate(Date expiryDate) {
 		this.expiryDate = expiryDate;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 }

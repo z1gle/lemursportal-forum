@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.wcs.lemursportal.dto.user.SocialProvider;
 import org.wcs.lemursportal.model.post.Thematique;
 
@@ -17,6 +18,7 @@ import org.wcs.lemursportal.model.post.Thematique;
 public class RegistrationForm extends FileBucket {
 	
 	private Integer id;
+	private String title;
 	private String nom;
 	private String prenom;
 	private Date dateNaissance;
@@ -135,6 +137,12 @@ public class RegistrationForm extends FileBucket {
 	}
 	public void setdExpertises(List<Integer> dExpertises) {
 		this.dExpertises = dExpertises;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 }

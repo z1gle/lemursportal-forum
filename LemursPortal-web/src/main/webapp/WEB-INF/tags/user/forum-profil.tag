@@ -6,6 +6,7 @@
 <%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
 <%@ attribute name="userInfo" required="true" rtexprvalue="true" type="org.wcs.lemursportal.model.user.UserInfo" description="L'Utilisateur"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:url value="/resources" var="resourcesPath"/>
 <div class="forum-profil">
 	<a href="#"><user:profilImage src="${userInfo.photoProfil}" cssClass="img-circle"/></a>
@@ -24,7 +25,8 @@
 				<c:set var="libelle" value="${role.libelle}" />
 			</c:if>
 		</c:forEach>
-		<i><c:out value="${libelle}" /></i>
+<%-- 		<i><c:out value="${libelle}" /></i> --%>
+		<a class="btn-${fn:toLowerCase(libelle)} btn-xs" style="font-size: 10px;"><c:out value="${libelle}" /></a>
 		<br />
 	</div>
 </div>
