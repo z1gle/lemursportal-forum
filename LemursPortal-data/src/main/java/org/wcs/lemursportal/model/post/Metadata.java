@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import javax.persistence.Transient;
+import org.wcs.lemursportal.model.association.AssociationMetadataTaxonomi;
 import org.wcs.lemursportal.model.association.AssociationMetadataTopic;
 
 @Entity
@@ -88,6 +89,9 @@ public class Metadata {
 
     @Transient
     private List<AssociationMetadataTopic> listeAssociationMetadataTopic;
+    
+    @Transient
+    private List<AssociationMetadataTaxonomi> listeAssociationMetadataTaxonomi;
 
     //Utils method
     public void addListeAssociationMetadataTopic(AssociationMetadataTopic associationMetadataTopic) {
@@ -96,6 +100,17 @@ public class Metadata {
         } catch (NullPointerException e) {
             this.listeAssociationMetadataTopic = new ArrayList<>();
             this.listeAssociationMetadataTopic.add(associationMetadataTopic);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void addListeAssociationMetadataTaxonomi(AssociationMetadataTaxonomi associationMetadataTaxonomi) {
+        try {
+            this.listeAssociationMetadataTaxonomi.add(associationMetadataTaxonomi);
+        } catch (NullPointerException e) {
+            this.listeAssociationMetadataTaxonomi = new ArrayList<>();
+            this.listeAssociationMetadataTaxonomi.add(associationMetadataTaxonomi);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -293,4 +308,14 @@ public class Metadata {
     public void setListeAssociationMetadataTopic(List<AssociationMetadataTopic> listeAssociationMetadataTopic) {
         this.listeAssociationMetadataTopic = listeAssociationMetadataTopic;
     }
+
+    public List<AssociationMetadataTaxonomi> getListeAssociationMetadataTaxonomi() {
+        return listeAssociationMetadataTaxonomi;
+    }
+
+    public void setListeAssociationMetadataTaxonomi(List<AssociationMetadataTaxonomi> listeAssociationMetadataTaxonomi) {
+        this.listeAssociationMetadataTaxonomi = listeAssociationMetadataTaxonomi;
+    }
+    
+    
 }

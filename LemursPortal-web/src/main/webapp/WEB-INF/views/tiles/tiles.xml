@@ -218,7 +218,7 @@
 	<definition name="document.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
 	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
 	  <put-attribute name="left" value="/WEB-INF/views/tiles/pages/document-list.jsp" />
-	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side_document.jsp" />
 	</definition>
    
    
