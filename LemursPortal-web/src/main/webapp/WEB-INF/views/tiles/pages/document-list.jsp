@@ -187,12 +187,12 @@ figcaption.mask h3, figcaption.mask p {
                                     <ul class="project-wrapper animated fadeInUp" style="text-align: left !important">
                                     <c:forEach items="${docIMAGE}" var="pic">
                                     	<li class="species-item">
-                                    		<a href="#" onclick="showPhoto('${pic.filename}')">
-                                    		<img src="${resourcesPath}/images/l-blank.png" style="background-image: url('${resourcesPath}/upload/${pic.filename}'); " class="img-responsive" 
-                                    				onclick="openModal();currentSlide(${isa})" alt="--">
+                                    		<a href="#" onclick="showPhoto('${pic.url}')">
+                                    		<img src="${resourcesPath}/images/l-blank.png" style="background-image: url('${basePath}${pic.url}'); " class="img-responsive" 
+                                    				onclick="showPhoto('${pic.title}', '${basePath}${pic.url}');" class="hover-shadow cursor" alt="--">
                                     		</a>
                                     		<figcaption class="mask">
-                                    			<p><i>${pic.filename}</i></p>
+                                    			<p><i>${pic.url}</i></p>
                                     			<p>--</p>
                                     		</figcaption>
                                     	</li>
@@ -208,7 +208,8 @@ figcaption.mask h3, figcaption.mask p {
                                             <div class="mySlides">
                                                 <div class="numbertext"><c:out value="${isa1 }"/> /<c:out value="${isa }"/></div>
                                                 <!--<img src="${pic.url}" style="width:100%">-->
-                                                <img src="${resourcesPath}/upload/${pic.filename}" style="width:100%">
+<%--                                                 <img src="${resourcesPath}/upload/${pic.url}" style="width:100%"> --%>
+                                                <img src="${pic.url}" style="width:100%">
                                                 <c:set var="isa1" value="${isa1+1}"/>
                                             </div>
                                         </c:forEach>
