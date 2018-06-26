@@ -64,9 +64,9 @@
 										<label>Titre<sup>*</sup></label>
 										<form:select path="title">
 											<form:option value="" disabled="true"> --SELECT--</form:option>
+											<form:option value="Mr.">Mr.</form:option>
 											<form:option value="Mlle.">Mlle.</form:option>
 											<form:option value="Mme." >Mme.</form:option>
-											<form:option value="Mr.">Mr.</form:option>
 											<form:option value="Dr.">Dr.</form:option>
 											<form:option value="Pr.">Pr.</form:option>
 										</form:select>

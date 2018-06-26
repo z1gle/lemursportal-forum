@@ -112,9 +112,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
-	public void updateDExpertise(Integer userId, Set<Thematique> thematique) {
+	public void updateDExpertise(Integer userId, Set<Thematique> thematique, String title) {
 		UserInfo user = getById(userId);
 		user.setdExpertise(thematique);
+		user.setTitle(title);
 		userRepository.save(user);
 	}
 

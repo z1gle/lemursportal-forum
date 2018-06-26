@@ -102,7 +102,7 @@ public class AdminUserInfoController {
 				dEToSave.add(thematique);
 			}
 		}
-		userInfoService.updateDExpertise(dExpertiseEditForm.getUserId(), dEToSave);
+		userInfoService.updateDExpertise(dExpertiseEditForm.getUserId(), dEToSave, dExpertiseEditForm.getTitle());
 		return "redirect:/experts/" + dExpertiseEditForm.getUserId();
 	}
 	

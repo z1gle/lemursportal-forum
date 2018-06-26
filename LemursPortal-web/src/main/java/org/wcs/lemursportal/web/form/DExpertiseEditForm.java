@@ -17,6 +17,7 @@ import org.wcs.lemursportal.model.user.UserType;
 public class DExpertiseEditForm {
 	
 	private Integer userId;
+	private String title;
 	private List<Integer> dExpertise;
 	private UserInfo user;
 	
@@ -50,6 +51,14 @@ public class DExpertiseEditForm {
 
 	public UserInfo getUser() {
 		return user;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	
 }

@@ -87,7 +87,7 @@ public interface UserInfoService {
 	UserInfo registerNewUser(UserRegistrationForm userRegistrationForm)throws UserAlreadyExistAuthenticationException;
 	
 	@PreAuthorize("hasAnyRole('ADMIN', 'MODERATEUR')")
-	void updateDExpertise(Integer userId, Set<Thematique> thematique);
+	void updateDExpertise(Integer userId, Set<Thematique> thematique, String title);
 	
 	UserInfo findUserByResetToken(String token);
 
