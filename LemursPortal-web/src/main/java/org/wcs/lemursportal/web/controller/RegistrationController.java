@@ -311,12 +311,10 @@ public class RegistrationController extends BaseController {
 			BindingResult results) throws IOException 
 	{
 		registrationFormValidator.validate(registrationForm, results);
-		LOGGER.error(registrationForm.getDateNaissance() + "1#####################" + registrationForm.getTitle());
 		if(results.hasErrors()){
 			return "profil.edit.page";
 		}
 
-		LOGGER.error(registrationForm.getDateNaissance() + "2#####################");
 		MultipartFile multipartFile = registrationForm.getFile();
 		if(multipartFile != null && !registrationForm.getFile().getOriginalFilename().isEmpty()){
 
@@ -331,13 +329,13 @@ public class RegistrationController extends BaseController {
 		
 		Set<Thematique> thematiqueToSave = new HashSet<>();
 		List<Thematique> thematiques = getAllThematiques();
-		for(Thematique thematique : thematiques){
-			if(registrationForm.getdExpertises().contains(thematique.getId())){
-				thematiqueToSave.add(thematique);
+		if(registrationForm.getdExpertises() != null)
+			for(Thematique thematique : thematiques){
+				if(registrationForm.getdExpertises().contains(thematique.getId())){
+					thematiqueToSave.add(thematique);
+				}
 			}
-		}
 
-		LOGGER.error(registrationForm.getDateNaissance() + "3#####################");
 		user.setdExpertise(thematiqueToSave);
 		
 		userInfoService.update(user);

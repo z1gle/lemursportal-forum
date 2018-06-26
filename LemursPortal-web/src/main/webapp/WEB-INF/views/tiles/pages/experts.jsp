@@ -122,7 +122,7 @@
                                     
                                     <div class="expert-usertitle">
                                         <div class="expert-usertitle-name">
-                                        <c:out value="${expert.prenom}" /> <c:out
+                                        <c:out value="${expert.title}" /> <c:out value="${expert.prenom}" /> <c:out
 											value="${expert.nom}" />
                                             
                                         </div>

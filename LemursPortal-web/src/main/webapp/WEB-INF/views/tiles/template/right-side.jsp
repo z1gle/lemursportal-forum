@@ -181,7 +181,8 @@
         <c:if test="${topDocument.typeId == 1}">
         <c:url var="videoPageUrl" value="/documents#tab-item-1"/>
 			<a  href="${videoPageUrl}">
-        	<img src="${resourcesPath}/upload/${topDocument.filename}" alt=""/></a>
+        	<img src="${resourcesPath}/profil/blanc.png" style="background-image: url('${resourcesPath}/upload/${topDocument.filename}'); background-size: cover;background-position: 50% 25%;" alt=""/>
+        	</a>
         </c:if>
         	
         </a>
