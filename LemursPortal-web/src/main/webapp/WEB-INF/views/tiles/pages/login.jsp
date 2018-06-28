@@ -40,7 +40,7 @@
                                 </form>
                                 <%--               <a href="${pageContext.request.contextPath}/auth/yahoo"><img src="${resourcesPath}/images/icon-yahoo.png" border="0"></a> --%>
                                 <div class="form">
-                                    <form id="form-login" class="login-form" name="loginForm" action="<c:url value='/authenticate' />" method="POST">
+                                    <form id="form-login" class="login-form" action="javascript:login();" name="loginForm" method="POST">
                                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                             
                                             <c:if test="${not empty error}">
@@ -70,8 +70,8 @@
                             </div>
                         </div>
                     </div>
-                    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
-                    <script src="http://malsup.github.com/jquery.form.js"></script> 
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
+                    <script src="https://malsup.github.com/jquery.form.js"></script> 
                     <%-- verification dev mode --%>
                     <c:set var="port" value="" />
 					<c:if test="${req.getServerPort() != 80 || req.getServerPort() != 443}">
@@ -79,16 +79,23 @@
 					</c:if>
                     <script>
                         // wait for the DOM to be loaded 
-                        $(document).ready(function () {
-                            // bind 'myForm' and provide a simple callback function 
-                            $('#form-login').ajaxForm(function () {
-                                $.post("${req.getScheme()}://${req.getServerName()}${port}/lemurs/autentification", { login: $('#email').val(), password: $('#pwd').val() }, function () {
+                        //$(document).ready(function () {
+                            // bind 'myForm' and provide a simple callback function 							
+                            /*$('#form-login').ajaxForm(function () {
+                                $.post("https://www.lemursportal.org/species/autentification", { login: $('#email').val(), password: $('#pwd').val() }, function () {
                                     window.history.back();
                                 }).fail(function () {
                                     $('.message').html("Erreur lors de l'autentification, veuiller vérifier votre e-mail et mot de passe");
                                 });                                
-                            });
-                        });
+                            });*/
+                        //});
+						function login() {
+								$.post("https://www.lemursportal.org/species/autentification", { login: $('#email').val(), password: $('#pwd').val() }, function () {
+                                    window.history.back();
+                                }).fail(function () {
+                                    $('.message').html("Erreur lors de l'autentification, veuiller vérifier votre e-mail et mot de passe");
+                                });           
+							};
                     </script> 
                 </body>
                 </html>
