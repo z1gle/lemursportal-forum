@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		//http.requiresChannel().anyRequest().requiresSecure();
 		//On securise les pages qui manipules des mots de passe
-		http.requiresChannel().antMatchers("/login**", "/**", "/formation**", "/authenticate**").requiresSecure();
+		//http.requiresChannel().antMatchers("/login**", "/**", "/formation**", "/authenticate**").requiresSecure();
 		http.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).sessionFixation().none() //on veut garder la même session pour le basculement des pages http<->https
 			.maximumSessions(1).sessionRegistry(sessionRegistry());

@@ -241,7 +241,7 @@ figcaption.mask h3, figcaption.mask p {
                                             <td><img src="${resourcesPath}/images/icon-video-document.png" alt=""></td>
                                             <td><c:out	value="${video.filename}" /></td>
                                             <td class="text-center">
-                                                <c:url var="videoPageUrl" value="/files/${video.id}"/>
+                                                <c:url var="videoPageUrl" value="${video.url}"/>
                                                 <a class='btn btn-info btn-xs' href="${videoPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
                                         </tr>
                                     </c:forEach>
@@ -613,6 +613,7 @@ figcaption.mask h3, figcaption.mask p {
                 $('#species').val('');
                 $('#errorMdp').html("<p style='color: red;'> " + "</p>");
                 closeModal('modal-ajout-document');
+                location.reload();
             },
             error: function (json) {
                 $('#errorMdp').html("<p style='color: red;'> " + "Le téléchargement du document est un échec. Veuiller réessayer.</p>");

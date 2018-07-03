@@ -50,6 +50,7 @@ import org.wcs.lemursportal.repository.post.MetadataRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.service.post.DocumentService;
 import org.wcs.lemursportal.service.post.PostServiceImpl.DOCTYPE;
+import static org.wcs.lemursportal.web.controller.BaseController.TOP_DOCUMENT_PAGE_SIZE;
 
 /**
  * @author Mikajy <mikajy401@gmail.com>
@@ -152,6 +153,20 @@ public class DocumentController extends BaseController {
         }
         return null;
     }
+    // Modif using MetadataParent, only work for image now
+//    public List<Metadata> listMetadatas() {
+//        if (page == null || page < 1) {
+//            page = 0;
+//        } else {
+//            page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+//        }
+//        Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
+//        Page<Metadata> pageMetadata = metadataRepository.findAll(pageable, metadataType, thematique);
+//        if (null != pageMetadata) {
+//            return pageMetadata.getContent();
+//        }
+//        return null;
+//    }
 
     @ModelAttribute("youtubeFiles")
     public List<Post> listYoutubeFile(Integer page, Model model, DOCTYPE docType) {
@@ -267,12 +282,14 @@ public class DocumentController extends BaseController {
 
         //handle file upload
         if (null != file && !file.isEmpty()) {
+            String additionalName = "";
+            additionalName += Calendar.getInstance().getTime().getTime();
             String filename = file.getOriginalFilename().replaceAll("\\s+", "");
             filename = Normalizer.normalize(filename, Normalizer.Form.NFD);
             filename = filename.replaceAll("[^\\p{ASCII}]", "");
-            String path = context.getRealPath("/") + File.separator + "resources" + File.separator + "upload" + File.separator + filename;
+            String path = context.getRealPath("/") + File.separator + "resources" + File.separator + "upload" + File.separator + additionalName + filename;
             // Add the url path 
-            post.setUrl("/" + "resources" + "/" + "upload" + "/" + filename);
+            post.setUrl("/" + "resources" + "/" + "upload" + "/" +  additionalName + filename);
             if (!Files.exists(Paths.get(context.getRealPath("/"), File.separator, "resources", File.separator, "upload"), LinkOption.NOFOLLOW_LINKS)) {
                 try {
                     Files.createDirectories(Paths.get(context.getRealPath("/"), File.separator, "resources", File.separator, "upload"));
@@ -289,8 +306,8 @@ public class DocumentController extends BaseController {
                 Document doc = new Document();
                 doc.setAuthor(currentUser);
                 doc.setCreationDate(now);
-                doc.setFilename(filename);
-                doc.setUrl("/" + "resources" + "/" + "upload" + "/" + filename);
+                doc.setFilename( additionalName + filename);
+                doc.setUrl("/" + "resources" + "/" + "upload" + "/" +  additionalName + filename);
                 doc.setAuthorId(currentUser.getId());
                 //typeId is 4 for publication 
                 doc.setTypeId(Integer.parseInt(post.getType()));
