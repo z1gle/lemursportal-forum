@@ -250,9 +250,13 @@ public class MetadataRepositoryImpl implements MetadataRepository {
             em.persist(amt);
         }
         List<AssociationMetadataTaxonomi> listeAMTax = metadata.getListeAssociationMetadataTaxonomi();
-        for (AssociationMetadataTaxonomi amt : listeAMTax) {
-            amt.setId1(metadata.getId());
-            em.persist(amt);
+        try {
+            for (AssociationMetadataTaxonomi amt : listeAMTax) {
+                amt.setId1(metadata.getId());
+                em.persist(amt);
+            }
+        } catch (NullPointerException npe) {
+            System.out.println("Il n'y a pas d'éspèces séléctionnée");
         }
     }
 
