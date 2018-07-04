@@ -239,7 +239,7 @@ figcaption.mask h3, figcaption.mask p {
 
                                         <tr>
                                             <td><img src="${resourcesPath}/images/icon-video-document.png" alt=""></td>
-                                            <td><c:out	value="${video.filename}" /></td>
+                                            <td><c:out	value="${video.title}" /></td>
                                             <td class="text-center">
                                                 <c:url var="videoPageUrl" value="${video.url}"/>
                                                 <a class='btn btn-info btn-xs' href="${videoPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
@@ -266,9 +266,9 @@ figcaption.mask h3, figcaption.mask p {
 
                                         <tr>
                                             <td><img src="${resourcesPath}/images/icon-audio.png" alt=""></td>
-                                            <td><c:out	value="${audio.filename}" /></td>
+                                            <td><c:out	value="${audio.title}" /></td>
                                             <td class="text-center">
-                                                <c:url var="audioPageUrl" value="/files/${audio.id}"/>
+                                                <c:url var="audioPageUrl" value="${audio.url}"/>
                                                 <a class='btn btn-info btn-xs' href="${audioPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
                                         </tr>
                                     </c:forEach>

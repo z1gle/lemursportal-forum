@@ -81,14 +81,14 @@ public class DocumentController extends BaseController {
             page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }
         if (thematique != null) {
-            model.addAttribute("docAUDIO", listDocs(page, model, DOCTYPE.AUDIO));
-            model.addAttribute("docVIDEO", listDocs(page, model, DOCTYPE.VIDEO));
+            model.addAttribute("docAUDIO", listMetadatas(page, model, "3", thematique));
+            model.addAttribute("docVIDEO", listMetadatas(page, model, "2", thematique));
             model.addAttribute("docIMAGE", listMetadatas(page, model, "1", thematique));
             model.addAttribute("docAUTRES", listMetadatas(page, model, "4", thematique));
             model.addAttribute("metadata", new Metadata());
         } else {
-            model.addAttribute("docAUDIO", listDocs(page, model, DOCTYPE.AUDIO));
-            model.addAttribute("docVIDEO", listDocs(page, model, DOCTYPE.VIDEO));
+            model.addAttribute("docAUDIO", listMetadata(page, model, "3"));
+            model.addAttribute("docVIDEO", listMetadata(page, model, "2"));
             model.addAttribute("docIMAGE", listMetadata(page, model, "1"));
             model.addAttribute("docAUTRES", listMetadata(page, model, "4"));
             model.addAttribute("metadata", new Metadata());            
