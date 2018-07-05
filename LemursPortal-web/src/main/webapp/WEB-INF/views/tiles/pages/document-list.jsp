@@ -449,7 +449,10 @@ figcaption.mask h3, figcaption.mask p {
                             </div>
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.description"/>
-                                <input type="text" class="form-control" id="description">
+                                <textarea class="form-control" id="description">
+                                    
+                                </textarea>
+                                <!--<input type="text" class="form-control" id="description">-->
                             </div>
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.language"/>
