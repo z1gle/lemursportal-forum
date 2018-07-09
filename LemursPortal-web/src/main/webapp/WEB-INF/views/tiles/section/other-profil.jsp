@@ -125,9 +125,8 @@
                                 	<div class="col-md-6">
                                         <p><span>Rôle:</span><br>
                                         <!-- Roles display -->
-                                        <sec:authentication property="authorities" var="roles" scope="page" />
-                                        <c:forEach var="role" items="${roles}">
-                                        	<c:set value="${fn:replace(role, 'ROLE_', '')}" var="role" />
+                                        <c:forEach var="role" items="${userInfo.roles}">
+                                        	<c:set value="${fn:replace(role.libelle, 'ROLE_', '')}" var="role" />
 											<a class="btn-${fn:toLowerCase(role)} btn-xs">${role}</a>
 										</c:forEach>
 										</p>		
