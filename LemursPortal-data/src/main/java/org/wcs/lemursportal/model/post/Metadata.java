@@ -21,28 +21,28 @@ public class Metadata {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "url", insertable = true, updatable = true)
+    @Column(name = "url", insertable = true, updatable = true, length = 400)
     private String url;
 
-    @Column(name = "coverage", insertable = true, updatable = true)
+    @Column(name = "coverage", insertable = true, updatable = true, length = 400)
     private String coverage;
 
-    @Column(name = "description", insertable = true, updatable = true)
+    @Column(name = "description", insertable = true, updatable = true, length = 400)
     private String description;
 
-    @Column(name = "language", insertable = true, updatable = true)
+    @Column(name = "language", insertable = true, updatable = true, length = 400)
     private String language;
 
-    @Column(name = "relation", insertable = true, updatable = true)
+    @Column(name = "relation", insertable = true, updatable = true, length = 400)
     private String relation;
 
-    @Column(name = "source", insertable = true, updatable = true)
+    @Column(name = "source", insertable = true, updatable = true, length = 400)
     private String source;
 
-    @Column(name = "subject", insertable = true, updatable = true)
+    @Column(name = "subject", insertable = true, updatable = true, length = 400)
     private String subject;
 
-    @Column(name = "title", insertable = true, updatable = true)
+    @Column(name = "title", insertable = true, updatable = true, length = 400)
     private String title;
 
     @Column(name = "date_publication", insertable = true, updatable = true)
@@ -57,22 +57,22 @@ public class Metadata {
     @Column(name = "file_format", insertable = true, updatable = true)
     private String fileFormat;
 
-    @Column(name = "identifier", insertable = true, updatable = true)
+    @Column(name = "identifier", insertable = true, updatable = true, length = 400)
     private String identifier;
 
-    @Column(name = "type", insertable = true, updatable = true)
+    @Column(name = "type", insertable = true, updatable = true, length = 400)
     private String type;
 
-    @Column(name = "contributor", insertable = true, updatable = true)
+    @Column(name = "contributor", insertable = true, updatable = true, length = 400)
     private String contributor;
 
-    @Column(name = "creator", insertable = true, updatable = true)
+    @Column(name = "creator", insertable = true, updatable = true, length = 400)
     private String creator;
 
-    @Column(name = "publisher", insertable = true, updatable = true)
+    @Column(name = "publisher", insertable = true, updatable = true, length = 400)
     private String publisher;
 
-    @Column(name = "rights", insertable = true, updatable = true)
+    @Column(name = "rights", insertable = true, updatable = true, length = 400)
     private String rights;
 
     @Column(name = "id_document", insertable = true, updatable = true)
@@ -81,7 +81,7 @@ public class Metadata {
     @Column(name = "id_utilisateur", insertable = true, updatable = true)
     private Integer idUtilisateur;
 
-    @Column(name = "bibliographic_resource", insertable = true, updatable = true)
+    @Column(name = "bibliographic_resource", insertable = true, updatable = true, length = 400)
     private String bibliographicResource;
 
     @Transient
