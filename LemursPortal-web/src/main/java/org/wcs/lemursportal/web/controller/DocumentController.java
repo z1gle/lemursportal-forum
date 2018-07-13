@@ -74,7 +74,7 @@ public class DocumentController extends BaseController {
     private static final int BUFFER_SIZE = 4096;
 
     @GetMapping(value = {"/documents"})
-    public String list(@RequestParam(required = false, defaultValue = "0") Integer page, @RequestParam(required = false, value = "topic") Integer thematique, Model model) {
+    public String list(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, @RequestParam(required = false, value = "topic") Integer thematique, Model model) {
         if (page == null || page < 1) {
             page = 0;
         } else {
@@ -91,7 +91,7 @@ public class DocumentController extends BaseController {
             model.addAttribute("docVIDEO", listMetadata(page, model, "2"));
             model.addAttribute("docIMAGE", listMetadata(page, model, "1"));
             model.addAttribute("docAUTRES", listMetadata(page, model, "4"));
-            model.addAttribute("metadata", new Metadata());            
+            model.addAttribute("metadata", new Metadata());
         }
         return "document-list";
     }
@@ -223,7 +223,7 @@ public class DocumentController extends BaseController {
     }
 
     @PostMapping(value = "/secured/document/post")
-    public String submit(Authentication authentication, @RequestParam("bibliographicResource") String bibliographicResource, @RequestParam("url") String url, @RequestParam("date") String date, @RequestParam("idThematique") String idThematique, @RequestParam(name = "species", required = false) String species, @RequestParam("coverage") String coverage, @RequestParam("description") String description, @RequestParam("language") String language, @RequestParam("relation") String relation, @RequestParam("source") String source, @RequestParam("subject") String subject, @RequestParam("title") String title, @RequestParam("format") String format, @RequestParam("fileFormat") String fileFormat, @RequestParam("identifier") String identifier, @RequestParam("type") String type, @RequestParam("contributor") String contributor, @RequestParam("creator") String creator, @RequestParam("publisher") String publisher, @RequestParam("rights") String rights, @RequestParam("year") String year, @RequestParam(name = "file", required = false) MultipartFile file, HttpServletRequest request) {
+    public String submit(Authentication authentication, @RequestParam("bibliographicResource") String bibliographicResource, @RequestParam("url") String url, @RequestParam("date") String date, @RequestParam("idThematique") String idThematique, @RequestParam(name = "species", required = false) String species, @RequestParam(name = "id", required = false) Integer id, @RequestParam("coverage") String coverage, @RequestParam("description") String description, @RequestParam("language") String language, @RequestParam("relation") String relation, @RequestParam("source") String source, @RequestParam("subject") String subject, @RequestParam("title") String title, @RequestParam("format") String format, @RequestParam("fileFormat") String fileFormat, @RequestParam("identifier") String identifier, @RequestParam("type") String type, @RequestParam("contributor") String contributor, @RequestParam("creator") String creator, @RequestParam("publisher") String publisher, @RequestParam("rights") String rights, @RequestParam("year") String year, @RequestParam(name = "file", required = false) MultipartFile file, HttpServletRequest request) {
         if (authentication == null) {
             return "redirect:/login";
         }
@@ -271,16 +271,16 @@ public class DocumentController extends BaseController {
             AssociationMetadataTaxonomi amt = new AssociationMetadataTaxonomi();
             try {
                 amt.setId2(Integer.parseInt(s));
-            } catch(Exception e) {
+            } catch (Exception e) {
                 continue;
-            }            
+            }
             post.addListeAssociationMetadataTaxonomi(amt);
         }
         UserInfo currentUser = userInfoService.getByEmail(authentication.getName());
         System.out.println("mail");
         Date now = Calendar.getInstance().getTime();
 
-        //handle file upload
+        //handle file upload        
         if (null != file && !file.isEmpty()) {
             String additionalName = "";
             additionalName += Calendar.getInstance().getTime().getTime();
@@ -289,7 +289,7 @@ public class DocumentController extends BaseController {
             filename = filename.replaceAll("[^\\p{ASCII}]", "");
             String path = context.getRealPath("/") + File.separator + "resources" + File.separator + "upload" + File.separator + additionalName + filename;
             // Add the url path 
-            post.setUrl("/" + "resources" + "/" + "upload" + "/" +  additionalName + filename);
+            post.setUrl("/" + "resources" + "/" + "upload" + "/" + additionalName + filename);
             if (!Files.exists(Paths.get(context.getRealPath("/"), File.separator, "resources", File.separator, "upload"), LinkOption.NOFOLLOW_LINKS)) {
                 try {
                     Files.createDirectories(Paths.get(context.getRealPath("/"), File.separator, "resources", File.separator, "upload"));
@@ -306,8 +306,8 @@ public class DocumentController extends BaseController {
                 Document doc = new Document();
                 doc.setAuthor(currentUser);
                 doc.setCreationDate(now);
-                doc.setFilename( additionalName + filename);
-                doc.setUrl("/" + "resources" + "/" + "upload" + "/" +  additionalName + filename);
+                doc.setFilename(additionalName + filename);
+                doc.setUrl("/" + "resources" + "/" + "upload" + "/" + additionalName + filename);
                 doc.setAuthorId(currentUser.getId());
                 //typeId is 4 for publication 
                 doc.setTypeId(Integer.parseInt(post.getType()));
@@ -327,12 +327,18 @@ public class DocumentController extends BaseController {
             post.setDocument(doc);
             System.out.println("filefile empty");
         }
-        // Save the document and the metadata in BDD
-        post.setIdUtilisateur(currentUser.getId());
-        documentService.addDocument(post);
+        if (id == null) {
+            // Save the document and the metadata in BDD
+            post.setIdUtilisateur(currentUser.getId());
+            documentService.addDocument(post);
+        } else {
+            post.setId(id);
+            post.setIdUtilisateur(currentUser.getId());
+            documentService.updateDocument(post);
+        }
         return "success";
     }
-    
+
     /**
      *
      * @return

@@ -10,86 +10,86 @@
 <c:url value="/resources" var="resourcesPath"/>
 <c:url value="/" var="basePath"/>
 <style>	
-<!--	
-.project-wrapper {	
-    margin: 0;	
-    padding: 0;	
-    list-style: none;	
-    text-align: center;	
-}	
-	
-.project-wrapper li {	
-    display: inline-block;	
-}	
-	
-.species-item {	
-    cursor: pointer;	
-    margin: 0 1% 1% 0;	
-    overflow: hidden;	
-    position: relative;	
-    width: 32%;	
-}	
-	
-p {	
-    line-height: 25px;	
-}	
-figure, p, address {	
-    margin: 0;	
-}	
-	
-ul.external {	
-    list-style: outside none none;	
-    margin: 0;	
-    padding: 0;	
-    position: absolute;	
-    right: 0;	
-    top: -47px;	
-    -webkit-transition: all 0.4s ease 0s;	
-    -moz-transition: all 0.4s ease 0s;	
-    -ms-transition: all 0.4s ease 0s;	
-    -o-transition: all 0.4s ease 0s;	
-    transition: all 0.4s ease 0s;	
-}	
-.species-item img {	
-	background-size: cover;	
-	background-position: 50% 25%;	
-}	
-	
-figcaption.mask {	
-    /* background-color: rgba(54, 55, 50, 0.79); */	
-/* 	background-image: url('${resourcesPath}/images/gradient.png');  */	
-    background: linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 100%);	
-    bottom: 0;	
-    color: #fff;	
-    padding: 25px;	
-    position: absolute;	
-    width: 100%;	
-    text-align: left;	
-    -webkit-transition: all 0.4s ease 0s;	
-    -moz-transition: all 0.4s ease 0s;	
-    -ms-transition: all 0.4s ease 0s;	
-    -o-transition: all 0.4s ease 0s;	
-    transition: all 0.4s ease 0s;	
-}	
-	
-.species-item:hover figcaption.mask {	
-    bottom: -126px
-}	
-	
-figcaption.mask h3, figcaption.mask p {	
-    margin: 0;	
-    color: #fff;	
-    font-size: 12px;	
-    text-overflow: ellipsis;	
-    overflow: hidden;	
-}	
-.species-item img:hover {	
-	opacity:1;	
-}	
-.species-item img:hover, .species-item img, .species-item iframe {	
-	border: 1px solid #d7d7d7;	
-}	
--->	
+    <!--	
+    .project-wrapper {	
+        margin: 0;	
+        padding: 0;	
+        list-style: none;	
+        text-align: center;	
+    }	
+
+    .project-wrapper li {	
+        display: inline-block;	
+    }	
+
+    .species-item {	
+        cursor: pointer;	
+        margin: 0 1% 1% 0;	
+        overflow: hidden;	
+        position: relative;	
+        width: 32%;	
+    }	
+
+    p {	
+        line-height: 25px;	
+    }	
+    figure, p, address {	
+        margin: 0;	
+    }	
+
+    ul.external {	
+        list-style: outside none none;	
+        margin: 0;	
+        padding: 0;	
+        position: absolute;	
+        right: 0;	
+        top: -47px;	
+        -webkit-transition: all 0.4s ease 0s;	
+        -moz-transition: all 0.4s ease 0s;	
+        -ms-transition: all 0.4s ease 0s;	
+        -o-transition: all 0.4s ease 0s;	
+        transition: all 0.4s ease 0s;	
+    }	
+    .species-item img {	
+        background-size: cover;	
+        background-position: 50% 25%;	
+    }	
+
+    figcaption.mask {	
+        /* background-color: rgba(54, 55, 50, 0.79); */	
+        /* 	background-image: url('${resourcesPath}/images/gradient.png');  */	
+        background: linear-gradient(to top,rgba(0,0,0,0.65) 0%,transparent 100%);	
+        bottom: 0;	
+        color: #fff;	
+        padding: 25px;	
+        position: absolute;	
+        width: 100%;	
+        text-align: left;	
+        -webkit-transition: all 0.4s ease 0s;	
+        -moz-transition: all 0.4s ease 0s;	
+        -ms-transition: all 0.4s ease 0s;	
+        -o-transition: all 0.4s ease 0s;	
+        transition: all 0.4s ease 0s;	
+    }	
+
+    .species-item:hover figcaption.mask {	
+        bottom: -126px
+    }	
+
+    figcaption.mask h3, figcaption.mask p {	
+        margin: 0;	
+        color: #fff;	
+        font-size: 12px;	
+        text-overflow: ellipsis;	
+        overflow: hidden;	
+    }	
+    .species-item img:hover {	
+        opacity:1;	
+    }	
+    .species-item img:hover, .species-item img, .species-item iframe {	
+        border: 1px solid #d7d7d7;	
+    }	
+    -->	
 </style>
 <div class="forum-container page-document">
     <div class="row">
@@ -108,7 +108,7 @@ figcaption.mask h3, figcaption.mask p {
                         <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
                         <c:choose>
                             <c:when test="${isLoggedInUser}">
-                            <li style="float: right;"><button style="color: white;" class="btn" aria-controls="tab-item-5" role="tab" aria-expanded="false" onclick="openModal('modal-ajout-document')">Ajouter</button></li>
+                            <li style="float: right;"><button style="color: white;" class="btn" aria-controls="tab-item-5" role="tab" aria-expanded="false" onclick="operModifAddModal()">Ajouter</button></li>
                             </c:when>
                             <c:otherwise>                            
                             </c:otherwise>
@@ -120,7 +120,7 @@ figcaption.mask h3, figcaption.mask p {
                     <div role="tabpanel" class="tab-pane active fade in" id="tab-item-1">
                         <div class="txt-content">
                             <div class="col-md-offset custyle">
-                      <table style="border: 0px;" class="table table-striped custab">
+                                <table style="border: 0px;" class="table table-striped custab">
                                     <c:set var="years" value="${0}"/>
                                     <c:forEach items="${docAUTRES}" var="publication">      
                                         <c:choose>
@@ -142,6 +142,7 @@ figcaption.mask h3, figcaption.mask p {
                                                             <th style="color:  dodgerblue;font-size: 15px; border-color: white; border-top-color: #dddddd;"></th>                                                                                                        
                                                             <th style="color:  dodgerblue;font-size: 15px; border-color: white; border-top-color: #dddddd;"></th>                                                                                                        
                                                             <th style="color:  dodgerblue;font-size: 15px; border-color: white; border-top-color: #dddddd;"></th>                                                                                                        
+                                                            <th style="color:  dodgerblue;font-size: 15px; border-color: white; border-top-color: #dddddd;"></th>                                                                                                        
                                                         </tr>
                                                     </c:when>
                                                     <c:otherwise></c:otherwise>
@@ -156,7 +157,18 @@ figcaption.mask h3, figcaption.mask p {
                                                 <%--<c:url var="publicationPageUrl" value="/files/${publication.idDocument}"/>--%>
                                                 <c:url var="publicationPageUrl" value="${publication.url}"/>
                                                 <!--<a class='btn btn-info btn-xs' href="${publicationPageUrl}" download="${publication.title}.pdf"><span class="glyphicont"></span>Télécharger</a></td>-->
-                                                <a href="${publicationPageUrl}"><span class="glyphicont"></span><img src="${resourcesPath}/images/icon-thema.png" alt=""></a></td>
+                                                <a href="${publicationPageUrl}"><span class="glyphicont"></span><img src="${resourcesPath}/images/icon-thema.png" alt=""></a>
+                                            </td>
+                                            <c:choose>
+                                                <c:when test="${isLoggedInUser && currentUser.id == publication.idUtilisateur}">
+                                                    <td class="text-center">
+                                                        <a href="#" onclick="showDetailForModification(${publication.id})"><span class="glyphicont"></span><i style="margin-top: 3px;" class="fa fa-edit fa-2x"></i></a>
+                                                    </td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <td class="text-center"></td>
+                                                </c:otherwise>
+                                            </c:choose>                                            
                                         </tr>
                                     </c:forEach>
                                 </table>
@@ -178,26 +190,26 @@ figcaption.mask h3, figcaption.mask p {
                                 </br>
                                 <div class="row">
                                     <c:set var="isa" value="1"/>
-                          <%--          <c:forEach items="${docIMAGE}" var="pic">
-                                        <div class="column col-lg-2 col-md-2 col-sm-4 col-xs-12">
-                                            <a href="#" onclick="showPhoto('${pic.title}', '${basePath}${pic.url}')"><img src="${basePath}${pic.url}" style="width:100%" onclick="openModal();currentSlide(${isa})" class="hover-shadow cursor"></a>
-                                        </div>
-                                        <c:set var="isa" value="${isa+1}"/>
-                                    </c:forEach> --%>
+                                    <%--          <c:forEach items="${docIMAGE}" var="pic">
+                                                  <div class="column col-lg-2 col-md-2 col-sm-4 col-xs-12">
+                                                      <a href="#" onclick="showPhoto('${pic.title}', '${basePath}${pic.url}')"><img src="${basePath}${pic.url}" style="width:100%" onclick="openModal();currentSlide(${isa})" class="hover-shadow cursor"></a>
+                                                  </div>
+                                                  <c:set var="isa" value="${isa+1}"/>
+                                              </c:forEach> --%>
                                     <ul class="project-wrapper animated fadeInUp" style="text-align: left !important">
-                                    <c:forEach items="${docIMAGE}" var="pic">
-                                    	<li class="species-item">
-                                    		<a href="#" onclick="showPhoto('${pic.url}')">
-                                    		<img src="${resourcesPath}/images/l-blank.png" style="background-image: url('${basePath}${pic.url}'); " class="img-responsive" 
-                                    				onclick="showPhoto('${pic.title}', '${basePath}${pic.url}');" class="hover-shadow cursor" alt="--">
-                                    		</a>
-                                    		<figcaption class="mask">
-                                    			<p><i>${pic.url}</i></p>
-                                    			<p>--</p>
-                                    		</figcaption>
-                                    	</li>
-                                        <c:set var="isa" value="${isa+1}"/>
-                                    </c:forEach>
+                                        <c:forEach items="${docIMAGE}" var="pic">
+                                            <li class="species-item">
+                                                <a href="#" onclick="showPhoto('${pic.url}')">
+                                                    <img src="${resourcesPath}/images/l-blank.png" style="background-image: url('${basePath}${pic.url}'); " class="img-responsive" 
+                                                         onclick="showPhoto('${pic.title}', '${basePath}${pic.url}');" class="hover-shadow cursor" alt="--">
+                                                </a>
+                                            <figcaption class="mask">
+                                                <p><i>${pic.url}</i></p>
+                                                <p>--</p>
+                                            </figcaption>
+                                            </li>
+                                            <c:set var="isa" value="${isa+1}"/>
+                                        </c:forEach>
                                     </ul>
                                 </div>
                                 <div id="myModal" class="modal">
@@ -208,7 +220,7 @@ figcaption.mask h3, figcaption.mask p {
                                             <div class="mySlides">
                                                 <div class="numbertext"><c:out value="${isa1 }"/> /<c:out value="${isa }"/></div>
                                                 <!--<img src="${pic.url}" style="width:100%">-->
-<%--                                                 <img src="${resourcesPath}/upload/${pic.url}" style="width:100%"> --%>
+                                                <%--                                                 <img src="${resourcesPath}/upload/${pic.url}" style="width:100%"> --%>
                                                 <img src="${pic.url}" style="width:100%">
                                                 <c:set var="isa1" value="${isa1+1}"/>
                                             </div>
@@ -242,7 +254,7 @@ figcaption.mask h3, figcaption.mask p {
                                             <td><c:out	value="${video.title}" /></td>
                                             <td class="text-center">
                                                 <c:url var="videoPageUrl" value="${video.url}"/>
-                                                <a class='btn btn-info btn-xs' href="${videoPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
+                                                <a class='btn btn-info btn-xs' href="${videoPageUrl}"><span class="glyphicont"></span>Visionner</a></td>
                                         </tr>
                                     </c:forEach>
                                 </table>
@@ -290,20 +302,20 @@ figcaption.mask h3, figcaption.mask p {
                             <div class="col-md-offset custyle">
                                 </br>
                                 <div class="row">
-								<ul class="project-wrapper animated fadeInUp" style="text-align: left !important">
-									<c:forEach items="${youtubeFiles}" var="youtubFile">
-										<li class="species-item">
-											<iframe class="img-responsive" height="250"
-                                                    src="${youtubFile.uriYoutube}?showinfo=0"/>
-                                            </iframe>
-											<figcaption class="mask">
-												<p>
-													<i>${youtubFile.title}</i>
-												</p>
-											</figcaption></li>
-									</c:forEach>
-								</ul>
-								</div>
+                                    <ul class="project-wrapper animated fadeInUp" style="text-align: left !important">
+                                        <c:forEach items="${youtubeFiles}" var="youtubFile">
+                                            <li class="species-item">
+                                                <iframe class="img-responsive" height="250"
+                                                        src="${youtubFile.uriYoutube}?showinfo=0"/>
+                                                </iframe>
+                                            <figcaption class="mask">
+                                                <p>
+                                                    <i>${youtubFile.title}</i>
+                                                </p>
+                                            </figcaption></li>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
                                 <!-- D Pagination -->
                                 <ul class="pagination">
                                     <li class="disabled"><a href="#">&laquo;</a></li>
@@ -368,14 +380,15 @@ figcaption.mask h3, figcaption.mask p {
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" onclick="closeModal('modal-ajout-document')">&times;</button>
+                        <button type="button" class="close" onclick="closeModifAddModal()">&times;</button>
                         <h4 class="modal-title">Ajouter un document</h4>
                     </div>
-                                        <form action="javascript:sendAddDocument();" autocomplete="off">
+                    <form action="javascript:sendAddDocument();" autocomplete="off">
                         <div class="modal-body" style="overflow-y: auto;max-height:  500px;">
                             <div id="errorMdp"></div>
+                            <input type="hidden" id="id">
                             <spring:message code="metadata.topics"/><sup>*</sup><br>
-                            <select required multiple="" id="id_thematique" class="form-control">
+                            <select title="<spring:message code="metadata.popup.bubble.topics"/>" required multiple="" id="id_thematique" class="form-control">
                                 <option value="797277">Behavior </option>
                                 <option value="797278">Threats /conservation issues </option>
                                 <option value="797279">Vocalization </option>
@@ -400,7 +413,7 @@ figcaption.mask h3, figcaption.mask p {
                                 <option value="797298">Others</option>
                             </select>                            
                             <spring:message code="metadata.type"/><sup>*</sup>
-                            <select class="form-control" id="type" style="width: 100%!important;">
+                            <select title="<spring:message code="metadata.popup.bubble.type"/>" class="form-control" id="type" style="width: 100%!important;">
                                 <option style="background-color: #f9efc9;" value="4">Document</option>
                                 <option style="background-color: #f9efc9;" value="1">Photo</option>
                                 <option style="background-color: #f9efc9;" value="2">Video</option>
@@ -408,28 +421,27 @@ figcaption.mask h3, figcaption.mask p {
                             </select>                            
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.year"/><sup>*</sup>                        
-                                <input required type="text" class="form-control" id="year">
+                                <input title="<spring:message code="metadata.popup.bubble.year"/>" required type="text" class="form-control" id="year">
                             </div>
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.title"/><sup>*</sup>
-                                <input required type="text" class="form-control" id="title">
+                                <input title="<spring:message code="metadata.popup.bubble.title"/>" required type="text" class="form-control" id="title">
                             </div>
                             <spring:message code="global.label.file"/>
                             <input type="file" class="form-control" id="document">
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.url"/>
-                                <input type="text" class="form-control" id="url">
+                                <input title="<spring:message code="metadata.popup.bubble.url"/>" placeholder="ex: https://www.lemursportal.org/forum/resources/upload/1530798561545Ziheng&Yoder2003.pdf" type="text" class="form-control" id="url">
                             </div>
                             <div class="" style="width: 100%;">
                                 <spring:message code="metadata.species"/>
-                                <select multiple class="form-control" id="species" style="width: 100%!important;"></select>
-                                <!--<input type="text" class="form-control" id="bibliographic_resource">-->
+                                <select title="<spring:message code="metadata.popup.bubble.species"/>" multiple class="form-control" id="species" style="width: 100%!important;"></select>
                             </div>
                             <spring:message code="metadata.date"/>
-                            <input type="date" class="form-control" id="datePublication">
+                            <input title="<spring:message code="metadata.popup.bubble.date"/>" type="date" class="form-control" id="datePublication">
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.bibliographicResource"/>
-                                <select class="form-control" id="bibliographic_resource" style="width: 100%!important;">
+                                <select title="<spring:message code="metadata.popup.bubble.bibliographicResource"/>" class="form-control" id="bibliographic_resource" style="width: 100%!important;">
                                     <option style="background-color: #f9efc9;" value="">none</option>                                    
                                     <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.paper"/>"><spring:message code="metadata.bibliographicResource.paper"/></option>                                    
                                     <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.journal"/>"><spring:message code="metadata.bibliographicResource.journal"/></option>                                    
@@ -441,72 +453,74 @@ figcaption.mask h3, figcaption.mask p {
                                     <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.poster"/>"><spring:message code="metadata.bibliographicResource.poster"/></option>                                    
                                     <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.others"/>"><spring:message code="metadata.bibliographicResource.others"/></option>                                    
                                 </select>
-                                <!--<input type="text" class="form-control" id="bibliographic_resource">-->
                             </div>                                                
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.coverage"/>
-                                <input type="text" class="form-control" id="coverage">
+                                <input title="<spring:message code="metadata.popup.bubble.coverage"/>" placeholder="ex: SAINTE LUCE | FORT-DAUPHIN | MADAGASCAR" type="text" class="form-control" id="coverage">
                             </div>
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.description"/>
-                                <textarea class="form-control" id="description">
+                                <textarea title="<spring:message code="metadata.popup.bubble.description"/>" class="form-control" id="description">
                                     
                                 </textarea>
-                                <!--<input type="text" class="form-control" id="description">-->
                             </div>
-                            <div class="autocomplete" style="width: 100%;">
-                                <spring:message code="metadata.language"/>
-                                <input type="text" class="form-control" id="language">
-                            </div>
+                            <spring:message code="metadata.language"/>
+                            <select title="<spring:message code="metadata.popup.bubble.language"/>" class="form-control" id="language" style="width: 100%!important;">
+                                <option style="background-color: #f9efc9;" selected="" value="MLG">MG</option>
+                                <option style="background-color: #f9efc9;" value="EN">EN</option>
+                                <option style="background-color: #f9efc9;" value="FR">FR</option>
+                                <option style="background-color: #f9efc9;" value="FR">OTHERS</option>
+                            </select>
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.relation"/>
-                                <input type="text" class="form-control" id="relation">
+                                <input title="<spring:message code="metadata.popup.bubble.relation"/>" placeholder="ex: Relation" type="text" class="form-control" id="relation">
                             </div>
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.source"/>
-                                <input type="text" class="form-control" id="source">
+                                <input title="<spring:message code="metadata.popup.bubble.source"/>" placeholder="ex: Syst. Biol. 52(5):705–716, 2003" type="text" class="form-control" id="source">
                             </div>
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.subject"/>
-                                <input type="text" class="form-control" id="subject">
+                                <input title="<spring:message code="metadata.popup.bubble.subject"/>" placeholder="ex: Mouse lemur Species | Bayesian Methods" type="text" class="form-control" id="subject">
                             </div>                        
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.format"/>
-                                <input type="text" class="form-control" id="format">
+                                <input title="<spring:message code="metadata.popup.bubble.format"/>" placeholder="ex: text" type="text" class="form-control" id="format">
                             </div>
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.fileFormat"/>
-                                <input type="text" class="form-control" id="fileFormat">
+                                <input title="<spring:message code="metadata.popup.bubble.fileFormat"/>" placeholder="ex: PDF" type="text" class="form-control" id="fileFormat">
                             </div>
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.identifier"/>
-                                <input type="text" class="form-control" id="identifier">
+                                <input title="<spring:message code="metadata.popup.bubble.identifier"/>" placeholder="ex :ISSN: 1063-5157 print / 1076-836X online | DOI: 10.1080/10635150390235557" type="text" class="form-control" id="identifier">
                             </div>                        
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.contributor"/>
-                                <input type="text" class="form-control" id="contributor">
+                                <input title="<spring:message code="metadata.popup.bubble.contributor"/>" placeholder="ex: Department of Biology, University College London | Department of Ecology and Evolutionary Biology, Yale University" type="text" class="form-control" id="contributor">
                             </div>
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.creator"/>
-                                <input type="text" class="form-control" id="creator">
+                                <input title="<spring:message code="metadata.popup.bubble.creator"/>" placeholder="ex: ZIHENG YANG | ANNE D. YODER" type="text" class="form-control" id="creator">
                             </div>
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.publisher"/>
-                                <input type="text" class="form-control" id="publisher">
+                                <input title="<spring:message code="metadata.popup.bubble.publisher"/>" placeholder="ex: Society of Systematic Biologists" type="text" class="form-control" id="publisher">
                             </div>
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.rights"/>
-                                <input type="text" class="form-control" id="rights">                        
+                                <input title="<spring:message code="metadata.popup.bubble.rights"/>" placeholder="ex: Syst. Biol. 52(5):705–716, 2003 | Copyright(c) Society of Systematic Biologists" type="text" class="form-control" id="rights">                        
                             </div>                            
                         </div>
                         <div class="modal-footer">
-                            <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal('modal-ajout-document')">Annuler</button>
+                            <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModifAddModal()">Annuler</button>
                             <button style="float: right;" type="submit" class="btn btn-default" data-dismiss="modal">Enregistrer</button>
+                            <div id="delete"></div>
                         </div>
                     </form>
                 </div>
             </div>                        
-        </div>
+        </div>        
         <!--modal for detail-->
         <div id="modal-detail" class="modal edit-profil-form">
             <div class="modal-dialog">
@@ -519,6 +533,26 @@ figcaption.mask h3, figcaption.mask p {
                     <div id="modal-detail-body" class="modal-body" style="overflow-y: auto;max-height:  500px;"></div>
                     <div class="modal-footer">
                         <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal('modal-detail')">Fermer</button>                        
+                    </div>
+                </div>
+            </div>                        
+        </div>
+        <!--modal confirmation delete-->
+        <div id="modal-delete" class="modal edit-profil-form">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" onclick="closeModal('modal-delete')">&times;</button>
+                        <h4 class="modal-title">Suppression</h4>
+                    </div>
+                    <div class="modal-body" style="overflow-y: auto;max-height:  500px;">
+                        <span>Cette action est irreversible.</span>
+                        <span id="supression_sentence"></span>
+                    </div>
+                    <div class="modal-footer">
+                        <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal('modal-detail')">Annuler</button>                        
+                        <div id="performe_delete"></div>
                     </div>
                 </div>
             </div>                        
@@ -542,6 +576,7 @@ figcaption.mask h3, figcaption.mask p {
         });
     }
     function drawTable(data, table) {
+        var id = -1;
         $.each(data, function (key, value) {
             if (key !== 'id' && key !== 'idDocument' && key !== 'idUtilisateur' && key !== 'document' && key !== 'listeAssociationMetadataTopic') {
                 if (key === 'url') {
@@ -551,7 +586,30 @@ figcaption.mask h3, figcaption.mask p {
                     value = '<a href="' + value + '">' + value + '</a>';
                 }
                 drawRow(key + ":", value, table);
+            } else if (key === 'id') {
+                id = value;
             }
+        });
+        $.getJSON('metadata/' + id + '/taxonomis', {}, function (data, textStatus) {
+            if (data.length > 0) {
+                var species = '<ul>';
+                for (var v = 0; v < data.length; v++) {
+                    species += '<li>' + data[v].scientificname + '</li>';
+                }
+                species += '</ul>';
+                drawRow('species', species, table);
+            }
+        }).done(function () {
+            $.getJSON('metadata/' + id + '/topics', {}, function (data, textStatus) {
+                if (data.length > 0) {
+                    var species = '<ul>';
+                    for (var v = 0; v < data.length; v++) {
+                        species += '<li>' + data[v].libelle + '</li>';
+                    }
+                    species += '</ul>';
+                    drawRow('Topics', species, table);
+                }
+            });
         });
     }
 
@@ -561,10 +619,123 @@ figcaption.mask h3, figcaption.mask p {
         row.append($("<td>" + key + "</td>"));
         row.append($("<th>" + value + "</th>"));
     }
+
+    function operModifAddModal() {
+        populate();
+        resetModalModifAjout();
+        openModal('modal-ajout-document');
+    }
+    function openDeleteModal(id, title) {                
+        openModal('modal-delete');
+        $('#supression_sentence').html('voulez-vous vraiment supprimer '+title+' ?');
+        $('#performe_delete').html('<button style="float: right;" type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteDocument(' + id + ')">Supprimer</button>');
+    }
+
+    function closeModifAddModal() {
+        $("#modal-ajout-document").load(location.href + " #modal-ajout-document>*", "");
+        closeModal('modal-ajout-document');
+    }
+
+    function showDetailForModification(id) {
+        var taxx = [];
+//        $("#modal-ajout-document").load(location.href + " #modal-ajout-document>*", "");
+        $.get("metadata/" + id + "/all", function (data) {
+            $('#year').val(data.metadata.year);
+            $('#title').val(data.metadata.title);
+            $('#type').val(data.metadata.type);
+            $('#url').val(data.metadata.url);
+            $('#datePublication').val(data.metadata.date);
+//            $('#date').value = '2012-01-01';
+            $('#coverage').val(data.metadata.coverage);
+            $('#description').val(data.metadata.description);
+            $('#language').val(data.metadata.language);
+            $('#relation').val(data.metadata.relation);
+            $('#source').val(data.metadata.source);
+            $('#subject').val(data.metadata.subject);
+            $('#format').val(data.metadata.format);
+            $('#fileFormat').val(data.metadata.fileFormat);
+            $('#identifier').val(data.metadata.identifier);
+            $('#contributor').val(data.metadata.contributor);
+            $('#creator').val(data.metadata.creator);
+            $('#publisher').val(data.metadata.publisher);
+            $('#rights').val(data.metadata.rights);
+            $('#id').val(id);
+            if (data.topics.length > 0) {
+                for (var v = 0; v < data.topics.length; v++) {
+                    $('#id_thematique option[value=' + data.topics[v].id + ']').attr('selected', true);
+                }
+            }
+            taxx = data.taxonomi;
+            $("#delete").html('<button style="float: left;" type="button" class="btn btn-danger" data-dismiss="modal" onclick="openDeleteModal(' + id + ', \''+data.metadata.title+'\')">Supprimer</button>');
+        }).done(function () {
+            openModal('modal-ajout-document');            
+            $('#id_thematique').multiselect({
+                maxHeight: 158,
+                buttonWidth: '100%'
+            });
+            //get all taxo begin
+            $.getJSON('https://www.lemursportal.org/species/getallTaxo', {}, function (data, textStatus) {
+                var el = $('select#species');
+                el.html('');  // empty the select
+                $.each(data, function (idx, jsonData) {
+                    el.append($('<option style="background-color: #f9efc9;"></option>').val(jsonData.id).html(jsonData.scientificname));
+                });
+            }).done(function () {
+                if (taxx.length > 0) {
+                    for (var v = 0; v < taxx.length; v++) {
+                        $('#species option[value=' + taxx[v].id + ']').attr('selected', 'true');
+                    }
+                }
+                $('#species').multiselect({
+                    maxHeight: 316,
+                    enableFiltering: true,
+                    enableCaseInsensitiveFiltering: true,
+                    buttonWidth: '100%'
+                });
+            });
+            //get all taxo end                                
+        });
+    }
+    function resetModalModifAjout() {
+        $('#year').val('');
+        $('#title').val('');
+        $('#url').val('');
+        $('#date').val('');
+        $('#coverage').val('');
+        $('#description').val('');
+        $('#language').val('');
+        $('#relation').val('');
+        $('#source').val('');
+        $('#subject').val('');
+        $('#format').val('');
+        $('#fileFormat').val('');
+        $('#identifier').val('');
+        $('#contributor').val('');
+        $('#creator').val('');
+        $('#publisher').val('');
+        $('#rights').val('');
+        $('#id').val('');
+    }
+    function deleteDocument(id) {
+        $.post('metadata/delete/' + id, {}, function (data, textStatus) {
+            if (data === true) {
+                location.reload();
+            } else
+                alert(data);
+        }).error( function (data, textStatus) {
+            closeModal('modal-delete');
+            closeModifAddModal();
+            alert("La supression a rencontré une erreur. Veuiller réessayer ultérieurement");
+        });
+    }
 </script>
 <script>
     function sendAddDocument() {
         var formData = new FormData();
+        var id = $('#id').val();
+        if (id !== 0 && id !== undefined && id !== null) {
+            formData.append('id', id);
+        }
         formData.append('file', $('#document').get(0).files[0]);
         formData.append('bibliographicResource', $('#bibliographic_resource').val());
         formData.append('date', $('#datePublication').val());
@@ -599,6 +770,7 @@ figcaption.mask h3, figcaption.mask p {
                 $('#id_thematique').val('');
                 $('#coverage').val('');
                 $('#description').val('');
+                $('#id').val('');
                 $('#language').val('');
                 $('#relation').val('');
                 $('#source').val('');
@@ -652,14 +824,17 @@ figcaption.mask h3, figcaption.mask p {
 <script type="text/javascript" src="${resourcesPath}/js/bootstrap-multiselect.js"></script>
 <script type="text/javascript">
     function populate() {
-//        $.getJSON('http://localhost:8084/lemurs/getallTaxo', {}, function (data, textStatus) {
+        $('#id_thematique').multiselect({
+            maxHeight: 158,
+            buttonWidth: '100%'
+        });
         $.getJSON('https://www.lemursportal.org/species/getallTaxo', {}, function (data, textStatus) {
             var el = $('select#species');
             el.html('');  // empty the select
             $.each(data, function (idx, jsonData) {
                 el.append($('<option style="background-color: #f9efc9;"></option>').val(jsonData.id).html(jsonData.scientificname));
             });
-            $('#species').multiselect({                
+            $('#species').multiselect({
                 maxHeight: 316,
                 enableFiltering: true,
                 enableCaseInsensitiveFiltering: true,
@@ -669,10 +844,5 @@ figcaption.mask h3, figcaption.mask p {
     }
 
     $(document).ready(function () {
-        $('#id_thematique').multiselect({
-            maxHeight: 158,
-            buttonWidth: '100%'
-        });
-        populate();
     });
 </script>

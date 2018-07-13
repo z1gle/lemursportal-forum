@@ -8,10 +8,13 @@ import java.util.List;
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.wcs.lemursportal.model.post.Metadata;
@@ -111,6 +114,19 @@ public class MetadataController extends BaseController {
             //ex.printStackTrace();
         }        
         return valiny;
+    }
+    
+    @PostMapping(value = {"/metadata/delete/{id}"})
+    public ResponseEntity<Boolean> deleteMetadata (@PathVariable("id") Integer id) {
+        Metadata metadata = new Metadata();
+        metadata.setId(id);
+        try {
+            metadataService.deleteMetadata(metadata);
+            return new ResponseEntity<>(Boolean.TRUE, HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NOT_FOUND);
+        }        
     }
     
 //    @GetMapping(value = {"/metadata/list"}, headers = "Accept=application/json")
