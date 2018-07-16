@@ -7,4 +7,6 @@ import org.wcs.lemursportal.service.common.GenericCRUDService;
 public interface DocumentService extends GenericCRUDService<Document, Integer> {
 	public void downloadFile(String filename);        
         public void addDocument(Metadata metadata);
+        public void updateDocument(Metadata metadata);
+        public boolean deleteDocument(Document document) throws Exception;
 }

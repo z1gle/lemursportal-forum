@@ -8,6 +8,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,9 @@ import org.wcs.lemursportal.model.post.Metadata;
 @Repository
 @Transactional(readOnly = true)
 public class MetadataRepositoryImpl implements MetadataRepository {
+
+    @Autowired
+    private BaseAssociationCrudRepository baseAssociationCrudRepository;
 
     @PersistenceContext(unitName = "lemursportalPUnit")
     protected EntityManager em;
@@ -746,8 +751,8 @@ public class MetadataRepositoryImpl implements MetadataRepository {
     public Page<Metadata> findAll(Pageable pageable, String type, Integer idThematique) {
         String qry = "select d.* from metadata d join association_metadata_topic a on d.id = a.id_metadata where a.id_topic = :idTopic and d.type = :type";
         Query query = em.createNativeQuery(qry, Metadata.class);
-        query.setParameter("idTopic", idThematique);        
-        query.setParameter("type", type);        
+        query.setParameter("idTopic", idThematique);
+        query.setParameter("type", type);
         if (pageable != null) {
             query.setFirstResult(pageable.getOffset());
             query.setMaxResults(pageable.getPageSize());
@@ -954,13 +959,12 @@ public class MetadataRepositoryImpl implements MetadataRepository {
         String qry = "select d.* from metadata d join association_metadata_topic a on d.id = a.id_metadata where a.id_topic = :idTopic and d.type = :type";
         if (orderByYear > 0) {
             qry += " order by d.year asc";
-        }
-        else if (orderByYear < 0) {
+        } else if (orderByYear < 0) {
             qry += " order by d.year desc";
         }
         Query query = em.createNativeQuery(qry, Metadata.class);
-        query.setParameter("idTopic", idThematique);        
-        query.setParameter("type", type);        
+        query.setParameter("idTopic", idThematique);
+        query.setParameter("type", type);
         if (pageable != null) {
             query.setFirstResult(pageable.getOffset());
             query.setMaxResults(pageable.getPageSize());
@@ -968,7 +972,71 @@ public class MetadataRepositoryImpl implements MetadataRepository {
         List<Metadata> results = query.getResultList();
         return new PageImpl<>(results);
     }
+
+    @Override
+    public void update(Metadata metadata) {
+        Integer idDocument = em.find(Metadata.class, metadata.getId()).getIdDocument();
+        metadata.setIdDocument(idDocument);
+        em.merge(metadata);
+        //Get all associationTopic
+        AssociationMetadataTopic amtForSearch = new AssociationMetadataTopic();
+        amtForSearch.setId1(metadata.getId());
+        Example<AssociationMetadataTopic> example = Example.of(amtForSearch);
+        List<AssociationMetadataTopic> listeAmt = baseAssociationCrudRepository.findAll(example);
+        //Get all associationTaxonomi
+        AssociationMetadataTaxonomi amtaxForSearch = new AssociationMetadataTaxonomi();
+        amtaxForSearch.setId1(metadata.getId());
+        Example<AssociationMetadataTaxonomi> example2 = Example.of(amtaxForSearch);
+        List<AssociationMetadataTaxonomi> listeAmtax = baseAssociationCrudRepository.findAll(example2);
+        //Delete all Association in relation with this metadata
+        if (listeAmt.size() > 0) {
+            for (AssociationMetadataTopic a : listeAmt) {
+                baseAssociationCrudRepository.delete(a);
+                System.out.println("1 topic deleted");
+            }
+        }
+        if (listeAmtax.size() > 0) {
+            for (AssociationMetadataTaxonomi a : listeAmtax) {
+                baseAssociationCrudRepository.delete(a);
+                System.out.println("1 taxonomi deleted");
+            }
+        }
+        //Add the new association
+        List<AssociationMetadataTopic> listeAMT = metadata.getListeAssociationMetadataTopic();
+        for (AssociationMetadataTopic amt : listeAMT) {
+            amt.setId1(metadata.getId());
+            em.persist(amt);
+            System.out.println("1 topic added");
+        }
+        List<AssociationMetadataTaxonomi> listeAMTax = metadata.getListeAssociationMetadataTaxonomi();
+        try {
+            for (AssociationMetadataTaxonomi amt : listeAMTax) {
+                amt.setId1(metadata.getId());
+                em.persist(amt);
+                System.out.println("1 taxonomi added");
+            }
+        } catch (NullPointerException npe) {
+            System.out.println("Il n'y a pas d'éspèces séléctionnée");
+        }
+    }
     
-    
+    @Override
+    @Transactional
+    public void delete(Metadata metadata) {        
+        Metadata toRemove = em.find(Metadata.class, metadata.getId());
+        System.out.println("Got metadata");
+        Document d = em.find(Document.class, toRemove.getIdDocument());
+        System.out.println("Got service");
+        em.remove(toRemove);
+        em.remove(d);        
+    }
+
+    public BaseAssociationCrudRepository getBaseAssociationCrudRepository() {
+        return baseAssociationCrudRepository;
+    }
+
+    public void setBaseAssociationCrudRepository(BaseAssociationCrudRepository baseAssociationCrudRepository) {
+        this.baseAssociationCrudRepository = baseAssociationCrudRepository;
+    }    
 
 }

@@ -31,5 +31,7 @@ public interface MetadataRepository {
 	Page<Document> findDocuments(Metadata metadata, Pageable pageable);
 //	Page<Document> findTopDocuments(Pageable pageable);
         void insert(Metadata metadata);	
+        void delete(Metadata metadata);	
+        void update(Metadata metadata);	
 	
 }
