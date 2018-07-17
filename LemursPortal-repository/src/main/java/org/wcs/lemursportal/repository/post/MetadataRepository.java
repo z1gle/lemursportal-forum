@@ -33,5 +33,6 @@ public interface MetadataRepository {
         void insert(Metadata metadata);	
         void delete(Metadata metadata);	
         void update(Metadata metadata);	
+        public Long conter(String type, Integer idThematique);
 	
 }

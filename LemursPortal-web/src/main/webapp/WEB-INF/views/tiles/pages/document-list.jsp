@@ -6,6 +6,7 @@
 <%@taglib uri = "http://www.springframework.org/tags/form" prefix = "form"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
+<%@ taglib prefix="page" tagdir="/WEB-INF/tags/page" %>
 <spring:message code="date.format" var="dateFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
 <c:url value="/" var="basePath"/>
@@ -91,6 +92,76 @@
     }	
     -->	
 </style>
+<style>
+    /**Modal photo style**/
+
+    /* The Modal (background) */
+    .modalP {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    }
+
+    /* Modal Content (Image) */
+    .modalP-content {
+        margin: auto;
+        display: block;
+        max-height: 70vh;
+        max-width: 100%;
+    }    
+
+    /* Add Animation - Zoom in the Modal */
+    .modalP-content, #caption { 
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+
+    @keyframes zoom {
+        from {transform:scale(0)} 
+        to {transform:scale(1)}
+    }
+
+    /* The Close Button */
+    .closeP {
+        /*position: absolute;*/
+        margin-top: 30px;
+        margin-right: 45px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+        float: right;
+    }
+
+    .closeP:hover,
+    .closeP:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .modalP-content:hover {
+        opacity: 1;
+    }
+    /* 100% Image Width on Smaller Screens */
+    @media only screen and (max-width: 700px){
+        .modalP-content {
+            width: 100%;
+        }
+    }
+    @media (max-width: 990px) {
+        #caption {
+            margin-left: 25px;
+        }
+    }
+</style>
 <div class="forum-container page-document">
     <div class="row">
         <div class="page-title">
@@ -174,10 +245,16 @@
                                 </table>
 
                                 <!-- D Pagination -->
-                                <ul class="pagination">
-                                    <li class="disabled"><a href="#">&laquo;</a></li>
-                                    <li class="active"><a href="#">1</a></li>
-                                </ul>
+                                <c:choose>
+                                    <c:when test="${topic != 0}">
+                                        <c:url var="pageBaseUrl" value="/documents?topic=${topic}"/>
+                                        <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent}" totalPages="${pagination.pageDocument.pageDocumentFin}" pageBaseUrl="${pageBaseUrl}"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:url var="pageBaseUrl" value="/documents"/>
+                                        <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent}" totalPages="${pagination.pageDocument.pageDocumentFin}" pageBaseUrl="${pageBaseUrl}"/>
+                                    </c:otherwise>
+                                </c:choose>
                                 <!-- F Pagination -->
                             </div>
                         </div>
@@ -199,12 +276,12 @@
                                     <ul class="project-wrapper animated fadeInUp" style="text-align: left !important">
                                         <c:forEach items="${docIMAGE}" var="pic">
                                             <li class="species-item">
-                                                <a href="#" onclick="showPhoto('${pic.url}')">
+                                                <a href="#" onclick="showPhoto('${pic.title}', '${basePath}${pic.url}');">
                                                     <img src="${resourcesPath}/images/l-blank.png" style="background-image: url('${basePath}${pic.url}'); " class="img-responsive" 
-                                                         onclick="showPhoto('${pic.title}', '${basePath}${pic.url}');" class="hover-shadow cursor" alt="--">
+                                                         onclick="showPhoto('${pic.id}', '${basePath}${pic.url}');" class="hover-shadow cursor" alt="--">
                                                 </a>
                                             <figcaption class="mask">
-                                                <p><i>${pic.url}</i></p>
+                                                <p><i>${pic.title}</i></p>
                                                 <p>--</p>
                                             </figcaption>
                                             </li>
@@ -230,13 +307,51 @@
                                     </div>
                                 </div>	
 
-                                <!-- D Pagination -->
-                                <ul class="pagination">
-                                    <li class="disabled"><a href="#">&laquo;</a></li>
-                                    <li class="active"><a href="#">1</a></li>
-
-                                </ul>
-                                <!-- F Pagination -->
+                                <!-- Modal detail photo -->
+                                <div id="modalDetailPhoto" class="modalP">
+                                    <div class="row">
+                                        <!-- The Close Button -->
+                                        <div class="row">
+                                            <span class="closeP" onclick="closeModal('modalDetailPhoto');">&times;</span>
+                                        </div>
+                                        <div class="row">
+                                            <!-- Modal Content (The Image) -->
+                                            <div class="col-md-8">
+                                                <div class="modalP-content" id="img01"></div>
+                                            </div>
+                                            <div class="col-md-4" id="caption" style="background-color:  black;border-radius:  5px;border-style: solid;border-color: #9d5b00;">
+                                                <table id="photoTable" class="" style="width: 100%; font-size: 18px; color: white; margin-top: 10px; margin-bottom: 10px;">
+                                                    <tr>
+                                                        <td>Species :</td>
+                                                        <td id="photoSpecies">test</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Date :</td>
+                                                        <td id="photoDate"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Localisation :</td>
+                                                        <td id="photoLocalisation"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Source :</td>
+                                                        <td id="photoSource"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Photo prise par :</td>
+                                                        <td id="photoAuteur"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Right :</td>
+                                                        <td id="photoRight"></td>
+                                                    </tr>
+                                                </table>
+                                            </div>                                        
+                                        </div>
+                                        <!-- Modal Caption (Image Text) -->
+                                        <!--<div id="caption"></div>-->
+                                    </div>                                    
+                                </div>                                
                             </div>
 
                         </div>
@@ -560,10 +675,27 @@
     </div>        
 </div>
 <script>
-    function showPhoto(title, url) {
-        $('#modal-detail-body').html('<img class="col-md-12" src="' + url + '">');
-        $('#title-modal-details').html(title);
-        openModal('modal-detail');
+    function showPhoto(id, url) {
+        $('.removable-row').remove();
+        $.get("metadata/" + id, {}, function (data) {
+            $('#photoDate').text(data[0].value.date);
+            $('#photoLocalisation').text(data[0].value.coverage);
+            $('#photoSource').text(data[0].value.source);
+            $('#photoAuteur').text(data[0].value.creator);
+            $('#photoRight').text(data[0].value.rights);
+        }).done(function () {
+            $.getJSON('metadata/' + id + '/taxonomis', {}, function (data, textStatus) {
+                if (data.length > 0) {
+                    var species = '';
+                    for (var v = 0; v < data.length; v++) {
+                        species += data[v].scientificname + '<br>';
+                    }
+                    drawRow('Species :', species, 'photoTable');
+                }
+            });
+        });
+        document.getElementById("img01").innerHTML = '<img class="modalP-content" src="' + url + '">';
+        openModal('modalDetailPhoto');
     }
     function showDetail(id) {
         $('.removable-row').remove();
@@ -625,9 +757,9 @@
         resetModalModifAjout();
         openModal('modal-ajout-document');
     }
-    function openDeleteModal(id, title) {                
+    function openDeleteModal(id, title) {
         openModal('modal-delete');
-        $('#supression_sentence').html('voulez-vous vraiment supprimer '+title+' ?');
+        $('#supression_sentence').html('voulez-vous vraiment supprimer ' + title + ' ?');
         $('#performe_delete').html('<button style="float: right;" type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteDocument(' + id + ')">Supprimer</button>');
     }
 
@@ -666,9 +798,9 @@
                 }
             }
             taxx = data.taxonomi;
-            $("#delete").html('<button style="float: left;" type="button" class="btn btn-danger" data-dismiss="modal" onclick="openDeleteModal(' + id + ', \''+data.metadata.title+'\')">Supprimer</button>');
+            $("#delete").html('<button style="float: left;" type="button" class="btn btn-danger" data-dismiss="modal" onclick="openDeleteModal(' + id + ', \'' + data.metadata.title + '\')">Supprimer</button>');
         }).done(function () {
-            openModal('modal-ajout-document');            
+            openModal('modal-ajout-document');
             $('#id_thematique').multiselect({
                 maxHeight: 158,
                 buttonWidth: '100%'
@@ -722,7 +854,7 @@
                 location.reload();
             } else
                 alert(data);
-        }).error( function (data, textStatus) {
+        }).error(function (data, textStatus) {
             closeModal('modal-delete');
             closeModifAddModal();
             alert("La supression a rencontré une erreur. Veuiller réessayer ultérieurement");

@@ -762,6 +762,23 @@ public class MetadataRepositoryImpl implements MetadataRepository {
     }
 
     @Override
+    public Long conter(String type, Integer idThematique) {
+        if (idThematique == null) {
+            String qry = "select count(d.*) from metadata d join association_metadata_topic a on d.id = a.id_metadata where d.type = :type";
+            Query query = em.createNativeQuery(qry);
+            query.setParameter("type", type);
+            java.math.BigInteger val = (java.math.BigInteger) query.getSingleResult();
+            return val.longValue();
+        }
+        String qry = "select count(d.*) from metadata d join association_metadata_topic a on d.id = a.id_metadata where a.id_topic = :idTopic and d.type = :type";
+        Query query = em.createNativeQuery(qry);
+        query.setParameter("idTopic", idThematique);
+        query.setParameter("type", type);
+        java.math.BigInteger val = (java.math.BigInteger) query.getSingleResult();
+        return val.longValue();
+    }
+
+    @Override
     public Page<Metadata> findAll(Pageable pageable, Metadata metadata, int orderByYear) {
         String qry = "select * from metadata d where 1=1";
         if (metadata.getId() != null) {
@@ -1019,16 +1036,16 @@ public class MetadataRepositoryImpl implements MetadataRepository {
             System.out.println("Il n'y a pas d'éspèces séléctionnée");
         }
     }
-    
+
     @Override
     @Transactional
-    public void delete(Metadata metadata) {        
+    public void delete(Metadata metadata) {
         Metadata toRemove = em.find(Metadata.class, metadata.getId());
         System.out.println("Got metadata");
         Document d = em.find(Document.class, toRemove.getIdDocument());
         System.out.println("Got service");
         em.remove(toRemove);
-        em.remove(d);        
+        em.remove(d);
     }
 
     public BaseAssociationCrudRepository getBaseAssociationCrudRepository() {
@@ -1037,6 +1054,6 @@ public class MetadataRepositoryImpl implements MetadataRepository {
 
     public void setBaseAssociationCrudRepository(BaseAssociationCrudRepository baseAssociationCrudRepository) {
         this.baseAssociationCrudRepository = baseAssociationCrudRepository;
-    }    
+    }
 
 }

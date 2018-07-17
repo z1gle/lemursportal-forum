@@ -11,8 +11,10 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Paths;
 import java.text.Normalizer;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.PatternSyntaxException;
 
@@ -74,24 +76,46 @@ public class DocumentController extends BaseController {
     private static final int BUFFER_SIZE = 4096;
 
     @GetMapping(value = {"/documents"})
-    public String list(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page, @RequestParam(required = false, value = "topic") Integer thematique, Model model) {
-        if (page == null || page < 1) {
-            page = 0;
+    public String list(@RequestParam(value = "pageDocument", required = false, defaultValue = "0") Integer pageDocument, @RequestParam(value = "pP", required = false, defaultValue = "0") Integer pagePhoto, @RequestParam(value = "pV", required = false, defaultValue = "0") Integer pageVideo, @RequestParam(value = "pA", required = false, defaultValue = "0") Integer pageAudio, @RequestParam(required = false, value = "topic") Integer thematique, Model model) {
+        if (pageDocument == null || pageDocument < 1) {
+            pageDocument = 0;
+        } /*else {
+            pageDocument = pageDocument - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+        }*/
+        if (pageVideo == null || pageVideo < 1) {
+            pageVideo = -1;
         } else {
-            page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+            pageVideo = pageVideo - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+        }
+        if (pagePhoto == null || pagePhoto < 1) {
+            pagePhoto = -1;
+        } else {
+            pagePhoto = pagePhoto - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+        }
+        if (pageAudio == null || pageAudio < 1) {
+            pageAudio = -1;
+        } else {
+            pageAudio = pageAudio - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }
         if (thematique != null) {
-            model.addAttribute("docAUDIO", listMetadatas(page, model, "3", thematique));
-            model.addAttribute("docVIDEO", listMetadatas(page, model, "2", thematique));
-            model.addAttribute("docIMAGE", listMetadatas(page, model, "1", thematique));
-            model.addAttribute("docAUTRES", listMetadatas(page, model, "4", thematique));
+            model.addAttribute("docAUDIO", listMetadatas(pageAudio, model, "3", thematique));
+            model.addAttribute("docVIDEO", listMetadatas(pageVideo, model, "2", thematique));
+            model.addAttribute("docIMAGE", listMetadatas(pagePhoto, model, "1", thematique));
+            model.addAttribute("docAUTRES", listMetadatas(pageDocument, model, "4", thematique));
             model.addAttribute("metadata", new Metadata());
         } else {
-            model.addAttribute("docAUDIO", listMetadata(page, model, "3"));
-            model.addAttribute("docVIDEO", listMetadata(page, model, "2"));
-            model.addAttribute("docIMAGE", listMetadata(page, model, "1"));
-            model.addAttribute("docAUTRES", listMetadata(page, model, "4"));
+            model.addAttribute("docAUDIO", listMetadata(pageAudio, model, "3"));
+            model.addAttribute("docVIDEO", listMetadata(pageVideo, model, "2"));
+            model.addAttribute("docIMAGE", listMetadata(pagePhoto, model, "1"));
+            model.addAttribute("docAUTRES", listMetadata(pageDocument, model, "4"));
             model.addAttribute("metadata", new Metadata());
+        }
+        HashMap temp = paginate(pageDocument, pageAudio, pagePhoto, pageVideo, thematique);
+        model.addAttribute("pagination", temp);
+        if (thematique == null) {
+            model.addAttribute("topic", 0);
+        } else {
+            model.addAttribute("topic", thematique);
         }
         return "document-list";
     }
@@ -152,6 +176,51 @@ public class DocumentController extends BaseController {
             return pageMetadata.getContent();
         }
         return null;
+    }
+
+    //Construction of pagination
+    public HashMap<String, Object> paginate(Integer pD, Integer pA, Integer pP, Integer pV, Integer idThematique) {
+        HashMap<String, Object> valiny = new HashMap<>();
+        Long totalPP = metadataRepository.conter("1", idThematique);
+        Long totalPV = metadataRepository.conter("2", idThematique);
+        Long totalPA = metadataRepository.conter("3", idThematique);
+        Long totalPD = metadataRepository.conter("4", idThematique);
+        if (pP >= 0) {
+            valiny.put("pagePhoto", page(pP, totalPP, "pagePhoto"));
+        }
+        if (pV >= 0) {
+            valiny.put("pageVideo", page(pV, totalPV, "pageVideo"));
+        }
+        if (pA >= 0) {
+            valiny.put("pageAudio", page(pA, totalPA, "pageAudio"));
+        }
+        if (pD >= 0) {
+            valiny.put("pageDocument", page(pD, totalPD, "pageDocument"));
+        }
+        return valiny;
+    }
+
+    private HashMap<String, Object> page(int p, Long total, String name) {
+        HashMap<String, Object> pp = new HashMap<>();
+        pp.put(name + "Debut", 1);
+        pp.put(name + "Current", p);
+        int totalePage = new Double(Math.ceil(total.doubleValue() / TOP_DOCUMENT_PAGE_SIZE)).intValue();
+        pp.put(name + "Fin", totalePage);
+        int debut = 1;
+        int fin = 5;
+        if (p >= 3) {
+            debut += p - 2;
+            fin += p - 2;
+        }
+        if (totalePage < fin) {
+            fin = totalePage;
+        }
+        List<Integer> liste = new ArrayList<>();
+        for (int i = debut; i <= fin; i++) {
+            liste.add(i);
+        }
+        pp.put(name + "Liste", liste);
+        return pp;
     }
     // Modif using MetadataParent, only work for image now
 //    public List<Metadata> listMetadatas() {
