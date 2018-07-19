@@ -228,12 +228,12 @@
                                                 <%--<c:url var="publicationPageUrl" value="/files/${publication.idDocument}"/>--%>
                                                 <c:url var="publicationPageUrl" value="${publication.url}"/>
                                                 <!--<a class='btn btn-info btn-xs' href="${publicationPageUrl}" download="${publication.title}.pdf"><span class="glyphicont"></span>Télécharger</a></td>-->
-                                                <a href="${publicationPageUrl}"><span class="glyphicont"></span><img src="${resourcesPath}/images/icon-thema.png" alt=""></a>
+                                                <a target="_blank" rel="noopener noreferrer" title="view document" href="${publicationPageUrl}"><span class="glyphicont"></span><img src="${resourcesPath}/images/icon-thema.png" alt=""></a>
                                             </td>
                                             <c:choose>
                                                 <c:when test="${isLoggedInUser && currentUser.id == publication.idUtilisateur}">
                                                     <td class="text-center">
-                                                        <a href="#" onclick="showDetailForModification(${publication.id})"><span class="glyphicont"></span><i style="margin-top: 3px;" class="fa fa-edit fa-2x"></i></a>
+                                                        <a title="edit or remove" href="#" onclick="showDetailForModification(${publication.id})"><span class="glyphicont"></span><i style="margin-top: 3px;" class="fa fa-edit fa-2x"></i></a>
                                                     </td>
                                                 </c:when>
                                                 <c:otherwise>
@@ -251,8 +251,16 @@
                                         <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent}" totalPages="${pagination.pageDocument.pageDocumentFin}" pageBaseUrl="${pageBaseUrl}"/>
                                     </c:when>
                                     <c:otherwise>
-                                        <c:url var="pageBaseUrl" value="/documents"/>
-                                        <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent}" totalPages="${pagination.pageDocument.pageDocumentFin}" pageBaseUrl="${pageBaseUrl}"/>
+                                        <c:choose>
+                                            <c:when test="${search != 0}">
+                                                <c:url var="pageBaseUrl" value="/documents?search=${search}"/>
+                                                <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent}" totalPages="${pagination.pageDocument.pageDocumentFin}" pageBaseUrl="${pageBaseUrl}"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:url var="pageBaseUrl" value="/documents"/>
+                                                <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent}" totalPages="${pagination.pageDocument.pageDocumentFin}" pageBaseUrl="${pageBaseUrl}"/>
+                                            </c:otherwise>
+                                        </c:choose>                                        
                                     </c:otherwise>
                                 </c:choose>
                                 <!-- F Pagination -->
@@ -759,7 +767,7 @@
     }
     function openDeleteModal(id, title) {
         openModal('modal-delete');
-        $('#supression_sentence').html('voulez-vous vraiment supprimer ' + title + ' ?');
+        $('#supression_sentence').html("voulez-vous vraiment supprimer " + title + " ?");
         $('#performe_delete').html('<button style="float: right;" type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteDocument(' + id + ')">Supprimer</button>');
     }
 

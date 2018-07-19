@@ -76,10 +76,11 @@ public class DocumentController extends BaseController {
     private static final int BUFFER_SIZE = 4096;
 
     @GetMapping(value = {"/documents"})
-    public String list(@RequestParam(value = "pageDocument", required = false, defaultValue = "0") Integer pageDocument, @RequestParam(value = "pP", required = false, defaultValue = "0") Integer pagePhoto, @RequestParam(value = "pV", required = false, defaultValue = "0") Integer pageVideo, @RequestParam(value = "pA", required = false, defaultValue = "0") Integer pageAudio, @RequestParam(required = false, value = "topic") Integer thematique, Model model) {
+    public String list(@RequestParam(value = "pageDocument", required = false, defaultValue = "0") Integer pageDocument, @RequestParam(value = "pP", required = false, defaultValue = "0") Integer pagePhoto, @RequestParam(value = "pV", required = false, defaultValue = "0") Integer pageVideo, @RequestParam(value = "pA", required = false, defaultValue = "0") Integer pageAudio, @RequestParam(required = false, value = "topic") Integer thematique, @RequestParam(required = false, value = "search") String search, Model model) {
         if (pageDocument == null || pageDocument < 1) {
             pageDocument = 0;
-        } /*else {
+        }
+        /*else {
             pageDocument = pageDocument - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }*/
         if (pageVideo == null || pageVideo < 1) {
@@ -97,17 +98,25 @@ public class DocumentController extends BaseController {
         } else {
             pageAudio = pageAudio - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }
-        if (thematique != null) {
-            model.addAttribute("docAUDIO", listMetadatas(pageAudio, model, "3", thematique));
-            model.addAttribute("docVIDEO", listMetadatas(pageVideo, model, "2", thematique));
-            model.addAttribute("docIMAGE", listMetadatas(pagePhoto, model, "1", thematique));
-            model.addAttribute("docAUTRES", listMetadatas(pageDocument, model, "4", thematique));
-            model.addAttribute("metadata", new Metadata());
+        if (search == null || search.isEmpty()) {
+            if (thematique != null) {
+                model.addAttribute("docAUDIO", listMetadatas(pageAudio, model, "3", thematique));
+                model.addAttribute("docVIDEO", listMetadatas(pageVideo, model, "2", thematique));
+                model.addAttribute("docIMAGE", listMetadatas(pagePhoto, model, "1", thematique));
+                model.addAttribute("docAUTRES", listMetadatas(pageDocument, model, "4", thematique));
+                model.addAttribute("metadata", new Metadata());
+            } else {
+                model.addAttribute("docAUDIO", listMetadata(pageAudio, model, "3"));
+                model.addAttribute("docVIDEO", listMetadata(pageVideo, model, "2"));
+                model.addAttribute("docIMAGE", listMetadata(pagePhoto, model, "1"));
+                model.addAttribute("docAUTRES", listMetadata(pageDocument, model, "4"));
+                model.addAttribute("metadata", new Metadata());
+            }
         } else {
-            model.addAttribute("docAUDIO", listMetadata(pageAudio, model, "3"));
-            model.addAttribute("docVIDEO", listMetadata(pageVideo, model, "2"));
-            model.addAttribute("docIMAGE", listMetadata(pagePhoto, model, "1"));
-            model.addAttribute("docAUTRES", listMetadata(pageDocument, model, "4"));
+            model.addAttribute("docAUDIO", listMetadata(null, model, "3"));
+            model.addAttribute("docVIDEO", listMetadata(null, model, "2"));
+            model.addAttribute("docIMAGE", listMetadata(null, model, "1"));
+            model.addAttribute("docAUTRES", searchGlobal(pageDocument, model, search));
             model.addAttribute("metadata", new Metadata());
         }
         HashMap temp = paginate(pageDocument, pageAudio, pagePhoto, pageVideo, thematique);
@@ -116,6 +125,11 @@ public class DocumentController extends BaseController {
             model.addAttribute("topic", 0);
         } else {
             model.addAttribute("topic", thematique);
+        }
+        if (search != null && !search.isEmpty()) {
+            model.addAttribute("search", search);
+        } else {
+            model.addAttribute("search", 0);
         }
         return "document-list";
     }
@@ -158,6 +172,20 @@ public class DocumentController extends BaseController {
         metadata.setType(metadataType);
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
         Page<Metadata> pageMetadata = metadataRepository.findAll(pageable, metadata, -2);
+        if (null != pageMetadata) {
+            return pageMetadata.getContent();
+        }
+        return null;
+    }
+
+    public List<Metadata> searchGlobal(Integer page, Model model, String search) {
+        if (page == null || page < 1) {
+            page = 0;
+        } else {
+            page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+        }
+        Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
+        Page<Metadata> pageMetadata = metadataRepository.findGlobal(pageable, search);
         if (null != pageMetadata) {
             return pageMetadata.getContent();
         }

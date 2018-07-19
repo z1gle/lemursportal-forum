@@ -11,6 +11,14 @@
        <put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />
 	   <put-attribute name="body.end" value="" />
    </definition>
+   <definition name="definition-document" template="/WEB-INF/views/tiles/layouts/default-layout.jsp">  
+       <put-attribute name="title" value="" />  
+       <put-attribute name="head" value="" />  
+       <put-attribute name="header" value="/WEB-INF/views/tiles/template/header-document.jsp" /> 
+       <put-attribute name="body" value="" /> 
+       <put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />
+	   <put-attribute name="body.end" value="" />
+   </definition>
    
    <definition name="page-entier" template="/WEB-INF/views/tiles/layouts/blank-layout.jsp">
        <put-attribute name="page" value="" />
@@ -210,7 +218,7 @@
    </definition>
    
    <!-- DOCUMENT -->
-    <definition name="document-list" extends="base-definition">  
+    <definition name="document-list" extends="definition-document">  
        <put-attribute name="title" value="Documents" />  
        <put-attribute name="body" value="document.body" />
    </definition>

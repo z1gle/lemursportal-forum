@@ -27,6 +27,7 @@ public interface MetadataRepository {
         Page<Metadata> findAll(Pageable pageable, String type, Integer idThematique);
         Page<Metadata> findAll(Pageable pageable, String type, Integer idThematique, int orderByYear);
         Page<Metadata> findAllExact(Pageable pageable, Metadata metadata);
+        Page<Metadata> findGlobal(Pageable pageable, String search);
 //        Metadata findById(Integer id) throws Exception;
 	Page<Document> findDocuments(Metadata metadata, Pageable pageable);
 //	Page<Document> findTopDocuments(Pageable pageable);

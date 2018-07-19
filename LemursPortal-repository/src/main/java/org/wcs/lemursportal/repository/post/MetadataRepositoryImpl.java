@@ -973,7 +973,7 @@ public class MetadataRepositoryImpl implements MetadataRepository {
 
     @Override
     public Page<Metadata> findAll(Pageable pageable, String type, Integer idThematique, int orderByYear) {
-        String qry = "select d.* from metadata d join association_metadata_topic a on d.id = a.id_metadata where a.id_topic = :idTopic and d.type = :type";
+        String qry = "select d.* from metadata d join association_metadata_topic a on d.id = a.id_metadata where a.id_topic = :idTopic and d.type = :type order by d.year desc";
         if (orderByYear > 0) {
             qry += " order by d.year asc";
         } else if (orderByYear < 0) {
@@ -1046,6 +1046,27 @@ public class MetadataRepositoryImpl implements MetadataRepository {
         System.out.println("Got service");
         em.remove(toRemove);
         em.remove(d);
+    }
+
+    @Override
+    public Page<Metadata> findGlobal(Pageable pageable, String search) {
+        String qry = "select m.* from "
+                + "(select m.*, tax.scientificname as species, t.libelle as topic "
+                + "from metadata m "
+                + "left join association_metadata_taxonomi amtax on amtax.id_metadata = m.id "
+                + "left join association_metadata_topic amt on amt.id_metadata = m.id "
+                + "left join thematique t on t.id = amt.id_topic "
+                + "left join taxonomi_base tax on tax.idtaxonomibase = amtax.id_taxonomi) as test "
+                + "left join metadata m on test.id = m.id "
+                + "where rtrim(ltrim(replace(test.*\\:\\:text, ','\\:\\:text, ''\\:\\:text), '('\\:\\:text), ')'\\:\\:text) ilike :search order by m.year desc";
+        Query query = em.createNativeQuery(qry, Metadata.class);
+        query.setParameter("search", "%" + search + "%");        
+        if (pageable != null) {
+            query.setFirstResult(pageable.getOffset());
+            query.setMaxResults(pageable.getPageSize());
+        }
+        List<Metadata> results = query.getResultList();
+        return new PageImpl<>(results);
     }
 
     public BaseAssociationCrudRepository getBaseAssociationCrudRepository() {
