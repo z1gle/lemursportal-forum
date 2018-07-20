@@ -27,7 +27,8 @@
                                 <div class="row">
 
                                     <label>Choisir un thématique <sup>*</sup></label>
-                                    <form:select path="thematiqueId">  
+                                    <form:select htmlEscape="required" path="thematiqueId">  
+                                        <option disabled selected value> -- select an option -- </option>
                                         <form:options items="${listeThematique}" itemLabel="libelle" itemValue="id"/> 
                                     </form:select>
                                     <form:errors path="thematiqueId"/>

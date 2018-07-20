@@ -234,6 +234,7 @@ public class DocumentController extends BaseController {
         pp.put(name + "Current", p);
         int totalePage = new Double(Math.ceil(total.doubleValue() / TOP_DOCUMENT_PAGE_SIZE)).intValue();
         pp.put(name + "Fin", totalePage);
+        pp.put(name + "TotalElement", total);
         int debut = 1;
         int fin = 5;
         if (p >= 3) {

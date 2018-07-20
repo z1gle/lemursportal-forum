@@ -200,8 +200,8 @@
                                                 <tr style="background-color: white;">
                                                     <th style="color:  dodgerblue;font-size: 15px; border-color: white; padding-left: 20px;">${publication.year}</th>                                                                                                        
                                                     <th style="color:  dodgerblue;font-size: 15px; border-color: white;"></th>                                                                                                        
-                                                    <th style="color:  dodgerblue;font-size: 15px; border-color: white;"></th>                                                                                                        
-                                                    <th style="color:  dodgerblue;font-size: 15px; border-color: white;"></th>                                                                                                        
+                                                    <th style="font-size: 15px; border-color: white; text-align: right;">Page: ${pagination.pageDocument.pageDocumentCurrent+1}/${pagination.pageDocument.pageDocumentFin}</th>                                                                                                        
+                                                    <th style="font-size: 15px; border-color: white; text-align: right;">Total: ${pagination.pageDocument.pageDocumentTotalElement}</th>                                                                                                        
                                                 </tr>
                                             </c:when>                                            
                                             <c:otherwise>
@@ -508,6 +508,7 @@
                     </div>
                     <form action="javascript:sendAddDocument();" autocomplete="off">
                         <div class="modal-body" style="overflow-y: auto;max-height:  500px;">
+                            <div style=" font-size: 10px; color: #999;"><span style="color: red;">NB</span> : Les champs marqués par des <span style="color: red;">*</span> sont obligatoires</div>
                             <div id="errorMdp"></div>
                             <input type="hidden" id="id">
                             <spring:message code="metadata.topics"/><sup>*</sup><br>
@@ -536,7 +537,8 @@
                                 <option value="797298">Others</option>
                             </select>                            
                             <spring:message code="metadata.type"/><sup>*</sup>
-                            <select title="<spring:message code="metadata.popup.bubble.type"/>" class="form-control" id="type" style="width: 100%!important;">
+                            <select required title="<spring:message code="metadata.popup.bubble.type"/>" class="form-control" id="type" style="width: 100%!important;">
+                                <option disabled selected value> -- select an option -- </option>
                                 <option style="background-color: #f9efc9;" value="4">Document</option>
                                 <option style="background-color: #f9efc9;" value="1">Photo</option>
                                 <option style="background-color: #f9efc9;" value="2">Video</option>
@@ -606,10 +608,10 @@
                                 <spring:message code="metadata.subject"/>
                                 <input title="<spring:message code="metadata.popup.bubble.subject"/>" placeholder="ex: Mouse lemur Species | Bayesian Methods" type="text" class="form-control" id="subject">
                             </div>                        
-                            <div class="autocomplete" style="width: 100%;">
-                                <spring:message code="metadata.format"/>
-                                <input title="<spring:message code="metadata.popup.bubble.format"/>" placeholder="ex: text" type="text" class="form-control" id="format">
-                            </div>
+                            <!--<div class="autocomplete" style="width: 100%;">-->
+                                <%--<spring:message code="metadata.format"/>--%>
+                                <input title="<spring:message code="metadata.popup.bubble.format"/>" placeholder="ex: text" type="hidden" class="form-control" id="format">
+                            <!--</div>-->
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.fileFormat"/>
                                 <input title="<spring:message code="metadata.popup.bubble.fileFormat"/>" placeholder="ex: PDF" type="text" class="form-control" id="fileFormat">
