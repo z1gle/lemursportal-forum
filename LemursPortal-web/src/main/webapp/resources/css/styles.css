@@ -1944,3 +1944,19 @@ myCarousel.item p {
 .btn-moderateur {
     color: #fff !important;
 }
+
+.footer-partner ul {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* .footer-partner { */
+/*     margin: 40px 0 35px; */
+/* } */
+
+.footer-partner ul li {
+    display: inline-block;
+    margin: 0 10px;
+}

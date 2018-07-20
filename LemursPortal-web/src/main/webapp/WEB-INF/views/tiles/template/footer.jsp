@@ -25,7 +25,7 @@
                         <li><a href="${expertsUrl}"><spring:message code="home.menu.experts"/></a></li>
                     </ul>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-xs-4">
                     <ul style="padding-left: 20px;">
                     	<c:url value="/formation/" var="formationsUrl"/>
                     	<li><a href="${formationsUrl}"><spring:message code="home.menu.formations"/></a></li>
@@ -68,6 +68,28 @@
 						style="border-radius: 4%; margin-top: 3%;padding:2%;"></a>
 				</div>
  	</div>
+ 	<div class="row text-center" style="border-bottom: solid 1px; border-top: solid 1px;border-color: #84bc00; margin: 30px 15px; padding-bottom: 30px;">
+<!-- 					<div class="footer-content"> -->
+						<div style="font-size: 16px;padding: 15px;font-weight: bold;color:white">PARTNERS</div>
+						<div class="footer-partner">
+							<ul>
+								<li class=""><a href="#" target="_blank"><img
+								src="${resourcesPath}/logos/logo_ADD.jpg"></a></li>
+								<li class=""><a href="#" target="_blank"><img
+								src="${resourcesPath}/logos/logo_Aspinall.jpg"></a></li>
+								<li class=""><a href="#" target="_blank"><img
+								src="${resourcesPath}/logos/logo_DPZ.jpg"></a></li>
+								<li class=""><a href="#" target="_blank"><img
+								src="${resourcesPath}/logos/logo_DREEF-Atsinanana.jpg"></a></li>
+								<li class=""><a href="#" target="_blank"><img
+								src="${resourcesPath}/logos/logo_ISSEDD.png"></a></li>
+								<li class=""><a href="#" target="_blank"><img
+								src="${resourcesPath}/logos/logo_Valbio.jpg"></a></li>
+							</ul>
+						</div>
+
+<!-- 					</div> -->
+				</div>
 </div> 
 <div class="copy">Copyright &copy; - Lemurs Portal 2017</div> 
 
