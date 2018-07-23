@@ -221,7 +221,7 @@
                                             </c:otherwise>
                                         </c:choose>
                                         <tr style="border:1px solid #ccc;">                                                                                        
-                                            <td><a href="#" onclick="showDetail(${publication.id})"><c:out	value="${publication.title}" /></a></td>
+                                            <td><a href="#" onclick="showDetailNew(${publication.id})"><c:out	value="${publication.title}" /></a></td>
                                             <td><c:out	value="${publication.coverage}" /></td>
                                             <td><c:out	value="${publication.creator}" /></td>
                                             <td class="text-center">
@@ -331,7 +331,7 @@
                                                 <table id="photoTable" class="" style="width: 100%; font-size: 18px; color: white; margin-top: 10px; margin-bottom: 10px;">
                                                     <tr>
                                                         <td>Species :</td>
-                                                        <td id="photoSpecies">test</td>
+                                                        <td id="photoSpecies"></td>
                                                     </tr>
                                                     <tr>
                                                         <td>Date :</td>
@@ -609,8 +609,8 @@
                                 <input title="<spring:message code="metadata.popup.bubble.subject"/>" placeholder="ex: Mouse lemur Species | Bayesian Methods" type="text" class="form-control" id="subject">
                             </div>                        
                             <!--<div class="autocomplete" style="width: 100%;">-->
-                                <%--<spring:message code="metadata.format"/>--%>
-                                <input title="<spring:message code="metadata.popup.bubble.format"/>" placeholder="ex: text" type="hidden" class="form-control" id="format">
+                            <%--<spring:message code="metadata.format"/>--%>
+                            <input title="<spring:message code="metadata.popup.bubble.format"/>" placeholder="ex: text" type="hidden" class="form-control" id="format">
                             <!--</div>-->
                             <div class="autocomplete" style="width: 100%;">
                                 <spring:message code="metadata.fileFormat"/>
@@ -643,6 +643,182 @@
                             <div id="delete"></div>
                         </div>
                     </form>
+                </div>
+            </div>                        
+        </div>        
+        <div id="modal-detail-document" class="modal">
+            <div class="modal-dialog" style="width: 75%;">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" onclick="closeDetailModal()">&times;</button>
+                        <h4 id="titleDetail" class="modal-title"></h4>
+                    </div>
+                    <div style="overflow-y: auto;max-height:  500px;">
+                        <table class="table">
+                            <tr>
+                                <td><spring:message code="metadata.topics"/></td>
+                                <td>
+                                    <select disabled title="<spring:message code="metadata.popup.bubble.topics"/>" required multiple="" id="idThematiqueDetail" class="form-control">
+                                        <option value="797277">Behavior </option>
+                                        <option value="797278">Threats /conservation issues </option>
+                                        <option value="797279">Vocalization </option>
+                                        <option value="797280">Ecology </option>
+                                        <option value="797281">Genetics </option>
+                                        <option value="797282">Locomotion </option>                            
+                                        <option value="797283">Taxonomy</option>
+                                        <option value="797284">Conservation Status</option>
+                                        <option value="797285">Subfossiles</option>
+                                        <option value="797286">Lemur conservation and research adminsistrative </option>
+                                        <option value="797287">Environmental Education</option>
+                                        <option value="797288">Lemur in captivity</option>
+                                        <option value="797289">Lemur Medicine/Biomedical assessement</option>
+                                        <option value="797290">Species disstribution and occurences</option>
+                                        <option value="797291">Nocturnal species</option>
+                                        <option value="797292">Diurnal species</option>
+                                        <option value="797293">Reintroduction and translocation</option>
+                                        <option value="797294">Lemur conservation success</option>
+                                        <option value="797295">Nutrition</option>
+                                        <option value="797296">Forest fragment</option>
+                                        <option value="797297">Parasites</option>
+                                        <option value="797298">Others</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.type"/></td>
+                                <td>
+                                    <select disabled required title="<spring:message code="metadata.popup.bubble.type"/>" class="form-control" id="typeDetail" style="width: 100%!important;">                                    
+                                        <option style="background-color: #f9efc9;" value="4">Document</option>
+                                        <option style="background-color: #f9efc9;" value="1">Photo</option>
+                                        <option style="background-color: #f9efc9;" value="2">Video</option>
+                                        <option style="background-color: #f9efc9;" value="3">Audio</option>
+                                    </select>                            
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.year"/></td>
+                                <td>
+                                    <p id="yearDetail"></p>
+                                </td>
+                            </tr>                        
+                            <tr>
+                                <td><spring:message code="metadata.url"/></td>
+                                <td>
+                                    <p id="urlDetail"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.species"/></td>
+                                <td>
+                                    <p id="speciesDetail"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.date"/></td>
+                                <td>
+                                    <p id="datePublicationDetail"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.bibliographicResource"/></td>
+                                <td>
+                                    <select disabled title="<spring:message code="metadata.popup.bubble.bibliographicResource"/>" class="form-control" id="bibliographicResourceDetail" style="width: 100%!important;">
+                                        <option style="background-color: #f9efc9;" value="">none</option>                                    
+                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.paper"/>"><spring:message code="metadata.bibliographicResource.paper"/></option>                                    
+                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.journal"/>"><spring:message code="metadata.bibliographicResource.journal"/></option>                                    
+                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.book"/>"><spring:message code="metadata.bibliographicResource.book"/></option>                                    
+                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.report"/>"><spring:message code="metadata.bibliographicResource.report"/></option>                                    
+                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.memory"/>"><spring:message code="metadata.bibliographicResource.memory"/></option>                                    
+                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.thesis"/>"><spring:message code="metadata.bibliographicResource.thesis"/></option>                                    
+                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.map"/>"><spring:message code="metadata.bibliographicResource.map"/></option>                                    
+                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.poster"/>"><spring:message code="metadata.bibliographicResource.poster"/></option>                                    
+                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.others"/>"><spring:message code="metadata.bibliographicResource.others"/></option>                                    
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.coverage"/></td>
+                                <td>
+                                    <p id="coverageDetail"></p>
+                                </td>
+                            </tr>
+                            <tr><!---->
+                                <td><spring:message code="metadata.description"/></td>
+                                <td>
+                                    <p id="descriptionDetail"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.language"/></td>
+                                <td>
+                                    <select disabled title="<spring:message code="metadata.popup.bubble.language"/>" class="form-control" id="languageDetail" style="width: 100%!important;">
+                                        <option style="background-color: #f9efc9;" selected="" value="MLG">MG</option>
+                                        <option style="background-color: #f9efc9;" value="EN">EN</option>
+                                        <option style="background-color: #f9efc9;" value="FR">FR</option>
+                                        <option style="background-color: #f9efc9;" value="FR">OTHERS</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.relation"/></td>
+                                <td>
+                                    <p id="relationDetail"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.source"/></td>
+                                <td>
+                                    <p id="sourceDetail"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.subject"/></td>
+                                <td>
+                                    <p id="subjectDetail"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.fileFormat"/></td>
+                                <td>
+                                    <p id="fileFormatDetail"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.identifier"/></td>
+                                <td>
+                                    <p id="identifierDetail"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.contributor"/></td>
+                                <td>
+                                    <p id="contributorDetail"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.creator"/></td>
+                                <td>
+                                    <p id="creatorDetail"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.publisher"/></td>
+                                <td>
+                                    <p id="publisherDetail"></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><spring:message code="metadata.rights"/></td>
+                                <td>
+                                    <p id="rightsDetail"></p>
+                                </td>
+                            </tr>
+                        </table>                    
+                    </div>
+                    <div class="modal-footer">
+                        <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeDetailModal()">OK</button>                                                
+                    </div>                    
                 </div>
             </div>                        
         </div>        
@@ -687,6 +863,11 @@
 <script>
     function showPhoto(id, url) {
         $('.removable-row').remove();
+        $('#photoDate').text('');
+        $('#photoLocalisation').text('');
+        $('#photoSource').text('');
+        $('#photoAuteur').text('');
+        $('#photoRight').text('');
         $.get("metadata/" + id, {}, function (data) {
             $('#photoDate').text(data[0].value.date);
             $('#photoLocalisation').text(data[0].value.coverage);
@@ -777,6 +958,10 @@
         $("#modal-ajout-document").load(location.href + " #modal-ajout-document>*", "");
         closeModal('modal-ajout-document');
     }
+    function closeDetailModal() {
+        $("#modal-detail-document").load(location.href + " #modal-detail-document>*", "");
+        closeModal('modal-detail-document');
+    }
 
     function showDetailForModification(id) {
         var taxx = [];
@@ -829,6 +1014,61 @@
                     }
                 }
                 $('#species').multiselect({
+                    maxHeight: 316,
+                    enableFiltering: true,
+                    enableCaseInsensitiveFiltering: true,
+                    buttonWidth: '100%'
+                });
+            });
+            //get all taxo end                                
+        });
+    }
+    function showDetailNew(id) {
+        var taxx = [];
+        $.get("metadata/" + id + "/all", function (data) {
+            $('#yearDetail').text(data.metadata.year);
+            $('#titleDetail').text(data.metadata.title);
+            $('#typeDetail').val(data.metadata.type);
+            $('#urlDetail').text("https://www.lemursportal.org/forum"+data.metadata.url);
+            $('#datePublicationDetail').text(data.metadata.date);
+            $('#coverageDetail').text(data.metadata.coverage);
+            $('#descriptionDetail').text(data.metadata.description);
+            $('#languageDetail').val(data.metadata.language);
+            $('#relationDetail').text(data.metadata.relation);
+            $('#sourceDetail').text(data.metadata.source);
+            $('#subjectDetail').text(data.metadata.subject);
+            $('#fileFormatDetail').text(data.metadata.fileFormat);
+            $('#identifierDetail').text(data.metadata.identifier);
+            $('#contributorDetail').text(data.metadata.contributor);
+            $('#creatorDetail').text(data.metadata.creator);
+            $('#publisherDetail').text(data.metadata.publisher);
+            $('#rightsDetail').text(data.metadata.rights);
+            if (data.topics.length > 0) {
+                for (var v = 0; v < data.topics.length; v++) {
+                    $('#idThematiqueDetail option[value=' + data.topics[v].id + ']').attr('selected', true);
+                }
+            }
+            taxx = data.taxonomi;
+        }).done(function () {
+            openModal('modal-detail-document');
+            $('#idThematiqueDetail').multiselect({
+                maxHeight: 158,
+                buttonWidth: '100%'
+            });
+            //get all taxo begin
+            $.getJSON('https://www.lemursportal.org/species/getallTaxo', {}, function (data, textStatus) {
+                var el = $('select#speciesDetail');
+                el.html('');  // empty the select
+                $.each(data, function (idx, jsonData) {
+                    el.append($('<option style="background-color: #f9efc9;"></option>').val(jsonData.id).html(jsonData.scientificname));
+                });
+            }).done(function () {
+                if (taxx.length > 0) {
+                    for (var v = 0; v < taxx.length; v++) {
+                        $('#speciesDetail option[value=' + taxx[v].id + ']').attr('selected', 'true');
+                    }
+                }
+                $('#speciesDetail').multiselect({
                     maxHeight: 316,
                     enableFiltering: true,
                     enableCaseInsensitiveFiltering: true,

@@ -15,7 +15,7 @@
                 <div class="forum-container create-quest">
 
                     <div class="forum-title">
-                        <h2>Nouvelle question</h2>
+                        <h2><spring:message code="post.question.newQuestion"/></h2>
                     </div>
                     <!-- D Poser quest -->
                     <div class="cadre">
@@ -26,25 +26,25 @@
 
                                 <div class="row">
 
-                                    <label>Choisir un thématique <sup>*</sup></label>
+                                    <label><spring:message code="post.question.thematique"/> <sup>*</sup></label>
                                     <form:select htmlEscape="required" path="thematiqueId">  
                                         <option disabled selected value> -- select an option -- </option>
                                         <form:options items="${listeThematique}" itemLabel="libelle" itemValue="id"/> 
                                     </form:select>
                                     <form:errors path="thematiqueId"/>
                                     <br/>
-                                    <label>Titre de la question <sup>*</sup></label><span class="rouge"><form:errors path="title"/></span>
+                                    <label><spring:message code="post.question.title"/> <sup>*</sup></label><span class="rouge"><form:errors path="title"/></span>
                                     <form:input path="title"/>
 
-                                    <label>Ajouter une photo</label>
+                                    <label><spring:message code="post.question.photo"/></label>
                                     <input type="file" name="file" class="fisie" />
 
                                     <label>Url youtube  <span class="rouge"><c:out value="${error_youtube}" /></span></label>  
                                         <form:input path="uriYoutube"/>
 
-                                    <label>Votre question <sup>*</sup></label><span class="rouge"><form:errors path="body"/>  </span>                                
+                                    <label><spring:message code="post.question.question"/> <sup>*</sup></label><span class="rouge"><form:errors path="body"/>  </span>                                
                                     <form:textarea path="body"/>
-                                    <form:button value="save">Poster</form:button>
+                                    <form:button value="save"><spring:message code="post.question.post"/></form:button>
                                     </div>
                             </form:form> 
                         </div>
