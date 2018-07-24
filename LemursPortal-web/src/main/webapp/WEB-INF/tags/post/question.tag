@@ -36,7 +36,7 @@
             <a href="${questionPageUrl}" class="forum-item-title"><c:out value="${topQuestion.question.title}" /></a>            
             <div class="forum-sub-title">
                 <p class="show-read-more">
-                	<c:out value="${topQuestion.question.body}" />
+                    <c:out value="${topQuestion.question.body}" />
                 </p>
                 <p class="forum-date">
                     <fmt:formatDate pattern="${datetimeFormat}"
@@ -80,11 +80,11 @@
                 <br />
             </div>
         </div>
-        <div class="col-md-4 forum-user-info">
+        <div class="col-md-offset-3 col-md-9 forum-user-info" style="padding-left: 0px;">
             <c:if test="${topQuestion.question.documentId > 0}">
                 <c:url var="videoPageUrl" value="/files/${topQuestion.question.documentId}"/>
                 <a  href="${videoPageUrl}">
-                    <img src="${resourcesPath}/upload/${topQuestion.question.documentId}" alt=""></a>
+                    <img style="max-width: 125px; max-height: 60px; float: left; display: none;" src="${resourcesPath}/upload/${topQuestion.question.document.filename}" alt=""></a>
                 </c:if>
                 <c:if test="${not empty topQuestion.question.uriYoutube }">
                     <c:url var="publicationPageUrl" value="${topQuestion.question.uriYoutube}"/>

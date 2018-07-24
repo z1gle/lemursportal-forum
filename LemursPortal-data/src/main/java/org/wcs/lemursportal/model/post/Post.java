@@ -51,7 +51,7 @@ public class Post implements Serializable {
 	@Column(name="document_id", insertable=true, updatable=true, nullable=true)
 	private Integer documentId;
 	
-	@ManyToOne(fetch=FetchType.LAZY, optional=true)
+	@ManyToOne(fetch=FetchType.EAGER , optional=true)
 	@JoinColumn(name="document_id", insertable=false, updatable=false)
 	private Document document = null;
 	
