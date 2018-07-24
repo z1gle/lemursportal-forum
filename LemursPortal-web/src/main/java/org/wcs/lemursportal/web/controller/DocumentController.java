@@ -78,7 +78,7 @@ public class DocumentController extends BaseController {
     @GetMapping(value = {"/documents"})
     public String list(@RequestParam(value = "pageDocument", required = false, defaultValue = "0") Integer pageDocument, @RequestParam(value = "pP", required = false, defaultValue = "0") Integer pagePhoto, @RequestParam(value = "pV", required = false, defaultValue = "0") Integer pageVideo, @RequestParam(value = "pA", required = false, defaultValue = "0") Integer pageAudio, @RequestParam(required = false, value = "topic") Integer thematique, @RequestParam(required = false, value = "search") String search, Model model) {
         if (pageDocument == null || pageDocument < 1) {
-            pageDocument = 0;
+            pageDocument = 1;
         }
         /*else {
             pageDocument = pageDocument - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final

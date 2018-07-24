@@ -165,16 +165,16 @@
 <div class="forum-container page-document">
     <div class="row">
         <div class="page-title">
-            <h2 class="doc">Liste des documents</h2>
+            <h2 class="doc"><spring:message code="document.title"/></h2>
         </div>
         <div class="col-xs-12 col-md-12">
             <div class="box">
                 <!-- D Tab -->
                 <ul class="nav nav-tabs userProfileTabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false">Documents</a></li>
-                    <li role="presentation" class=""><a href="#tab-item-4" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="true">Photos</a></li>
-                    <li role="presentation" class=""><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="false">Videos</a></li>
-                    <li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false">Audios</a></li>                    
+                    <li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.documents"/></a></li>
+                    <li role="presentation" class=""><a href="#tab-item-4" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="true"><spring:message code="document.header.pictures"/></a></li>
+                    <li role="presentation" class=""><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.videos"/></a></li>
+                    <li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.audios"/></a></li>                    
                     <li role="presentation" class=""><a href="#tab-item-5" aria-controls="tab-item-5" role="tab" data-toggle="tab" aria-expanded="false">Youtube</a></li>
                         <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
                         <c:choose>
@@ -330,27 +330,27 @@
                                             <div class="col-md-4" id="caption" style="background-color:  black;border-radius:  5px;border-style: solid;border-color: #9d5b00;">
                                                 <table id="photoTable" class="" style="width: 100%; font-size: 18px; color: white; margin-top: 10px; margin-bottom: 10px;">
                                                     <tr>
-                                                        <td>Species :</td>
+                                                        <td><spring:message code="metadata.photo.title"/> :</td>
                                                         <td id="photoSpecies"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Date :</td>
+                                                        <td><spring:message code="metadata.photo.date"/> :</td>
                                                         <td id="photoDate"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Localisation :</td>
+                                                        <td><spring:message code="metadata.photo.location"/> :</td>
                                                         <td id="photoLocalisation"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Source :</td>
+                                                        <td><spring:message code="metadata.photo.source"/> :</td>
                                                         <td id="photoSource"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Photo prise par :</td>
+                                                        <td><spring:message code="metadata.photo.author"/> :</td>
                                                         <td id="photoAuteur"></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Right :</td>
+                                                        <td><spring:message code="metadata.photo.right"/> :</td>
                                                         <td id="photoRight"></td>
                                                     </tr>
                                                 </table>
@@ -647,7 +647,7 @@
             </div>                        
         </div>        
         <div id="modal-detail-document" class="modal">
-            <div class="modal-dialog" style="width: 75%;">
+            <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1029,7 +1029,12 @@
             $('#yearDetail').text(data.metadata.year);
             $('#titleDetail').text(data.metadata.title);
             $('#typeDetail').val(data.metadata.type);
-            $('#urlDetail').text("https://www.lemursportal.org/forum"+data.metadata.url);
+            if(data.metadata.url.charAt(0)==='/') {
+                data.metadata.url = 'https://www.lemursportal.org/forum'+data.metadata.url;
+            } else if(!data.metadata.url.includes('http')) {
+                data.metadata.url = 'https://'+data.metadata.url;
+            }
+            $('#urlDetail').html('<a href="'+data.metadata.url+'">'+data.metadata.url+'</a>');
             $('#datePublicationDetail').text(data.metadata.date);
             $('#coverageDetail').text(data.metadata.coverage);
             $('#descriptionDetail').text(data.metadata.description);
