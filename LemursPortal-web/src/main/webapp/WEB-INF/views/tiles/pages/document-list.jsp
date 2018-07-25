@@ -711,7 +711,7 @@
                             <tr>
                                 <td><spring:message code="metadata.species"/></td>
                                 <td>
-                                    <p id="speciesDetail"></p>
+                                    <select disabled multiple class="form-control" id="speciesDetail" style="width: 100%!important;"></select>
                                 </td>
                             </tr>
                             <tr>
