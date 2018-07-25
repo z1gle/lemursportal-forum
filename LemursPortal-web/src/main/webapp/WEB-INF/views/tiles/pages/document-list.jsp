@@ -179,7 +179,7 @@
                         <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
                         <c:choose>
                             <c:when test="${isLoggedInUser}">
-                            <li style="float: right;"><button style="color: white;" class="btn" aria-controls="tab-item-5" role="tab" aria-expanded="false" onclick="operModifAddModal()">Ajouter</button></li>
+                            <li style="float: right;"><button style="color: white;" class="btn" aria-controls="tab-item-5" role="tab" aria-expanded="false" onclick="operModifAddModal()"><spring:message code="document.add"/></button></li>
                             </c:when>
                             <c:otherwise>                            
                             </c:otherwise>
@@ -745,7 +745,7 @@
                             </tr>
                             <tr><!---->
                                 <td><spring:message code="metadata.description"/></td>
-                                <td>
+                                <td style="text-align: justify;text-justify: inter-word;">
                                     <p id="descriptionDetail"></p>
                                 </td>
                             </tr>
