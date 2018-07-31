@@ -42,6 +42,11 @@
    		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/login.jsp" />
    </definition>
    
+   <!-- Login page from join us-->
+   <definition name="join_us" extends="page-entier">  
+   		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/login_join_us.jsp" />
+   </definition>
+   
    <!-- forgot-passwd page -->
    <definition name="forgot-passwd" extends="page-entier">  
    		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/forgot-passwd.jsp" />

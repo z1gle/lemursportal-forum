@@ -25,4 +25,17 @@ public class LoginController {
 		}*/
 		return "login";
 	}
+        
+        @RequestMapping(value="/join_us", method=RequestMethod.GET)
+	public String joinUs(
+			@RequestParam(value = "error", required = false) String error,
+			@RequestParam(value = "logout", required = false) String logout, Model model)
+	{
+		if(error != null){
+			model.addAttribute("error", "Erreur d'authentification!");
+		}/*else if(logout != null){
+			model.addAttribute("message", "Vous vous êtes deconnecté");
+		}*/
+		return "join_us";
+	}
 }

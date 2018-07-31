@@ -174,16 +174,16 @@
                     <li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.documents"/></a></li>
                     <li role="presentation" class=""><a href="#tab-item-4" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="true"><spring:message code="document.header.pictures"/></a></li>
                     <li role="presentation" class=""><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.videos"/></a></li>
-                    <li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.audios"/></a></li>                    
+                    <li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.audios"/></a></li>
                     <li role="presentation" class=""><a href="#tab-item-5" aria-controls="tab-item-5" role="tab" data-toggle="tab" aria-expanded="false">Youtube</a></li>
                         <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
                         <c:choose>
                             <c:when test="${isLoggedInUser}">
                             <li style="float: right;"><button style="color: white;" class="btn" aria-controls="tab-item-5" role="tab" aria-expanded="false" onclick="operModifAddModal()"><spring:message code="document.add"/></button></li>
                             </c:when>
-                            <c:otherwise>                            
+                            <c:otherwise>
                             </c:otherwise>
-                        </c:choose>                    
+                        </c:choose>
                 </ul>
                 <!-- F Tab -->
 
@@ -193,7 +193,7 @@
                             <div class="col-md-offset custyle">
                                 <table style="border: 0px;" class="table table-striped custab">
                                     <c:set var="years" value="${0}"/>
-                                    <c:forEach items="${docAUTRES}" var="publication">      
+                                    <c:forEach items="${docAUTRES}" var="publication">
                                         <c:choose>
                                             <c:when test="${years == 0}">
                                                 <c:set var="years" value="${publication.year}"/>
@@ -252,7 +252,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <c:choose>
-                                            <c:when test="${search != 0}">
+                                            <c:when test="${!search.equals(Integer.toString(0))}">
                                                 <c:url var="pageBaseUrl" value="/documents?search=${search}"/>
                                                 <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent}" totalPages="${pagination.pageDocument.pageDocumentFin-1}" pageBaseUrl="${pageBaseUrl}"/>
                                             </c:when>
