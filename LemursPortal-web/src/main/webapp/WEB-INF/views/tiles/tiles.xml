@@ -2,281 +2,281 @@
 <!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
 
 <tiles-definitions>  
-   <!-- Base Definition -->
-   <definition name="base-definition" template="/WEB-INF/views/tiles/layouts/default-layout.jsp">  
-       <put-attribute name="title" value="" />  
-       <put-attribute name="head" value="" />  
-       <put-attribute name="header" value="/WEB-INF/views/tiles/template/header.jsp" /> 
-       <put-attribute name="body" value="" /> 
-       <put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />
-	   <put-attribute name="body.end" value="" />
-   </definition>
-   <definition name="definition-document" template="/WEB-INF/views/tiles/layouts/default-layout.jsp">  
-       <put-attribute name="title" value="" />  
-       <put-attribute name="head" value="" />  
-       <put-attribute name="header" value="/WEB-INF/views/tiles/template/header-document.jsp" /> 
-       <put-attribute name="body" value="" /> 
-       <put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />
-	   <put-attribute name="body.end" value="" />
-   </definition>
+    <!-- Base Definition -->
+    <definition name="base-definition" template="/WEB-INF/views/tiles/layouts/default-layout.jsp">  
+        <put-attribute name="title" value="" />  
+        <put-attribute name="head" value="" />  
+        <put-attribute name="header" value="/WEB-INF/views/tiles/template/header.jsp" /> 
+        <put-attribute name="body" value="" /> 
+        <put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />
+        <put-attribute name="body.end" value="" />
+    </definition>
+    <definition name="definition-document" template="/WEB-INF/views/tiles/layouts/default-layout.jsp">  
+        <put-attribute name="title" value="" />  
+        <put-attribute name="head" value="" />  
+        <put-attribute name="header" value="/WEB-INF/views/tiles/template/header-document.jsp" /> 
+        <put-attribute name="body" value="" /> 
+        <put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />
+        <put-attribute name="body.end" value="" />
+    </definition>
    
-   <definition name="page-entier" template="/WEB-INF/views/tiles/layouts/blank-layout.jsp">
-       <put-attribute name="page" value="" />
-   </definition>
+    <definition name="page-entier" template="/WEB-INF/views/tiles/layouts/blank-layout.jsp">
+        <put-attribute name="page" value="" />
+    </definition>
    
-   <!-- Home Page -->
-   <definition name="homepage.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
-	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
-	  <put-attribute name="left" value="/WEB-INF/views/tiles/section/home.jsp" />
-	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-	</definition>
-   <definition name="home" template="/WEB-INF/views/tiles/layouts/home-layout.jsp">  
-       <put-attribute name="title" value="Welcome" />  
-       <put-attribute name="header" value="/WEB-INF/views/tiles/template/header.jsp" /> 
-       <put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />
-       <put-attribute name="body" value="homepage.body" />
-   </definition>
+    <!-- Home Page -->
+    <definition name="homepage.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+        <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+        <put-attribute name="left" value="/WEB-INF/views/tiles/section/home.jsp" />
+        <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+    </definition>
+    <definition name="home" template="/WEB-INF/views/tiles/layouts/home-layout.jsp">  
+        <put-attribute name="title" value="Welcome" />  
+        <put-attribute name="header" value="/WEB-INF/views/tiles/template/header.jsp" /> 
+        <put-attribute name="footer" value="/WEB-INF/views/tiles/template/footer.jsp" />
+        <put-attribute name="body" value="homepage.body" />
+    </definition>
    
-   <!-- Login page -->
-   <definition name="login" extends="page-entier">  
-   		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/login.jsp" />
-   </definition>
+    <!-- Login page -->
+    <definition name="login" extends="page-entier">  
+        <put-attribute name="page" value="/WEB-INF/views/tiles/pages/login.jsp" />
+    </definition>
    
-   <!-- Login page from join us-->
-   <definition name="join_us" extends="page-entier">  
-   		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/login_join_us.jsp" />
-   </definition>
+    <!-- Login page from join us-->
+    <definition name="join_us" extends="page-entier">  
+        <put-attribute name="page" value="/WEB-INF/views/tiles/pages/login_join_us.jsp" />
+    </definition>
    
-   <!-- forgot-passwd page -->
-   <definition name="forgot-passwd" extends="page-entier">  
-   		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/forgot-passwd.jsp" />
-   </definition>
+    <!-- forgot-passwd page -->
+    <definition name="forgot-passwd" extends="page-entier">  
+        <put-attribute name="page" value="/WEB-INF/views/tiles/pages/forgot-passwd.jsp" />
+    </definition>
    
-   <!-- forgot-passwd confirmation page -->
-   <definition name="forgot-passwdconf" extends="page-entier">  
-   		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/forgot-passwdconf.jsp" />
-   </definition>
+    <!-- forgot-passwd confirmation page -->
+    <definition name="forgot-passwdconf" extends="page-entier">  
+        <put-attribute name="page" value="/WEB-INF/views/tiles/pages/forgot-passwdconf.jsp" />
+    </definition>
    
-   <!-- reset pass page -->
-   <definition name="reset-passwd" extends="page-entier">  
-   		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/new-passwd.jsp" />
-   </definition>
+    <!-- reset pass page -->
+    <definition name="reset-passwd" extends="page-entier">  
+        <put-attribute name="page" value="/WEB-INF/views/tiles/pages/new-passwd.jsp" />
+    </definition>
    
-   <!-- Error page -->
-   <definition name="global-error" extends="page-entier">  
-   		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/global-error.jsp" />
-   </definition>
+    <!-- Error page -->
+    <definition name="global-error" extends="page-entier">  
+        <put-attribute name="page" value="/WEB-INF/views/tiles/pages/global-error.jsp" />
+    </definition>
    
-   <!-- Registration form -->
-   <definition name="registration" extends="page-entier">
-   		<put-attribute name="page" value="/WEB-INF/views/tiles/pages/registration-form.jsp" />
-   </definition>
+    <!-- Registration form -->
+    <definition name="registration" extends="page-entier">
+        <put-attribute name="page" value="/WEB-INF/views/tiles/pages/registration-form.jsp" />
+    </definition>
    
-   <!-- Edit profile -->
-   <definition name="profil.edit.page" extends="base-definition">  
-       <put-attribute name="title" value="Edit profil" />  
-       <put-attribute name="head" value="/WEB-INF/views/tiles/formation/tinymce.jsp" /> 
-       <put-attribute name="body" value="/WEB-INF/views/tiles/section/edit-profil.jsp">
-       </put-attribute>
-   </definition>
-   <!-- View profile -->
-   <definition name="profil.view.page" extends="base-definition">  
-       <put-attribute name="title" value="Edit profil" /> 
-	   <put-attribute name="body.end" value="/WEB-INF/views/tiles/pages/message.jsp" />	   
-       <put-attribute name="body">
-			<definition template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
-			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/view-profil.jsp" />
-			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-			</definition>           
-       </put-attribute>
-   </definition>
-   <!-- Thematique -->
-   <definition name="thematique-form" extends="base-definition">  
-       <put-attribute name="title" value="Nouvel thematique" />  
-       <put-attribute name="body" value="/WEB-INF/views/tiles/section/thematique-form.jsp" />
-   </definition>
+    <!-- Edit profile -->
+    <definition name="profil.edit.page" extends="base-definition">  
+        <put-attribute name="title" value="Edit profil" />  
+        <put-attribute name="head" value="/WEB-INF/views/tiles/formation/tinymce.jsp" /> 
+        <put-attribute name="body" value="/WEB-INF/views/tiles/section/edit-profil.jsp">
+        </put-attribute>
+    </definition>
+    <!-- View profile -->
+    <definition name="profil.view.page" extends="base-definition">  
+        <put-attribute name="title" value="Edit profil" /> 
+        <put-attribute name="body.end" value="/WEB-INF/views/tiles/pages/message.jsp" />	   
+        <put-attribute name="body">
+            <definition template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
+                <put-attribute name="left" value="/WEB-INF/views/tiles/section/view-profil.jsp" />
+                <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+            </definition>           
+        </put-attribute>
+    </definition>
+    <!-- Thematique -->
+    <definition name="thematique-form" extends="base-definition">  
+        <put-attribute name="title" value="Nouvel thematique" />  
+        <put-attribute name="body" value="/WEB-INF/views/tiles/section/thematique-form.jsp" />
+    </definition>
    
-   <!-- Thematique -->
-   <definition name="thematique-list" extends="base-definition">  
-       <put-attribute name="title" value="Nouvel thematique" />  
-       <put-attribute name="body">
-       		<definition template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
-			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/thematique-list.jsp" />
-			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-			</definition> 
-       </put-attribute>
-   </definition>
+    <!-- Thematique -->
+    <definition name="thematique-list" extends="base-definition">  
+        <put-attribute name="title" value="Nouvel thematique" />  
+        <put-attribute name="body">
+            <definition template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
+                <put-attribute name="left" value="/WEB-INF/views/tiles/section/thematique-list.jsp" />
+                <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+            </definition> 
+        </put-attribute>
+    </definition>
    
-   <!-- Notification -->
-   <definition name="notification-list" extends="base-definition">
-       <put-attribute name="title" value="List des notifications" />  
-       <put-attribute name="body">
-       		<definition template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
-			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/notification-list.jsp" />
-			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-			</definition> 
-       </put-attribute>
-   </definition>
+    <!-- Notification -->
+    <definition name="notification-list" extends="base-definition">
+        <put-attribute name="title" value="List des notifications" />  
+        <put-attribute name="body">
+            <definition template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
+                <put-attribute name="left" value="/WEB-INF/views/tiles/section/notification-list.jsp" />
+                <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+            </definition> 
+        </put-attribute>
+    </definition>
    
-   <definition name="postsbythematique" extends="base-definition">  
-       <put-attribute name="title" value="Les messages par thématique" />  
-       <put-attribute name="body" value="postsbythematique.body" />
-   </definition>
-   <definition name="postsbythematique.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
-	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
-	  <put-attribute name="left" value="/WEB-INF/views/tiles/pages/postsbythematique.jsp" />
-	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-	</definition>
+    <definition name="postsbythematique" extends="base-definition">  
+        <put-attribute name="title" value="Les messages par thématique" />  
+        <put-attribute name="body" value="postsbythematique.body" />
+    </definition>
+    <definition name="postsbythematique.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+        <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+        <put-attribute name="left" value="/WEB-INF/views/tiles/pages/postsbythematique.jsp" />
+        <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+    </definition>
 	
-	 <definition name="experts" extends="base-definition">  
-       <put-attribute name="title" value="Les experts" />  
-       <put-attribute name="body" value="experts.body" />
-	   <put-attribute name="body.end" value="/WEB-INF/views/tiles/pages/message.jsp" />
-   </definition>
+    <definition name="experts" extends="base-definition">  
+        <put-attribute name="title" value="Les experts" />  
+        <put-attribute name="body" value="experts.body" />
+        <put-attribute name="body.end" value="/WEB-INF/views/tiles/pages/message.jsp" />
+    </definition>
    
-	<definition name="experts.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
-	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
-	  <put-attribute name="left" value="/WEB-INF/views/tiles/pages/experts.jsp" />
-	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-	</definition>
+    <definition name="experts.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+        <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+        <put-attribute name="left" value="/WEB-INF/views/tiles/pages/experts.jsp" />
+        <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+    </definition>
 	
-	<definition name="expertdetail" extends="base-definition">  
-       <put-attribute name="title" value="Expert Detail" />  
-	   <put-attribute name="body.end" value="/WEB-INF/views/tiles/pages/message.jsp" />
-       <put-attribute name="body">
-			<definition template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
-			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/other-profil.jsp" />
-			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-			</definition>           
-       </put-attribute>
-   </definition>
+    <definition name="expertdetail" extends="base-definition">  
+        <put-attribute name="title" value="Expert Detail" />  
+        <put-attribute name="body.end" value="/WEB-INF/views/tiles/pages/message.jsp" />
+        <put-attribute name="body">
+            <definition template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
+                <put-attribute name="left" value="/WEB-INF/views/tiles/section/other-profil.jsp" />
+                <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+            </definition>           
+        </put-attribute>
+    </definition>
    
-   <!-- Message privée - Formulaire -->
-   <definition name="privatemessage-form" extends="base-definition">  
-       <put-attribute name="title" value="Private message" />  
-       <put-attribute name="body">
-       		<definition template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
-			  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
-			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/privatemessage-form.jsp" />
-			</definition>
-       </put-attribute>
-   </definition>
+    <!-- Message privée - Formulaire -->
+    <definition name="privatemessage-form" extends="base-definition">  
+        <put-attribute name="title" value="Private message" />  
+        <put-attribute name="body">
+            <definition template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+                <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+                <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+                <put-attribute name="left" value="/WEB-INF/views/tiles/section/privatemessage-form.jsp" />
+            </definition>
+        </put-attribute>
+    </definition>
    
-   <!-- Message privée - Formulaire -->
-   <definition name="privatemessage-view" extends="base-definition">  
-       <put-attribute name="title" value="Private message" />  
-       <put-attribute name="body">
-       		<definition template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
-			  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
-			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/privatemessage-view.jsp" />
-			</definition>
-       </put-attribute>
-   </definition>
+    <!-- Message privée - Formulaire -->
+    <definition name="privatemessage-view" extends="base-definition">  
+        <put-attribute name="title" value="Private message" />  
+        <put-attribute name="body">
+            <definition template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+                <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+                <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+                <put-attribute name="left" value="/WEB-INF/views/tiles/section/privatemessage-view.jsp" />
+            </definition>
+        </put-attribute>
+    </definition>
    
-   <!-- Message privée - Liste -->
-   <definition name="privatemessage-list" extends="base-definition">  
-       <put-attribute name="title" value="Private message" />  
-       <put-attribute name="body">
-       		<definition template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
-			  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
-			  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-			  <put-attribute name="left" value="/WEB-INF/views/tiles/section/privatemessage-list.jsp" />
-			</definition>
-       </put-attribute>
-   </definition>
+    <!-- Message privée - Liste -->
+    <definition name="privatemessage-list" extends="base-definition">  
+        <put-attribute name="title" value="Private message" />  
+        <put-attribute name="body">
+            <definition template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+                <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+                <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+                <put-attribute name="left" value="/WEB-INF/views/tiles/section/privatemessage-list.jsp" />
+            </definition>
+        </put-attribute>
+    </definition>
    
    
-   <definition name="results" extends="base-definition">  
-       <put-attribute name="title" value="Résultat recherche" />  
-       <put-attribute name="body" value="results.body" />
-   </definition>
-   <definition name="results.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
-	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
-	  <put-attribute name="left" value="/WEB-INF/views/tiles/pages/result.jsp" />
-	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-	</definition>
+    <definition name="results" extends="base-definition">  
+        <put-attribute name="title" value="Résultat recherche" />  
+        <put-attribute name="body" value="results.body" />
+    </definition>
+    <definition name="results.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+        <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+        <put-attribute name="left" value="/WEB-INF/views/tiles/pages/result.jsp" />
+        <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+    </definition>
 	
     <definition name="getFormPost" extends="base-definition">  
-       <put-attribute name="title" value="Create Post" />  
-       <put-attribute name="body" value="/WEB-INF/views/tiles/pages/post-form.jsp" />
-   </definition>
-   <definition name="getFormPost.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
-	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
-	  <put-attribute name="left" value="/WEB-INF/views/tiles/pages/post-form.jsp" />
-	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-	</definition>
+        <put-attribute name="title" value="Create Post" />  
+        <put-attribute name="body" value="/WEB-INF/views/tiles/pages/post-form.jsp" />
+    </definition>
+    <definition name="getFormPost.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+        <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+        <put-attribute name="left" value="/WEB-INF/views/tiles/pages/post-form.jsp" />
+        <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+    </definition>
 	
-	<definition name="showPost" extends="base-definition">  
-       <put-attribute name="title" value="show Post" />  
-       <put-attribute name="body" value="showPost.body" />
-   </definition>
-   <definition name="showPost.body" template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
-	  <put-attribute name="left" value="/WEB-INF/views/tiles/pages/details-post.jsp" />
-	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-	</definition>
-   <!-- Admin - assigner roles -->
-   <definition name="admin.user.roles" extends="base-definition">
+    <definition name="showPost" extends="base-definition">  
+        <put-attribute name="title" value="show Post" />  
+        <put-attribute name="body" value="showPost.body" />
+    </definition>
+    <definition name="showPost.body" template="/WEB-INF/views/tiles/layouts/two_rows.jsp">
+        <put-attribute name="left" value="/WEB-INF/views/tiles/pages/details-post.jsp" />
+        <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+    </definition>
+    <!-- Admin - assigner roles -->
+    <definition name="admin.user.roles" extends="base-definition">
         <put-attribute name="title" value="Assign Authorities" />  
-       <put-attribute name="body" value="/WEB-INF/views/tiles/section/edit-users-roles.jsp"/>
-   </definition>
+        <put-attribute name="body" value="/WEB-INF/views/tiles/section/edit-users-roles.jsp"/>
+    </definition>
    
-   <!-- DOCUMENT -->
+    <!-- DOCUMENT -->
     <definition name="document-list" extends="definition-document">  
-       <put-attribute name="title" value="Documents" />  
-       <put-attribute name="body" value="document.body" />
-   </definition>
+        <put-attribute name="title" value="Documents" />  
+        <put-attribute name="body" value="document.body" />
+    </definition>
    
-	<definition name="document.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
-	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
-	  <put-attribute name="left" value="/WEB-INF/views/tiles/pages/document-list.jsp" />
-	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side_document.jsp" />
-	</definition>
+    <definition name="document.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+        <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+        <put-attribute name="left" value="/WEB-INF/views/tiles/pages/document-list.jsp" />
+        <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side_document.jsp" />
+    </definition>
    
    
-      <!-- formation -->
-   <definition name="formation" extends="base-definition">  
-       <put-attribute name="title" value="Liste des Formations" />  
-       <put-attribute name="body" value="formation.body" />
-   </definition>
-   <definition name="formation.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
-	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
-	  <put-attribute name="left" value="/WEB-INF/views/tiles/formation/list.jsp" />
-	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-	</definition>
+    <!-- formation -->
+    <definition name="formation" extends="base-definition">  
+        <put-attribute name="title" value="Liste des Formations" />  
+        <put-attribute name="body" value="formation.body" />
+    </definition>
+    <definition name="formation.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+        <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+        <put-attribute name="left" value="/WEB-INF/views/tiles/formation/list.jsp" />
+        <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+    </definition>
 
-   <!-- new-formation -->
-   <definition name="edit-formation" extends="base-definition">  
-       <put-attribute name="title" value="Liste des Formations" />    
-       <put-attribute name="head" value="/WEB-INF/views/tiles/formation/tinymce.jsp" />  
-       <put-attribute name="body" value="editFormation.body" />
-   </definition>
-   <definition name="editFormation.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
-	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
-	  <put-attribute name="left" value="/WEB-INF/views/tiles/formation/edit.jsp" />
-	  <put-attribute name="right" value="" />
-	</definition>
+    <!-- new-formation -->
+    <definition name="edit-formation" extends="base-definition">  
+        <put-attribute name="title" value="Liste des Formations" />    
+        <put-attribute name="head" value="/WEB-INF/views/tiles/formation/tinymce.jsp" />  
+        <put-attribute name="body" value="editFormation.body" />
+    </definition>
+    <definition name="editFormation.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+        <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+        <put-attribute name="left" value="/WEB-INF/views/tiles/formation/edit.jsp" />
+        <put-attribute name="right" value="" />
+    </definition>
 	
-   <!-- view-formation -->
-   <definition name="view-formation" extends="base-definition">  
-       <put-attribute name="title" value="Liste des Formations" />  
-       <put-attribute name="body" value="viewFormation.body" />
-   </definition>
-   <definition name="viewFormation.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
-	  <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
-	  <put-attribute name="left" value="/WEB-INF/views/tiles/formation/view.jsp" />
-	  <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
-	</definition>
+    <!-- view-formation -->
+    <definition name="view-formation" extends="base-definition">  
+        <put-attribute name="title" value="Liste des Formations" />  
+        <put-attribute name="body" value="viewFormation.body" />
+    </definition>
+    <definition name="viewFormation.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+        <put-attribute name="slider" value="/WEB-INF/views/tiles/section/header-slide.jsp" />
+        <put-attribute name="left" value="/WEB-INF/views/tiles/formation/view.jsp" />
+        <put-attribute name="right" value="/WEB-INF/views/tiles/template/right-side.jsp" />
+    </definition>
 	
-   <!-- delete-success -->
-   <definition name="success" extends="base-definition">  
-       <put-attribute name="title" value="Action success" />  
-       <put-attribute name="body" value="success.body" />
-   </definition>
-   <definition name="success.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
-	  <put-attribute name="slider" value="" />
-	  <put-attribute name="left" value="/WEB-INF/views/tiles/formation/success.jsp" />
-	  <put-attribute name="right" value="" />
-	</definition>
+    <!-- delete-success -->
+    <definition name="success" extends="base-definition">  
+        <put-attribute name="title" value="Action success" />  
+        <put-attribute name="body" value="success.body" />
+    </definition>
+    <definition name="success.body" template="/WEB-INF/views/tiles/layouts/two_rows_with_slider.jsp">
+        <put-attribute name="slider" value="" />
+        <put-attribute name="left" value="/WEB-INF/views/tiles/formation/success.jsp" />
+        <put-attribute name="right" value="" />
+    </definition>
 </tiles-definitions>

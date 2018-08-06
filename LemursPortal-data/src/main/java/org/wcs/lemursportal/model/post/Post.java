@@ -55,7 +55,7 @@ public class Post implements Serializable {
 	@JoinColumn(name="document_id", insertable=false, updatable=false)
 	private Document document = null;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="owner_id", insertable=false, updatable=false)
 	private UserInfo owner;
 	

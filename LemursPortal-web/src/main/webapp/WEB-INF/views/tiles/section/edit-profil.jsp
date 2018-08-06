@@ -61,7 +61,7 @@
 										<form:input type="file" path="file" class="pdp" />
 										<form:errors path="file" class="error" />
 										
-										<label>Titre<sup>*</sup></label>
+										<label><spring:message code="prifil.edit.titre" /><sup>*</sup></label>
 										<form:select path="title">
 											<form:option value="" disabled="true"> --SELECT--</form:option>
 											<form:option value="Mr.">Mr.</form:option>
@@ -215,7 +215,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" onclick="closeModal('myModal')">&times;</button>
-                <h4 class="modal-title">Modifier le mot de passe</h4>
+                <h4 class="modal-title"><spring:message code="profil.btn.changePassword"/></h4>
             </div>
             <div class="modal-body">
                 <form:form modelAttribute="changePasswordForm" action="/user/profil/password/edit" enctype="multipart/form-data" method="POST" cssClass="edit-profil-form">
@@ -230,8 +230,8 @@
                 <div id="errorMdp"></div>
             </div>
             <div class="modal-footer">
-                <button style="/*float: right;*/" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal('myModal')">Annuler</button>
-                <button style="/*float: right;*/" type="button" class="btn btn-default" data-dismiss="modal" onclick="sendChangePasswordForm()">Enregistrer</button>
+                <button style="/*float: right;*/" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal('myModal')"><spring:message code="global.btn.cancel"/></button>
+                <button style="/*float: right;*/" type="button" class="btn btn-default" data-dismiss="modal" onclick="sendChangePasswordForm()"><spring:message code="global.btn.save"/></button>
             </div>
         </div>
     </div>
