@@ -513,28 +513,9 @@
                             <input type="hidden" id="id">
                             <spring:message code="metadata.topics"/><sup>*</sup><br>
                             <select title="<spring:message code="metadata.popup.bubble.topics"/>" required multiple="" id="id_thematique" class="form-control">
-                                <option value="797277">Behavior </option>
-                                <option value="797278">Threats /conservation issues </option>
-                                <option value="797279">Vocalization </option>
-                                <option value="797280">Ecology </option>
-                                <option value="797281">Genetics </option>
-                                <option value="797282">Locomotion </option>                            
-                                <option value="797283">Taxonomy</option>
-                                <option value="797284">Conservation Status</option>
-                                <option value="797285">Subfossiles</option>
-                                <option value="797286">Lemur conservation and research adminsistrative </option>
-                                <option value="797287">Environmental Education</option>
-                                <option value="797288">Lemur in captivity</option>
-                                <option value="797289">Lemur Medicine/Biomedical assessement</option>
-                                <option value="797290">Species disstribution and occurences</option>
-                                <option value="797291">Nocturnal species</option>
-                                <option value="797292">Diurnal species</option>
-                                <option value="797293">Reintroduction and translocation</option>
-                                <option value="797294">Lemur conservation success</option>
-                                <option value="797295">Nutrition</option>
-                                <option value="797296">Forest fragment</option>
-                                <option value="797297">Parasites</option>
-                                <option value="797298">Others</option>
+                                <c:forEach items="${topThematiques}" var="topThematique">
+                                    <option value="${topThematique.thematique.id}"><spring:message code="document.thematique.id.${topThematique.thematique.id}"/></option>
+                                </c:forEach>                                
                             </select>                            
                             <spring:message code="metadata.type"/><sup>*</sup>
                             <select required title="<spring:message code="metadata.popup.bubble.type"/>" class="form-control" id="type" style="width: 100%!important;">
@@ -660,28 +641,9 @@
                                 <td><spring:message code="metadata.topics"/></td>
                                 <td>
                                     <select disabled title="<spring:message code="metadata.popup.bubble.topics"/>" required multiple="" id="idThematiqueDetail" class="form-control">
-                                        <option value="797277">Behavior </option>
-                                        <option value="797278">Threats /conservation issues </option>
-                                        <option value="797279">Vocalization </option>
-                                        <option value="797280">Ecology </option>
-                                        <option value="797281">Genetics </option>
-                                        <option value="797282">Locomotion </option>                            
-                                        <option value="797283">Taxonomy</option>
-                                        <option value="797284">Conservation Status</option>
-                                        <option value="797285">Subfossiles</option>
-                                        <option value="797286">Lemur conservation and research adminsistrative </option>
-                                        <option value="797287">Environmental Education</option>
-                                        <option value="797288">Lemur in captivity</option>
-                                        <option value="797289">Lemur Medicine/Biomedical assessement</option>
-                                        <option value="797290">Species disstribution and occurences</option>
-                                        <option value="797291">Nocturnal species</option>
-                                        <option value="797292">Diurnal species</option>
-                                        <option value="797293">Reintroduction and translocation</option>
-                                        <option value="797294">Lemur conservation success</option>
-                                        <option value="797295">Nutrition</option>
-                                        <option value="797296">Forest fragment</option>
-                                        <option value="797297">Parasites</option>
-                                        <option value="797298">Others</option>
+                                        <c:forEach items="${topThematiques}" var="topThematique">
+                                            <option value="${topThematique.thematique.id}"><spring:message code="document.thematique.id.${topThematique.thematique.id}"/></option>
+                                        </c:forEach>                                
                                     </select>
                                 </td>
                             </tr>
@@ -1029,12 +991,12 @@
             $('#yearDetail').text(data.metadata.year);
             $('#titleDetail').text(data.metadata.title);
             $('#typeDetail').val(data.metadata.type);
-            if(data.metadata.url.charAt(0)==='/') {
-                data.metadata.url = 'https://www.lemursportal.org/forum'+data.metadata.url;
-            } else if(!data.metadata.url.includes('http')) {
-                data.metadata.url = 'https://'+data.metadata.url;
+            if (data.metadata.url.charAt(0) === '/') {
+                data.metadata.url = 'https://www.lemursportal.org/forum' + data.metadata.url;
+            } else if (!data.metadata.url.includes('http')) {
+                data.metadata.url = 'https://' + data.metadata.url;
             }
-            $('#urlDetail').html('<a href="'+data.metadata.url+'">'+data.metadata.url+'</a>');
+            $('#urlDetail').html('<a href="' + data.metadata.url + '">' + data.metadata.url + '</a>');
             $('#datePublicationDetail').text(data.metadata.date);
             $('#coverageDetail').text(data.metadata.coverage);
             $('#descriptionDetail').text(data.metadata.description);

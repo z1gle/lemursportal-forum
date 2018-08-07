@@ -16,7 +16,8 @@
 		<a href="${postsParThematique}" class="list-group-item">
          <div class="media">
              <div class="pull-left" style="max-width:200px">
-                 <c:out value="${topThematique.thematique.libelle}"/>
+                 <spring:message code="document.thematique.id.${topThematique.thematique.id}"/>
+                 <%--<c:out value="${topThematique.thematique.libelle}"/>--%>
              </div>
              <div class="pull-right">
                  <c:out value="${topThematique.nombreDocument}"/>
