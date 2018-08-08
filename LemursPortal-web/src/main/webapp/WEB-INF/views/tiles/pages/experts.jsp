@@ -69,7 +69,7 @@
  <div class="forum-container liste-expert">
                         <div class="row expert">
                         	<div class="page-title">
-                        		<h2 class="profil">Liste des Experts</h2>
+                                    <h2 class="profil"><spring:message code="expert.list"/></h2>
                             </div>
                             <div>
                               <h4 ><c:out value="${noexpert}"/></h4>

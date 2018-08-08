@@ -504,11 +504,11 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" onclick="closeModifAddModal()">&times;</button>
-                        <h4 class="modal-title">Ajouter un document</h4>
+                        <h4 class="modal-title"><spring:message code="document.add_document.title"/></h4>
                     </div>
                     <form action="javascript:sendAddDocument();" autocomplete="off">
                         <div class="modal-body" style="overflow-y: auto;max-height:  500px;">
-                            <div style=" font-size: 10px; color: #999;"><span style="color: red;">NB</span> : Les champs marqués par des <span style="color: red;">*</span> sont obligatoires</div>
+                            <div style=" font-size: 10px; color: #999;"><span style="color: red;">NB</span><spring:message code="document.add_document.nb"/></div>
                             <div id="errorMdp"></div>
                             <input type="hidden" id="id">
                             <spring:message code="metadata.topics"/><sup>*</sup><br>
@@ -619,8 +619,8 @@
                             </div>                            
                         </div>
                         <div class="modal-footer">
-                            <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModifAddModal()">Annuler</button>
-                            <button style="float: right;" type="submit" class="btn btn-default" data-dismiss="modal">Enregistrer</button>
+                            <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModifAddModal()"><spring:message code="global.btn.cancel"/></button>
+                            <button style="float: right;" type="submit" class="btn btn-default" data-dismiss="modal"><spring:message code="global.btn.save"/></button>
                             <div id="delete"></div>
                         </div>
                     </form>
