@@ -25,7 +25,7 @@
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 
                                 <div class="row">
-
+                                    <div style="float: left; font-size: 10px; color: #999;"><span style="color: red;">NB</span> : Les champs marqués par des <span style="color: red;">*</span> sont obligatoires</div><br>
                                     <label><spring:message code="post.question.thematique"/> <sup>*</sup></label>
                                     <form:select htmlEscape="required" path="thematiqueId">  
                                         <option disabled selected value> -- select an option -- </option>

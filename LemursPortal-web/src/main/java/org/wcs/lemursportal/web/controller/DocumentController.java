@@ -129,7 +129,7 @@ public class DocumentController extends BaseController {
         if (search != null && !search.isEmpty()) {
             model.addAttribute("search", search);
         } else {
-            model.addAttribute("search", 0);
+            model.addAttribute("search", "0");
         }
         return "document-list";
     }

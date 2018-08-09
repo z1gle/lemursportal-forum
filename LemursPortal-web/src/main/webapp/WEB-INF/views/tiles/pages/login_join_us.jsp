@@ -93,7 +93,7 @@
             function login() {
                 $.post("https://www.lemursportal.org/species/autentification", {login: $('#email').val(), password: $('#pwd').val()}, function () {
                     $.post("authenticate", {email: $('#email').val(), password: $('#pwd').val()}, function () {
-                        window.location = document.referrer;
+                        window.location = 'https://www.lemursportal.org/forum';
                     }).fail(function () {
                         $('.message').html("Erreur lors de l'autentification, veuiller vérifier votre e-mail et mot de passe");
                     });
