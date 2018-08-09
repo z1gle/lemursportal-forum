@@ -4,6 +4,7 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="user" tagdir="/WEB-INF/tags/user" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <spring:message code="datetime.format" var="datetimeFormat" />
 <c:url value="/resources" var="resourcesPath" />
 <style>
@@ -113,11 +114,15 @@
 											<img src="${resourcesPath}/profil/blanc.png" alt="<c:out value="${expert.prenom}" /> " style="background-position: center; margin: auto;/* width: 100%; */height: 100%; background-image: url('${resourcesPath}<c:out value="${expert.photoProfil}" />'); background-repeat: no-repeat; background-size: auto 100%;" class="img-responsive"/>
 										</c:otherwise>
 									</c:choose>
-                                    
-									
+                                <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
+				<c:choose>
+                                    <c:when test="${isLoggedInUser}">
                                         <a href="#envoi-msg" class="send" role="button" class="btn btn-custom" data-toggle="modal" title="Envoyer un message">
                                             <i class="fa fa-envelope"></i>
                                         </a>
+                                    </c:when>
+                                    <c:otherwise></c:otherwise>
+                                </c:choose>
                                     </div>
                                     
                                     <div class="expert-usertitle">

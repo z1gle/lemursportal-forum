@@ -21,7 +21,7 @@
                             <a href="${addQuestionUrl}" class="add-quest"><spring:message code="home.ask.question"/></a>
                         </div>
                         </sec:authorize>
-                        <h2><span>Thématique :</span><c:out value="${thematique.libelle}"/></h2>
+                        <h2><span><spring:message code="home.thematiques"/> :</span><spring:message code="document.thematique.id.${thematique.id}"/></h2>
                     </div>
     				<!-- D Sujet -->
     				 <c:forEach items="${postsBythematiquePage.content}" var="QuestionParTheme">

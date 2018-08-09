@@ -685,18 +685,7 @@
                             <tr>
                                 <td><spring:message code="metadata.bibliographicResource"/></td>
                                 <td>
-                                    <select disabled title="<spring:message code="metadata.popup.bubble.bibliographicResource"/>" class="form-control" id="bibliographicResourceDetail" style="width: 100%!important;">
-                                        <option style="background-color: #f9efc9;" value="">none</option>                                    
-                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.paper"/>"><spring:message code="metadata.bibliographicResource.paper"/></option>                                    
-                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.journal"/>"><spring:message code="metadata.bibliographicResource.journal"/></option>                                    
-                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.book"/>"><spring:message code="metadata.bibliographicResource.book"/></option>                                    
-                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.report"/>"><spring:message code="metadata.bibliographicResource.report"/></option>                                    
-                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.memory"/>"><spring:message code="metadata.bibliographicResource.memory"/></option>                                    
-                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.thesis"/>"><spring:message code="metadata.bibliographicResource.thesis"/></option>                                    
-                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.map"/>"><spring:message code="metadata.bibliographicResource.map"/></option>                                    
-                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.poster"/>"><spring:message code="metadata.bibliographicResource.poster"/></option>                                    
-                                        <option style="background-color: #f9efc9;" value="<spring:message code="metadata.bibliographicResource.others"/>"><spring:message code="metadata.bibliographicResource.others"/></option>                                    
-                                    </select>
+                                    <p id="bibliographicResourceDetail"></p>
                                 </td>
                             </tr>
                             <tr>
@@ -1010,6 +999,7 @@
             $('#creatorDetail').text(data.metadata.creator);
             $('#publisherDetail').text(data.metadata.publisher);
             $('#rightsDetail').text(data.metadata.rights);
+            $('#bibliographicResourceDetail').text(data.metadata.bibliographicResource);
             if (data.topics.length > 0) {
                 for (var v = 0; v < data.topics.length; v++) {
                     $('#idThematiqueDetail option[value=' + data.topics[v].id + ']').attr('selected', true);

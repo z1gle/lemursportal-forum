@@ -8,7 +8,8 @@
 <!-- D Thematiques -->
 <div class="sidebar-title">
 	<c:url value="/thematique/list" var="listThematiqueUrl"/>
-    <h2 class="thema"><a href="${listThematiqueUrl}"><spring:message code="home.thematiques"/></a></h2>
+    <!--<h2 class="thema"><a href="${listThematiqueUrl}"><spring:message code="home.thematiques"/></a></h2>-->
+    <h2 class="thema"><a href="#"><spring:message code="home.thematiques"/></a></h2>
 </div>
 <div class="list-group people-group thematique">
 	<c:forEach items="${topThematiques}" var="topThematique">
