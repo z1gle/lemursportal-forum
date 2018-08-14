@@ -12,9 +12,11 @@ import org.wcs.lemursportal.model.association.AssociationMetadataTopic;
 import org.wcs.lemursportal.model.association.BaseAssociation;
 import org.wcs.lemursportal.model.post.Document;
 import org.wcs.lemursportal.model.post.Metadata;
+import org.wcs.lemursportal.model.user.UserView;
 import org.wcs.lemursportal.repository.post.BaseAssociationCrudRepository;
 import org.wcs.lemursportal.repository.post.MetadataCrudRepository;
 import org.wcs.lemursportal.repository.post.MetadataRepository;
+import org.wcs.lemursportal.repository.user.UserViewRepository;
 import org.wcs.lemursportal.service.common.GenericCRUDServiceImpl;
 
 @Service
@@ -29,6 +31,8 @@ public class MetadataServiceImpl extends GenericCRUDServiceImpl<Metadata, Intege
     DocumentService documentService;
     @Autowired
     BaseAssociationCrudRepository baseAssociationCrudRepository;
+    @Autowired
+    UserViewRepository userViewRepository;
 
     @Override
     protected JpaRepository<Metadata, Integer> getJpaRepository() {
@@ -75,7 +79,12 @@ public class MetadataServiceImpl extends GenericCRUDServiceImpl<Metadata, Intege
             }
             metadata = metadataCrudRepository.findOne(metadata.getId());
             Document d = new Document();
-            d.setFilename(documentService.findById(metadata.getIdDocument()).getFilename());
+            d.setFilename(documentService.findById(metadata.getIdDocument()).getFilename());            
+            List<UserView> allUV = userViewRepository.findAll();
+            for (UserView uv : allUV) {
+                uv.setNbrDocument(uv.getNbrDocument()-1);
+                userViewRepository.save(uv);
+            }            
             metadataRepository.delete(metadata);
             System.out.println("document and metadata deleted");
             documentService.deleteDocument(d);

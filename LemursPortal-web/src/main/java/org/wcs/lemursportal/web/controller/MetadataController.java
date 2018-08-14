@@ -4,12 +4,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.wcs.lemursportal.model.post.Metadata;
+import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.post.MetadataRepository;
 import org.wcs.lemursportal.service.post.MetadataService;
 
@@ -30,7 +34,7 @@ import org.wcs.lemursportal.service.post.MetadataService;
 public class MetadataController extends BaseController {
 
     @Autowired
-    ServletContext context;    
+    ServletContext context;
     @Autowired
     MetadataService metadataService;
     @Autowired
@@ -67,7 +71,8 @@ public class MetadataController extends BaseController {
 //        return valiny;
 //    }
     @GetMapping(value = {"/metadata/list/{element}"}, headers = "Accept=application/json")
-    public @ResponseBody List<HashMap<String, String>> list(@PathVariable("element") String element, @RequestParam("query") String valeur) {
+    public @ResponseBody
+    List<HashMap<String, String>> list(@PathVariable("element") String element, @RequestParam("query") String valeur) {
         List<HashMap<String, String>> valiny = new ArrayList<>();
         try {
             Metadata metadata = new Metadata();
@@ -94,9 +99,10 @@ public class MetadataController extends BaseController {
         }
         return valiny;
     }
-    
+
     @GetMapping(value = {"/metadata/{id}"}, headers = "Accept=application/json")
-    public @ResponseBody List<HashMap<String, Object>> list(@PathVariable("id") Integer id) {
+    public @ResponseBody
+    List<HashMap<String, Object>> list(@PathVariable("id") Integer id) {
         List<HashMap<String, Object>> valiny = new ArrayList<>();
         try {
             Metadata metadata = new Metadata();
@@ -112,23 +118,34 @@ public class MetadataController extends BaseController {
             temp.put("value", ex.getMessage());
             valiny.add(temp);
             //ex.printStackTrace();
-        }        
+        }
         return valiny;
     }
-    
+
     @PostMapping(value = {"/metadata/delete/{id}"})
-    public ResponseEntity<Boolean> deleteMetadata (@PathVariable("id") Integer id) {
-        Metadata metadata = new Metadata();
-        metadata.setId(id);
+    public ResponseEntity<Boolean> deleteMetadata(@PathVariable("id") Integer id, Authentication authentication, HttpServletRequest request) {
+        UserInfo userInfo = null;
+        if (authentication != null) {
+            userInfo = new UserInfo();
+            String email = authentication.getName();
+            userInfo = userInfoService.getByEmail(email);
+        }
         try {
+            if (userInfo == null) {
+                return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NOT_FOUND);
+            }
+            Metadata metadata = metadataService.findById(id);
+            if (!Objects.equals(userInfo.getId(), metadata.getIdUtilisateur()) && !request.isUserInRole("ROLE_ADMIN")) {
+                return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NOT_FOUND);
+            }
             metadataService.deleteMetadata(metadata);
             return new ResponseEntity<>(Boolean.TRUE, HttpStatus.ACCEPTED);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NOT_FOUND);
-        }        
+        }
     }
-    
+
 //    @GetMapping(value = {"/metadata/list"}, headers = "Accept=application/json")
 //    public @ResponseBody List<HashMap<String, Object>> lister(@RequestParam("element") String element, @RequestParam("valeur") String valeur) {
 //        List<HashMap<String, Object>> valiny = new ArrayList<>();

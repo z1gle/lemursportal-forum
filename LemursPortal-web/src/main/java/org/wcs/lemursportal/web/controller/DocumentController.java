@@ -47,9 +47,11 @@ import org.wcs.lemursportal.model.post.Metadata;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.TopThematique;
 import org.wcs.lemursportal.model.user.UserInfo;
+import org.wcs.lemursportal.model.user.UserView;
 import org.wcs.lemursportal.repository.post.DocumentRepository;
 import org.wcs.lemursportal.repository.post.MetadataRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
+import org.wcs.lemursportal.repository.user.UserViewRepository;
 import org.wcs.lemursportal.service.post.DocumentService;
 import org.wcs.lemursportal.service.post.PostServiceImpl.DOCTYPE;
 import static org.wcs.lemursportal.web.controller.BaseController.TOP_DOCUMENT_PAGE_SIZE;
@@ -72,11 +74,37 @@ public class DocumentController extends BaseController {
     MetadataRepository metadataRepository;
     @Autowired
     PostRepository postRepository;
+    @Autowired
+    UserViewRepository userViewRepository;
 
     private static final int BUFFER_SIZE = 4096;
 
     @GetMapping(value = {"/documents"})
-    public String list(@RequestParam(value = "pageDocument", required = false, defaultValue = "0") Integer pageDocument, @RequestParam(value = "pP", required = false, defaultValue = "0") Integer pagePhoto, @RequestParam(value = "pV", required = false, defaultValue = "0") Integer pageVideo, @RequestParam(value = "pA", required = false, defaultValue = "0") Integer pageAudio, @RequestParam(required = false, value = "topic") Integer thematique, @RequestParam(required = false, value = "search") String search, Model model) {
+    public String list(@RequestParam(value = "pageDocument", required = false, defaultValue = "0") Integer pageDocument, @RequestParam(value = "pP", required = false, defaultValue = "0") Integer pagePhoto, @RequestParam(value = "pV", required = false, defaultValue = "0") Integer pageVideo, @RequestParam(value = "pA", required = false, defaultValue = "0") Integer pageAudio, @RequestParam(required = false, value = "topic") Integer thematique, @RequestParam(required = false, value = "search") String search, @RequestParam(required = false, value = "nouveau") Integer nouveau, Model model, Authentication authentication) {
+        HashMap temp = paginate(pageDocument, pageAudio, pagePhoto, pageVideo, thematique);
+        UserView uv = null;
+        int totalDoc = new Long(((HashMap<String, Object>) temp.get("pageDocument")).get("pageDocumentTotalElement").toString()).intValue();
+        if (authentication != null) {
+            UserInfo userInfo = new UserInfo();
+            String email = authentication.getName();
+            userInfo = userInfoService.getByEmail(email);                        
+            try {
+                uv = userViewRepository.findByIdUser(userInfo.getId());
+                model.addAttribute("nbrDocument", totalDoc - uv.getNbrDocument());
+            } catch (NullPointerException npe) {
+                if (uv == null) {
+                    uv = new UserView();
+                    uv.setIdUser(userInfo.getId());
+                    uv.setNbrDocument(totalDoc);
+                    uv = userViewRepository.save(uv);
+                    model.addAttribute("nbrDocument", uv.getNbrDocument());
+                } else {
+                    model.addAttribute("nbrDocument", 0);
+                }
+            }
+
+        }
+        
         if (pageDocument == null || pageDocument < 1) {
             pageDocument = 1;
         }
@@ -98,28 +126,41 @@ public class DocumentController extends BaseController {
         } else {
             pageAudio = pageAudio - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }
-        if (search == null || search.isEmpty()) {
-            if (thematique != null) {
-                model.addAttribute("docAUDIO", listMetadatas(pageAudio, model, "3", thematique));
-                model.addAttribute("docVIDEO", listMetadatas(pageVideo, model, "2", thematique));
-                model.addAttribute("docIMAGE", listMetadatas(pagePhoto, model, "1", thematique));
-                model.addAttribute("docAUTRES", listMetadatas(pageDocument, model, "4", thematique));
-                model.addAttribute("metadata", new Metadata());
-            } else {
-                model.addAttribute("docAUDIO", listMetadata(pageAudio, model, "3"));
-                model.addAttribute("docVIDEO", listMetadata(pageVideo, model, "2"));
-                model.addAttribute("docIMAGE", listMetadata(pagePhoto, model, "1"));
-                model.addAttribute("docAUTRES", listMetadata(pageDocument, model, "4"));
-                model.addAttribute("metadata", new Metadata());
+        if (authentication != null && nouveau != null) {
+            model.addAttribute("docAUDIO", listMetadataNouveau("3", nouveau));
+            model.addAttribute("docVIDEO", listMetadataNouveau("2", nouveau));
+            model.addAttribute("docIMAGE", listMetadataNouveau("1", nouveau));
+            model.addAttribute("docAUTRES", listMetadataNouveau("4", nouveau));
+            model.addAttribute("metadata", new Metadata());
+            ((HashMap<String, Object>) temp.get("pageDocument")).put("pageDocumentTotalElement", nouveau);
+            if (uv != null) {
+                uv.setNbrDocument(totalDoc);
+                userViewRepository.save(uv);
             }
         } else {
-            model.addAttribute("docAUDIO", listMetadata(null, model, "3"));
-            model.addAttribute("docVIDEO", listMetadata(null, model, "2"));
-            model.addAttribute("docIMAGE", listMetadata(null, model, "1"));
-            model.addAttribute("docAUTRES", searchGlobal(pageDocument, model, search));
-            model.addAttribute("metadata", new Metadata());
-        }
-        HashMap temp = paginate(pageDocument, pageAudio, pagePhoto, pageVideo, thematique);
+            if (search == null || search.isEmpty()) {
+                if (thematique != null) {
+                    model.addAttribute("docAUDIO", listMetadatas(pageAudio, model, "3", thematique));
+                    model.addAttribute("docVIDEO", listMetadatas(pageVideo, model, "2", thematique));
+                    model.addAttribute("docIMAGE", listMetadatas(pagePhoto, model, "1", thematique));
+                    model.addAttribute("docAUTRES", listMetadatas(pageDocument, model, "4", thematique));
+                    model.addAttribute("metadata", new Metadata());
+                } else {
+                    model.addAttribute("docAUDIO", listMetadata(pageAudio, model, "3"));
+                    model.addAttribute("docVIDEO", listMetadata(pageVideo, model, "2"));
+                    model.addAttribute("docIMAGE", listMetadata(pagePhoto, model, "1"));
+                    model.addAttribute("docAUTRES", listMetadata(pageDocument, model, "4"));
+                    model.addAttribute("metadata", new Metadata());
+                }
+            } else {
+                model.addAttribute("docAUDIO", listMetadata(null, model, "3"));
+                model.addAttribute("docVIDEO", listMetadata(null, model, "2"));
+                model.addAttribute("docIMAGE", listMetadata(null, model, "1"));
+                model.addAttribute("docAUTRES", searchGlobal(pageDocument, model, search));
+                model.addAttribute("metadata", new Metadata());
+            }
+        }        
+
         model.addAttribute("pagination", temp);
         if (thematique == null) {
             model.addAttribute("topic", 0);
@@ -172,6 +213,14 @@ public class DocumentController extends BaseController {
         metadata.setType(metadataType);
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
         Page<Metadata> pageMetadata = metadataRepository.findAll(pageable, metadata, -2);
+        if (null != pageMetadata) {
+            return pageMetadata.getContent();
+        }
+        return null;
+    }
+
+    public List<Metadata> listMetadataNouveau(String metadataType, int nbr) {
+        Page<Metadata> pageMetadata = metadataRepository.findAllNew(metadataType, nbr);
         if (null != pageMetadata) {
             return pageMetadata.getContent();
         }

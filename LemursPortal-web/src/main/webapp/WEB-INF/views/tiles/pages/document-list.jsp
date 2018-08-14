@@ -147,6 +147,11 @@
         text-decoration: none;
         cursor: pointer;
     }
+    
+    .cliquable:hover,
+    .cliquable:focus {
+        cursor: pointer;
+    }
     .modalP-content:hover {
         opacity: 1;
     }
@@ -163,20 +168,21 @@
     }
 </style>
 <div class="forum-container page-document">
+    <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
+
     <div class="row">
         <div class="page-title">
-            <h2 class="doc"><spring:message code="document.title"/></h2>
-        </div>
-        <div class="col-xs-12 col-md-12">
-            <div class="box">
-                <!-- D Tab -->
-                <ul class="nav nav-tabs userProfileTabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.documents"/></a></li>
+            <h2 class="doc"><spring:message code="document.title"/> <small><c:choose><c:when test="${isLoggedInUser && nbrDocument != null && nbrDocument!= 0}">( <a style="color: #9e9e9e;" href="?nouveau=${nbrDocument}">${nbrDocument} new documents</a>)</c:when></c:choose></small></h2>
+                </div>
+                <div class="col-xs-12 col-md-12">
+                    <div class="box">
+                        <!-- D Tab -->
+                        <ul class="nav nav-tabs userProfileTabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.documents"/></a></li>
                     <li role="presentation" class=""><a href="#tab-item-4" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="true"><spring:message code="document.header.pictures"/></a></li>
                     <li role="presentation" class=""><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.videos"/></a></li>
                     <li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.audios"/></a></li>
-                    <li role="presentation" class=""><a href="#tab-item-5" aria-controls="tab-item-5" role="tab" data-toggle="tab" aria-expanded="false">Youtube</a></li>
-                        <sec:authorize access="isAuthenticated()" var="isLoggedInUser"/>
+                    <li role="presentation" class=""><a href="#tab-item-5" aria-controls="tab-item-5" role="tab" data-toggle="tab" aria-expanded="false">Youtube</a></li>                        
                         <c:choose>
                             <c:when test="${isLoggedInUser}">
                             <li style="float: right;"><button style="color: white;" class="btn" aria-controls="tab-item-5" role="tab" aria-expanded="false" onclick="operModifAddModal()"><spring:message code="document.add"/></button></li>
@@ -237,7 +243,11 @@
                                                     </td>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <td class="text-center"></td>
+                                                    <td class="text-center">
+                                                        <sec:authorize access="hasRole('ADMIN')">                                                        
+                                                            <a title="edit or remove" href="#" onclick="showDetailForModification(${publication.id})"><span class="glyphicont"></span><i style="margin-top: 3px;" class="fa fa-edit fa-2x"></i></a>                                                        
+                                                                </sec:authorize>
+                                                    </td>
                                                 </c:otherwise>
                                             </c:choose>                                            
                                         </tr>
@@ -321,6 +331,16 @@
                                         <!-- The Close Button -->
                                         <div class="row">
                                             <span class="closeP" onclick="closeModal('modalDetailPhoto');">&times;</span>
+                                            <c:choose>
+                                                <c:when test="${isLoggedInUser && currentUser.id == publication.idUtilisateur}">
+                                                    <div id="deletePhoto"></div>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <sec:authorize access="hasRole('ADMIN')">
+                                                        <div id="deletePhoto"></div>                                                        
+                                                    </sec:authorize>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </div>
                                         <div class="row">
                                             <!-- Modal Content (The Image) -->
@@ -354,7 +374,7 @@
                                                         <td id="photoRight"></td>
                                                     </tr>
                                                 </table>
-                                            </div>                                        
+                                            </div>
                                         </div>
                                         <!-- Modal Caption (Image Text) -->
                                         <!--<div id="caption"></div>-->
@@ -378,6 +398,18 @@
                                             <td class="text-center">
                                                 <c:url var="videoPageUrl" value="${video.url}"/>
                                                 <a class='btn btn-info btn-xs' href="${videoPageUrl}"><span class="glyphicont"></span>Visionner</a></td>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${isLoggedInUser && currentUser.id == publication.idUtilisateur}">
+                                                        <span class="cliquable" style="float: left; margin-left: 35px;"><i onclick="openDeleteModal(${video.id}, '${video.title}')" class="fa fa-trash-o"></i></span>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <sec:authorize access="hasRole('ADMIN')">                                                            
+                                                            <span class="cliquable" style="float: left; margin-left: 35px;"><i onclick="openDeleteModal(${video.id}, '${video.title}')" class="fa fa-trash-o"></i></span>
+                                                            </sec:authorize>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                 </table>
@@ -803,7 +835,7 @@
                         <span id="supression_sentence"></span>
                     </div>
                     <div class="modal-footer">
-                        <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal('modal-detail')">Annuler</button>                        
+                        <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal('modal-delete')">Annuler</button>                        
                         <div id="performe_delete"></div>
                     </div>
                 </div>
@@ -825,6 +857,8 @@
             $('#photoSource').text(data[0].value.source);
             $('#photoAuteur').text(data[0].value.creator);
             $('#photoRight').text(data[0].value.rights);
+//            $('#deletePhoto').on('click', openDeleteModal(id, data[0].title));
+            document.getElementById('deletePhoto').html = '<span id="deletePhoto" style="float: left; margin-left: 35px;" class="closeP"><i onclick="openDeleteModal(' + id + ', \'' + data[0].value.title + '\')" class="fa fa-trash-o"></i></span>'
         }).done(function () {
             $.getJSON('metadata/' + id + '/taxonomis', {}, function (data, textStatus) {
                 if (data.length > 0) {

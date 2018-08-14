@@ -764,13 +764,13 @@ public class MetadataRepositoryImpl implements MetadataRepository {
     @Override
     public Long conter(String type, Integer idThematique) {
         if (idThematique == null) {
-            String qry = "select count(d.*) from metadata d join association_metadata_topic a on d.id = a.id_metadata where d.type = :type";
+            String qry = "select count(c.*) from (select distinct d.* from metadata d join association_metadata_topic a on d.id = a.id_metadata where d.type = :type) as c";
             Query query = em.createNativeQuery(qry);
             query.setParameter("type", type);
             java.math.BigInteger val = (java.math.BigInteger) query.getSingleResult();
             return val.longValue();
         }
-        String qry = "select count(d.*) from metadata d join association_metadata_topic a on d.id = a.id_metadata where a.id_topic = :idTopic and d.type = :type";
+        String qry = "select count(c.*) from (select distinct d.* from metadata d join association_metadata_topic a on d.id = a.id_metadata where d.type = :type and a.id_topic = :idTopic) as c";
         Query query = em.createNativeQuery(qry);
         query.setParameter("idTopic", idThematique);
         query.setParameter("type", type);
@@ -1060,11 +1060,21 @@ public class MetadataRepositoryImpl implements MetadataRepository {
                 + "left join metadata m on test.id = m.id "
                 + "where rtrim(ltrim(replace(test.*\\:\\:text, ','\\:\\:text, ''\\:\\:text), '('\\:\\:text), ')'\\:\\:text) ilike :search order by m.year desc";
         Query query = em.createNativeQuery(qry, Metadata.class);
-        query.setParameter("search", "%" + search + "%");        
+        query.setParameter("search", "%" + search + "%");
         if (pageable != null) {
             query.setFirstResult(pageable.getOffset());
             query.setMaxResults(pageable.getPageSize());
         }
+        List<Metadata> results = query.getResultList();
+        return new PageImpl<>(results);
+    }
+
+    @Override
+    public Page<Metadata> findAllNew(String type, int nbr) {
+        String qry = "select * from metadata where type = :type order by id desc limit :nbr";
+        Query query = em.createNativeQuery(qry, Metadata.class);
+        query.setParameter("type", type);
+        query.setParameter("nbr", nbr);
         List<Metadata> results = query.getResultList();
         return new PageImpl<>(results);
     }
