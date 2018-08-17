@@ -72,7 +72,7 @@
             </div>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script> 
-        <script src="https://malsup.github.com/jquery.form.js"></script> 
+        <script src="${resourcesPath}/js/jquery.form.js"></script> 
         <%-- verification dev mode --%>
         <c:set var="port" value="" />
         <c:if test="${req.getServerPort() != 80 || req.getServerPort() != 443}">
@@ -93,7 +93,7 @@
           	<c:url value="/authenticate" var="loginUrl"/>
             function login() {
                 $.post("https://www.lemursportal.org/species/autentification", {login: $('#email').val(), password: $('#pwd').val()}, function () {
-                    $.post("https://www.lemursportal.org/autentification", {email: $('#email').val(), password: $('#pwd').val()}, function () {
+                    $.post("https://www.lemursportal.org/authenticate", {email: $('#email').val(), password: $('#pwd').val()}, function () {
                         $.post("${loginUrl}", {email: $('#email').val(), password: $('#pwd').val()}, function () {
                             window.location = document.referrer;
                         }).fail(function () {
