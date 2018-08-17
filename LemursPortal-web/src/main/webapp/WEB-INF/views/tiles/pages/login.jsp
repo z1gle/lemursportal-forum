@@ -90,18 +90,22 @@
              });                                
              });*/
             //});
+          	<c:url value="/authenticate" var="loginUrl"/>
             function login() {
                 $.post("https://www.lemursportal.org/species/autentification", {login: $('#email').val(), password: $('#pwd').val()}, function () {
-                    $.post("authenticate", {email: $('#email').val(), password: $('#pwd').val()}, function () {
-                        window.location = document.referrer;
-                    }).fail(function () {
-                        $('.message').html("Erreur lors de l'autentification, veuiller vérifier votre e-mail et mot de passe");
+                    $.post("https://www.lemursportal.org/autentification", {email: $('#email').val(), password: $('#pwd').val()}, function () {
+                        $.post("${loginUrl}", {email: $('#email').val(), password: $('#pwd').val()}, function () {
+                            window.location = document.referrer;
+                        }).fail(function () {
+                            $('.message').html("Erreur lors de l'autentification, veuiller vérifier votre e-mail et mot de passe");
+                        });
                     });
                 }).fail(function () {
                     $('.message').html("Erreur lors de l'autentification, veuiller vérifier votre e-mail et mot de passe");
                 });
             }
             ;
+            
         </script> 
     </body>
 </html>

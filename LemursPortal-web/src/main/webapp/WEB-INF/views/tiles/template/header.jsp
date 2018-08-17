@@ -86,12 +86,19 @@
                                 <script>
                                     function formSubmit() {
                                         //logout also species databases by Zacharie
-                                        $.ajax({
-                                            type: 'post',
-                                            url: '${req.getScheme()}://${req.getServerName()}${port}/species/logout',
-                                            success: function (json) {
-                                                document.getElementById("logoutForm").submit();
-                                            }
+//                                         $.ajax({
+//                                             type: 'post',
+//                                             url: '${req.getScheme()}://${req.getServerName()}${port}/species/logout',
+//                                             success: function (json) {
+//                                                 document.getElementById("logoutForm").submit();
+//                                             }
+//                                         });
+                                        $.post("https://www.lemursportal.org/species/logout", function () {
+                                            $.post("https://www.lemursportal.org/logout", function () {
+                                            	document.getElementById("logoutForm").submit();
+                                            });
+                                        }).fail(function () {
+                                            alert('Error!');
                                         });
                                     }
                                 </script>
