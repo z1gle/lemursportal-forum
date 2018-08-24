@@ -21,7 +21,7 @@
                     <a href="//www.lemursportal.org">
                         <img class="img-responsive" src="${resourcesPath}/images/logo-lemursportal.png" border="0"/>
                     </a>
-                    <p class="connexion-rs"><spring:message code="login.connect.with"/> :</p>
+<!--                    <p class="connexion-rs"><spring:message code="login.connect.with"/> :</p>
                     <a href="${pageContext.request.contextPath}/auth/facebook?scope=email,user_about_me,profile"><img src="${resourcesPath}/images/icon-fb.png" border="0"></a>
                     <a href="${pageContext.request.contextPath}/auth/twitter?scope=email,user_about_me,profile"><img src="${resourcesPath}/images/icon-tw.png" border="0"></a>
                     <form action="${pageContext.request.contextPath}/auth/google" method="POST" style="display: inline;">
@@ -37,7 +37,7 @@
                             <img src="${resourcesPath}/images/icon-yahoo.png" border="0">
                         </button>
                         <input type="hidden" name="scope" value="email" />
-                    </form>
+                    </form>-->
                     <%--               <a href="${pageContext.request.contextPath}/auth/yahoo"><img src="${resourcesPath}/images/icon-yahoo.png" border="0"></a> --%>
                     <div class="form">
                         <form id="form-login" class="login-form" action="javascript:login();" name="loginForm" method="POST">
@@ -91,7 +91,7 @@
              });*/
             //});
             function login() {
-                $.post("https://www.lemursportal.org/species/autentification", {login: $('#email').val(), password: $('#pwd').val()}, function () {
+                $.post("http://localhost:8082/lemurs/autentification", {login: $('#email').val(), password: $('#pwd').val()}, function () {
                     $.post("authenticate", {email: $('#email').val(), password: $('#pwd').val()}, function () {
                         window.location = document.referrer;
                     }).fail(function () {
