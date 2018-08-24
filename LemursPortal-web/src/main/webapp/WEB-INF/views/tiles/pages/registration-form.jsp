@@ -133,8 +133,12 @@
                                 </div>
                             </c:if>
                             <button id="submit" type="submit"><spring:message code="signup.btn.signup" /></button>
+                            <p class="message" style="float:left">
+                                <c:url value="/signup" var="signupUrl"/>                        
+                                <spring:message code="global.text.alreadySignedUp" /><a href="join_us"> <spring:message code="login.signin" /></a>
+                            </p>
                         </form:form>
-                    </div>
+                    </div>                    
                 </div>
             </div>
 
