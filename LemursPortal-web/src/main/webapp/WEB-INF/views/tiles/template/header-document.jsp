@@ -31,8 +31,8 @@
                         color: gray!important;
                     }                    
                 </style>
-                <a style="position: absolute;left: 165px;top: 0px;border-style: solid;border-bottom-color: rgba(0, 0, 0, 0.8);width: 50px;background-color: rgba(0, 0, 0, 0.9);border-radius: 5px!important;" class="btn spec btn-default" href="/"><img style="max-height: 34px;margin-top: -5px;" src="${resourcesPath}/images/logo-lemursportal.png" alt="Lemurs Portal"/></a>
-                <a style="position: absolute;left: 220px;top: 0px;border-style: solid;border-bottom-color: rgba(0, 0, 0, 0.8);width: 50px;background-color: rgba(0, 0, 0, 0.9);border-radius: 5px!important;" class="btn spec" href="https://www.lemursportal.org/species"><i class="fa fa-database fa-2x"></i></a>                            
+                <a title="Home" style="position: absolute;left: 165px;top: 0px;border-style: solid;border-bottom-color: rgba(0, 0, 0, 0.8);width: 50px;background-color: rgba(0, 0, 0, 0.9);border-radius: 5px!important;" class="btn spec btn-default" href="/"><img style="max-height: 34px;margin-top: -5px;" src="${resourcesPath}/images/logo-lemursportal.png" alt="Lemurs Portal"/></a>
+                <a title="Species database" style="position: absolute;left: 220px;top: 0px;border-style: solid;border-bottom-color: rgba(0, 0, 0, 0.8);width: 50px;background-color: rgba(0, 0, 0, 0.9);border-radius: 5px!important;" class="btn spec" href="https://www.lemursportal.org/species"><i class="fa fa-database fa-2x"></i></a>                            
             </div>
         </div>
         <!-- F menu mobile  -->
