@@ -466,7 +466,11 @@ public class DocumentController extends BaseController {
             Document doc = new Document();
             doc.setAuthor(currentUser);
             doc.setCreationDate(now);
-            doc.setFilename(post.getTitle());
+            String fn = post.getTitle();
+            if (fn.length()>=155) {
+                fn = fn.substring(0, 155);
+            }
+            doc.setFilename(fn);
             doc.setUrl(post.getUrl());
             doc.setAuthorId(currentUser.getId());
             //typeId is 4 for publication 
