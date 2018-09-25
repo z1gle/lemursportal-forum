@@ -11,7 +11,6 @@
 <c:url value="/resources" var="resourcesPath"/>
 <c:url value="/" var="basePath"/>
 <style>	
-    <!--	
     .project-wrapper {	
         margin: 0;	
         padding: 0;	
@@ -89,8 +88,7 @@
     }	
     .species-item img:hover, .species-item img, .species-item iframe {	
         border: 1px solid #d7d7d7;	
-    }	
-    -->	
+    }	    
 </style>
 <style>
     /**Modal photo style**/
@@ -147,7 +145,7 @@
         text-decoration: none;
         cursor: pointer;
     }
-    
+
     .cliquable:hover,
     .cliquable:focus {
         cursor: pointer;
@@ -291,9 +289,32 @@
                                                   </div>
                                                   <c:set var="isa" value="${isa+1}"/>
                                               </c:forEach> --%>
+                                    <style>
+                                        .delete-photo-document {
+                                            position: absolute;
+                                            right: 0px;
+                                            background-color: #3330!important;
+                                            color: grey!important;
+                                        }
+
+                                        a.delete-photo-document:hover {
+                                            background-color: #bbb!important;
+                                            color: white!important;
+                                        }
+                                    </style>
                                     <ul class="project-wrapper animated fadeInUp" style="text-align: left !important">
                                         <c:forEach items="${docIMAGE}" var="pic">
                                             <li class="species-item">
+                                                <c:choose>
+                                                    <c:when test="${isLoggedInUser && currentUser.id == publication.idUtilisateur}">
+                                                        <a href="#" onclick="openDeleteModal(${pic.id}, '${pic.title}')" class="btn delete-photo-document"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <sec:authorize access="hasRole('ADMIN')">                                                        
+                                                            <a href="#" onclick="openDeleteModal(${pic.id}, '${pic.title}')" class="btn delete-photo-document"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                        </sec:authorize>
+                                                    </c:otherwise>
+                                                </c:choose>
                                                 <a href="#" onclick="showPhoto('${pic.title}', '${basePath}${pic.url}');">
                                                     <img src="${resourcesPath}/images/l-blank.png" style="background-image: url('${basePath}${pic.url}'); " class="img-responsive" 
                                                          onclick="showPhoto('${pic.id}', '${basePath}${pic.url}');" class="hover-shadow cursor" alt="--">
@@ -333,11 +354,11 @@
                                             <span class="closeP" onclick="closeModal('modalDetailPhoto');">&times;</span>
                                             <c:choose>
                                                 <c:when test="${isLoggedInUser && currentUser.id == publication.idUtilisateur}">
-                                                    <div id="deletePhoto"></div>
+                                                    <!--<button class="btn btn-danger" onclick="openDeleteModal(${video.id}, '${video.title}')">Delete</button>-->
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <sec:authorize access="hasRole('ADMIN')">
-                                                        <div id="deletePhoto"></div>                                                        
+                                                    <sec:authorize access="hasRole('ADMIN')">                                                        
+                                                        <!--<button class="btn btn-danger">Delete</button>-->
                                                     </sec:authorize>
                                                 </c:otherwise>
                                             </c:choose>
@@ -394,6 +415,14 @@
 
                                         <tr>
                                             <td><img src="${resourcesPath}/images/icon-video-document.png" alt=""></td>
+<!--                                            <td>
+                                                <img src="${resourcesPath}/images/icon-video-document.png" alt="">
+                                                <video style="max-width: 320px;" controls="controls">
+                                                    <source src="${video.url.substring(1)}" type="video/mp4">
+                                                    <source src="${video.url.substring(1)}" type="video/ogg">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </td>-->
                                             <td><c:out	value="${video.title}" /></td>
                                             <td class="text-center">
                                                 <c:url var="videoPageUrl" value="${video.url}"/>
@@ -402,9 +431,9 @@
                                                 <c:choose>
                                                     <c:when test="${isLoggedInUser && currentUser.id == publication.idUtilisateur}">
                                                         <span class="cliquable" style="float: left; margin-left: 35px;"><i onclick="openDeleteModal(${video.id}, '${video.title}')" class="fa fa-trash-o"></i></span>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <sec:authorize access="hasRole('ADMIN')">                                                            
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <sec:authorize access="hasRole('ADMIN')">                                                            
                                                             <span class="cliquable" style="float: left; margin-left: 35px;"><i onclick="openDeleteModal(${video.id}, '${video.title}')" class="fa fa-trash-o"></i></span>
                                                             </sec:authorize>
                                                         </c:otherwise>
