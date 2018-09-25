@@ -415,14 +415,14 @@
 
                                         <tr>
                                             <td><img src="${resourcesPath}/images/icon-video-document.png" alt=""></td>
-<!--                                            <td>
-                                                <img src="${resourcesPath}/images/icon-video-document.png" alt="">
-                                                <video style="max-width: 320px;" controls="controls">
-                                                    <source src="${video.url.substring(1)}" type="video/mp4">
-                                                    <source src="${video.url.substring(1)}" type="video/ogg">
-                                                    Your browser does not support the video tag.
-                                                </video>
-                                            </td>-->
+                                            <!--                                            <td>
+                                                                                            <img src="${resourcesPath}/images/icon-video-document.png" alt="">
+                                                                                            <video style="max-width: 320px;" controls="controls">
+                                                                                                <source src="${video.url.substring(1)}" type="video/mp4">
+                                                                                                <source src="${video.url.substring(1)}" type="video/ogg">
+                                                                                                Your browser does not support the video tag.
+                                                                                            </video>
+                                                                                        </td>-->
                                             <td><c:out	value="${video.title}" /></td>
                                             <td class="text-center">
                                                 <c:url var="videoPageUrl" value="${video.url}"/>
@@ -453,7 +453,12 @@
 
                         </div>
                     </div>
-
+                    <style>
+                        .sound-title {
+                            text-align: center;
+                            padding-top: 25px!important;
+                        }
+                    </style>
                     <div role="tabpanel" class="tab-pane fade" id="tab-item-3">
                         <div class="txt-content">
                             <div class="col-md-offset custyle">
@@ -461,11 +466,19 @@
                                     <c:forEach items="${docAUDIO}" var="audio">
 
                                         <tr>
-                                            <td><img src="${resourcesPath}/images/icon-audio.png" alt=""></td>
-                                            <td><c:out	value="${audio.title}" /></td>
-                                            <td class="text-center">
-                                                <c:url var="audioPageUrl" value="${audio.url}"/>
-                                                <a class='btn btn-info btn-xs' href="${audioPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>
+                                            <!--<td><img src="${resourcesPath}/images/icon-audio.png" alt=""></td>-->
+                                            <td class="sound-title"><c:out	value="${audio.title}" /></td>
+                                            <td>
+                                                <audio controls>
+                                                    <source src="${audio.url.substring(1)}" type="audio/ogg">
+                                                    <source src="${audio.url.substring(1)}" type="audio/mpeg">
+                                                    <c:url var="audioPageUrl" value="${audio.url}"/>
+                                                    <a class='btn btn-info btn-xs' href="${audioPageUrl}"><span class="glyphicont"></span></a>
+                                                </audio>
+                                            </td>                                            
+                                            <!--                                            <td class="text-center">
+                                            <c:url var="audioPageUrl" value="${audio.url}"/>
+                                            <a class='btn btn-info btn-xs' href="${audioPageUrl}"><span class="glyphicont"></span>Télécharger</a></td>-->
                                         </tr>
                                     </c:forEach>
 
