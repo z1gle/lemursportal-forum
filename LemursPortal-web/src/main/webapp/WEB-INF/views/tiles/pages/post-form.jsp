@@ -37,7 +37,7 @@
                                     <form:input path="title"/>
 
                                     <label><spring:message code="post.question.photo"/></label>
-                                    <input type="file" name="file" class="fisie" />
+                                    <input type="file" name="file" class="fisie" multiple/>
 
                                     <label>Url youtube  <span class="rouge"><c:out value="${error_youtube}" /></span></label>  
                                         <form:input path="uriYoutube"/>

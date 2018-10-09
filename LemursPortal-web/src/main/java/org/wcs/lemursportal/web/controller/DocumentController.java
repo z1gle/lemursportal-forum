@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.PatternSyntaxException;
 
 import javax.servlet.ServletContext;
@@ -27,7 +28,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,12 +47,14 @@ import org.wcs.lemursportal.model.association.AssociationMetadataTaxonomi;
 import org.wcs.lemursportal.model.association.AssociationMetadataTopic;
 import org.wcs.lemursportal.model.post.Document;
 import org.wcs.lemursportal.model.post.Metadata;
+import org.wcs.lemursportal.model.post.MetadataUtilisateur;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.TopThematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.model.user.UserView;
 import org.wcs.lemursportal.repository.post.DocumentRepository;
 import org.wcs.lemursportal.repository.post.MetadataRepository;
+import org.wcs.lemursportal.repository.post.MetadataUtilisateurRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.user.UserViewRepository;
 import org.wcs.lemursportal.service.post.DocumentService;
@@ -73,6 +78,8 @@ public class DocumentController extends BaseController {
     @Autowired
     MetadataRepository metadataRepository;
     @Autowired
+    MetadataUtilisateurRepository metadataUtilisateurRepository;
+    @Autowired
     PostRepository postRepository;
     @Autowired
     UserViewRepository userViewRepository;
@@ -85,9 +92,8 @@ public class DocumentController extends BaseController {
         UserView uv = null;
         int totalDoc = new Long(((HashMap<String, Object>) temp.get("pageDocument")).get("pageDocumentTotalElement").toString()).intValue();
         if (authentication != null) {
-            UserInfo userInfo = new UserInfo();
             String email = authentication.getName();
-            userInfo = userInfoService.getByEmail(email);                        
+            UserInfo userInfo = userInfoService.getByEmail(email);                        
             try {
                 uv = userViewRepository.findByIdUser(userInfo.getId());
                 model.addAttribute("nbrDocument", totalDoc - uv.getNbrDocument());
@@ -189,66 +195,66 @@ public class DocumentController extends BaseController {
         return null;
     }
 
-    public List<Metadata> listMetadata(Integer page, Model model) {
+    public List<MetadataUtilisateur> listMetadata(Integer page, Model model) {
         if (page == null || page < 1) {
             page = 0;
         } else {
             page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
-        Page<Metadata> pageMetadata = metadataRepository.findAll(pageable);
+        Page<MetadataUtilisateur> pageMetadata = metadataUtilisateurRepository.findAll(pageable);
         if (null != pageMetadata) {
             return pageMetadata.getContent();
         }
         return null;
     }
 
-    public List<Metadata> listMetadata(Integer page, Model model, String metadataType) {
+    public List<MetadataUtilisateur> listMetadata(Integer page, Model model, String metadataType) {
         if (page == null || page < 1) {
             page = 0;
         } else {
             page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }
-        Metadata metadata = new Metadata();
+        MetadataUtilisateur metadata = new MetadataUtilisateur();
         metadata.setType(metadataType);
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
-        Page<Metadata> pageMetadata = metadataRepository.findAll(pageable, metadata, -2);
+        Page<MetadataUtilisateur> pageMetadata = metadataUtilisateurRepository.findAll(pageable, metadata, -2);
         if (null != pageMetadata) {
             return pageMetadata.getContent();
         }
         return null;
     }
 
-    public List<Metadata> listMetadataNouveau(String metadataType, int nbr) {
-        Page<Metadata> pageMetadata = metadataRepository.findAllNew(metadataType, nbr);
+    public List<MetadataUtilisateur> listMetadataNouveau(String metadataType, int nbr) {
+        Page<MetadataUtilisateur> pageMetadata = metadataUtilisateurRepository.findAllNew(metadataType, nbr);
         if (null != pageMetadata) {
             return pageMetadata.getContent();
         }
         return null;
     }
 
-    public List<Metadata> searchGlobal(Integer page, Model model, String search) {
+    public List<MetadataUtilisateur> searchGlobal(Integer page, Model model, String search) {
         if (page == null || page < 1) {
             page = 0;
         } else {
             page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
-        Page<Metadata> pageMetadata = metadataRepository.findGlobal(pageable, search);
+        Page<MetadataUtilisateur> pageMetadata = metadataUtilisateurRepository.findGlobal(pageable, search);
         if (null != pageMetadata) {
             return pageMetadata.getContent();
         }
         return null;
     }
 
-    public List<Metadata> listMetadatas(Integer page, Model model, String metadataType, Integer thematique) {
+    public List<MetadataUtilisateur> listMetadatas(Integer page, Model model, String metadataType, Integer thematique) {
         if (page == null || page < 1) {
             page = 0;
         } else {
             page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
-        Page<Metadata> pageMetadata = metadataRepository.findAll(pageable, metadataType, thematique);
+        Page<MetadataUtilisateur> pageMetadata = metadataUtilisateurRepository.findAll(pageable, metadataType, thematique);
         if (null != pageMetadata) {
             return pageMetadata.getContent();
         }
@@ -258,10 +264,10 @@ public class DocumentController extends BaseController {
     //Construction of pagination
     public HashMap<String, Object> paginate(Integer pD, Integer pA, Integer pP, Integer pV, Integer idThematique) {
         HashMap<String, Object> valiny = new HashMap<>();
-        Long totalPP = metadataRepository.conter("1", idThematique);
-        Long totalPV = metadataRepository.conter("2", idThematique);
-        Long totalPA = metadataRepository.conter("3", idThematique);
-        Long totalPD = metadataRepository.conter("4", idThematique);
+        Long totalPP = metadataUtilisateurRepository.conter("1", idThematique);
+        Long totalPV = metadataUtilisateurRepository.conter("2", idThematique);
+        Long totalPA = metadataUtilisateurRepository.conter("3", idThematique);
+        Long totalPD = metadataUtilisateurRepository.conter("4", idThematique);
         if (pP >= 0) {
             valiny.put("pagePhoto", page(pP, totalPP, "pagePhoto"));
         }
@@ -488,6 +494,30 @@ public class DocumentController extends BaseController {
             documentService.updateDocument(post);
         }
         return "success";
+    }
+    
+    @PostMapping(value = {"/secured/document/delete/{id}"})
+    public ResponseEntity<Boolean> deleteMetadata(@PathVariable("id") Integer id, Authentication authentication, HttpServletRequest request) {
+        UserInfo userInfo = null;
+        if (authentication != null) {
+            userInfo = new UserInfo();
+            String email = authentication.getName();
+            userInfo = userInfoService.getByEmail(email);
+        }
+        try {
+            if (userInfo == null) {
+                return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NOT_FOUND);
+            }
+            Document document = documentService.findById(id);
+            if (!Objects.equals(userInfo.getId(), document.getAuthorId()) && !request.isUserInRole("ROLE_ADMIN")) {
+                return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NOT_FOUND);
+            }
+            documentService.deleteDocumentIrreversible(document);
+            return new ResponseEntity<>(Boolean.TRUE, HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(Boolean.FALSE, HttpStatus.NOT_FOUND);
+        }
     }
 
     /**

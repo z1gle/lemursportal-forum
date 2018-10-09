@@ -30,159 +30,214 @@ import org.wcs.lemursportal.service.user.UserInfoService;
  *
  */
 @Service
-@Transactional(readOnly=true)
+@Transactional(readOnly = true)
 public class PostServiceImpl implements PostService {
 
-	@Autowired 
-	private PostRepository postRepository;
-	
-	@Autowired PostCrudRepository postCrudRepository;
-	
-	@Autowired ThematiqueCrudRepository thematiqueCrudRepository;
-	
-	@Autowired DocumentRepository documentRepository;
-	
-	@Autowired 
-	PostViewCrudRepository postViewCrudRepository;
-	
-	@Autowired ThematiqueRepository thematiqueRepository;
-	
-	@Autowired UserInfoService userInfoService; 
-	@Autowired NotificationService notificationService;
+    @Autowired
+    private PostRepository postRepository;
 
-	private enum PHOTOEXT {
-		png, jpeg, jpg, gif
-	}
-	private enum VIDEOEXT {
-		mov, avi, mkv,mp4,wmv,mpg,mpeg
-	}
-	private enum AUDIOEXT {
-		wma, mp3
-	}
-	
-	public enum DOCTYPE {
-		PHOTO(1), VIDEO(2), AUDIO(3), PUBLICATION(4);
-		private int value;
- 
-		private DOCTYPE(int value) {
-			this.value = value;
-		}
-		
-		public int getValue() {
-			return value;
-		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.wcs.lemursportal.service.post.ThematiqueService#getTopQuestions(org.springframework.data.domain.Pageable)
-	 */
-	@Override
-	public Page<TopQuestion> getTopQuestions(Pageable pageable) {
-		Page<TopQuestion> page = postRepository.getTopQuestions(pageable);
-		return page;
-	}
-	
-	@Override
-	public Page<Post> getQuestionResponses(Integer questionId, Pageable pageable) {
-		Page<Post> page = postRepository.getQuestionResponses(questionId, pageable);
-		return page;
-	}
+    @Autowired
+    PostCrudRepository postCrudRepository;
 
-	@Override
-	@Transactional(readOnly=false)
-	public void insert(Post post, String authorLogin, String postUrl) {
-		UserInfo currentUser = userInfoService.getByEmail(authorLogin);
-		post.setOwnerId(currentUser.getId());
-		post.setOwner(currentUser);
-		post.setCreationDate(new Date());
-		if(post.getDocument()!=null){
-			DocumentType type = new DocumentType();
-			String ext = getExtension( post.getDocument().getUrl());
-			type.setId(DOCTYPE.PUBLICATION.value);
-			for(PHOTOEXT s : PHOTOEXT.values()){
-				if(ext.equalsIgnoreCase(s.toString())){
-					type.setId( DOCTYPE.PHOTO.value );
-					break;
-				}
-			}
-			for(VIDEOEXT s : VIDEOEXT.values()){
-				if(ext.equalsIgnoreCase(s.toString())){
-					type.setId( DOCTYPE.VIDEO.value );
-					break;
-				}
-			}
-			for(AUDIOEXT s : AUDIOEXT.values()){
-				if(ext.equalsIgnoreCase(s.toString())){
-					type.setId( DOCTYPE.AUDIO.value );
-					break;
-				}
-			}
-			post.getDocument().setType(type);
-			post.getDocument().setTypeId(type.getId());
-		}
-		post.setId(null);
-		postRepository.insert(post);
-		
-		/* Notification */
-		notificationService.savePostNotification(post, postUrl);
-		
-	}
-	
-	private  String getExtension(String fileName) {		
-        if(fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0)
-        return fileName.substring(fileName.lastIndexOf(".")+1).toLowerCase();
-        else return "";
+    @Autowired
+    ThematiqueCrudRepository thematiqueCrudRepository;
+
+    @Autowired
+    DocumentRepository documentRepository;
+
+    @Autowired
+    PostViewCrudRepository postViewCrudRepository;
+
+    @Autowired
+    ThematiqueRepository thematiqueRepository;
+
+    @Autowired
+    UserInfoService userInfoService;
+    @Autowired
+    NotificationService notificationService;
+
+    private enum PHOTOEXT {
+        png, jpeg, jpg, gif
     }
 
-	@Override
-	public Page<Post> search(Pageable pageable, String pattern) {
-		return postRepository.search(pageable, pattern);
-	}
+    private enum VIDEOEXT {
+        mov, avi, mkv, mp4, wmv, mpg, mpeg
+    }
 
-	@Override
-	public Post findPostById(Integer id) {
-		Post post = postRepository.getPostsAndFetchOwner(id);
-		return post;
-	}
+    private enum AUDIOEXT {
+        wma, mp3
+    }
 
-	/* (non-Javadoc)
+    public enum DOCTYPE {
+        PHOTO(1), VIDEO(2), AUDIO(3), PUBLICATION(4);
+        private int value;
+
+        private DOCTYPE(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
+    /* (non-Javadoc)
+	 * @see org.wcs.lemursportal.service.post.ThematiqueService#getTopQuestions(org.springframework.data.domain.Pageable)
+     */
+    @Override
+    public Page<TopQuestion> getTopQuestions(Pageable pageable) {
+        Page<TopQuestion> page = postRepository.getTopQuestions(pageable);
+        return page;
+    }
+
+    @Override
+    public Page<Post> getQuestionResponses(Integer questionId, Pageable pageable) {
+        Page<Post> page = postRepository.getQuestionResponses(questionId, pageable);
+        return page;
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void insert(Post post, String authorLogin, String postUrl) {
+        UserInfo currentUser = userInfoService.getByEmail(authorLogin);
+        post.setOwnerId(currentUser.getId());
+        post.setOwner(currentUser);
+        post.setCreationDate(new Date());
+        if (post.getDocuments() != null) {
+            for (Document d : post.getDocuments()) {
+                DocumentType type = new DocumentType();
+                String ext = getExtension(d.getUrl());
+                type.setId(DOCTYPE.PUBLICATION.value);
+                for (PHOTOEXT s : PHOTOEXT.values()) {
+                    if (ext.equalsIgnoreCase(s.toString())) {
+                        type.setId(DOCTYPE.PHOTO.value);
+                        break;
+                    }
+                }
+                for (VIDEOEXT s : VIDEOEXT.values()) {
+                    if (ext.equalsIgnoreCase(s.toString())) {
+                        type.setId(DOCTYPE.VIDEO.value);
+                        break;
+                    }
+                }
+                for (AUDIOEXT s : AUDIOEXT.values()) {
+                    if (ext.equalsIgnoreCase(s.toString())) {
+                        type.setId(DOCTYPE.AUDIO.value);
+                        break;
+                    }
+                }
+                d.setType(type);
+                d.setTypeId(type.getId());
+            }
+        }
+        post.setId(null);
+        postRepository.insert(post);
+
+        /* Notification */
+        notificationService.savePostNotification(post, postUrl);
+
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void update(Post post, String authorLogin, String postUrl) {
+        UserInfo currentUser = userInfoService.getByEmail(authorLogin);
+        post.setOwnerId(currentUser.getId());
+        post.setOwner(currentUser);
+        post.setCreationDate(new Date());
+        if (post.getDocuments() != null) {
+            for (Document d : post.getDocuments()) {
+                DocumentType type = new DocumentType();
+                String ext = getExtension(d.getUrl());
+                type.setId(DOCTYPE.PUBLICATION.value);
+                for (PHOTOEXT s : PHOTOEXT.values()) {
+                    if (ext.equalsIgnoreCase(s.toString())) {
+                        type.setId(DOCTYPE.PHOTO.value);
+                        break;
+                    }
+                }
+                for (VIDEOEXT s : VIDEOEXT.values()) {
+                    if (ext.equalsIgnoreCase(s.toString())) {
+                        type.setId(DOCTYPE.VIDEO.value);
+                        break;
+                    }
+                }
+                for (AUDIOEXT s : AUDIOEXT.values()) {
+                    if (ext.equalsIgnoreCase(s.toString())) {
+                        type.setId(DOCTYPE.AUDIO.value);
+                        break;
+                    }
+                }
+                d.setType(type);
+                d.setTypeId(type.getId());
+            }
+        }
+        postRepository.update(post);
+
+        /* Notification */
+        notificationService.savePostNotification(post, postUrl);
+
+    }
+
+    private String getExtension(String fileName) {
+        if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0) {
+            return fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+        } else {
+            return "";
+        }
+    }
+
+    @Override
+    public Page<Post> search(Pageable pageable, String pattern) {
+        return postRepository.search(pageable, pattern);
+    }
+
+    @Override
+    public Post findPostById(Integer id) {
+        Post post = postRepository.getPostsAndFetchOwner(id);
+        return post;
+    }
+
+    /* (non-Javadoc)
 	 * @see org.wcs.lemursportal.service.post.PostService#incrementerNbVue(org.wcs.lemursportal.model.post.Post, java.lang.String)
-	 */
-	@Transactional(readOnly=false)
-	@Override
-	public PostView incrementerNbVue(Post post, String user) {
-		
-		PostView postView = new PostView();
-		postView.setPostId(post.getId());
-		if(post.getThematique() != null){
-			postView.setThematiqueId(post.getThematique().getId());
-		}else{
-			Thematique thematique = thematiqueRepository.findByQuestionId(post.getId());
-			postView.setThematiqueId(thematique.getId());
-		}
-		if(user != null){
-			UserInfo currentUser = null;
-			currentUser = userInfoService.getByEmail(user);
-			postView.setViewBy(currentUser.getId());
-		}
-		postView.setViewDate(Calendar.getInstance().getTime());
-		postViewCrudRepository.save(postView);
-		return postView;
-	}
+     */
+    @Transactional(readOnly = false)
+    @Override
+    public PostView incrementerNbVue(Post post, String user) {
 
-	@Override
-	@Transactional(readOnly=false)
-	public Post deletepost(Integer postId, String currentLogin) {
-		Post post = postRepository.getPostsAndFetchOwner(postId);
-		UserInfo currentUser = userInfoService.getByEmail(currentLogin);
-		
-		if(post.getDocumentId()!=null){
-			documentRepository.deleteDocument(post.getDocumentId());
-		}
-		post.setDeleted(true);
-		post.setDeletedBy(currentUser.getId());
-		post.setDeletedDate(new Date());
-		return post;
-	}
+        PostView postView = new PostView();
+        postView.setPostId(post.getId());
+        if (post.getThematique() != null) {
+            postView.setThematiqueId(post.getThematique().getId());
+        } else {
+            Thematique thematique = thematiqueRepository.findByQuestionId(post.getId());
+            postView.setThematiqueId(thematique.getId());
+        }
+        if (user != null) {
+            UserInfo currentUser = null;
+            currentUser = userInfoService.getByEmail(user);
+            postView.setViewBy(currentUser.getId());
+        }
+        postView.setViewDate(Calendar.getInstance().getTime());
+        postViewCrudRepository.save(postView);
+        return postView;
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public Post deletepost(Integer postId, String currentLogin) {
+        Post post = postRepository.getPostsAndFetchOwner(postId);
+        UserInfo currentUser = userInfoService.getByEmail(currentLogin);
+
+        if (post.getDocuments() != null) {
+            for (Document d : post.getDocuments()) {
+                documentRepository.deleteDocument(d.getId());
+            }
+        }
+        post.setDeleted(true);
+        post.setDeletedBy(currentUser.getId());
+        post.setDeletedDate(new Date());
+        return post;
+    }
 
 }

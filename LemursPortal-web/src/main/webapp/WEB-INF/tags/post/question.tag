@@ -28,8 +28,8 @@
             <!-- 		<a href="#">Modifier</a> -->
             <c:url value="/post/del/${topQuestion.question.id}" var="delUrl"/>
             <spring:message var="postDeletionConfirm" code="post.confirm.deletion"/>
-            <a href="javascript:confirmDeletion('${postDeletionConfirm}', '${delUrl}');">Supprimer</a>		
-        </c:if>
+            <a href="javascript:confirmDeletion('${postDeletionConfirm}', '${delUrl}');"><i class="fa fa-trash-o"></i></a><a href="javascript:openEdit(${topQuestion.question.id}, ${topQuestion.question.thematique.id}, '${topQuestion.question.title.replace("'", "\\'")}', '${topQuestion.question.body.replace("'", "\\'")}', '${topQuestion.question.uriYoutube}');"><i class="fa fa-edit" style="margin-left: 2px;"></i></a>
+            </c:if>
         <div class="col-md-8">
             <user:forum-profil userInfo="${topQuestion.question.owner}"/>
             <c:url value="/post/show/${topQuestion.question.id}" var="questionPageUrl"/>
@@ -80,18 +80,52 @@
                 <br />
             </div>
         </div>
-        <div class="col-md-offset-3 col-md-9 forum-user-info" style="padding-left: 0px;">
-            <c:if test="${topQuestion.question.documentId > 0}">
-                <c:url var="videoPageUrl" value="/files/${topQuestion.question.documentId}"/>
-                <a  href="${videoPageUrl}">
-                    <img style="max-width: 125px; max-height: 60px; float: left; display: none;" src="${resourcesPath}/upload/${topQuestion.question.document.filename}" alt=""></a>
-                </c:if>
-                <c:if test="${not empty topQuestion.question.uriYoutube }">
-                    <c:url var="publicationPageUrl" value="${topQuestion.question.uriYoutube}"/>
+        <c:if test="${topQuestion.question.documents != null}">
+            <c:choose>
+                <c:when test="${topQuestion.question.documents.size() == 1}">
+                    <div class="col-md-12 forum-user-info img-post-parent-${topQuestion.question.id}" style="padding-left: 0px;">                        
+                        <c:if test="${topQuestion.question.documents.get(0).typeId == 1}">
+                            <a href="${topQuestion.question.documents.get(0).url.substring(1)}"><img class="img-post" src="${topQuestion.question.documents.get(0).url.substring(1)}" alt="${topQuestion.question.documents.get(0).filename}"></a>
+                            <input type="hidden" class="list-photo-${topQuestion.question.id}" value="${topQuestion.question.documents.get(0).url.substring(1)}x_x${topQuestion.question.documents.get(0).id}">
+                            </c:if>
+                            <%--<c:url var="videoPageUrl" value="/files/${document.id}"/>--%>
+                            <!--<a  href="${videoPageUrl}">-->
+                                <!--<img style="max-width: 125px; max-height: 60px; float: left; display: none;" src="${resourcesPath}/upload/${document.filename}" alt=""></a>-->
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="col-md-12 forum-user-info img-post-parent-${topQuestion.question.id}" style="padding-left: 0px;">
+                        <c:forEach items="${topQuestion.question.documents}" var="document">
+                            <c:if test="${document.typeId == 1}">
+                                <a href="${document.url.substring(1)}"><img class="img-post-sup-3" src="${document.url.substring(1)}" alt="${document.filename}"></a>
+                                <input type="hidden" class="list-photo-${topQuestion.question.id}" value="${document.url.substring(1)}x_x${document.id}">
+                                </c:if>
+                            </c:forEach>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </c:if>
+        <c:if test="${not empty topQuestion.question.uriYoutube }">
+            <div class="col-md-offset-3 col-md-9 forum-user-info" style="padding-left: 0px;">
+                <c:url var="publicationPageUrl" value="${topQuestion.question.uriYoutube}"/>
                 <a  href="${topQuestion.question.uriYoutube}"  target="_blank">
                     <img src="${resourcesPath}/images/icon-video-document.png" alt=""></a>
-                </c:if>
-        </div>
+            </div>
+        </c:if>        
     </div>
 </div>
-
+<script>
+    $(document).ready(function () {
+        $('.img-post-parent-${topQuestion.question.id}').magnificPopup({
+            delegate: 'a', // child items selector, by clicking on it popup will open
+            type: 'image',
+            tLoading: 'Loading image #%curr%...',
+            mainClass: 'mfp-img-mobile',
+            gallery: {
+                enabled: true,
+                navigateByImgClick: true,
+                preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+            }
+        });
+    });
+</script>

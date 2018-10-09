@@ -9,4 +9,5 @@ public interface DocumentService extends GenericCRUDService<Document, Integer> {
         public void addDocument(Metadata metadata);
         public void updateDocument(Metadata metadata);
         public boolean deleteDocument(Document document) throws Exception;
+        public boolean deleteDocumentIrreversible(Document document) throws Exception;
 }

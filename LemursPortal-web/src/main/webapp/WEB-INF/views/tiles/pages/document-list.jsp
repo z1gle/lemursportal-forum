@@ -190,7 +190,13 @@
                         </c:choose>
                 </ul>
                 <!-- F Tab -->
-
+                <style>
+                    .user-detail {
+                        font-size: 8px;
+                        font-weight: 500;
+                        color: darkolivegreen;
+                    }
+                </style>
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active fade in" id="tab-item-1">
                         <div class="txt-content">
@@ -225,7 +231,17 @@
                                             </c:otherwise>
                                         </c:choose>
                                         <tr style="border:1px solid #ccc;">                                                                                        
-                                            <td><a href="#" onclick="showDetailNew(${publication.id})"><c:out	value="${publication.title}" /></a></td>
+                                            <td>
+                                                <a href="#" onclick="showDetailNew(${publication.id})"><c:out	value="${publication.title}" /></a><br>
+                                                <c:choose>
+                                                    <c:when test="${isLoggedInUser}">
+                                                        <a onclick="openDetail(${publication.idUtilisateur}, '${publication.userName}', '${publication.userFirstname}', '${publication.userEmail}', '${publication.userPhoto}');" href="#"><span class="user-detail"><c:out value="${publication.userFirstname}" /> <c:out value="${publication.userName}" /></span></a>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <span class="user-detail"><c:out value="${publication.userName}" /> <c:out value="${publication.userFirstname}" /></span>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </td>
                                             <td><c:out	value="${publication.coverage}" /></td>
                                             <td><c:out	value="${publication.creator}" /></td>
                                             <td class="text-center">
@@ -308,13 +324,13 @@
                                                 <c:choose>
                                                     <c:when test="${isLoggedInUser && currentUser.id == publication.idUtilisateur}">
                                                         <a href="#" onclick="openDeleteModal(${pic.id}, '${pic.title}')" class="btn delete-photo-document"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <sec:authorize access="hasRole('ADMIN')">                                                        
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <sec:authorize access="hasRole('ADMIN')">                                                        
                                                             <a href="#" onclick="openDeleteModal(${pic.id}, '${pic.title}')" class="btn delete-photo-document"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                                                        </sec:authorize>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                            </sec:authorize>
+                                                        </c:otherwise>
+                                                    </c:choose>
                                                 <a href="#" onclick="showPhoto('${pic.title}', '${basePath}${pic.url}');">
                                                     <img src="${resourcesPath}/images/l-blank.png" style="background-image: url('${basePath}${pic.url}'); " class="img-responsive" 
                                                          onclick="showPhoto('${pic.id}', '${basePath}${pic.url}');" class="hover-shadow cursor" alt="--">
@@ -344,7 +360,7 @@
                                         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
                                         <a class="next" onclick="plusSlides(1)">&#10095;</a>
                                     </div>
-                                </div>	
+                                </div>
 
                                 <!-- Modal detail photo -->
                                 <div id="modalDetailPhoto" class="modalP">
@@ -426,7 +442,7 @@
                                             <td><c:out	value="${video.title}" /></td>
                                             <td class="text-center">
                                                 <c:url var="videoPageUrl" value="${video.url}"/>
-                                                <a class='btn btn-info btn-xs' href="${videoPageUrl}"><span class="glyphicont"></span>Visionner</a></td>
+                                                <a class='btn btn-info btn-xs' href="${videoPageUrl}"><span class="glyphicont"></span><spring:message code="document.video.show"/></a></td>
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${isLoggedInUser && currentUser.id == publication.idUtilisateur}">
@@ -883,6 +899,29 @@
                 </div>
             </div>                        
         </div>
+        <!--modal detail user-->
+        <div id="modal-detail-user" class="modal edit-profil-form">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" onclick="closeModal('modal-detail-user')">&times;</button>
+                        <h4 class="modal-title">Detail</h4>
+                    </div>
+                    <div class="modal-body" style="overflow-y: auto;max-height:  500px;">
+                        <div class="row">
+                            <div id="detail-user-img" class="col-md-2">                                
+                            </div>
+                            <div id="detail-user-body" class="col-md-10">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal('modal-detail-user')">OK</button>                                                
+                    </div>
+                </div>
+            </div>                        
+        </div>
     </div>        
 </div>
 <script>
@@ -959,6 +998,17 @@
                     species += '</ul>';
                     drawRow('Topics', species, table);
                 }
+            }).done(function () {
+                $.getJSON('metadata/' + id + '/topics', {}, function (data, textStatus) {
+                    if (data.length > 0) {
+                        var species = '<ul>';
+                        for (var v = 0; v < data.length; v++) {
+                            species += '<li>' + data[v].libelle + '</li>';
+                        }
+                        species += '</ul>';
+                        drawRow('Topics', species, table);
+                    }
+                });
             });
         });
     }
@@ -1142,6 +1192,19 @@
             closeModifAddModal();
             alert("La supression a rencontré une erreur. Veuiller réessayer ultérieurement");
         });
+    }
+    function openDetail(id, name, firstname, email, photo) {
+        var body = '';
+        body += '<div class="remove-body">';
+        body += '<h4>' + firstname + '<small>' + name + '</small>' + '</h4>';
+    <sec:authorize access="hasRole('ADMIN')">
+        body += '<span>' + email + '</span>';
+    </sec:authorize>
+        body += '</div>';
+        $(".remove-body").remove();
+        $('#detail-user-body').append(body);
+        $('#detail-user-img').append('<img style="max-width: 100%; max-height: 60px;" src="${resourcesPath}' + photo + '" class="remove-body img-circle">');
+        openModal('modal-detail-user');
     }
 </script>
 <script>

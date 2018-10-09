@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,7 +70,8 @@ public class MetadataController extends BaseController {
 //            ex.printStackTrace();
 //        }
 //        return valiny;
-//    }
+//    }        
+
     @GetMapping(value = {"/metadata/list/{element}"}, headers = "Accept=application/json")
     public @ResponseBody
     List<HashMap<String, String>> list(@PathVariable("element") String element, @RequestParam("query") String valeur) {

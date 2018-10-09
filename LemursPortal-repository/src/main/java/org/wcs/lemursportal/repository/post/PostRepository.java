@@ -46,6 +46,8 @@ public interface PostRepository {
 	 
 	 void insert(Post post);
 	 
+	 void update(Post post);
+	 
 	 public List<Post> getPostsAndFetchOwner(Set<Integer> postIds);
 	 
 	 public Post getPostsAndFetchOwner(Integer postId);

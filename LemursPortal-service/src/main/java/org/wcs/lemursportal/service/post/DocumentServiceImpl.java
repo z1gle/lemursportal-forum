@@ -62,4 +62,18 @@ public class DocumentServiceImpl extends
         }
     }
 
+    @Override
+    public boolean deleteDocumentIrreversible(Document document) throws Exception {
+        String rootPath = this.getClass().getClassLoader().getResource("").getPath().split("WEB-INF" + File.separator + "classes")[0];
+        String filePath = rootPath + "resources" + File.separator + "upload" + File.separator + document.getFilename();
+        try {
+            File file = new File(filePath);
+            boolean val = file.delete();
+            this.getJpaRepository().delete(document.getId());
+            return val;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
 }

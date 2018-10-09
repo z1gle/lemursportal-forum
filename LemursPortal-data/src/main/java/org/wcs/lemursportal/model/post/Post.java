@@ -23,69 +23,71 @@ import org.wcs.lemursportal.model.user.UserInfo;
  *
  */
 @Entity
-@Table(name="message")
+@Table(name = "message")
 public class Post implements Serializable {
-	
-	private static final long serialVersionUID = -1722178560929257653L;
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id")
-	private Integer id;
-	
-	@Column(name="title"/*, nullable=false*/)
-	private String title;
-	
-	@Column(name="contenu", columnDefinition = "text"/*, nullable=true*/)
-	private String body;
-	
-	@Column(name="date_creation", nullable=false)
-	private Date creationDate;
-	
-	@Column(name="owner_id", insertable=true, updatable=true)
-	private Integer ownerId;
-	
-	@Column(name="parent_id", insertable=true, updatable=true, nullable=true)
-	private Integer parentId;
-	
-	@Column(name="document_id", insertable=true, updatable=true, nullable=true)
-	private Integer documentId;
-	
-	@ManyToOne(fetch=FetchType.EAGER , optional=true)
-	@JoinColumn(name="document_id", insertable=false, updatable=false)
-	private Document document = null;
-	
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="owner_id", insertable=false, updatable=false)
-	private UserInfo owner;
-	
-	@ManyToOne(fetch=FetchType.LAZY, optional=true)
-	@JoinColumn(name="parent_id", insertable=false, updatable=false)
-	private Post parent = null;
-	
-	@OneToMany(mappedBy="parent")
-	private List<Post> children;
-	
-	@Column(name="thematique_id", nullable=false)
-	private Integer thematiqueId;
-	
-	@ManyToOne(cascade=CascadeType.REMOVE)
-	@JoinColumn(name="thematique_id", insertable=false, updatable=false)
-	private Thematique thematique;
-	
-	@Column(name="censored", nullable=true)
-	private Boolean censored;
-	
-	@Column(name="censored_date", nullable=true)
-	private Date censoredDate;
-	
-	@Column(name="uriYoutube")
-	private String uriYoutube;
-	
-	@ManyToOne(optional=true, fetch=FetchType.LAZY)
-	@JoinColumn(columnDefinition="integer", name="censored_by", nullable=true)
-	private UserInfo censoredBy;//l'utilisateur(moderateur) qui a bloqué ce POST
-	
+
+    private static final long serialVersionUID = -1722178560929257653L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Integer id;
+
+    @Column(name = "title"/*, nullable=false*/)
+    private String title;
+
+    @Column(name = "contenu", columnDefinition = "text"/*, nullable=true*/)
+    private String body;
+
+    @Column(name = "date_creation", nullable = false)
+    private Date creationDate;
+
+    @Column(name = "owner_id", insertable = true, updatable = true)
+    private Integer ownerId;
+
+    @Column(name = "parent_id", insertable = true, updatable = true, nullable = true)
+    private Integer parentId;
+
+//	@Column(name="document_id", insertable=true, updatable=true, nullable=true)
+//	private Integer documentId;
+//	
+//	@ManyToOne(fetch=FetchType.EAGER , optional=true)
+//	@JoinColumn(name="document_id", insertable=false, updatable=false)
+//	private Document document = null;
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Document> documents = null;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "owner_id", insertable = false, updatable = false)
+    private UserInfo owner;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "parent_id", insertable = false, updatable = false)
+    private Post parent = null;
+
+    @OneToMany(mappedBy = "parent")
+    private List<Post> children;
+
+    @Column(name = "thematique_id", nullable = false)
+    private Integer thematiqueId;
+
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "thematique_id", insertable = false, updatable = false)
+    private Thematique thematique;
+
+    @Column(name = "censored", nullable = true)
+    private Boolean censored;
+
+    @Column(name = "censored_date", nullable = true)
+    private Date censoredDate;
+
+    @Column(name = "uriYoutube")
+    private String uriYoutube;
+
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(columnDefinition = "integer", name = "censored_by", nullable = true)
+    private UserInfo censoredBy;//l'utilisateur(moderateur) qui a bloqué ce POST
+
 //	@ManyToMany(fetch=FetchType.EAGER)
 //	@JoinTable(
 //			name="message_document", 
@@ -93,140 +95,147 @@ public class Post implements Serializable {
 //			inverseJoinColumns= {@JoinColumn(name = "id_document", referencedColumnName = "id")}
 //		)
 //	private List<Document> documents; //list of attachments
-	
-	public Boolean deleted = false;
-	
-	@Column(name="deleted_by", nullable=true)
-	private Integer deletedBy;
-	
-	@Column(name="deleted_date", nullable=true)
-	private Date deletedDate;
+    public Boolean deleted = false;
 
-	public Integer getId() {
-		return id;
-	}
+    @Column(name = "deleted_by", nullable = true)
+    private Integer deletedBy;
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Column(name = "deleted_date", nullable = true)
+    private Date deletedDate;
 
-	public Date getCreationDate() {
-		return creationDate;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setCreationDate(Date creationDate) {
-		this.creationDate = creationDate;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Post getParent() {
-		return parent;
-	}
+    public Date getCreationDate() {
+        return creationDate;
+    }
 
-	public void setParent(Post parent) {
-		this.parent = parent;
-	}
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
 
-	public Thematique getThematique() {
-		return thematique;
-	}
+    public Post getParent() {
+        return parent;
+    }
 
-	public void setThematique(Thematique thematique) {
-		this.thematique = thematique;
-	}
+    public void setParent(Post parent) {
+        this.parent = parent;
+    }
 
-	public UserInfo getOwner() {
-		return owner;
-	}
+    public Thematique getThematique() {
+        return thematique;
+    }
 
-	public void setOwner(UserInfo owner) {
-		this.owner = owner;
-	}
+    public void setThematique(Thematique thematique) {
+        this.thematique = thematique;
+    }
 
-	public Boolean getCensored() {
-		return censored;
-	}
+    public UserInfo getOwner() {
+        return owner;
+    }
 
-	public void setCensored(Boolean censored) {
-		this.censored = censored;
-	}
+    public void setOwner(UserInfo owner) {
+        this.owner = owner;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public Boolean getCensored() {
+        return censored;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setCensored(Boolean censored) {
+        this.censored = censored;
+    }
 
-	public Date getCensoredDate() {
-		return censoredDate;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setCensoredDate(Date censoredDate) {
-		this.censoredDate = censoredDate;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public UserInfo getCensoredBy() {
-		return censoredBy;
-	}
+    public Date getCensoredDate() {
+        return censoredDate;
+    }
 
-	public void setCensoredBy(UserInfo censoredBy) {
-		this.censoredBy = censoredBy;
-	}
+    public void setCensoredDate(Date censoredDate) {
+        this.censoredDate = censoredDate;
+    }
 
-	public String getBody() {
-		return body;
-	}
+    public UserInfo getCensoredBy() {
+        return censoredBy;
+    }
 
-	public void setBody(String body) {
-		this.body = body;
-	}
+    public void setCensoredBy(UserInfo censoredBy) {
+        this.censoredBy = censoredBy;
+    }
 
-	public List<Post> getChildren() {
-		return children;
-	}
+    public String getBody() {
+        return body;
+    }
 
-	public void setChildren(List<Post> children) {
-		this.children = children;
-	}
+    public void setBody(String body) {
+        this.body = body;
+    }
 
-	public Integer getOwnerId() {
-		return ownerId;
-	}
+    public List<Post> getChildren() {
+        return children;
+    }
 
-	public void setOwnerId(Integer ownerId) {
-		this.ownerId = ownerId;
-	}
+    public void setChildren(List<Post> children) {
+        this.children = children;
+    }
 
-	public Integer getParentId() {
-		return parentId;
-	}
+    public Integer getOwnerId() {
+        return ownerId;
+    }
 
-	public void setParentId(Integer parentId) {
-		this.parentId = parentId;
-	}
+    public void setOwnerId(Integer ownerId) {
+        this.ownerId = ownerId;
+    }
 
-	public Integer getDocumentId() {
-		return documentId;
-	}
+    public Integer getParentId() {
+        return parentId;
+    }
 
-	public void setDocumentId(Integer documentId) {
-		this.documentId = documentId;
-	}
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
 
-	public Document getDocument() {
-		return document;
-	}
+//	public Integer getDocumentId() {
+//		return documentId;
+//	}
+//
+//	public void setDocumentId(Integer documentId) {
+//		this.documentId = documentId;
+//	}
+//
+//	public Document getDocument() {
+//		return document;
+//	}
+//
+//	public void setDocument(Document document) {
+//		this.document = document;
+//	}
+    public List<Document> getDocuments() {
+        return documents;
+    }
 
-	public void setDocument(Document document) {
-		this.document = document;
-	}
-	
-	public String toString(){
-		if(getThematique()==null)
-			setThematique(new Thematique());
-		return "Title : " + getTitle() + "\n " + " Body: "+getBody() + " \n " + " Thematique :  " + getThematiqueId() + " - " + getThematique().getLibelle();
-	}
+    public void setDocuments(List<Document> documents) {
+        this.documents = documents;
+    }
+
+    public String toString() {
+        if (getThematique() == null) {
+            setThematique(new Thematique());
+        }
+        return "Title : " + getTitle() + "\n " + " Body: " + getBody() + " \n " + " Thematique :  " + getThematiqueId() + " - " + getThematique().getLibelle();
+    }
 
 //	public List<Document> getDocuments() {
 //		return documents;
@@ -235,65 +244,62 @@ public class Post implements Serializable {
 //	public void setDocuments(List<Document> documents) {
 //		this.documents = documents;
 //	}
+    public Integer getThematiqueId() {
+        return thematiqueId;
+    }
 
-	public Integer getThematiqueId() {
-		return thematiqueId;
-	}
+    public void setThematiqueId(Integer thematiqueId) {
+        this.thematiqueId = thematiqueId;
+    }
 
-	public void setThematiqueId(Integer thematiqueId) {
-		this.thematiqueId = thematiqueId;
-	}
-	
-	public String getUriYoutube() {
-		return uriYoutube;
-	}
-	
-	public void setUriYoutube(String uriYoutube) {
-		this.uriYoutube = uriYoutube;
-	}
-	
-	/**
-	 * @return the deleted
-	 */
-	public Boolean getDeleted() {
-		return deleted;
-	}
+    public String getUriYoutube() {
+        return uriYoutube;
+    }
 
-	/**
-	 * @param deleted the deleted to set
-	 */
-	public void setDeleted(Boolean deleted) {
-		this.deleted = deleted;
-	}
+    public void setUriYoutube(String uriYoutube) {
+        this.uriYoutube = uriYoutube;
+    }
 
-	/**
-	 * @return the deletedBy
-	 */
-	public Integer getDeletedBy() {
-		return deletedBy;
-	}
+    /**
+     * @return the deleted
+     */
+    public Boolean getDeleted() {
+        return deleted;
+    }
 
-	/**
-	 * @param deletedBy the deletedBy to set
-	 */
-	public void setDeletedBy(Integer deletedBy) {
-		this.deletedBy = deletedBy;
-	}
+    /**
+     * @param deleted the deleted to set
+     */
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 
-	/**
-	 * @return the deletedDate
-	 */
-	public Date getDeletedDate() {
-		return deletedDate;
-	}
+    /**
+     * @return the deletedBy
+     */
+    public Integer getDeletedBy() {
+        return deletedBy;
+    }
 
-	/**
-	 * @param deletedDate the deletedDate to set
-	 */
-	public void setDeletedDate(Date deletedDate) {
-		this.deletedDate = deletedDate;
-	}
-	
-	
+    /**
+     * @param deletedBy the deletedBy to set
+     */
+    public void setDeletedBy(Integer deletedBy) {
+        this.deletedBy = deletedBy;
+    }
+
+    /**
+     * @return the deletedDate
+     */
+    public Date getDeletedDate() {
+        return deletedDate;
+    }
+
+    /**
+     * @param deletedDate the deletedDate to set
+     */
+    public void setDeletedDate(Date deletedDate) {
+        this.deletedDate = deletedDate;
+    }
 
 }

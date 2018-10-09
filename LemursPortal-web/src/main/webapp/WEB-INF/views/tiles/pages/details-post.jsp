@@ -9,6 +9,20 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:url value="/resources" var="resourcesPath"/>
 <div class="wrapper wrapper-content animated fadeInRight">
+    <style>
+        .img-post {
+            max-height: 100px;
+            float: left;
+        }
+        .img-post-sup-3 {
+            float: left;
+            max-width: 33.33%;
+            max-height: 100px;
+            min-height: 100px;
+            margin-right: 1px;
+            margin-bottom: 1px;
+        }
+    </style>
     <!-- D Question/Reponse -->
     <div class="forum-container reponse-quest">
 
@@ -35,17 +49,56 @@
                         <small>Commentaires</small>
                     </div>
                 </div>
-                <div class="col-md-4 forum-info">
-                    <c:if test="${post.documentId > 0}">
-                        <c:url var="videoPageUrl" value="/files/${post.documentId}"/>
-                        <a  href="${videoPageUrl}">
-                            <img src="${resourcesPath}/images/icon-audio.png" alt=""></a>
-                        </c:if>
-                        <c:if test="${not empty post.uriYoutube }">
-                            <c:url var="publicationPageUrl" value="${post.uriYoutube}"/>
-                        <a  href="${publicationPageUrl}"  target="_blank">
-                            <img src="${resourcesPath}/images/icon-video-document.png" alt=""></a>
-                        </c:if>
+                <div class="col-md-12 forum-info">
+                    <c:if test="${post.documents != null}">
+                        <c:choose>
+                            <c:when test="${post.documents.size() == 1}">
+                                <div class="col-md-12 forum-user-info img-post-parent-${post.id}" style="padding-left: 0px;">                        
+                                    <c:if test="${post.documents.get(0).typeId == 1}">
+                                        <a href="${resourcesPath}${post.documents.get(0).url.substring(10)}"><img class="img-post" src="${resourcesPath}${post.documents.get(0).url.substring(10)}" alt="${post.documents.get(0).filename}"></a>
+                                        </c:if>                        
+                                        <%--<c:url var="videoPageUrl" value="/files/${document.id}"/>--%>
+                                        <!--<a  href="${videoPageUrl}">-->
+                                            <!--<img style="max-width: 125px; max-height: 60px; float: left; display: none;" src="${resourcesPath}/upload/${document.filename}" alt=""></a>-->
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="col-md-12 forum-user-info img-post-parent-${post.id}" style="padding-left: 0px;">
+                                    <c:forEach items="${post.documents}" var="document">
+                                        <c:if test="${document.typeId == 1}">
+                                            <a href="${resourcesPath}${document.url.substring(10)}"><img class="img-post-sup-3" src="${resourcesPath}${document.url.substring(10)}" alt="${document.filename}"></a>
+                                            </c:if>
+                                        </c:forEach>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+                        <script>
+                            $(document).ready(function () {
+                                $('.img-post-parent-${post.id}').magnificPopup({
+                                    delegate: 'a', // child items selector, by clicking on it popup will open
+                                    type: 'image',
+                                    tLoading: 'Loading image #%curr%...',
+                                    mainClass: 'mfp-img-mobile',
+                                    gallery: {
+                                        enabled: true,
+                                        navigateByImgClick: true,
+                                        preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+                                    }
+                                });
+                            });
+                        </script>
+                    </c:if>
+                    <!--///////////////////////////-->
+                    <%--<c:if test="${post.documentId > 0}">--%>
+                    <%--<c:url var="videoPageUrl" value="/files/${post.documentId}"/>--%>
+                    <!--<a  href="${videoPageUrl}">-->
+                        <!--<img src="${resourcesPath}/images/icon-audio.png" alt=""></a>-->
+                    <%--</c:if>--%>
+                    <%--<c:if test="${not empty post.uriYoutube }">--%>
+                    <%--<c:url var="publicationPageUrl" value="${post.uriYoutube}"/>--%>
+                <!--<a  href="${publicationPageUrl}"  target="_blank">-->
+                    <!--<img src="${resourcesPath}/images/icon-video-document.png" alt=""></a>-->
+                    <%--</c:if>--%>
                 </div>
             </div>
         </div>
@@ -92,7 +145,7 @@
                                     </c:if>
                                 </c:forEach>
                                 <i class="btn-success btn-xs" style="font-size: 10px;"><c:out value="${libelle}" /></i>                            
-                            <br/><br/><fmt:formatDate pattern="${datetimeFormat}" value="${child.creationDate}"/></div>
+                                <br/><br/><fmt:formatDate pattern="${datetimeFormat}" value="${child.creationDate}"/></div>
                         </div>
 
                         <div class="panel-collapse collapse in col-md-9" id="collapseOne">
