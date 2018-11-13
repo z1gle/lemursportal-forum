@@ -210,7 +210,7 @@
                                                 <tr style="background-color: white;">
                                                     <th style="color:  dodgerblue;font-size: 15px; border-color: white; padding-left: 20px;">${publication.year}</th>                                                                                                        
                                                     <th style="color:  dodgerblue;font-size: 15px; border-color: white;"></th>                                                                                                        
-                                                    <th style="font-size: 15px; border-color: white; text-align: right;">Page: ${pagination.pageDocument.pageDocumentCurrent}/${pagination.pageDocument.pageDocumentFin-1} | Total: </th>                                                                                                        
+                                                    <th style="font-size: 15px; border-color: white; text-align: right;">Page: ${pagination.pageDocument.pageDocumentCurrent + 1}/${pagination.pageDocument.pageDocumentFin} | Total: </th>                                                                                                        
                                                     <th style="font-size: 15px; border-color: white; text-align: right;">${pagination.pageDocument.pageDocumentTotalElement}</th>                                                                                                        
                                                 </tr>
                                             </c:when>                                            
@@ -272,17 +272,17 @@
                                 <c:choose>
                                     <c:when test="${topic != 0}">
                                         <c:url var="pageBaseUrl" value="/documents?topic=${topic}"/>
-                                        <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent}" totalPages="${pagination.pageDocument.pageDocumentFin-1}" pageBaseUrl="${pageBaseUrl}"/>
+                                        <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent + 1}" totalPages="${pagination.pageDocument.pageDocumentFin}" pageBaseUrl="${pageBaseUrl}"/>
                                     </c:when>
                                     <c:otherwise>
                                         <c:choose>
                                             <c:when test="${!search.equals(Integer.toString(0))}">
                                                 <c:url var="pageBaseUrl" value="/documents?search=${search}"/>
-                                                <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent}" totalPages="${pagination.pageDocument.pageDocumentFin-1}" pageBaseUrl="${pageBaseUrl}"/>
+                                                <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent + 1}" totalPages="${pagination.pageDocument.pageDocumentFin}" pageBaseUrl="${pageBaseUrl}"/>
                                             </c:when>
                                             <c:otherwise>
                                                 <c:url var="pageBaseUrl" value="/documents"/>
-                                                <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent}" totalPages="${pagination.pageDocument.pageDocumentFin-1}" pageBaseUrl="${pageBaseUrl}"/>
+                                                <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent + 1}" totalPages="${pagination.pageDocument.pageDocumentFin}" pageBaseUrl="${pageBaseUrl}"/>
                                             </c:otherwise>
                                         </c:choose>                                        
                                     </c:otherwise>

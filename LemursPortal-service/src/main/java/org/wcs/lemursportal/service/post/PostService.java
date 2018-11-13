@@ -1,9 +1,9 @@
 package org.wcs.lemursportal.service.post;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.PostView;
 import org.wcs.lemursportal.model.post.TopQuestion;
@@ -44,4 +44,5 @@ public interface PostService {
 	
 	@PostAuthorize ("returnObject.owner.email == authentication.name or hasRole('ADMIN')")
 	Post deletepost(Integer postId, String currentLogin);
+        
 }

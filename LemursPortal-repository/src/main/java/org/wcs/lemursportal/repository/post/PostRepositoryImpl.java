@@ -345,4 +345,15 @@ public class PostRepositoryImpl implements PostRepository {
         }
     }
 
+    @Override
+    public List<Post> findAllByAlert(Integer alert) {
+        StringBuilder jpql = new StringBuilder("select p from Post p where p.alert = :alert order by p.creationDate desc ");
+        TypedQuery<Post> query = em.createQuery(jpql.toString(), Post.class);
+        query.setParameter("alert", alert);
+        List<Post> responses = query.getResultList();
+        return responses;
+    }
+    
+    
+
 }

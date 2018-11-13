@@ -22,7 +22,7 @@ public interface MetadataUtilisateurRepository {
         Page<MetadataUtilisateur> findAll(Pageable pageable, MetadataUtilisateur metadata);
         Page<MetadataUtilisateur> findAllExact(Pageable pageable, MetadataUtilisateur metadata);
         Page<MetadataUtilisateur> findAll(Pageable pageable, String type, Integer idThematique);
-        public Long conter(String type, Integer idThematique);
+        public Long conter(String type, Integer idThematique, String search);
         Page<MetadataUtilisateur> findAll(Pageable pageable, MetadataUtilisateur metadata, int orderByYear);
         Page<MetadataUtilisateur> findAll(Pageable pageable, String type, Integer idThematique, int orderByYear);
         Page<MetadataUtilisateur> findGlobal(Pageable pageable, String search);        

@@ -2,6 +2,7 @@ package org.wcs.lemursportal.service.post;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -239,5 +240,5 @@ public class PostServiceImpl implements PostService {
         post.setDeletedDate(new Date());
         return post;
     }
-
+    
 }

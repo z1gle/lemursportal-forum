@@ -87,8 +87,9 @@ public class DocumentController extends BaseController {
     private static final int BUFFER_SIZE = 4096;
 
     @GetMapping(value = {"/documents"})
-    public String list(@RequestParam(value = "pageDocument", required = false, defaultValue = "0") Integer pageDocument, @RequestParam(value = "pP", required = false, defaultValue = "0") Integer pagePhoto, @RequestParam(value = "pV", required = false, defaultValue = "0") Integer pageVideo, @RequestParam(value = "pA", required = false, defaultValue = "0") Integer pageAudio, @RequestParam(required = false, value = "topic") Integer thematique, @RequestParam(required = false, value = "search") String search, @RequestParam(required = false, value = "nouveau") Integer nouveau, Model model, Authentication authentication) {
-        HashMap temp = paginate(pageDocument, pageAudio, pagePhoto, pageVideo, thematique);
+    public String list(@RequestParam(value = "pageDocument", required = false, defaultValue = "1") Integer pageDocument, @RequestParam(value = "pP", required = false, defaultValue = "0") Integer pagePhoto, @RequestParam(value = "pV", required = false, defaultValue = "0") Integer pageVideo, @RequestParam(value = "pA", required = false, defaultValue = "0") Integer pageAudio, @RequestParam(required = false, value = "topic") Integer thematique, @RequestParam(required = false, value = "search") String search, @RequestParam(required = false, value = "nouveau") Integer nouveau, Model model, Authentication authentication) {
+        pageDocument--;
+        HashMap temp = paginate(pageDocument, pageAudio, pagePhoto, pageVideo, thematique, search);
         UserView uv = null;
         int totalDoc = new Long(((HashMap<String, Object>) temp.get("pageDocument")).get("pageDocumentTotalElement").toString()).intValue();
         if (authentication != null) {
@@ -262,12 +263,12 @@ public class DocumentController extends BaseController {
     }
 
     //Construction of pagination
-    public HashMap<String, Object> paginate(Integer pD, Integer pA, Integer pP, Integer pV, Integer idThematique) {
+    public HashMap<String, Object> paginate(Integer pD, Integer pA, Integer pP, Integer pV, Integer idThematique, String search) {
         HashMap<String, Object> valiny = new HashMap<>();
-        Long totalPP = metadataUtilisateurRepository.conter("1", idThematique);
-        Long totalPV = metadataUtilisateurRepository.conter("2", idThematique);
-        Long totalPA = metadataUtilisateurRepository.conter("3", idThematique);
-        Long totalPD = metadataUtilisateurRepository.conter("4", idThematique);
+        Long totalPP = metadataUtilisateurRepository.conter("1", idThematique, search);
+        Long totalPV = metadataUtilisateurRepository.conter("2", idThematique, search);
+        Long totalPA = metadataUtilisateurRepository.conter("3", idThematique, search);
+        Long totalPD = metadataUtilisateurRepository.conter("4", idThematique, search);
         if (pP >= 0) {
             valiny.put("pagePhoto", page(pP, totalPP, "pagePhoto"));
         }

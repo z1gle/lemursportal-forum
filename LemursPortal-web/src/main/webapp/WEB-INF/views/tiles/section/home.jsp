@@ -144,12 +144,31 @@
 <script type="text/javascript">
     var toDelete = [];
 
+    function putAsAlert(link, id) {
+        var lk = link.substring(0, link.lastIndexOf('?'));
+        var alrt = link.substring(link.lastIndexOf('?') + 7);
+        console.log('link:' + lk);
+        console.log('alerte:' + alrt);
+        $.post(lk, {alert: alrt}, function (data, status) {
+            if (data != null) {
+                if (data == true) {
+                    if (alrt == '1') {
+                        $('#warning-' + id).html('<a href="javascript:putAsAlert(\'post/' + id + '?alert=0\', ' + id + ')" style="float: right; color: red;"><i id="waring-' + id + '" class="fa fa-warning"></i></a>');
+                    } else {
+                        $('#warning-' + id).html('<a href="javascript:putAsAlert(\'post/' + id + '?alert=1\', ' + id + ')" style="float: right; color: gainsboro;"><i id="waring-' + id + '" class="fa fa-warning"></i></a>');
+                    }
+                }
+            }
+        }
+        );
+    }
+
     function closeModalEdit(id) {
         toDelete.length = 0;
         closeModal(id);
     }
     function updateEdit() {
-        if(toDelete.length>0) {
+        if (toDelete.length > 0) {
             deleteToDelete(0);
         }
         $("#form-update").ajaxSubmit({url: 'secured/post/' + $('#id_id_edit').val(), type: 'post', success: function (data) {
@@ -161,7 +180,7 @@
         $('#pht-' + id).remove();
         console.log(toDelete);
     }
-    
+
     function deleteToDelete(i) {
         if (i < toDelete.length) {
             $.ajax({url: '${deletePath}' + toDelete[i], type: 'post', success: function (data) {

@@ -103,6 +103,9 @@ public class Post implements Serializable {
     @Column(name = "deleted_date", nullable = true)
     private Date deletedDate;
 
+    @Column(name = "alert", nullable = true)
+    private Integer alert;
+
     public Integer getId() {
         return id;
     }
@@ -301,5 +304,15 @@ public class Post implements Serializable {
     public void setDeletedDate(Date deletedDate) {
         this.deletedDate = deletedDate;
     }
+
+    public Integer getAlert() {
+        return alert;
+    }
+
+    public void setAlert(Integer alert) {
+        this.alert = alert;
+    }
+    
+    
 
 }
