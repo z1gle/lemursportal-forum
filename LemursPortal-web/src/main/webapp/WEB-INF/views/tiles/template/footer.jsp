@@ -142,12 +142,12 @@
 							</li>
 							<li>
 								<a href="#">
-									<img src="/resources/logos/MV_logo.png" alt="">	
+									<img src="/resources/logos/PGF_logo_kely.png" alt="">	
 								</a>
 							</li>
 							<li>
 								<a href="#">
-									<img src="/resources/logos/PGF_logo.png" alt="">	
+									<img src="/resources/logos/CI_logo_kely.png" alt="">	
 								</a>
 							</li>
 						</ul>
