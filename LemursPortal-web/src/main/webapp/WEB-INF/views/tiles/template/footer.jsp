@@ -142,12 +142,12 @@
 							</li>
 							<li>
 								<a href="#">
-									<img src="https://www.lemursportal.org/resources/logos/PGF_logo.png" alt="">	
+									<img src="/resources/logos/MV_logo.png" alt="">	
 								</a>
 							</li>
 							<li>
 								<a href="#">
-									<img src="https://www.lemursportal.org/resources/logos/CI_logo.png" alt="">	
+									<img src="/resources/logos/PGF_logo.png" alt="">	
 								</a>
 							</li>
 						</ul>
