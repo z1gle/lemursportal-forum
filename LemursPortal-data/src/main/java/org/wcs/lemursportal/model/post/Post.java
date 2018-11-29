@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import org.wcs.lemursportal.model.user.UserInfo;
 
@@ -56,6 +58,10 @@ public class Post implements Serializable {
 //	private Document document = null;
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Document> documents = null;
+    
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Photo> photos = null;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", insertable = false, updatable = false)
@@ -311,6 +317,14 @@ public class Post implements Serializable {
 
     public void setAlert(Integer alert) {
         this.alert = alert;
+    }
+
+    public List<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
     }
     
     

@@ -323,17 +323,17 @@
                                             <li class="species-item">
                                                 <c:choose>
                                                     <c:when test="${isLoggedInUser && currentUser.id == publication.idUtilisateur}">
-                                                        <a href="#" onclick="openDeleteModal(${pic.id}, '${pic.title}')" class="btn delete-photo-document"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                        <a href="#" onclick="openDeleteModal(${pic.id}, '${pic.title.replace("'", "\\'")}')" class="btn delete-photo-document"><i class="fa fa-trash" aria-hidden="true"></i></a>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <sec:authorize access="hasRole('ADMIN')">                                                        
-                                                            <a href="#" onclick="openDeleteModal(${pic.id}, '${pic.title}')" class="btn delete-photo-document"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                            <sec:authorize access="hasRole('ADMIN')">
+                                                            <a href="#" onclick="openDeleteModal(${pic.id}, '${pic.title.replace("'", "\\'")}')" class="btn delete-photo-document"><i class="fa fa-trash" aria-hidden="true"></i></a>
                                                             </sec:authorize>
                                                         </c:otherwise>
                                                     </c:choose>
-                                                <a href="#" onclick="showPhoto('${pic.title}', '${basePath}${pic.url}');">
-                                                    <img src="${resourcesPath}/images/l-blank.png" style="background-image: url('${basePath}${pic.url}'); " class="img-responsive" 
-                                                         onclick="showPhoto('${pic.id}', '${basePath}${pic.url}');" class="hover-shadow cursor" alt="--">
+                                                <a href="#" onclick="showPhoto('${pic.id}', '${pic.photo.breakpoints[2].link}')">
+                                                    <img src="${resourcesPath}/images/l-blank.png" style="background-image: url('${pic.photo.breakpoints[pic.photo.breakpoints.size()-4].link}'); " class="img-responsive" 
+                                                         onclick="showPhoto('${pic.id}', '${pic.photo.breakpoints[2].link}')" class="hover-shadow cursor" alt="--">
                                                 </a>
                                             <figcaption class="mask">
                                                 <p><i>${pic.title}</i></p>
@@ -933,11 +933,14 @@
         $('#photoAuteur').text('');
         $('#photoRight').text('');
         $.get("metadata/" + id, {}, function (data) {
+            console.log("the data :");
+            console.log(data);
             $('#photoDate').text(data[0].value.date);
             $('#photoLocalisation').text(data[0].value.coverage);
             $('#photoSource').text(data[0].value.source);
             $('#photoAuteur').text(data[0].value.creator);
             $('#photoRight').text(data[0].value.rights);
+            $('#photoSpecies').text(data[0].value.title);
 //            $('#deletePhoto').on('click', openDeleteModal(id, data[0].title));
             document.getElementById('deletePhoto').html = '<span id="deletePhoto" style="float: left; margin-left: 35px;" class="closeP"><i onclick="openDeleteModal(' + id + ', \'' + data[0].value.title + '\')" class="fa fa-trash-o"></i></span>'
         }).done(function () {
@@ -945,7 +948,7 @@
                 if (data.length > 0) {
                     var species = '';
                     for (var v = 0; v < data.length; v++) {
-                        species += data[v].scientificname + '<br>';
+                        species += data[v].value.scientificname + '<br>';
                     }
                     drawRow('Species :', species, 'photoTable');
                 }

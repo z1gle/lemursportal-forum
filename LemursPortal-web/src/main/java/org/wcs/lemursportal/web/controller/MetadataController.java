@@ -108,6 +108,7 @@ public class MetadataController extends BaseController {
             Metadata metadata = new Metadata();
             metadata.setId(id);
             metadata = metadataService.findById(metadata.getId());
+            metadata.setPhotos(null);
             HashMap<String, Object> temp = new HashMap<>();
             temp.put("etat", Boolean.TRUE);
             temp.put("value", metadata);

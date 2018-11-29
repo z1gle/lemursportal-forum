@@ -9,7 +9,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <spring:message code="datetime.format" var="datetimeFormat" />
 <c:url value="/resources" var="resourcesPath" />
-<c:url value="/secured/document/delete/" var="deletePath" />
+<c:url value="/secured/photo/delete/" var="deletePath" />
 <style type="text/css">
     a.read-more {
         color: black /*#74ac00*/;
@@ -183,7 +183,7 @@
 
     function deleteToDelete(i) {
         if (i < toDelete.length) {
-            $.ajax({url: '${deletePath}' + toDelete[i], type: 'post', success: function (data) {
+            $.ajax({url: '${deletePath}' + toDelete[i], type: 'post', success: function () {
                     i++;
                     deleteToDelete(i);
                 }});

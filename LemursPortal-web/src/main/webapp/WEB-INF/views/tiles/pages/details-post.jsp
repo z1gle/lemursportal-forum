@@ -88,6 +88,45 @@
                             });
                         </script>
                     </c:if>
+                    <c:if test="${post.photos != null}">
+                        <c:choose>
+                            <c:when test="${post.photos.size() == 1}">
+                                <div class="col-md-12 forum-user-info img-post-parent-${post.id}" style="padding-left: 0px;">                        
+                                    <a href="${post.photos.get(0).breakpoints.get(0).link}">
+                                        <img class="img-post" src="${topQuestion.question.photos.get(0).link}" 
+                                             srcset="${post.photos.get(0).getBreakpointsAsStringForSrcset()}"
+                                             sizes="20vw"
+                                             alt="${post.photos.get(0).name}"></a>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="col-md-12 forum-user-info img-post-parent-${post.id}" style="padding-left: 0px;">
+                                    <c:forEach items="${post.photos}" var="photo">
+                                        <a href="${photo.breakpoints.get(0).link}">
+                                            <img class="img-post-sup-3" src="${photo.link}" 
+                                                 srcset="${photo.getBreakpointsAsStringForSrcset()}"
+                                                 sizes="20vw"
+                                                 alt="${photo.name}"></a>
+                                        </c:forEach>
+                                </div>
+                            </c:otherwise>
+                        </c:choose>
+                        <script>
+                            $(document).ready(function () {
+                                $('.img-post-parent-${post.id}').magnificPopup({
+                                    delegate: 'a', // child items selector, by clicking on it popup will open
+                                    type: 'image',
+                                    tLoading: 'Loading image #%curr%...',
+                                    mainClass: 'mfp-img-mobile',
+                                    gallery: {
+                                        enabled: true,
+                                        navigateByImgClick: true,
+                                        preload: [0, 1] // Will preload 0 - before current, and 1 after the current image
+                                    }
+                                });
+                            });
+                        </script>
+                    </c:if>
                     <!--///////////////////////////-->
                     <%--<c:if test="${post.documentId > 0}">--%>
                     <%--<c:url var="videoPageUrl" value="/files/${post.documentId}"/>--%>

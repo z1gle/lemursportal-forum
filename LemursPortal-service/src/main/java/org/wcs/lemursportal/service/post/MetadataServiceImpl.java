@@ -43,7 +43,7 @@ public class MetadataServiceImpl extends GenericCRUDServiceImpl<Metadata, Intege
     public List<String> findOneElementOfMetadata(Metadata metadata) {
         return metadataRepository.findOneElementOfMetadata(metadata);
     }
-    
+
     /**
      *
      * @param metadata
@@ -54,7 +54,7 @@ public class MetadataServiceImpl extends GenericCRUDServiceImpl<Metadata, Intege
     public void deleteMetadata(Metadata metadata) throws Exception {
         try {
             System.out.println("Delete metadata");
-            List<BaseAssociation> liste = new ArrayList<>();            
+            List<BaseAssociation> liste = new ArrayList<>();
             try {
                 AssociationMetadataTaxonomi a = new AssociationMetadataTaxonomi();
                 a.setId1(metadata.getId());
@@ -78,16 +78,21 @@ public class MetadataServiceImpl extends GenericCRUDServiceImpl<Metadata, Intege
                 System.out.println("All Association deleted");
             }
             metadata = metadataCrudRepository.findOne(metadata.getId());
-            Document d = new Document();
-            d.setFilename(documentService.findById(metadata.getIdDocument()).getFilename());            
+            Document d = null;
+            if (metadata.getIdDocument() != null) {
+                d = new Document();
+                d.setFilename(documentService.findById(metadata.getIdDocument()).getFilename());
+            }
             List<UserView> allUV = userViewRepository.findAll();
             for (UserView uv : allUV) {
-                uv.setNbrDocument(uv.getNbrDocument()-1);
+                uv.setNbrDocument(uv.getNbrDocument() - 1);
                 userViewRepository.save(uv);
-            }            
+            }
             metadataRepository.delete(metadata);
             System.out.println("document and metadata deleted");
-            documentService.deleteDocument(d);
+            if (d != null) {
+                documentService.deleteDocument(d);
+            }
             System.out.println("File deleted");
         } catch (Exception e) {
             throw e;

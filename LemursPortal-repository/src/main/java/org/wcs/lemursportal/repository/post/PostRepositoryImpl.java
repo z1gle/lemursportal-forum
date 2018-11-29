@@ -258,6 +258,12 @@ public class PostRepositoryImpl implements PostRepository {
                 em.persist(p.getDocuments().get(i));
             }
         }
+        if (p.getPhotos() != null) {
+            for (int i = 0; i < p.getPhotos().size(); i++) {
+                p.getPhotos().get(i).setIdPost(p.getId());
+//                em.persist(p.getDocuments().get(i));
+            }
+        }
     }
 
     /* (non-Javadoc)

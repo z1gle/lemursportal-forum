@@ -137,7 +137,7 @@
 							</li>
                                                         <li>
 								<a href="#">
-									<img src="https://www.lemursportal.org/resources/logos/MV_logo.png" alt="">	
+									<img src="https://www.lemursportal.org/resources/logos/MV_logo_kely.png" alt="">	
 								</a>
 							</li>
 							<li>

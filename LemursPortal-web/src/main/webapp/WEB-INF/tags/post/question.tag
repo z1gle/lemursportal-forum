@@ -119,6 +119,32 @@
                 </c:otherwise>
             </c:choose>
         </c:if>
+        <c:if test="${topQuestion.question.photos != null}">
+            <c:choose>
+                <c:when test="${topQuestion.question.photos.size() == 1}">
+                    <div class="col-md-12 forum-user-info img-post-parent-${topQuestion.question.id}" style="padding-left: 0px;">                        
+                        <a href="${topQuestion.question.photos.get(0).breakpoints.get(0).link}">
+                            <img class="img-post" src="${topQuestion.question.photos.get(0).link}" 
+                                 srcset="${topQuestion.question.photos.get(0).getBreakpointsAsStringForSrcset()}"
+                                 sizes="20vw"
+                                 alt="${topQuestion.question.photos.get(0).name}"></a>
+                        <input type="hidden" class="list-photo-${topQuestion.question.id}" value="${topQuestion.question.photos.get(0).breakpoints.get(topQuestion.question.photos.get(0).breakpoints.size()-2).link}x_x${topQuestion.question.photos.get(0).id}">
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="col-md-12 forum-user-info img-post-parent-${topQuestion.question.id}" style="padding-left: 0px;">
+                        <c:forEach items="${topQuestion.question.photos}" var="document">
+                            <a href="${document.breakpoints.get(0).link}">
+                                <img class="img-post-sup-3" src="${document.link}" 
+                                     srcset="${document.getBreakpointsAsStringForSrcset()}"
+                                     sizes="20vw"
+                                     alt="${document.name}"></a>
+                            <input type="hidden" class="list-photo-${topQuestion.question.id}" value="${document.breakpoints.get(document.breakpoints.size()-2).link}x_x${document.id}">
+                        </c:forEach>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </c:if>
         <c:if test="${not empty topQuestion.question.uriYoutube }">
             <div class="col-md-offset-3 col-md-9 forum-user-info" style="padding-left: 0px;">
                 <c:url var="publicationPageUrl" value="${topQuestion.question.uriYoutube}"/>

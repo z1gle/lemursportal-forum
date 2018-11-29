@@ -245,9 +245,11 @@ public class MetadataRepositoryImpl implements MetadataRepository {
 //    }
     @Override
     public void insert(Metadata metadata) {
-        Document document = metadata.getDocument();
-        em.persist(document);
-        metadata.setIdDocument(document.getId());
+        if (metadata.getDocument() != null) {
+            Document document = metadata.getDocument();
+            em.persist(document);
+            metadata.setIdDocument(document.getId());
+        }
         em.persist(metadata);
         List<AssociationMetadataTopic> listeAMT = metadata.getListeAssociationMetadataTopic();
         for (AssociationMetadataTopic amt : listeAMT) {
@@ -1042,10 +1044,15 @@ public class MetadataRepositoryImpl implements MetadataRepository {
     public void delete(Metadata metadata) {
         Metadata toRemove = em.find(Metadata.class, metadata.getId());
         System.out.println("Got metadata");
-        Document d = em.find(Document.class, toRemove.getIdDocument());
+        Document d = null;
+        if (toRemove.getIdDocument() != null) {
+            d = em.find(Document.class, toRemove.getIdDocument());
+        }
         System.out.println("Got service");
         em.remove(toRemove);
-        em.remove(d);
+        if (d != null) {
+            em.remove(d);
+        }
     }
 
     @Override

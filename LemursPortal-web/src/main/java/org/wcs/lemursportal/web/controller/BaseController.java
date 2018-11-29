@@ -67,6 +67,8 @@ public class BaseController {
     public static final int TOP_DOCUMENT_PAGE_SIZE = 20;
     public static final int TOP_DOCUMENT_ACCUEIL_SIZE = 6;
     public static final int DERNIERES_QUESTIONS_PAGE_SIZE = 20;
+    
+    public static final int PHOTOS_PAGE_SIZE = 40;
 
 //	public static final String USER_PROFIL_IMAGE_RESOURCE_PATH = "/resources/profil/";
     public static final String USER_PROFIL_IMAGE_RESOURCE_PATH = "/profil/";

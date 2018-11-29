@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.wcs.lemursportal.model.post.Document;
+import org.wcs.lemursportal.model.post.Photo;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
@@ -74,6 +75,13 @@ public class PostController extends BaseController {
         }
         model.addAttribute(post);
         return "getFormPost";
+    }
+
+    private boolean isPhoto(MultipartFile file) {
+        String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
+        return extension.compareToIgnoreCase("jpg") == 0 || extension.compareToIgnoreCase("png") == 0
+                || extension.compareToIgnoreCase("gif") == 0 || extension.compareToIgnoreCase("tif") == 0
+                || extension.compareToIgnoreCase("raw") == 0;
     }
 
     @PostMapping(value = "/secured/post")
@@ -134,11 +142,12 @@ public class PostController extends BaseController {
         //handle file upload
         if (!file.isEmpty()) {
             post.setDocuments(new ArrayList<Document>());
+            post.setPhotos(new ArrayList<Photo>());
             for (MultipartFile f : file) {
                 if (f.getSize() == 0) {
                     continue;
                 }
-                String filename = f.getOriginalFilename().replaceAll("\\s+", "");
+                String filename = Calendar.getInstance().getTimeInMillis() + f.getOriginalFilename().replaceAll("\\s+", "");
                 filename = Normalizer.normalize(filename, Normalizer.Form.NFD);
                 filename = filename.replaceAll("[^\\p{ASCII}]", "");
 //			System.out.println("filename " + filename);
@@ -157,14 +166,22 @@ public class PostController extends BaseController {
                             = new BufferedOutputStream(new FileOutputStream(new File(path)));
                     stream.write(bytes);
                     stream.close();
-                    Document doc = new Document();
-                    doc.setAuthor(currentUser);
-                    doc.setCreationDate(now);
-                    // doc.setUploadDate(now);
-                    doc.setFilename(filename);
-                    doc.setUrl("/" + "resources" + "/" + "upload" + "/" + filename);
-                    doc.setAuthorId(currentUser.getId());
-                    post.getDocuments().add(doc);
+                    if (!isPhoto(f)) {
+                        Document doc = new Document();
+                        doc.setAuthor(currentUser);
+                        doc.setCreationDate(now);
+                        // doc.setUploadDate(now);
+                        doc.setFilename(filename);
+                        doc.setUrl("/" + "resources" + "/" + "upload" + "/" + filename);
+                        doc.setAuthorId(currentUser.getId());
+                        post.getDocuments().add(doc);
+                    } else {
+                        Photo p = new Photo();
+                        p.setName(filename);
+                        p.setPath(path);
+                        p.setIdUser(currentUser.getId());
+                        post.getPhotos().add(p);
+                    }
                     // System.out.println("filefile : " + context.getRealPath("/")+ File.separator +filename);
                 } catch (Exception e) {
                     return "You failed to upload " + filename + " => " + e.getMessage();

@@ -561,6 +561,13 @@
             <artifactId>jasypt</artifactId>
             <version>1.9.2</version>
         </dependency>
+        
+        <!-- Cloudinary photos management -->
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http44</artifactId>
+            <version>1.21.0</version>
+        </dependency>
     </dependencies>
     <repositories>
         <repository>

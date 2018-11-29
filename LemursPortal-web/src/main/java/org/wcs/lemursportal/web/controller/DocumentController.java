@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.PatternSyntaxException;
 
 import javax.servlet.ServletContext;
@@ -42,12 +44,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.wcs.lemursportal.model.association.AssociationMetadataTaxonomi;
 import org.wcs.lemursportal.model.association.AssociationMetadataTopic;
 import org.wcs.lemursportal.model.post.Document;
 import org.wcs.lemursportal.model.post.Metadata;
 import org.wcs.lemursportal.model.post.MetadataUtilisateur;
+import org.wcs.lemursportal.model.post.Photo;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.TopThematique;
 import org.wcs.lemursportal.model.user.UserInfo;
@@ -58,6 +62,7 @@ import org.wcs.lemursportal.repository.post.MetadataUtilisateurRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.user.UserViewRepository;
 import org.wcs.lemursportal.service.post.DocumentService;
+import org.wcs.lemursportal.service.post.PhotoService;
 import org.wcs.lemursportal.service.post.PostServiceImpl.DOCTYPE;
 import static org.wcs.lemursportal.web.controller.BaseController.TOP_DOCUMENT_PAGE_SIZE;
 
@@ -75,6 +80,8 @@ public class DocumentController extends BaseController {
     DocumentRepository documentRepository;
     @Autowired
     DocumentService documentService;
+    @Autowired
+    PhotoService photoService;
     @Autowired
     MetadataRepository metadataRepository;
     @Autowired
@@ -94,7 +101,7 @@ public class DocumentController extends BaseController {
         int totalDoc = new Long(((HashMap<String, Object>) temp.get("pageDocument")).get("pageDocumentTotalElement").toString()).intValue();
         if (authentication != null) {
             String email = authentication.getName();
-            UserInfo userInfo = userInfoService.getByEmail(email);                        
+            UserInfo userInfo = userInfoService.getByEmail(email);
             try {
                 uv = userViewRepository.findByIdUser(userInfo.getId());
                 model.addAttribute("nbrDocument", totalDoc - uv.getNbrDocument());
@@ -111,7 +118,7 @@ public class DocumentController extends BaseController {
             }
 
         }
-        
+
         if (pageDocument == null || pageDocument < 1) {
             pageDocument = 1;
         }
@@ -166,7 +173,7 @@ public class DocumentController extends BaseController {
                 model.addAttribute("docAUTRES", searchGlobal(pageDocument, model, search));
                 model.addAttribute("metadata", new Metadata());
             }
-        }        
+        }
 
         model.addAttribute("pagination", temp);
         if (thematique == null) {
@@ -220,6 +227,19 @@ public class DocumentController extends BaseController {
         metadata.setType(metadataType);
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
         Page<MetadataUtilisateur> pageMetadata = metadataUtilisateurRepository.findAll(pageable, metadata, -2);
+        if (metadataType.compareTo("1") == 0) {
+            for (MetadataUtilisateur mu : pageMetadata) {
+                Photo photo = new Photo();
+                photo.setIdMetadata(mu.getId());
+                try {
+                    List<Photo> photosToPutOnMetadataUtilisateur = photoService.findAllByMetadata(photo, pageable);
+                    mu.setPhoto(photosToPutOnMetadataUtilisateur.get(0));
+                    mu.getPhoto().setMetadata(null);
+                } catch (IndexOutOfBoundsException ioobe) {
+                    System.err.println("IOOB");
+                }
+            }
+        }
         if (null != pageMetadata) {
             return pageMetadata.getContent();
         }
@@ -228,6 +248,19 @@ public class DocumentController extends BaseController {
 
     public List<MetadataUtilisateur> listMetadataNouveau(String metadataType, int nbr) {
         Page<MetadataUtilisateur> pageMetadata = metadataUtilisateurRepository.findAllNew(metadataType, nbr);
+        if (metadataType.compareTo("1") == 0) {
+            for (MetadataUtilisateur mu : pageMetadata) {
+                Photo photo = new Photo();
+                photo.setIdMetadata(mu.getId());
+                try {
+                    List<Photo> photosToPutOnMetadataUtilisateur = photoService.findAllByMetadata(photo);
+                    mu.setPhoto(photosToPutOnMetadataUtilisateur.get(0));
+                    mu.getPhoto().setMetadata(null);
+                } catch (IndexOutOfBoundsException ioobe) {
+                    System.err.println("IOOB");
+                }
+            }
+        }
         if (null != pageMetadata) {
             return pageMetadata.getContent();
         }
@@ -256,6 +289,19 @@ public class DocumentController extends BaseController {
         }
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
         Page<MetadataUtilisateur> pageMetadata = metadataUtilisateurRepository.findAll(pageable, metadataType, thematique);
+        if (metadataType.compareTo("1") == 0) {
+            for (MetadataUtilisateur mu : pageMetadata) {
+                Photo photo = new Photo();
+                photo.setIdMetadata(mu.getId());
+                try {
+                    List<Photo> photosToPutOnMetadataUtilisateur = photoService.findAllByMetadata(photo, pageable);
+                    mu.setPhoto(photosToPutOnMetadataUtilisateur.get(0));
+                    mu.getPhoto().setMetadata(null);
+                } catch (IndexOutOfBoundsException ioobe) {
+                    System.err.println("IOOB");
+                }
+            }
+        }
         if (null != pageMetadata) {
             return pageMetadata.getContent();
         }
@@ -457,15 +503,24 @@ public class DocumentController extends BaseController {
                 BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path)));
                 stream.write(bytes);
                 stream.close();
-                Document doc = new Document();
-                doc.setAuthor(currentUser);
-                doc.setCreationDate(now);
-                doc.setFilename(additionalName + filename);
-                doc.setUrl("/" + "resources" + "/" + "upload" + "/" + additionalName + filename);
-                doc.setAuthorId(currentUser.getId());
-                //typeId is 4 for publication 
-                doc.setTypeId(Integer.parseInt(post.getType()));
-                post.setDocument(doc);
+                if (post.getType().compareTo("1") != 0) {
+                    Document doc = new Document();
+                    doc.setAuthor(currentUser);
+                    doc.setCreationDate(now);
+                    doc.setFilename(additionalName + filename);
+                    doc.setUrl("/" + "resources" + "/" + "upload" + "/" + additionalName + filename);
+                    doc.setAuthorId(currentUser.getId());
+                    //typeId is 4 for publication 
+                    doc.setTypeId(Integer.parseInt(post.getType()));
+                    post.setDocument(doc);
+                } else {
+                    post.setPhotos(new ArrayList<Photo>());
+                    Photo p = new Photo();
+                    p.setName(additionalName + filename);
+                    p.setPath(path);
+                    p.setIdUser(currentUser.getId());
+                    post.getPhotos().add(p);
+                }
             } catch (Exception e) {
                 return "You failed to upload " + filename + " => " + e.getMessage();
             }
@@ -474,7 +529,7 @@ public class DocumentController extends BaseController {
             doc.setAuthor(currentUser);
             doc.setCreationDate(now);
             String fn = post.getTitle();
-            if (fn.length()>=155) {
+            if (fn.length() >= 155) {
                 fn = fn.substring(0, 155);
             }
             doc.setFilename(fn);
@@ -496,7 +551,7 @@ public class DocumentController extends BaseController {
         }
         return "success";
     }
-    
+
     @PostMapping(value = {"/secured/document/delete/{id}"})
     public ResponseEntity<Boolean> deleteMetadata(@PathVariable("id") Integer id, Authentication authentication, HttpServletRequest request) {
         UserInfo userInfo = null;
@@ -521,6 +576,20 @@ public class DocumentController extends BaseController {
         }
     }
 
+//    @GetMapping(value = {"/tester_photo"}, headers = "Accept=application/json")
+//    public @ResponseBody 
+//        List testerPhoto() {
+//        try {
+//            return photoService.doInBackground();
+//        } catch (IOException|RuntimeException ex) {
+//            Logger.getLogger(DocumentController.class.getName()).log(Level.SEVERE, null, ex);
+////            Map<String, String> temp = new HashMap();
+////            temp.put("Error", ex.getMessage());
+//            List<String> temp = new ArrayList<>();
+//            temp.add(ex.getMessage());
+//            return temp;
+//        }
+//    }
     /**
      *
      * @return
