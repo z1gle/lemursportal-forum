@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.wcs.lemursportal.model.post.Document;
+import org.wcs.lemursportal.model.post.Photo;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.TopQuestion;
 import org.wcs.lemursportal.model.post.TopThematique;
@@ -27,6 +28,7 @@ import org.wcs.lemursportal.repository.notification.PrivateMessageRepository;
 import org.wcs.lemursportal.repository.post.DocumentRepository;
 import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
+import org.wcs.lemursportal.service.post.PhotoService;
 import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
 import org.wcs.lemursportal.service.post.PostServiceImpl.DOCTYPE;
@@ -50,6 +52,8 @@ public class BaseController {
     PostRepository postRepository;
     @Autowired
     PostService postService;
+    @Autowired
+    PhotoService photoService;
     @Autowired
     UserInfoService userInfoService;
     @Autowired
@@ -118,6 +122,21 @@ public class BaseController {
         }
         Pageable pageable = new PageRequest(0, TOP_DOCUMENT_ACCUEIL_SIZE);
         Page<Document> pageDocuments = documentRepository.findTopDocuments(pageable);
+        if (null != pageDocuments) {
+            return pageDocuments.getContent();
+        }
+        return null;
+    }
+    
+    @ModelAttribute("topPhotos")
+    public List<Photo> getTopPhotos(Integer page, Model model, DOCTYPE docType) {
+        if (page == null || page < 1) {
+            page = 0;
+        } else {
+            page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+        }
+        Pageable pageable = new PageRequest(0, TOP_DOCUMENT_ACCUEIL_SIZE);
+        Page<Photo> pageDocuments = photoService.findAll(pageable);
         if (null != pageDocuments) {
             return pageDocuments.getContent();
         }
