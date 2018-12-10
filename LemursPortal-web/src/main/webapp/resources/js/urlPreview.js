@@ -72,11 +72,12 @@ function addCompleteViewer(url, ogImage, ogTitle, description, icon, blank) {
   if (description.length > 200) {
     description = description.substring(0, 200) + '...';
   }
+  var urlToShow = url;
   if (url.length > 50) {
-    url = url.substring(0, 50) + '...';
+    urlToShow = url.substring(0, 50) + '...';
   }
   var viewer = '';
-    viewer += '<div class="preview-place">';
+    viewer += '<div class="preview-place" onclick="window.location.assign(\'' + url + '\')">';
     viewer += '    <div class="link-img">';
     viewer += '      <img src="'+ blank +'" style="background-image: url(' + ogImage + '); background-size: cover; background-position: 50% 48%;">';
     viewer += '    </div>';
@@ -89,7 +90,7 @@ function addCompleteViewer(url, ogImage, ogTitle, description, icon, blank) {
     viewer += '      </div>';
     viewer += '       <div class="link-url">';
     viewer += '        <img src="' + icon + '">';
-    viewer += '        <span>' + url + '</span>';
+    viewer += '        <span>' + urlToShow + '</span>';
     viewer += '      </div>';
     viewer += '    </div>';
     viewer += '  </div>';
@@ -98,7 +99,7 @@ function addCompleteViewer(url, ogImage, ogTitle, description, icon, blank) {
 
 function addIncompleteViewer(url, title, icon) {
   var viewer = '';
-    viewer += '  <div class="p-p-incomplete">';
+    viewer += '  <div class="p-p-incomplete" onclick="window.location.assign(\'' + url + '\')">';
     viewer += '    <div class="link-url-incomplete">';
     viewer += '      <img src="' + icon + '">';
     viewer += '      <div class="right-side">';
