@@ -11,6 +11,7 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,9 +19,7 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,11 +36,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.wcs.lemursportal.model.post.Document;
+import org.wcs.lemursportal.model.post.Photo;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
+import org.wcs.lemursportal.repository.post.PostCrudRepository;
 import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
 
@@ -58,6 +60,9 @@ public class PostController extends BaseController {
     @Autowired
     private ThematiqueService thematiqueService;
 
+    @Autowired
+    private PostCrudRepository postCrudRepository;
+
     public static final String URL_YOUTUBE_PATTERN = "^((?:https?:)?\\/\\/)?((?:www|m)\\.)?((?:youtube\\.com|youtu.be))(\\/(?:[\\w\\-]+\\?v=|embed\\/|v\\/)?)([\\w\\-]+)(\\S+)?$";
 
     @GetMapping(value = {"/secured/post/create", "/secured/thematique-{thematiqueId}/post/create"})
@@ -70,6 +75,13 @@ public class PostController extends BaseController {
         }
         model.addAttribute(post);
         return "getFormPost";
+    }
+
+    private boolean isPhoto(MultipartFile file) {
+        String extension = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".") + 1);
+        return extension.compareToIgnoreCase("jpg") == 0 || extension.compareToIgnoreCase("png") == 0
+                || extension.compareToIgnoreCase("gif") == 0 || extension.compareToIgnoreCase("tif") == 0
+                || extension.compareToIgnoreCase("raw") == 0;
     }
 
     @PostMapping(value = "/secured/post")
@@ -130,11 +142,12 @@ public class PostController extends BaseController {
         //handle file upload
         if (!file.isEmpty()) {
             post.setDocuments(new ArrayList<Document>());
+            post.setPhotos(new ArrayList<Photo>());
             for (MultipartFile f : file) {
                 if (f.getSize() == 0) {
                     continue;
                 }
-                String filename = f.getOriginalFilename().replaceAll("\\s+", "");
+                String filename = Calendar.getInstance().getTimeInMillis() + f.getOriginalFilename().replaceAll("\\s+", "");
                 filename = Normalizer.normalize(filename, Normalizer.Form.NFD);
                 filename = filename.replaceAll("[^\\p{ASCII}]", "");
 //			System.out.println("filename " + filename);
@@ -153,14 +166,22 @@ public class PostController extends BaseController {
                             = new BufferedOutputStream(new FileOutputStream(new File(path)));
                     stream.write(bytes);
                     stream.close();
-                    Document doc = new Document();
-                    doc.setAuthor(currentUser);
-                    doc.setCreationDate(now);
-                    // doc.setUploadDate(now);
-                    doc.setFilename(filename);
-                    doc.setUrl("/" + "resources" + "/" + "upload" + "/" + filename);
-                    doc.setAuthorId(currentUser.getId());
-                    post.getDocuments().add(doc);
+                    if (!isPhoto(f)) {
+                        Document doc = new Document();
+                        doc.setAuthor(currentUser);
+                        doc.setCreationDate(now);
+                        // doc.setUploadDate(now);
+                        doc.setFilename(filename);
+                        doc.setUrl("/" + "resources" + "/" + "upload" + "/" + filename);
+                        doc.setAuthorId(currentUser.getId());
+                        post.getDocuments().add(doc);
+                    } else {
+                        Photo p = new Photo();
+                        p.setName(filename);
+                        p.setPath(path);
+                        p.setIdUser(currentUser.getId());
+                        post.getPhotos().add(p);
+                    }
                     // System.out.println("filefile : " + context.getRealPath("/")+ File.separator +filename);
                 } catch (Exception e) {
                     return "You failed to upload " + filename + " => " + e.getMessage();
@@ -307,4 +328,48 @@ public class PostController extends BaseController {
         postService.insert(post, authentication.getName(), getPostUrl(post, request));
         return "redirect:/post/show/" + id;
     }
+
+    @PostMapping(value = "/post/{id}")
+    @PreAuthorize("hasAnyRole('MODERATEUR', 'ADMIN')")
+    public @ResponseBody
+    Boolean alert(Authentication authentication,
+            @PathVariable Integer id,
+            @RequestParam(required = false, value = "alert") Integer alert) {
+        Boolean valiny = Boolean.TRUE;
+        try {
+            Post post = postCrudRepository.findOne(id);
+            if (alert != null) {
+                post.setAlert(alert);
+                postCrudRepository.save(post);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            valiny = Boolean.FALSE;
+        }
+        return valiny;
+    }
+
+    @GetMapping(value = "/alerts", headers = "Accept=application/json")
+    public @ResponseBody
+    List<HashMap<String, Object>> getAllPosts(@RequestParam(required = false, value = "alert") Integer alert) {
+        try {
+            if (alert != null) {
+                List<Post> valiny = postRepository.findAllByAlert(alert);
+                List<HashMap<String, Object>> farany = new ArrayList<>();
+                for (Post p : valiny) {
+                    HashMap<String, Object> temp = new HashMap<>();
+                    temp.put("title", p.getTitle());
+                    temp.put("content", p.getBody());
+                    temp.put("id", p.getId());
+                    farany.add(temp);
+                }
+                return farany;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+
 }

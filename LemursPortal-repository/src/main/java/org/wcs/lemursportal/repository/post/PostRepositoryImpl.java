@@ -258,6 +258,12 @@ public class PostRepositoryImpl implements PostRepository {
                 em.persist(p.getDocuments().get(i));
             }
         }
+        if (p.getPhotos() != null) {
+            for (int i = 0; i < p.getPhotos().size(); i++) {
+                p.getPhotos().get(i).setIdPost(p.getId());
+//                em.persist(p.getDocuments().get(i));
+            }
+        }
     }
 
     /* (non-Javadoc)
@@ -344,5 +350,16 @@ public class PostRepositoryImpl implements PostRepository {
             }
         }
     }
+
+    @Override
+    public List<Post> findAllByAlert(Integer alert) {
+        StringBuilder jpql = new StringBuilder("select p from Post p where p.alert = :alert order by p.creationDate desc ");
+        TypedQuery<Post> query = em.createQuery(jpql.toString(), Post.class);
+        query.setParameter("alert", alert);
+        List<Post> responses = query.getResultList();
+        return responses;
+    }
+    
+    
 
 }

@@ -1,15 +1,20 @@
 package org.wcs.lemursportal.model.post;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import javax.persistence.Transient;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.wcs.lemursportal.model.association.AssociationMetadataTaxonomi;
 import org.wcs.lemursportal.model.association.AssociationMetadataTopic;
 
@@ -83,6 +88,11 @@ public class Metadata {
 
     @Column(name = "bibliographic_resource", insertable = true, updatable = true, length = 400)
     private String bibliographicResource;
+    
+    @OneToMany(mappedBy = "metadata", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
+    private List<Photo> photos = null;
 
     @Transient
     private Document document;
@@ -315,6 +325,14 @@ public class Metadata {
 
     public void setListeAssociationMetadataTaxonomi(List<AssociationMetadataTaxonomi> listeAssociationMetadataTaxonomi) {
         this.listeAssociationMetadataTaxonomi = listeAssociationMetadataTaxonomi;
+    }
+
+    public List<Photo> getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
     }
     
     

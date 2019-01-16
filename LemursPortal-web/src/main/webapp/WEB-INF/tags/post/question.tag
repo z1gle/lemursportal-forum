@@ -79,6 +79,20 @@
                 <a class="btn-${fn:toLowerCase(libelle)} btn-xs" style="font-size: 10px;"><c:out value="${libelle}" /></a>
                 <br />
             </div>
+            <c:if test="${isLoggedInUser && (currentUserLogin eq topQuestion.question.owner.email || isAdminOrModerateur)}">
+                <c:choose>
+                    <c:when test="${topQuestion.question.alert == 1}">
+                        <div id="warning-${topQuestion.question.id}">
+                            <a href="javascript:putAsAlert('post/${topQuestion.question.id}?alert=0', ${topQuestion.question.id})" style="float: right; color: red;"><i class="fa fa-warning"></i></a>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div id="warning-${topQuestion.question.id}">
+                            <a href="javascript:putAsAlert('post/${topQuestion.question.id}?alert=1', ${topQuestion.question.id})" style="float: right; color: gainsboro;"><i class="fa fa-warning"></i></a>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+            </c:if>
         </div>
         <c:if test="${topQuestion.question.documents != null}">
             <c:choose>
@@ -87,10 +101,10 @@
                         <c:if test="${topQuestion.question.documents.get(0).typeId == 1}">
                             <a href="${topQuestion.question.documents.get(0).url.substring(1)}"><img class="img-post" src="${topQuestion.question.documents.get(0).url.substring(1)}" alt="${topQuestion.question.documents.get(0).filename}"></a>
                             <input type="hidden" class="list-photo-${topQuestion.question.id}" value="${topQuestion.question.documents.get(0).url.substring(1)}x_x${topQuestion.question.documents.get(0).id}">
-                            </c:if>
-                            <%--<c:url var="videoPageUrl" value="/files/${document.id}"/>--%>
-                            <!--<a  href="${videoPageUrl}">-->
-                                <!--<img style="max-width: 125px; max-height: 60px; float: left; display: none;" src="${resourcesPath}/upload/${document.filename}" alt=""></a>-->
+                        </c:if>
+                        <%--<c:url var="videoPageUrl" value="/files/${document.id}"/>--%>
+                        <!--<a  href="${videoPageUrl}">-->
+                            <!--<img style="max-width: 125px; max-height: 60px; float: left; display: none;" src="${resourcesPath}/upload/${document.filename}" alt=""></a>-->
                     </div>
                 </c:when>
                 <c:otherwise>
@@ -99,8 +113,34 @@
                             <c:if test="${document.typeId == 1}">
                                 <a href="${document.url.substring(1)}"><img class="img-post-sup-3" src="${document.url.substring(1)}" alt="${document.filename}"></a>
                                 <input type="hidden" class="list-photo-${topQuestion.question.id}" value="${document.url.substring(1)}x_x${document.id}">
-                                </c:if>
-                            </c:forEach>
+                            </c:if>
+                        </c:forEach>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </c:if>
+        <c:if test="${topQuestion.question.photos != null}">
+            <c:choose>
+                <c:when test="${topQuestion.question.photos.size() == 1}">
+                    <div class="col-md-12 forum-user-info img-post-parent-${topQuestion.question.id}" style="padding-left: 0px;">                        
+                        <a href="${topQuestion.question.photos.get(0).breakpoints.get(0).link}">
+                            <img class="img-post" src="${topQuestion.question.photos.get(0).link}" 
+                                 srcset="${topQuestion.question.photos.get(0).getBreakpointsAsStringForSrcset()}"
+                                 sizes="20vw"
+                                 alt="${topQuestion.question.photos.get(0).name}"></a>
+                        <input type="hidden" class="list-photo-${topQuestion.question.id}" value="${topQuestion.question.photos.get(0).breakpoints.get(topQuestion.question.photos.get(0).breakpoints.size()-2).link}x_x${topQuestion.question.photos.get(0).id}">
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="col-md-12 forum-user-info img-post-parent-${topQuestion.question.id}" style="padding-left: 0px;">
+                        <c:forEach items="${topQuestion.question.photos}" var="document">
+                            <a href="${document.breakpoints.get(0).link}">
+                                <img class="img-post-sup-3" src="${document.link}" 
+                                     srcset="${document.getBreakpointsAsStringForSrcset()}"
+                                     sizes="20vw"
+                                     alt="${document.name}"></a>
+                            <input type="hidden" class="list-photo-${topQuestion.question.id}" value="${document.breakpoints.get(document.breakpoints.size()-2).link}x_x${document.id}">
+                        </c:forEach>
                     </div>
                 </c:otherwise>
             </c:choose>

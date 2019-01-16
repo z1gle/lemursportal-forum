@@ -1,7 +1,10 @@
 package org.wcs.lemursportal.service.post;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.wcs.lemursportal.model.post.Document;
 import org.wcs.lemursportal.model.post.DocumentType;
+import org.wcs.lemursportal.model.post.Photo;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.PostView;
 import org.wcs.lemursportal.model.post.Thematique;
@@ -21,7 +25,6 @@ import org.wcs.lemursportal.repository.post.PostRepository;
 import org.wcs.lemursportal.repository.post.PostViewCrudRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueCrudRepository;
 import org.wcs.lemursportal.repository.post.ThematiqueRepository;
-import org.wcs.lemursportal.service.mail.MailService;
 import org.wcs.lemursportal.service.notification.NotificationService;
 import org.wcs.lemursportal.service.user.UserInfoService;
 
@@ -53,8 +56,12 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     UserInfoService userInfoService;
+    
     @Autowired
     NotificationService notificationService;
+    
+    @Autowired
+    PhotoService photoService;
 
     private enum PHOTOEXT {
         png, jpeg, jpg, gif
@@ -132,6 +139,13 @@ public class PostServiceImpl implements PostService {
         }
         post.setId(null);
         postRepository.insert(post);
+        for (Photo photo : post.getPhotos()) {
+            try {
+                photoService.SaveWithBreakpoints(photo);
+            } catch (IOException | RuntimeException ex) {
+                Logger.getLogger(PostServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
         /* Notification */
         notificationService.savePostNotification(post, postUrl);
@@ -239,5 +253,5 @@ public class PostServiceImpl implements PostService {
         post.setDeletedDate(new Date());
         return post;
     }
-
+    
 }

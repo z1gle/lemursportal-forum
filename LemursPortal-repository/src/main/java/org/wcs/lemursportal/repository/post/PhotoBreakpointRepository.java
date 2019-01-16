@@ -1,16 +1,17 @@
 package org.wcs.lemursportal.repository.post;
 
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.wcs.lemursportal.model.post.Post;
+import org.wcs.lemursportal.model.post.PhotoBreakpoint;
 
 /**
- * @author Mikajy <mikajy401@gmail.com>
+ * @zacharie
  *
  */
 @Repository
 @Transactional
-public interface PostCrudRepository extends JpaRepository<Post, Integer> {
+public interface PhotoBreakpointRepository extends
+        JpaRepository<PhotoBreakpoint, Integer> {
+
 }

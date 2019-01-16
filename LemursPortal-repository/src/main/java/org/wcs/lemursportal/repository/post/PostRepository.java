@@ -64,4 +64,6 @@ public interface PostRepository {
 	 * @return
 	 */
 	Page<Post> getQuestionResponses(Integer questionId, Pageable pageable);
+        
+        List<Post> findAllByAlert(Integer alert);
 }

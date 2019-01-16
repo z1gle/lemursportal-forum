@@ -30,7 +30,7 @@ public class MetadataUtilisateurRepositoryImpl implements MetadataUtilisateurRep
     private BaseAssociationCrudRepository baseAssociationCrudRepository;
 
     @PersistenceContext(unitName = "lemursportalPUnit")
-    protected EntityManager em;        
+    protected EntityManager em;
 
     @Override
     public Page<MetadataUtilisateur> findAll(Pageable pageable) {
@@ -434,17 +434,24 @@ public class MetadataUtilisateurRepositoryImpl implements MetadataUtilisateurRep
     }
 
     @Override
-    public Long conter(String type, Integer idThematique) {
-        if (idThematique == null) {
-            String qry = "select count(c.*) from (select distinct d.* from metadata_user d join association_metadata_topic a on d.id = a.id_metadata where d.type = :type) as c";
+    public Long conter(String type, Integer idThematique, String search) {
+        if (search != null) {
+            String qry = "select count(c.*) from (select distinct d.* from metadata_user d join association_metadata_topic a on d.id = a.id_metadata where d.type = :type and rtrim(ltrim(replace(d.*\\:\\:text, ','\\:\\:text, ''\\:\\:text), '('\\:\\:text), ')'\\:\\:text) ilike :search order by d.year desc) as c";
             Query query = em.createNativeQuery(qry);
+            query.setParameter("search", "%" + search + "%");
+            query.setParameter("type", type);
+            java.math.BigInteger val = (java.math.BigInteger) query.getSingleResult();
+            return val.longValue();
+        } else if (idThematique != null) {
+            String qry = "select count(c.*) from (select distinct d.* from metadata_user d join association_metadata_topic a on d.id = a.id_metadata where d.type = :type and a.id_topic = :idTopic) as c";
+            Query query = em.createNativeQuery(qry);
+            query.setParameter("idTopic", idThematique);
             query.setParameter("type", type);
             java.math.BigInteger val = (java.math.BigInteger) query.getSingleResult();
             return val.longValue();
         }
-        String qry = "select count(c.*) from (select distinct d.* from metadata_user d join association_metadata_topic a on d.id = a.id_metadata where d.type = :type and a.id_topic = :idTopic) as c";
+        String qry = "select count(c.*) from (select distinct d.* from metadata_user d join association_metadata_topic a on d.id = a.id_metadata where d.type = :type) as c";
         Query query = em.createNativeQuery(qry);
-        query.setParameter("idTopic", idThematique);
         query.setParameter("type", type);
         java.math.BigInteger val = (java.math.BigInteger) query.getSingleResult();
         return val.longValue();
@@ -660,7 +667,7 @@ public class MetadataUtilisateurRepositoryImpl implements MetadataUtilisateurRep
         }
         List<MetadataUtilisateur> results = query.getResultList();
         return new PageImpl<>(results);
-    }    
+    }
 
     @Override
     public Page<MetadataUtilisateur> findGlobal(Pageable pageable, String search) {

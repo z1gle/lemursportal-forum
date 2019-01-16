@@ -135,6 +135,21 @@
 									<img src="${resourcesPath}/logos/logo_Valbio-48.jpg" alt="">	
 								</a>
 							</li>
+                                                        <li>
+								<a href="#">
+									<img src="https://www.lemursportal.org/resources/logos/MV_logo_kely.png" alt="">	
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<img src="/resources/logos/PGF_logo_kely.png" alt="">	
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<img src="/resources/logos/CI_logo_kely.png" alt="">	
+								</a>
+							</li>
 						</ul>
 						<p class="copyright-text pull-right" style="color:white; font-size:12px; margin: 12px 0 10px;"> Copyright &copy; - Madagascar Lemurs Portal 2017 <!-- All Rights Reserved--></p>
 					</div>	<!-- End Of /.col-md-12 -->	

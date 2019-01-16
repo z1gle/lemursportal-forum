@@ -104,6 +104,10 @@ public class MetadataUtilisateur {
 
     @Transient
     private List<AssociationMetadataTaxonomi> listeAssociationMetadataTaxonomi;
+    
+    @Transient
+    private Photo photo = null;
+
 
     //Utils method
     public void addListeAssociationMetadataTopic(AssociationMetadataTopic associationMetadataTopic) {
@@ -359,6 +363,14 @@ public class MetadataUtilisateur {
 
     public void setListeAssociationMetadataTaxonomi(List<AssociationMetadataTaxonomi> listeAssociationMetadataTaxonomi) {
         this.listeAssociationMetadataTaxonomi = listeAssociationMetadataTaxonomi;
+    }
+
+    public Photo getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(Photo photo) {
+        this.photo = photo;
     }
 
 }
