@@ -117,7 +117,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     private Page<TopQuestion> getTopQuestions(Integer idThematique, Pageable pageable) {
         Long total = countQuestions(idThematique);
-        StringBuilder jpql = new StringBuilder("select max(r.id) as lastResponseId, count(r.id) as nbResponse, q.id from Post as q ")
+        StringBuilder jpql = new StringBuilder("select max(r.id) as lastResponseId, count(r.id) as nbResponse, q.id, case when max(r.id) is null then q.id else max(r.id) end as rang from Post as q ")
                 .append("left join q.children as r ")
                 .append("inner join q.thematique t ")
                 .append(" where (q.deleted=:notDeleted or q.deleted is null) and q.parentId is null and (q.censored is null or q.censored <> :censored) ")
@@ -126,7 +126,7 @@ public class PostRepositoryImpl implements PostRepository {
             jpql.append(" and t.id=:thematiqueId ");
         }
 //		jpql.append(" and (r.censored is null or r.censored != :censored) ")
-        jpql.append(" group by q.id order by nbResponse desc, q.id desc ");
+        jpql.append(" group by q.id order by rang desc ");
 
 //		StringBuilder jpql = new StringBuilder("select max(p.id) as lastResponseId, count(p.id) as nbResponse, p.parentId as questionId ")
 //				.append(" from Post p where p.parentId is not null and (p.censored is null or p.censored != :censored) ");
