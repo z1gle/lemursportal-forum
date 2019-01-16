@@ -56,10 +56,10 @@ public class PostServiceImpl implements PostService {
 
     @Autowired
     UserInfoService userInfoService;
-    
+
     @Autowired
     NotificationService notificationService;
-    
+
     @Autowired
     PhotoService photoService;
 
@@ -139,12 +139,16 @@ public class PostServiceImpl implements PostService {
         }
         post.setId(null);
         postRepository.insert(post);
-        for (Photo photo : post.getPhotos()) {
-            try {
-                photoService.SaveWithBreakpoints(photo);
-            } catch (IOException | RuntimeException ex) {
-                Logger.getLogger(PostServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            for (Photo photo : post.getPhotos()) {
+                try {
+                    photoService.SaveWithBreakpoints(photo);
+                } catch (IOException | RuntimeException ex) {
+                    Logger.getLogger(PostServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+        } catch (java.lang.NullPointerException npe) {
+            System.out.println("no photo on the response");
         }
 
         /* Notification */
@@ -253,5 +257,5 @@ public class PostServiceImpl implements PostService {
         post.setDeletedDate(new Date());
         return post;
     }
-    
+
 }
