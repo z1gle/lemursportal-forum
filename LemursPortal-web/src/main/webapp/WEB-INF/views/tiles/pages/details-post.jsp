@@ -8,6 +8,7 @@
 <%@ taglib prefix="page" tagdir="/WEB-INF/tags/page" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <c:url value="/resources" var="resourcesPath"/>
+<c:url value="/" var="baseUrl"/>
 <div class="wrapper wrapper-content animated fadeInRight">
     <style>
         .img-post {
@@ -271,7 +272,7 @@
         openModal(modalName);
     }
     function updateComment() {
-        $.post("http://localhost:8088/LemursPortal-web/secured/comment/" + $('#id_comment').val(),
+        $.post("${baseUrl}/secured/comment/" + $('#id_comment').val(),
                 {post: $('#modalTextArea').val()},
                 function (response) {
                     console.log(response);
@@ -286,7 +287,7 @@
         });
     }
     function deleteComment() {
-        $.get("http://localhost:8088/LemursPortal-web/post/del/" + $('#id_comm_to_delete').val(),
+        $.get("${baseUrl}/post/del/" + $('#id_comm_to_delete').val(),
                 function (response) {
                     window.location.reload();
                 }).fail(function () {
