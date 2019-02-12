@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.wcs.lemursportal.model.Slider;
 import org.wcs.lemursportal.model.post.Document;
 import org.wcs.lemursportal.model.post.Photo;
 import org.wcs.lemursportal.model.post.Post;
@@ -32,6 +33,7 @@ import org.wcs.lemursportal.service.post.PhotoService;
 import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
 import org.wcs.lemursportal.service.post.PostServiceImpl.DOCTYPE;
+import org.wcs.lemursportal.service.post.SliderService;
 import org.wcs.lemursportal.service.user.UserInfoService;
 
 /**
@@ -62,6 +64,8 @@ public class BaseController {
     protected SessionRegistry sessionRegistry;
     @Autowired
     protected NotificationRepository notificationRepository;
+    @Autowired
+    SliderService sliderService;
 
     @Autowired
     PrivateMessageRepository privateMessageRepository;
@@ -95,6 +99,15 @@ public class BaseController {
         return usersNamesList;
     }
 
+    @ModelAttribute("slidersHeader")
+    public List<Slider> getSlidersHeader(Model model) {
+        List<Slider> pageResult = sliderService.findByActivated(1);
+        for(Slider s : pageResult) {
+            sliderService.loadPhoto(s);
+        }
+        return pageResult;
+    }
+    
     @ModelAttribute("topQuestionsPage")
     public Page<TopQuestion> getTopQuestions(@RequestParam(required = false, defaultValue = "0") Integer page, Model model) {
         if (page == null || page < 1) {

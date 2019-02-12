@@ -24,6 +24,8 @@ public interface PostService {
 	
 	public void update(Post post, String authorLogin, String postUrl);
 	
+        public void updateComment(Post post, String authorLogin);
+	
 	Page<Post> search(Pageable pageable, String pattern);
 	
 	Post findPostById(Integer id);

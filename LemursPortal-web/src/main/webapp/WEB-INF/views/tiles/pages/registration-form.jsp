@@ -132,7 +132,7 @@
                                         required data-match-error="<spring:message code="validation.diff.passwordMatch" />">
                                 </div>
                             </c:if>
-                            <button id="submit" type="submit"><spring:message code="signup.btn.signup" /></button>
+                                <button id="submit" type="submit"><spring:message code="signup.btn.signup" /></button><br>
                             <p class="message" style="float:left">
                                 <c:url value="/signup" var="signupUrl"/>                        
                                 <spring:message code="global.text.alreadySignedUp" /><a href="join_us"> <spring:message code="login.signin" /></a>

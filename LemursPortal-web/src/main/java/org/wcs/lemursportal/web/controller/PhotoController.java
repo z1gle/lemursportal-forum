@@ -50,14 +50,12 @@ public class PhotoController extends BaseController {
         try {
             if (null == page) {
                 valiny = photoService.findAll();
-            } else switch (page) {
-                case 0:
+            } else {
+                if (page == 0) {
                     page = 1;
-                    break;
-                default:
-                    Pageable pageable = new PageRequest(page, PHOTOS_PAGE_SIZE);
-                    valiny = photoService.findAll(pageable).getContent();
-                    break;
+                }
+                Pageable pageable = new PageRequest(page, PHOTOS_PAGE_SIZE);
+                valiny = photoService.findAll(pageable).getContent();
             }
         } catch (Exception ex) {
             ex.printStackTrace();

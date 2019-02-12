@@ -80,15 +80,38 @@
                 <br />
             </div>
             <c:if test="${isLoggedInUser && (currentUserLogin eq topQuestion.question.owner.email || isAdminOrModerateur)}">
+                <style>
+                    .warn-btn {
+                        float: right;
+                        width: 15px;
+                        margin-right: 0px;
+                    }
+                </style>
                 <c:choose>
                     <c:when test="${topQuestion.question.alert == 1}">
-                        <div id="warning-${topQuestion.question.id}">
-                            <a href="javascript:putAsAlert('post/${topQuestion.question.id}?alert=0', ${topQuestion.question.id})" style="float: right; color: red;"><i class="fa fa-warning"></i></a>
+                        <div class="warn-btn">
+                            <div id="warning1-${topQuestion.question.id}">
+                                <a href="javascript:putAsAlert('post/${topQuestion.question.id}?alert=0', ${topQuestion.question.id})" style="float: right; color: red;"><i class="fa fa-warning"></i></a>
+                            </div><br>
+                            <div id="warning2-${topQuestion.question.id}">
+                                <a href="javascript:putAsAlert('post/${topQuestion.question.id}?alert=2', ${topQuestion.question.id})" style="float: right; color: gainsboro;"><i class="fa fa-warning"></i></a>
+                            </div><br>
+                            <div id="warning3-${topQuestion.question.id}">
+                                <a href="javascript:putAsAlert('post/${topQuestion.question.id}?alert=3', ${topQuestion.question.id})" style="float: right; color: gainsboro;"><i class="fa fa-warning"></i></a>
+                            </div><br>
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <div id="warning-${topQuestion.question.id}">
-                            <a href="javascript:putAsAlert('post/${topQuestion.question.id}?alert=1', ${topQuestion.question.id})" style="float: right; color: gainsboro;"><i class="fa fa-warning"></i></a>
+                        <div class="warn-btn">
+                            <div id="warning1-${topQuestion.question.id}">
+                                <a href="javascript:putAsAlert('post/${topQuestion.question.id}?alert=1', ${topQuestion.question.id})" style="float: right; color: gainsboro;"><i class="fa fa-warning"></i></a>
+                            </div><br>
+                            <div id="warning2-${topQuestion.question.id}">
+                                <a href="javascript:putAsAlert('post/${topQuestion.question.id}?alert=2', ${topQuestion.question.id})" style="float: right; color: gainsboro;"><i class="fa fa-warning"></i></a>
+                            </div><br>
+                            <div id="warning3-${topQuestion.question.id}">
+                                <a href="javascript:putAsAlert('post/${topQuestion.question.id}?alert=3', ${topQuestion.question.id})" style="float: right; color: gainsboro;"><i class="fa fa-warning"></i></a>
+                            </div><br>
                         </div>
                     </c:otherwise>
                 </c:choose>

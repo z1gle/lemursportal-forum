@@ -187,10 +187,23 @@
                                 <br/><br/><fmt:formatDate pattern="${datetimeFormat}" value="${child.creationDate}"/></div>
                         </div>
 
-                        <div class="panel-collapse collapse in col-md-9" id="collapseOne">
-                            <div class="media-body">
+                        <div class="panel-collapse collapse in col-md-8" id="collapseOne">
+                            <div class="media-body" id="comm_${child.id}">
                                 <c:out value="${child.body}" escapeXml="true" />
                             </div>
+                        </div>
+                        <div class="panel-collapse collapse in col-md-1" id="collapseOne">
+                            <c:choose>
+                                <c:when test="${isLoggedInUser && currentUser.id == child.owner.id}">
+                                    <i onclick="openDelete('modal-delete', ${child.id})" class="fa fa-trash-o"></i>
+                                    <i onclick="openComment('modal-edit', '${child.body.replace("'", "\\'").replace(System.getProperty("line.separator"), "")}', ${child.id})" class="fa fa-edit" style="margin-left: 2px;"></i>
+                                </c:when>
+                                <c:otherwise>
+                                    <sec:authorize access="hasAnyRole('ADMIN, MODERATEUR')">
+                                        <i onclick="openDelete('modal-delete', ${child.id})" class="fa fa-trash-o"></i>
+                                    </sec:authorize>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
 
@@ -206,4 +219,78 @@
         <page:pagination currentPage="${responsesPage.number + 1}" totalPages="${responsesPage.totalPages}" pageBaseUrl="${currentBaseUrl}"/>
     </div>
 </div>
-
+<!--modal for edit-->
+<div id="modal-edit" style="background-color: #0000004d;" class="modal edit-profil-form">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="closeModal('modal-edit')">&times;</button>
+                <h4 class="modal-title" id="title-modal-edits"><spring:message code="details-post.modal-comment.title"/></h4>
+            </div>
+            <div id="modal-edit-body" class="modal-body" style="overflow-y: auto;max-height:  500px;">
+                <textarea class="form-control" id="modalTextArea"></textarea>
+            </div>
+            <input type="hidden" id="id_comment">
+            <div class="modal-footer">
+                <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal('modal-edit')"><spring:message code="global.btn.cancel"/></button>
+                <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="updateComment()"><spring:message code="global.btn.save"/></button>                        
+            </div>
+        </div>
+    </div>                        
+</div>
+<!--modal confirmation delete-->
+<div id="modal-delete" class="modal edit-profil-form">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="closeModal('modal-delete')">&times;</button>
+                <h4 class="modal-title"><spring:message code="delete.modal.title"/></h4>
+            </div>
+            <div class="modal-body" style="overflow-y: auto;max-height:  500px;">
+                <span><spring:message code="delete.modal.message"/></span>
+                <span id="supression_sentence"></span>
+            </div>
+            <input type="hidden" id="id_comm_to_delete">
+            <div class="modal-footer">
+                <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModal('modal-delete')"><spring:message code="global.btn.cancel"/></button>
+                <button style="float: right;" type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteComment()"><spring:message code="delete.modal.button"/></button>
+            </div>
+        </div>
+    </div>                        
+</div>
+<script>
+    function openComment(modalName, text, id) {
+        $('#modalTextArea').text(text);
+        $('#id_comment').val(id);
+        openModal(modalName);
+    }
+    function openDelete(modalName, id) {
+        $('#id_comm_to_delete').val(id);
+        openModal(modalName);
+    }
+    function updateComment() {
+        $.post("http://localhost:8088/LemursPortal-web/secured/comment/" + $('#id_comment').val(),
+                {post: $('#modalTextArea').val()},
+                function (response) {
+                    console.log(response);
+                    if (response) {
+                        $('#comm_' + $('#id_comment').val()).html($('#modalTextArea').val());
+                        $('#modalTextArea').remove();
+                        $('#modal-edit-body').append('<textarea class="form-control" id="modalTextArea"></textarea>');
+                    }
+                    closeModal('modal-edit');
+                }).fail(function () {
+            closeModal('modal-edit');
+        });
+    }
+    function deleteComment() {
+        $.get("http://localhost:8088/LemursPortal-web/post/del/" + $('#id_comm_to_delete').val(),
+                function (response) {
+                    window.location.reload();
+                }).fail(function () {
+            closeModal('modal-delete');
+        });
+    }
+</script>

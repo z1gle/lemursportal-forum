@@ -312,6 +312,17 @@ public class PostController extends BaseController {
         }
         return "redirect:/";
     }
+    
+//    @ResponseBody
+//    @PostMapping(value = "/comm/del/{idPost}", headers = "Accept=application/json")
+//    public Boolean deleteComment(@PathVariable(name = "idPost", required = true) Integer idPost, 
+//            Authentication authentication) {
+//        if (authentication != null) {
+//            Post post = postService.deletepost(idPost, authentication.getName());
+//            return Boolean.TRUE;
+//        }
+//        return Boolean.FALSE;
+//    }
 
     @PostMapping(value = "/secured/post/reponse")
     @PreAuthorize("hasAnyRole('USER', 'EXPERT','MODERATEUR', 'ADMIN')")
@@ -370,6 +381,17 @@ public class PostController extends BaseController {
             return null;
         }
         return null;
+    }
+    
+    @ResponseBody
+    @PostMapping(value = "/secured/comment/{id}", headers = "Accept=application/json")
+    public Object upadate(Authentication authentication,@ PathVariable Integer id,
+            @RequestParam("post") String body) {
+        Post post = new Post();
+        post.setId(id);
+        post.setBody(body);
+        postService.updateComment(post, authentication.getName());
+        return Boolean.TRUE;
     }
 
 }

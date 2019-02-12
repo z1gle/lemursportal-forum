@@ -17,8 +17,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.PatternSyntaxException;
 
 import javax.servlet.ServletContext;
@@ -44,7 +42,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.wcs.lemursportal.model.association.AssociationMetadataTaxonomi;
 import org.wcs.lemursportal.model.association.AssociationMetadataTopic;
@@ -94,7 +91,15 @@ public class DocumentController extends BaseController {
     private static final int BUFFER_SIZE = 4096;
 
     @GetMapping(value = {"/documents"})
-    public String list(@RequestParam(value = "pageDocument", required = false, defaultValue = "1") Integer pageDocument, @RequestParam(value = "pP", required = false, defaultValue = "0") Integer pagePhoto, @RequestParam(value = "pV", required = false, defaultValue = "0") Integer pageVideo, @RequestParam(value = "pA", required = false, defaultValue = "0") Integer pageAudio, @RequestParam(required = false, value = "topic") Integer thematique, @RequestParam(required = false, value = "search") String search, @RequestParam(required = false, value = "nouveau") Integer nouveau, Model model, Authentication authentication) {
+    public String list(@RequestParam(value = "pageDocument", 
+            required = false, defaultValue = "1") Integer pageDocument, 
+            @RequestParam(value = "pP", required = false, defaultValue = "0") Integer pagePhoto, 
+            @RequestParam(value = "pV", required = false, defaultValue = "0") Integer pageVideo, 
+            @RequestParam(value = "pA", required = false, defaultValue = "0") Integer pageAudio, 
+            @RequestParam(required = false, value = "topic") Integer thematique, 
+            @RequestParam(required = false, value = "search") String search, 
+            @RequestParam(required = false, value = "nouveau") Integer nouveau, 
+            Model model, Authentication authentication) {
         pageDocument--;
         HashMap temp = paginate(pageDocument, pageAudio, pagePhoto, pageVideo, thematique, search);
         UserView uv = null;

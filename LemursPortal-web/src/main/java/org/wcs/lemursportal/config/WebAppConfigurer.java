@@ -38,7 +38,7 @@ public class WebAppConfigurer extends WebMvcConfigurerAdapter {
 	@Autowired
 	private Environment env;
 	
-	private static int FILE_MAX_UPLOAD_SIZE = 5 * 1024 * 1024; // 5MB
+	private static int FILE_MAX_UPLOAD_SIZE = 15 * 1024 * 1024; // 5MB
 	
 	@Bean(name="multipartResolver") 
     public CommonsMultipartResolver getResolver() throws IOException{

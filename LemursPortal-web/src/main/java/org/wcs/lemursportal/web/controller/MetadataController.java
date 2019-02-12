@@ -124,7 +124,8 @@ public class MetadataController extends BaseController {
     }
 
     @PostMapping(value = {"/metadata/delete/{id}"})
-    public ResponseEntity<Boolean> deleteMetadata(@PathVariable("id") Integer id, Authentication authentication, HttpServletRequest request) {
+    public ResponseEntity<Boolean> deleteMetadata(@PathVariable("id") Integer id, 
+            Authentication authentication, HttpServletRequest request) {
         UserInfo userInfo = null;
         if (authentication != null) {
             userInfo = new UserInfo();

@@ -93,7 +93,7 @@
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
-            begin('https://www.lemursportal.org/species_test/preview', '.previewUrl', '${resourcesPath}/images/l-blank.png');
+            begin('https://www.lemursportal.org/species/preview', '.previewUrl', '${resourcesPath}/images/l-blank.png');
         });
     </script>
 </div>

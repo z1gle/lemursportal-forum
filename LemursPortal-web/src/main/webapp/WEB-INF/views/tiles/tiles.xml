@@ -287,4 +287,15 @@
         <put-attribute name="left" value="/WEB-INF/views/tiles/formation/success.jsp" />
         <put-attribute name="right" value="" />
     </definition>
+    
+    <!--slider management-->
+    <definition name="manageSlider" extends="base-definition">  
+        <put-attribute name="title" value="Manage slider" />  
+        <put-attribute name="head" value="/WEB-INF/views/tiles/formation/tinymce.jsp" /> 
+        <put-attribute name="body" value="/WEB-INF/views/tiles/section/slider.jsp" />
+    </definition>
+    <definition name="slider-management" extends="base-definition">  
+        <put-attribute name="title" value="Create Post" />  
+        <put-attribute name="body" value="/WEB-INF/views/tiles/pages/slider-management.jsp" />
+    </definition>
 </tiles-definitions>

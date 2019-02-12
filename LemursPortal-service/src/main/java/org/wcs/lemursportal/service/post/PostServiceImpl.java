@@ -196,6 +196,19 @@ public class PostServiceImpl implements PostService {
         notificationService.savePostNotification(post, postUrl);
 
     }
+    
+    @Override
+    @Transactional(readOnly = false)
+    public void updateComment(Post postN, String authorLogin) {
+        UserInfo currentUser = userInfoService.getByEmail(authorLogin);
+        Post post = new Post();
+        post = postRepository.getPostsAndFetchOwner(postN.getId());
+        post.setBody(postN.getBody());
+        post.setOwnerId(currentUser.getId());
+        post.setOwner(currentUser);
+        post.setCreationDate(new Date());
+        postRepository.update(post);
+    }
 
     private String getExtension(String fileName) {
         if (fileName.lastIndexOf(".") != -1 && fileName.lastIndexOf(".") != 0) {

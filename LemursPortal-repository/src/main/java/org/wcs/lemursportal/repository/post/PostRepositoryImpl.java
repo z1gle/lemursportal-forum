@@ -121,6 +121,8 @@ public class PostRepositoryImpl implements PostRepository {
                 .append("left join q.children as r ")
                 .append("inner join q.thematique t ")
                 .append(" where (q.deleted=:notDeleted or q.deleted is null) and q.parentId is null and (q.censored is null or q.censored <> :censored) ")
+                .append("and (r.deleted=:notDeleted or r.deleted is null) ")
+                .append("and (r.censored <> :censored or r.censored is null) ")
                 .append("and (t.deleted=:notDeleted or t.deleted is null) ");
         if (idThematique != null) {
             jpql.append(" and t.id=:thematiqueId ");
@@ -290,7 +292,8 @@ public class PostRepositoryImpl implements PostRepository {
     public Page<Post> getQuestionResponses(Integer questionId, Pageable pageable) {
         StringBuilder jpql = new StringBuilder("select p from Post p inner join fetch p.owner ");
         StringBuilder jpqlCount = new StringBuilder("select count(p.id) from Post p ");
-        StringBuilder jpqlWhere = new StringBuilder("where (p.censored is null or p.censored <> :censored) ")
+        StringBuilder jpqlWhere = new StringBuilder("where (p.censored is null or p.censored <> :censored) "
+                + "and (p.deleted is null or p.deleted <> :censored)")
                 .append("and p.parentId=:questionId ");
         //Le nombe total des reponses
         TypedQuery<Long> countQuery = em.createQuery(jpqlCount.append(jpqlWhere).toString(), Long.class);
