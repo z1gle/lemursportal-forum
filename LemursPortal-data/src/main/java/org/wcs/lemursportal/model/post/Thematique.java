@@ -61,9 +61,9 @@ public class Thematique implements Serializable {
 	
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(
-		name="thematique_manager", 
-		joinColumns = {@JoinColumn(name="id_thematique", referencedColumnName = "id")},
-		inverseJoinColumns= {@JoinColumn(name = "id_expert", referencedColumnName = "id")}
+		name="domaine_expertise", 
+		joinColumns = {@JoinColumn(name="idthematique", referencedColumnName = "id")},
+		inverseJoinColumns= {@JoinColumn(name = "iduser", referencedColumnName = "id")}
 	)
 	private Set<UserInfo> managers;
 	

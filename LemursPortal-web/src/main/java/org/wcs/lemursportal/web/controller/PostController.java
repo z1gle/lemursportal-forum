@@ -44,6 +44,7 @@ import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
 import org.wcs.lemursportal.repository.post.PostCrudRepository;
+import org.wcs.lemursportal.service.mail.MailService;
 import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
 
@@ -56,6 +57,9 @@ public class PostController extends BaseController {
 
     @Autowired
     private PostService postService;
+    
+    @Autowired
+    private MailService mailService;
 
     @Autowired
     private ThematiqueService thematiqueService;
@@ -84,6 +88,7 @@ public class PostController extends BaseController {
                 || extension.compareToIgnoreCase("raw") == 0;
     }
 
+    @Transactional
     @PostMapping(value = "/secured/post")
     public String submit(Authentication authentication, Model model,
             @ModelAttribute Post post, @RequestParam("file") List<MultipartFile> file, HttpServletRequest request,
@@ -195,6 +200,20 @@ public class PostController extends BaseController {
         post.setCreationDate(now);
         post.setOwnerId(currentUser.getId());
         postService.insert(post, authentication.getName(), getPostUrl(post, request));
+        
+        HashMap<String, String> temp = new HashMap<>();
+        temp.put("<h>", "Nouvelle publication");
+        temp.put("title", post.getTitle());
+        temp.put("text", post.getBody());
+        temp.put("link", getPostUrl(post, request) + post.getId());
+        try {
+            Thematique thematique = thematiqueService.findById(post.getThematiqueId());
+            thematique.getManagers().size();
+            mailService.sendMail(thematique, new ArrayList<UserInfo>(), temp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
         return "redirect:/post/show/" + post.getId();
     }
 
@@ -391,6 +410,18 @@ public class PostController extends BaseController {
         post.setId(id);
         post.setBody(body);
         postService.updateComment(post, authentication.getName());
+        return Boolean.TRUE;
+    }
+    
+    @ResponseBody
+    @GetMapping(value = "/testMail", headers = "Accept=application/json")
+    public Object testMail() {
+        HashMap<String, String> temp = new HashMap<>();
+        temp.put("<h>", "Nouvelle publication");
+        temp.put("title", "AP Conservations");
+        temp.put("text", "Loren ipsum dimuno tsy aiko tsy akko fa mody asiana fotsiny aloha.");
+        temp.put("link", "#");
+        mailService.sendMail(new Thematique(), new ArrayList<UserInfo>(), temp);
         return Boolean.TRUE;
     }
 

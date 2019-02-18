@@ -15,6 +15,7 @@ import freemarker.core.ParseException;
 import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateNotFoundException;
+import java.util.HashMap;
 
 /**
  * @author mikajy.hery
@@ -26,8 +27,10 @@ public interface MailService {
 	 * 
 	 * @param thematique
 	 * @param destinataires
+         * @param postDetail
 	 */
-	public void sendMail(Thematique thematique, List<UserInfo> destinataires);
+	public void sendMail(Thematique thematique, List<UserInfo> destinataires,
+                HashMap<String, String> postDetail);
 	/**
 	 * 
 	 * @param question
@@ -50,7 +53,7 @@ public interface MailService {
 	 */
 	void saveMail(Post question, UserInfo owner, List<UserInfo> thematiqueManager, String questionUrl) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException;
 	
-	public void sendMails();
+//	public void sendMails();
 	
 	public void sendEmail(SimpleMailMessage passwordResetEmail);
 

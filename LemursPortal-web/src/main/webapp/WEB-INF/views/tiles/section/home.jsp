@@ -144,12 +144,38 @@
 <script type="text/javascript">
     var toDelete = [];
 
-    function resetWarningButton(id) {
-        $('#warning1-' + id).html('<a href="javascript:putAsAlert(\'post/' + id + '?alert=1\', ' + id + ')" style="float: right; color: gainsboro;"><i id="waring-' + id + '" class="fa fa-warning toGainsboro"></i></a>');
-        $('#warning2-' + id).html('<a href="javascript:putAsAlert(\'post/' + id + '?alert=2\', ' + id + ')" style="float: right; color: gainsboro;"><i id="waring-' + id + '" class="fa fa-warning toGainsboro"></i></a>');
-        $('#warning3-' + id).html('<a href="javascript:putAsAlert(\'post/' + id + '?alert=3\', ' + id + ')" style="float: right; color: gainsboro;"><i id="waring-' + id + '" class="fa fa-warning toGainsboro"></i></a>');
-//        $('.toGainsboro').css('color', 'gainsboro');
-    }
+//    function resetWarningButton(id) {
+//        $('#warning1-' + id).html('<a href="javascript:putAsAlert(\'post/' + id + '?alert=1\', ' + id + ')" style="float: right; color: gainsboro;"><i id="waring-' + id + '" class="fa fa-warning toGainsboro"></i></a>');
+//        $('#warning2-' + id).html('<a href="javascript:putAsAlert(\'post/' + id + '?alert=2\', ' + id + ')" style="float: right; color: gainsboro;"><i id="waring-' + id + '" class="fa fa-warning toGainsboro"></i></a>');
+//        $('#warning3-' + id).html('<a href="javascript:putAsAlert(\'post/' + id + '?alert=3\', ' + id + ')" style="float: right; color: gainsboro;"><i id="waring-' + id + '" class="fa fa-warning toGainsboro"></i></a>');
+////        $('.toGainsboro').css('color', 'gainsboro');
+//    }
+//
+//    function putAsAlert(link, id) {
+//        var lk = link.substring(0, link.lastIndexOf('?'));
+//        var alrt = link.substring(link.lastIndexOf('?') + 7);
+//        console.log('link:' + lk);
+//        console.log('alerte:' + alrt);
+//        $.post(lk, {alert: alrt}, function (data, status) {
+//            if (data != null) {
+//                if (data == true) {
+//                    if (alrt == '1') {
+//                        resetWarningButton(id);
+//                        $('#warning1-' + id).html('<a href="javascript:putAsAlert(\'post/' + id + '?alert=0\', ' + id + ')" style="float: right; color: red;"><i id="waring-' + id + '" class="fa fa-warning toGainsboro"></i></a>');
+//                    } else if (alrt == '2') {
+//                        resetWarningButton(id);
+//                        $('#warning2-' + id).html('<a href="javascript:putAsAlert(\'post/' + id + '?alert=0\', ' + id + ')" style="float: right; color: yellow;"><i id="waring-' + id + '" class="fa fa-warning toGainsboro"></i></a>');
+//                    } else if (alrt == '3') {
+//                        resetWarningButton(id);
+//                        $('#warning3-' + id).html('<a href="javascript:putAsAlert(\'post/' + id + '?alert=0\', ' + id + ')" style="float: right; color: green;"><i id="waring-' + id + '" class="fa fa-warning toGainsboro"></i></a>');
+//                    } else {
+//                        resetWarningButton(id);
+//                    }
+//                }
+//            }
+//        }
+//        );
+//    }
 
     function putAsAlert(link, id) {
         var lk = link.substring(0, link.lastIndexOf('?'));
@@ -160,16 +186,15 @@
             if (data != null) {
                 if (data == true) {
                     if (alrt == '1') {
-                        resetWarningButton(id);
-                        $('#warning1-' + id).html('<a href="javascript:putAsAlert(\'post/' + id + '?alert=0\', ' + id + ')" style="float: right; color: red;"><i id="waring-' + id + '" class="fa fa-warning toGainsboro"></i></a>');
-                    } else if (alrt == '2') {
-                        resetWarningButton(id);
-                        $('#warning2-' + id).html('<a href="javascript:putAsAlert(\'post/' + id + '?alert=0\', ' + id + ')" style="float: right; color: yellow;"><i id="waring-' + id + '" class="fa fa-warning toGainsboro"></i></a>');
-                    } else if (alrt == '3') {
-                        resetWarningButton(id);
-                        $('#warning3-' + id).html('<a href="javascript:putAsAlert(\'post/' + id + '?alert=0\', ' + id + ')" style="float: right; color: green;"><i id="waring-' + id + '" class="fa fa-warning toGainsboro"></i></a>');
+                        $('#warning-' + id).html('<a href="javascript:putAsAlert(\'post/'
+                                + id + '?alert=0\', ' + id 
+                                + ')" style="float: right; color: red;"><i id="waring-' 
+                                + id + '" class="fa fa-warning"></i></a>');
                     } else {
-                        resetWarningButton(id);
+                        $('#warning-' + id).html('<a href="javascript:putAsAlert(\'post/' 
+                                + id + '?alert=1\', ' 
+                                + id + ')" style="float: right; color: gainsboro;"><i id="waring-' 
+                                + id + '" class="fa fa-warning"></i></a>');
                     }
                 }
             }
