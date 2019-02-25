@@ -428,7 +428,20 @@ public class DocumentController extends BaseController {
     }
 
     @PostMapping(value = "/secured/document/post")
-    public String submit(Authentication authentication, @RequestParam("bibliographicResource") String bibliographicResource, @RequestParam("url") String url, @RequestParam("date") String date, @RequestParam("idThematique") String idThematique, @RequestParam(name = "species", required = false) String species, @RequestParam(name = "id", required = false) Integer id, @RequestParam("coverage") String coverage, @RequestParam("description") String description, @RequestParam("language") String language, @RequestParam("relation") String relation, @RequestParam("source") String source, @RequestParam("subject") String subject, @RequestParam("title") String title, @RequestParam("format") String format, @RequestParam("fileFormat") String fileFormat, @RequestParam("identifier") String identifier, @RequestParam("type") String type, @RequestParam("contributor") String contributor, @RequestParam("creator") String creator, @RequestParam("publisher") String publisher, @RequestParam("rights") String rights, @RequestParam("year") String year, @RequestParam(name = "file", required = false) MultipartFile file, HttpServletRequest request) {
+    public String submit(Authentication authentication, @RequestParam("bibliographicResource") String bibliographicResource, 
+            @RequestParam("url") String url, @RequestParam("date") String date, 
+            @RequestParam("idThematique") String idThematique, 
+            @RequestParam(name = "species", required = false) String species, 
+            @RequestParam(name = "id", required = false) Integer id, @RequestParam("coverage") String coverage, 
+            @RequestParam("description") String description, @RequestParam("language") String language, 
+            @RequestParam("relation") String relation, @RequestParam("source") String source, 
+            @RequestParam("subject") String subject, @RequestParam("title") String title, 
+            @RequestParam("format") String format, @RequestParam("fileFormat") String fileFormat, 
+            @RequestParam("identifier") String identifier, @RequestParam("type") String type, 
+            @RequestParam("contributor") String contributor, @RequestParam("creator") String creator, 
+            @RequestParam("publisher") String publisher, @RequestParam("rights") String rights, 
+            @RequestParam("year") String year, @RequestParam(name = "file", required = false) MultipartFile file, 
+            HttpServletRequest request) {
         if (authentication == null) {
             return "redirect:/login";
         }

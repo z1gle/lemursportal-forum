@@ -98,12 +98,12 @@
 					<div class="col-md-12">
 						<ul class="cash-out pull-left">
 							<li>
-								<a href="#">
+								<a href="http://www.ecologie.gov.mg/">
 									<img src="${resourcesPath}/logos/logo_meef-48.jpg" alt="">	
 								</a>
 							</li>
 							<li>
-								<a href="#">
+								<a href="http://www.tourisme.gov.mg/">
 									<img src="${resourcesPath}/logos/05_2016-Logo-48.jpg" alt="">	
 								</a>
 							</li>
@@ -116,38 +116,43 @@
 								</a>
 							</li>
 							<li>
-								<a href="#">
+								<a href="https://www.aspinallfoundation.org/the-aspinall-foundation/working-around-the-world/madagascar/">
 									<img src="${resourcesPath}/logos/logo_Aspinall-48.jpg" alt="">	
 								</a>
 							</li>
 							<li>
-								<a href="#">
+								<a href="https://www.dpz.eu/en/unit/sociobiology-homepage/study-sites/madagascar.html">
 									<img src="${resourcesPath}/logos/logo_DPZ-48.jpg" alt="">	
 								</a>
 							</li>
 							<li>
-								<a href="#">
+								<a href="http://www.issedd-univ.mg/">
 									<img src="${resourcesPath}/logos/logo_ISSEDD-48.jpg" alt="">	
 								</a>
 							</li>
 							<li>
-								<a href="#">
+								<a href="https://www.stonybrook.edu/commcms/centre-valbio/">
 									<img src="${resourcesPath}/logos/logo_Valbio-48.jpg" alt="">	
 								</a>
 							</li>
                                                         <li>
-								<a href="#">
+								<a href="https://www.madagasikara-voakajy.org/">
 									<img src="https://www.lemursportal.org/resources/logos/MV_logo_kely.png" alt="">	
 								</a>
 							</li>
 							<li>
-								<a href="#">
+								<a href="https://www.peregrinefund.org/projects/madagascar-project">
 									<img src="/resources/logos/PGF_logo_kely.png" alt="">	
 								</a>
 							</li>
 							<li>
-								<a href="#">
+								<a href="https://www.conservation.org/global/madagascar/Pages/default.aspx">
 									<img src="/resources/logos/CI_logo_kely.png" alt="">	
+								</a>
+							</li>
+							<li>
+								<a href="http://www.parcs-madagascar.com/">
+									<img src="https://www.lemursportal.org/resources/logos/mnp_kely.png" alt="">	
 								</a>
 							</li>
 						</ul>

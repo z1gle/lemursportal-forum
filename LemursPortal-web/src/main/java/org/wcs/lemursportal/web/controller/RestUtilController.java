@@ -57,6 +57,7 @@ public class RestUtilController extends BaseController {
         Metadata metadata = new Metadata();
         metadata.setId(idMetadata);
         metadata = metadataService.findById(metadata.getId());
+        metadata.setPhotos(null);
         //Get all topic
         VueTopicIdMetadata forSearch = new VueTopicIdMetadata();
         forSearch.setIdMetadata(idMetadata);
