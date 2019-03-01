@@ -412,10 +412,10 @@
                                                         <td><spring:message code="metadata.photo.location"/> :</td>
                                                         <td id="photoLocalisation"></td>
                                                     </tr>
-                                                    <tr>
+<!--                                                    <tr>
                                                         <td><spring:message code="metadata.photo.source"/> :</td>
                                                         <td id="photoSource"></td>
-                                                    </tr>
+                                                    </tr>-->
                                                     <tr>
                                                         <td><spring:message code="metadata.photo.author"/> :</td>
                                                         <td id="photoAuteur"></td>
@@ -956,12 +956,20 @@
                             <div style=" font-size: 10px; color: #999;"><span style="color: red;">NB</span><spring:message code="document.add_document.nb"/></div>
                             <div id="errorMdp"></div>
                             <input type="hidden" id="id_photo_manage">
-                            <input type="hidden" id="photo_thematique" value="797298">
+                            <!--<input type="hidden" id="photo_thematique" value="797298">-->
                             <input type="hidden" id="photo_type" value="1">
                             <spring:message code="metadata.photo.title"/> <span class="red">*</span> :
                             <input type="text" name="photo_title" id="photo_title" class="form-control">
                             <spring:message code="metadata.photo.date"/>/<spring:message code="metadata.year"/> <span class="red">*</span> :
                             <input type="text" name="photo_date" id="photo_date" class="form-control">
+                            <spring:message code="metadata.topics"/> <span class="red">*</span> :
+                            <div id="photo_topic_div">
+                                <select title="<spring:message code="metadata.popup.bubble.topics"/>" multiple class="form-control" id="photo_thematique" style="width: 100%!important;">
+                                    <c:forEach items="${topThematiques}" var="topThematique">
+                                        <option value="${topThematique.thematique.id}"><spring:message code="document.thematique.id.${topThematique.thematique.id}"/></option>
+                                    </c:forEach>
+                                </select>
+                            </div>
                             <spring:message code="metadata.photo.right"/> <span class="red">*</span> :
                             <input type="text" name="photo_right" id="photo_right" class="form-control">
                             <spring:message code="metadata.species"/>
@@ -970,8 +978,7 @@
                             </div>
                             <spring:message code="metadata.photo.location"/> :
                             <input type="text" name="photo_location" id="photo_location" class="form-control">
-                            <spring:message code="metadata.photo.source"/> :
-                            <input type="text" name="photo_source" id="photo_source" class="form-control">
+                            <!--<input type="text" name="photo_source" id="photo_source" class="form-control">-->
                             <spring:message code="metadata.photo.author"/> :
                             <input type="text" name="photo_author" id="photo_author" class="form-control">
                             <div id="photo_file_div">
@@ -996,7 +1003,7 @@
         $('.removable-row').remove();
         $('#photoDate').text('');
         $('#photoLocalisation').text('');
-        $('#photoSource').text('');
+//        $('#photoSource').text('');
         $('#photoAuteur').text('');
         $('#photoRight').text('');
         $.get("metadata/" + id, {}, function (data) {
@@ -1004,7 +1011,7 @@
             console.log(data);
             $('#photoDate').text(data[0].value.date);
             $('#photoLocalisation').text(data[0].value.coverage);
-            $('#photoSource').text(data[0].value.source);
+//            $('#photoSource').text(data[0].value.source);
             $('#photoAuteur').text(data[0].value.creator);
             $('#photoRight').text(data[0].value.rights);
             $('#photoSpecies').text(data[0].value.title);
@@ -1019,6 +1026,16 @@
                     }
                     drawRow('Species :', species, 'photoTable');
                 }
+            }).done(function () {
+                $.getJSON('metadata/' + id + '/topics', {}, function (data, textStatus) {
+                    if (data.length > 0) {
+                        var species = '';
+                        for (var v = 0; v < data.length; v++) {
+                            species += data[v].libelle + '<br>';
+                        }
+                        drawRow('Topics :', species, 'photoTable');
+                    }
+                });
             });
         });
         document.getElementById("img01").innerHTML = '<img class="modalP-content" src="' + url + '">';
@@ -1368,7 +1385,7 @@
                 $('#photo_title').val(data.metadata.title);
                 $('#photo_file_div').hide();
 
-                populateWithPredefined('photo_species', data.taxonomi);
+                populateWithPredefined('photo_species', data.taxonomi, 'photo_thematique', data.topics);
             });
         } else {
             $('#photo_file_div').show();
@@ -1387,6 +1404,7 @@
         $('#photo_right').val('');
         $('#photo_file').val('');
         $('#species_div').replaceWith('<div id="species_div"><select title="<spring:message code="metadata.popup.bubble.species"/>" multiple class="form-control" id="photo_species" style="width: 100%!important;"></select></div>');
+        $('#photo_topic_div').replaceWith('<div id="photo_topic_div"><select title="<spring:message code="metadata.popup.bubble.topics"/>" multiple class="form-control" id="photo_thematique" style="width: 100%!important;"><c:forEach items="${topThematiques}" var="topThematique"><option value="${topThematique.thematique.id}"><spring:message code="document.thematique.id.${topThematique.thematique.id}"/></option></c:forEach></select></div>');
         closeModal('modal-photo-management');
     }
 
@@ -1451,7 +1469,7 @@
             formData.append('description', '');
             formData.append('language', '');
             formData.append('relation', '');
-            formData.append('source', $('#photo_source').val());
+            formData.append('source', '');
             formData.append('subject', '');
             formData.append('title', $('#photo_title').val());
             formData.append('format', '');
@@ -1518,6 +1536,10 @@
             maxHeight: 158,
             buttonWidth: '100%'
         });
+        $('#photo_thematique').multiselect({
+            maxHeight: 158,
+            buttonWidth: '100%'
+        });
         $.getJSON('https://www.lemursportal.org/species/getallTaxo', {}, function (data, textStatus) {
             var el = $('select#' + id);
             el.html('');  // empty the select
@@ -1533,11 +1555,7 @@
         });
     }
 
-    function populateWithPredefined(id, list) {
-        $('#id_thematique').multiselect({
-            maxHeight: 158,
-            buttonWidth: '100%'
-        });
+    function populateWithPredefined(id, list, id2, listTopic) {
         $.getJSON('https://www.lemursportal.org/species/getallTaxo', {}, function (data, textStatus) {
             var el = $('select#' + id);
             el.html('');  // empty the select
@@ -1558,6 +1576,21 @@
                 enableCaseInsensitiveFiltering: true,
                 buttonWidth: '100%'
             });
+            
+            taxx = listTopic;
+            if (taxx.length > 0) {
+                for (var v = 0; v < taxx.length; v++) {
+                    $('#' + id2 + ' option[value=' + taxx[v].id + ']').attr('selected', 'true');
+                }
+            }
+
+            $('#' + id2).multiselect({
+                maxHeight: 316,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                buttonWidth: '100%'
+            });
+            
         });
     }
 

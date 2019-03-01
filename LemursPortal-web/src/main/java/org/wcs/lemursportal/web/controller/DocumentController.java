@@ -507,7 +507,7 @@ public class DocumentController extends BaseController {
             filename = filename.replaceAll("[^\\p{ASCII}]", "");
             String path = context.getRealPath("/") + File.separator + "resources" + File.separator + "upload" + File.separator + additionalName + filename;
             // Add the url path 
-            post.setUrl("/" + "resources" + "/" + "upload" + "/" + additionalName + filename);
+            post.setUrl("https://www.lemursporal.org/" + "resources" + "/" + "upload" + "/" + additionalName + filename);
             if (!Files.exists(Paths.get(context.getRealPath("/"), File.separator, "resources", File.separator, "upload"), LinkOption.NOFOLLOW_LINKS)) {
                 try {
                     Files.createDirectories(Paths.get(context.getRealPath("/"), File.separator, "resources", File.separator, "upload"));
