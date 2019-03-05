@@ -133,13 +133,13 @@ public class MetadataServiceImpl extends GenericCRUDServiceImpl<Metadata, Intege
                 String temp = "";
                 switch (i) {
                     case 0:
-                        temp = row.getTitle();
+                        temp = row.getTitle().replace("\"", "'");
                         break;
                     case 1:
-                        temp = row.getLanguage();
+                        temp = row.getLanguage().replace("\"", "'");
                         break;
                     case 2:
-                        temp = row.getSubject();
+                        temp = row.getSubject().replace("\"", "'");
                         //                    make a list of species
                         AssociationMetadataTaxonomi amt = new AssociationMetadataTaxonomi();
                         amt.setId1(row.getId());
@@ -151,7 +151,7 @@ public class MetadataServiceImpl extends GenericCRUDServiceImpl<Metadata, Intege
                         }
                         break;
                     case 3:
-                        temp = row.getCoverage();
+                        temp = row.getCoverage().replace("\"", "'");
                         break;
 //                  make a list of topics
                     case 4:
@@ -168,37 +168,37 @@ public class MetadataServiceImpl extends GenericCRUDServiceImpl<Metadata, Intege
                         }
                         break;
                     case 5:
-                        temp = row.getBibliographicResource();
+                        temp = row.getBibliographicResource().replace("\"", "'");
                         break;
                     case 6:
-                        temp = row.getYear();
+                        temp = row.getYear().replace("\"", "'");
                         break;
                     case 7:
                         temp = "GERP | lemursportal : https://www.lemursportal.org";
                         break;
                     case 8:
-                        temp = row.getRights();
+                        temp = row.getRights().replace("\"", "'");
                         break;
                     case 9:
-                        temp = row.getCreator();
+                        temp = row.getCreator().replace("\"", "'");
                         break;
                     case 10:
-                        temp = row.getTitle();
+                        temp = row.getTitle().replace("\"", "'");
                         break;
                     case 12:
-                        temp = row.getDescription();
+                        temp = row.getDescription().replace("\"", "'");
                         break;
                     case 27:
-                        temp = row.getUrl();
+                        temp = row.getUrl().replace("\"", "'");
                         break;
                     case 28:
-                        temp = row.getTitle();
+                        temp = row.getTitle().replace("\"", "'");
                         break;
                     case 37:
-                        temp = row.getPublisher();
+                        temp = row.getPublisher().replace("\"", "'");
                         break;
                     case 38:
-                        temp = row.getContributor();
+                        temp = row.getContributor().replace("\"", "'");
                         break;
                     case 11:
                     case 13:
