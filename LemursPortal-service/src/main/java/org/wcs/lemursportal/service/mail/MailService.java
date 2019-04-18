@@ -53,7 +53,7 @@ public interface MailService {
 	 */
 	void saveMail(Post question, UserInfo owner, List<UserInfo> thematiqueManager, String questionUrl) throws TemplateNotFoundException, MalformedTemplateNameException, ParseException, IOException, TemplateException;
 	
-//	public void sendMails();
+	public void sendMails();
 	
 	public void sendEmail(SimpleMailMessage passwordResetEmail);
 

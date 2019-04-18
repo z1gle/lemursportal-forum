@@ -91,14 +91,14 @@ public class DocumentController extends BaseController {
     private static final int BUFFER_SIZE = 4096;
 
     @GetMapping(value = {"/documents"})
-    public String list(@RequestParam(value = "pageDocument", 
-            required = false, defaultValue = "1") Integer pageDocument, 
-            @RequestParam(value = "pP", required = false, defaultValue = "0") Integer pagePhoto, 
-            @RequestParam(value = "pV", required = false, defaultValue = "0") Integer pageVideo, 
-            @RequestParam(value = "pA", required = false, defaultValue = "0") Integer pageAudio, 
-            @RequestParam(required = false, value = "topic") Integer thematique, 
-            @RequestParam(required = false, value = "search") String search, 
-            @RequestParam(required = false, value = "nouveau") Integer nouveau, 
+    public String list(@RequestParam(value = "pageDocument",
+            required = false, defaultValue = "1") Integer pageDocument,
+            @RequestParam(value = "pP", required = false, defaultValue = "0") Integer pagePhoto,
+            @RequestParam(value = "pV", required = false, defaultValue = "0") Integer pageVideo,
+            @RequestParam(value = "pA", required = false, defaultValue = "0") Integer pageAudio,
+            @RequestParam(required = false, value = "topic") Integer thematique,
+            @RequestParam(required = false, value = "search") String search,
+            @RequestParam(required = false, value = "nouveau") Integer nouveau,
             Model model, Authentication authentication) {
         pageDocument--;
         HashMap temp = paginate(pageDocument, pageAudio, pagePhoto, pageVideo, thematique, search);
@@ -428,19 +428,19 @@ public class DocumentController extends BaseController {
     }
 
     @PostMapping(value = "/secured/document/post")
-    public String submit(Authentication authentication, @RequestParam("bibliographicResource") String bibliographicResource, 
-            @RequestParam("url") String url, @RequestParam("date") String date, 
-            @RequestParam("idThematique") String idThematique, 
-            @RequestParam(name = "species", required = false) String species, 
-            @RequestParam(name = "id", required = false) Integer id, @RequestParam("coverage") String coverage, 
-            @RequestParam("description") String description, @RequestParam("language") String language, 
-            @RequestParam("relation") String relation, @RequestParam("source") String source, 
-            @RequestParam("subject") String subject, @RequestParam("title") String title, 
-            @RequestParam("format") String format, @RequestParam("fileFormat") String fileFormat, 
-            @RequestParam("identifier") String identifier, @RequestParam("type") String type, 
-            @RequestParam("contributor") String contributor, @RequestParam("creator") String creator, 
-            @RequestParam("publisher") String publisher, @RequestParam("rights") String rights, 
-            @RequestParam("year") String year, @RequestParam(name = "file", required = false) MultipartFile file, 
+    public String submit(Authentication authentication, @RequestParam("bibliographicResource") String bibliographicResource,
+            @RequestParam("url") String url, @RequestParam("date") String date,
+            @RequestParam("idThematique") String idThematique,
+            @RequestParam(name = "species", required = false) String species,
+            @RequestParam(name = "id", required = false) Integer id, @RequestParam("coverage") String coverage,
+            @RequestParam("description") String description, @RequestParam("language") String language,
+            @RequestParam("relation") String relation, @RequestParam("source") String source,
+            @RequestParam("subject") String subject, @RequestParam("title") String title,
+            @RequestParam("format") String format, @RequestParam("fileFormat") String fileFormat,
+            @RequestParam("identifier") String identifier, @RequestParam("type") String type,
+            @RequestParam("contributor") String contributor, @RequestParam("creator") String creator,
+            @RequestParam("publisher") String publisher, @RequestParam("rights") String rights,
+            @RequestParam("year") String year, @RequestParam(name = "file", required = false) MultipartFile file,
             HttpServletRequest request) {
         if (authentication == null) {
             return "redirect:/login";
@@ -505,12 +505,18 @@ public class DocumentController extends BaseController {
             String filename = file.getOriginalFilename().replaceAll("\\s+", "");
             filename = Normalizer.normalize(filename, Normalizer.Form.NFD);
             filename = filename.replaceAll("[^\\p{ASCII}]", "");
-            String path = context.getRealPath("/") + File.separator + "resources" + File.separator + "upload" + File.separator + additionalName + filename;
+            String path = context.getRealPath("/") + File.separator + "resources"
+                    + File.separator + "upload" + File.separator + additionalName
+                    + filename;
             // Add the url path 
-            post.setUrl("https://www.lemursporal.org/" + "resources" + "/" + "upload" + "/" + additionalName + filename);
-            if (!Files.exists(Paths.get(context.getRealPath("/"), File.separator, "resources", File.separator, "upload"), LinkOption.NOFOLLOW_LINKS)) {
+            post.setUrl("https://www.lemursporal.org/forum/" + "resources" + "/"
+                    + "upload" + "/" + additionalName + filename);
+            if (!Files.exists(Paths.get(context.getRealPath("/"), File.separator,
+                    "resources", File.separator, "upload"), LinkOption.NOFOLLOW_LINKS)) {
                 try {
-                    Files.createDirectories(Paths.get(context.getRealPath("/"), File.separator, "resources", File.separator, "upload"));
+                    Files.createDirectories(Paths.get(context.getRealPath("/"),
+                            File.separator, "resources", File.separator,
+                            "upload"));
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -571,7 +577,8 @@ public class DocumentController extends BaseController {
     }
 
     @PostMapping(value = {"/secured/document/delete/{id}"})
-    public ResponseEntity<Boolean> deleteMetadata(@PathVariable("id") Integer id, Authentication authentication, HttpServletRequest request) {
+    public ResponseEntity<Boolean> deleteMetadata(@PathVariable("id") Integer id, 
+            Authentication authentication, HttpServletRequest request) {
         UserInfo userInfo = null;
         if (authentication != null) {
             userInfo = new UserInfo();

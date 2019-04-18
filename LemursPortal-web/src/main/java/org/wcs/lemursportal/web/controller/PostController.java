@@ -38,15 +38,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.wcs.lemursportal.model.mail.TokenUser;
 import org.wcs.lemursportal.model.post.Document;
 import org.wcs.lemursportal.model.post.Photo;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
+import org.wcs.lemursportal.repository.mail.TokenUserRepository;
 import org.wcs.lemursportal.repository.post.PostCrudRepository;
+import org.wcs.lemursportal.repository.user.UserRepository;
 import org.wcs.lemursportal.service.mail.MailService;
 import org.wcs.lemursportal.service.post.PostService;
 import org.wcs.lemursportal.service.post.ThematiqueService;
+import org.wcs.lemursportal.service.util.SecurityUtil;
 
 @Controller
 @Transactional
@@ -57,7 +61,7 @@ public class PostController extends BaseController {
 
     @Autowired
     private PostService postService;
-    
+
     @Autowired
     private MailService mailService;
 
@@ -66,6 +70,12 @@ public class PostController extends BaseController {
 
     @Autowired
     private PostCrudRepository postCrudRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private TokenUserRepository tokenUserRepository;
 
     public static final String URL_YOUTUBE_PATTERN = "^((?:https?:)?\\/\\/)?((?:www|m)\\.)?((?:youtube\\.com|youtu.be))(\\/(?:[\\w\\-]+\\?v=|embed\\/|v\\/)?)([\\w\\-]+)(\\S+)?$";
 
@@ -200,12 +210,13 @@ public class PostController extends BaseController {
         post.setCreationDate(now);
         post.setOwnerId(currentUser.getId());
         postService.insert(post, authentication.getName(), getPostUrl(post, request));
-        
+
         HashMap<String, String> temp = new HashMap<>();
         temp.put("<h>", "Nouvelle publication");
         temp.put("title", post.getTitle());
         temp.put("text", post.getBody());
         temp.put("link", getPostUrl(post, request) + post.getId());
+        temp.put("idPost", post.getId().toString());
         try {
             Thematique thematique = thematiqueService.findById(post.getThematiqueId());
             thematique.getManagers().size();
@@ -213,8 +224,53 @@ public class PostController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return "redirect:/post/show/" + post.getId();
+    }
+
+    @Transactional
+    @PostMapping(value = "/post/email")
+    public String comment(Authentication authentication,
+            HttpServletRequest request, @RequestParam(name = "token") String tokenText,
+            @RequestParam(name = "idp") Integer idp, @RequestParam(name
+                    = "response") String reponse) {
+
+        UserInfo u = null;
+        try {
+            if (authentication == null && tokenText != null) {
+                TokenUser token = tokenUserRepository.findByToken(tokenText);
+                if (token.getExpirationDate() == null) {
+                    token.setExpirationDate(Date.from(java.time.Instant.now()
+                            .plusSeconds(86400)));
+                    tokenUserRepository.save(token);
+                } else if (token.getExpirationDate().before(Date.from(java.time.Instant.now()))) {
+                    tokenUserRepository.delete(token);
+                    return "redirect:/login";
+                }
+                u = userRepository.findOne(token.getIdUser());
+                if (u.getProvider() == null) {
+                    u.setProvider("NONE");
+                }
+                SecurityUtil.authenticateUser(u);
+            } else if (authentication != null) {
+                u = userInfoService.getByEmail(authentication.getName());
+            } else {
+                return "redirect:/login";
+            }
+        } catch (NullPointerException e) {
+            return "redirect:/login";
+        }
+
+        Post post = new Post();
+        post.setParentId(idp);
+        post.setCreationDate(Date.from(java.time.Instant.now()));
+        post.setOwnerId(u.getId());
+        post.setBody(reponse);
+        post.setCensored(Boolean.FALSE);
+        post.setTitle("");
+        postService.insert(post, u.getEmail(), getPostUrl(post, request));
+
+        return "redirect:/post/show/" + idp;
     }
 
     @PostMapping(value = "/secured/post/{id}")
@@ -303,9 +359,27 @@ public class PostController extends BaseController {
     @GetMapping(value = "/post/show/{idPost}")
     public String showPost(@PathVariable(name = "idPost", required = true) Integer idPost,
             @RequestParam(required = false, defaultValue = "0") Integer page,
+            @RequestParam(name = "token", required = false) String tokenText,
             Authentication authentication,
-            Model model
-    ) {
+            Model model) {
+
+        if (authentication == null && tokenText != null) {
+            TokenUser token = tokenUserRepository.findByToken(tokenText);
+            if (token.getExpirationDate() == null) {
+                token.setExpirationDate(Date.from(java.time.Instant.now()
+                        .plusSeconds(86400)));
+                tokenUserRepository.save(token);
+            } else if (token.getExpirationDate().before(Date.from(java.time.Instant.now()))) {
+                tokenUserRepository.delete(token);
+                return "redirect:/login";
+            }
+            UserInfo u = userRepository.findOne(token.getIdUser());
+            if (u.getProvider() == null) {
+                u.setProvider("NONE");
+            }
+            SecurityUtil.authenticateUser(u);
+        }
+
         Post p = postService.findPostById(idPost);
         if (p != null) {
             postService.incrementerNbVue(p, authentication == null ? null : authentication.getName());
@@ -331,7 +405,7 @@ public class PostController extends BaseController {
         }
         return "redirect:/";
     }
-    
+
 //    @ResponseBody
 //    @PostMapping(value = "/comm/del/{idPost}", headers = "Accept=application/json")
 //    public Boolean deleteComment(@PathVariable(name = "idPost", required = true) Integer idPost, 
@@ -342,7 +416,6 @@ public class PostController extends BaseController {
 //        }
 //        return Boolean.FALSE;
 //    }
-
     @PostMapping(value = "/secured/post/reponse")
     @PreAuthorize("hasAnyRole('USER', 'EXPERT','MODERATEUR', 'ADMIN')")
     public String submitReponse(Authentication authentication, Model model,
@@ -401,10 +474,10 @@ public class PostController extends BaseController {
         }
         return null;
     }
-    
+
     @ResponseBody
     @PostMapping(value = "/secured/comment/{id}", headers = "Accept=application/json")
-    public Object upadate(Authentication authentication,@ PathVariable Integer id,
+    public Object upadate(Authentication authentication, @PathVariable Integer id,
             @RequestParam("post") String body) {
         Post post = new Post();
         post.setId(id);
@@ -412,17 +485,16 @@ public class PostController extends BaseController {
         postService.updateComment(post, authentication.getName());
         return Boolean.TRUE;
     }
-    
-    @ResponseBody
-    @GetMapping(value = "/testMail", headers = "Accept=application/json")
-    public Object testMail() {
-        HashMap<String, String> temp = new HashMap<>();
-        temp.put("<h>", "Nouvelle publication");
-        temp.put("title", "AP Conservations");
-        temp.put("text", "Loren ipsum dimuno tsy aiko tsy akko fa mody asiana fotsiny aloha.");
-        temp.put("link", "#");
-        mailService.sendMail(new Thematique(), new ArrayList<UserInfo>(), temp);
-        return Boolean.TRUE;
-    }
 
+//    @ResponseBody
+//    @GetMapping(value = "/testMail", headers = "Accept=application/json")
+//    public Object testMail() {
+//        HashMap<String, String> temp = new HashMap<>();
+//        temp.put("<h>", "Nouvelle publication");
+//        temp.put("title", "AP Conservations");
+//        temp.put("text", "Loren ipsum dimuno tsy aiko tsy akko fa mody asiana fotsiny aloha.");
+//        temp.put("link", "#");
+//        mailService.sendMail(new Thematique(), new ArrayList<UserInfo>(), temp);
+//        return Boolean.TRUE;
+//    }
 }

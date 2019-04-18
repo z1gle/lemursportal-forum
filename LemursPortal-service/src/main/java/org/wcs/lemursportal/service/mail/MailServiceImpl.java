@@ -14,7 +14,6 @@ import java.util.Set;
 import javax.annotation.Resource;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
@@ -23,13 +22,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.wcs.lemursportal.model.mail.MailQueue;
-import org.wcs.lemursportal.model.mail.MailQueueMimeMessagePreparator;
 import org.wcs.lemursportal.model.post.Post;
 import org.wcs.lemursportal.model.post.Thematique;
 import org.wcs.lemursportal.model.user.UserInfo;
@@ -40,13 +35,17 @@ import freemarker.template.Configuration;
 import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateNotFoundException;
+import java.util.Random;
+import org.wcs.lemursportal.model.mail.TokenUser;
+import org.wcs.lemursportal.repository.mail.TokenUserRepository;
+import org.wcs.lemursportal.service.post.ThematiqueService;
 
 /**
  * @author mikajy.hery
  *
  */
 @Service
-@EnableScheduling
+//@EnableScheduling
 public class MailServiceImpl implements MailService {
 
     @Value("${mail.notification.question.subject:Nouvelle question}")
@@ -67,11 +66,19 @@ public class MailServiceImpl implements MailService {
     @Autowired
     Configuration freemarkerConfiguration;
 
+    @Autowired
+    ThematiqueService thematiqueService;
+
+    @Autowired
+    TokenUserRepository tokenUserRepository;
+
     @Override
     @Async
     public void sendMail(Thematique thematique, List<UserInfo> destinataires, HashMap<String, String> postDetail) {
-        MimeMessagePreparator preparator = getMessagePreparator(thematique, destinataires, postDetail);
-        sendMail(preparator);
+        for (UserInfo expert : thematique.getManagers()) {
+            MimeMessagePreparator preparator = getMessagePreparator(thematique, expert, postDetail);
+            sendMail(preparator);
+        }
     }
 
     @Override
@@ -90,7 +97,35 @@ public class MailServiceImpl implements MailService {
         }
     }
 
-    private MimeMessagePreparator getMessagePreparator(final Thematique thematique, List<UserInfo> destinataires,
+    static String getAlphaNumericString(int n) {
+
+        // lower limit for LowerCase Letters 
+        int lowerLimit = 97;
+
+        // lower limit for LowerCase Letters 
+        int upperLimit = 122;
+
+        Random random = new Random();
+
+        // Create a StringBuffer to store the result 
+        StringBuffer r = new StringBuffer(n);
+
+        for (int i = 0; i < n; i++) {
+
+            // take a random value between 97 and 122 
+            int nextRandomChar = lowerLimit
+                    + (int) (random.nextFloat()
+                    * (upperLimit - lowerLimit + 1));
+
+            // append a character at the end of bs 
+            r.append((char) nextRandomChar);
+        }
+
+        // return the resultant string 
+        return r.toString();
+    }
+
+    private MimeMessagePreparator getMessagePreparator(final Thematique thematique, final UserInfo destinataires,
             final HashMap<String, String> postDetails) {
 
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
@@ -103,36 +138,73 @@ public class MailServiceImpl implements MailService {
 //				helper.setTo("zacharie.rakotoarinivo@gmail.com");
                 Set<String> tos = new HashSet<>();
                 try {
-                    for (UserInfo expert : thematique.getManagers()) {
-                        tos.add(expert.getEmail());
-                    }
+                    tos.add(destinataires.getEmail());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 helper.setTo(tos.toArray(new String[0]));
 
-                Map<String, Object> model = new HashMap<String, Object>();
-//				model.put("thematique", thematique);
-                model.put("title", postDetails.get("<h>"));
+                Map<String, Object> model = new HashMap<>();
                 model.put("title_post", postDetails.get("title"));
                 model.put("text_post", postDetails.get("text"));
-                model.put("link", postDetails.get("link"));
-
+                // Put token to make expert able to comment without login
+                TokenUser token = new TokenUser();
+                token.setIdUser(destinataires.getId());
+                token.setToken(getAlphaNumericString(15));
+                model.put("token", token.getToken());
+                model.put("idPost", postDetails.get("idPost"));
+                model.put("link", postDetails.get("link") + "?token="
+                        + token.getToken());
+                model.put("title", destinataires.getTitle());
+                model.put("name", destinataires.getNom());
+                model.put("topic", thematique.getLibelle());
                 String text = getPublicationMailTemplateContent(model);// Use
-                // Freemarker
-                // or
-                // Velocity
-                // use the true flag to indicate you need a multipart message
                 helper.setText(text, true);
-
-                // Additionally, let's add a resource as an attachment as well.
-                // helper.addAttachment("cutie.png", new
-                // ClassPathResource("linux-icon.png"));
+                tokenUserRepository.save(token);
             }
         };
         return preparator;
     }
 
+//    private MimeMessagePreparator getMessagePreparator(final Thematique thematique, final UserInfo destinataire,
+//            final NewMailQueue mail) {
+//
+//        MimeMessagePreparator preparator = new MimeMessagePreparator() {
+//
+//            public void prepare(MimeMessage mimeMessage) throws Exception {
+//                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+//
+//                helper.setSubject(sujetThematique);
+//                helper.setFrom(mailFrom);
+//                helper.setTo(destinataire.getEmail());
+//                Set<String> tos = new HashSet<>();
+//
+//                Map<String, Object> model = new HashMap<>();
+//                model.put("title_post", mail.getTitlePost());
+//                model.put("text_post", mail.getTextPost());
+//                model.put("link", mail.getLink());
+//                // Put token to make expert able to comment without login
+//                // Not only one expert so not only one token 
+//                mail.setToken(getAlphaNumericString(15));
+//                model.put("token", mail.getToken());
+//                model.put("title", destinataire.getTitle());
+//                model.put("name", destinataire.getNom());
+//                model.put("topic", thematique.getLibelle());
+//
+//                String text = getPublicationMailTemplateContent(model);// Use
+//                // Freemarker
+//                // or
+//                // Velocity
+//                // use the true flag to indicate you need a multipart message
+//                helper.setText(text, true);
+//
+//                // Additionally, let's add a resource as an attachment as well.
+//                // helper.addAttachment("cutie.png", new
+//                // ClassPathResource("linux-icon.png"));
+//            }
+//        };
+//        return preparator;
+//    }
     private MimeMessagePreparator getMessagePreparator(final Post question, final List<UserInfo> destinataires) {
 
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
@@ -234,7 +306,7 @@ public class MailServiceImpl implements MailService {
 
 //    @Scheduled(fixedDelay = 300000)//60*5*1000 = 5 minutes
 //    @Transactional(noRollbackFor = MailException.class)
-//    public void sendMails() {
+    public void sendMails() {
 //        List<MailQueue> mailQueues = mailQueueRepository.findAllNotSent();
 //        for (MailQueue mailQueue : mailQueues) {
 //            MailQueueMimeMessagePreparator preparator = new MailQueueMimeMessagePreparator(mailQueue);
@@ -247,7 +319,36 @@ public class MailServiceImpl implements MailService {
 //            }
 //            mailQueueRepository.update(mailQueue);
 //        }
-//    }
+//        String tps = Calendar.getInstance().getTime().toString();
+//        List<NewMailQueue> listeM = newMailQueueRepository.findByToken("-");
+//        for(NewMailQueue nmq : listeM) {
+//            nmq.setToken(tps);
+//            newMailQueueRepository.save(nmq);
+//        }
+//        listeM = newMailQueueRepository.findByToken(tps);
+//        System.out.println("*********************** " + listeM.size() + " ************************");
+//        for (NewMailQueue nmq : listeM) {
+//            Thematique thematique = thematiqueService.findById(nmq.getIdThematique());
+//            System.out.println("*********************** Thématique found ************************");
+////            thematique.getManagers().size();
+//            Hibernate.initialize(thematique.getManagers());
+//            System.out.println("*********************** Manager loaded (" + thematique.getManagers().size() + ")************************");
+////            HashMap<String, String> postDetail = new HashMap<>();
+////            postDetail.put("title", nmq.getTitlePost());
+////            postDetail.put("text", nmq.getTextPost());
+////            postDetail.put("link", nmq.getLink());
+////            System.out.println("*********************** postDetail completed ************************");
+//            for (UserInfo expert : thematique.getManagers()) {
+////                MimeMessagePreparator preparator = getMessagePreparator(thematique, expert, postDetail);
+//                MimeMessagePreparator preparator = getMessagePreparator(thematique, expert, nmq);
+//                sendMail(preparator);
+//                System.out.println("*********************** Try to send e-mail ************************");
+//                newMailQueueRepository.save(nmq);
+//                System.out.println("*********************** token saved ************************");
+//            }
+//        }   
+        System.out.println("******************** here it is **************************");
+    }
 
     @Override
     public void sendEmail(SimpleMailMessage passwordResetEmail) {

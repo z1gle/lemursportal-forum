@@ -1,25 +1,441 @@
 <!DOCTYPE html>
 <html>
-<body style="max-width: 960px">
-    <img style="height: 125px;" 
-            src="https://res.cloudinary.com/lemursportal/image/upload/v1550044292/headerMailNew.png">
-<h2 style="font-family: sans-serif; color: black;">${title}</h2>
-<div style="margin: 75px -6px 0 0px;
-            padding: 15px 20px;
-            border: 1px solid #d7d7d7;
-            background: #ede9e9;
-            min-height: 90px;">
-        <div>
-            <span style="font-weight: bold;
-                    font-family: sans-serif; color: black;">
-                ${title_post}
-            </span><br>
-            <p style="color: black;">
-                ${text_post}
+<body>
+    <div>
+    <center style="color:black!important;font-family:Helvetica;
+    font-size:12px;
+    font-style:normal;
+    font-variant-caps:normal;
+    font-weight:normal;
+    letter-spacing:normal;
+    text-indent:0px;
+    text-transform:none;
+    white-space:normal;
+    word-spacing:0px;
+    background-color:rgb(250,250,250);
+    text-decoration:none">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" id="" 
+    style="color:black!important;border-collapse:collapse;
+    margin:0px;
+    padding:0px;
+    width:945px;
+    background-color:rgb(250,250,250)">
+    <tbody>
+
+        <!-- Français -->
+
+        <tr>
+            <td align="center" valign="top" id="" 
+            style="color:black!important;margin:0px;
+            padding:10px;
+            width:925px;
+            border-top-width:0px">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="" 
+            style="color:black!important;border-collapse:collapse;
+            max-width:600px!important;
+            border:0px;
+            width:600px!important">
+            <tbody>
+                <!-- Logo -->
+                <tr>
+                    <td valign="top" id="" style="color:black!important;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:black!important;border-collapse:collapse;min-width:100%">
+                            <tbody class="">
+                                <tr>
+                                    <td valign="top" class="" style="color:black!important;padding:9px; text-align:center;">
+                                        <img align="center" alt="logo_lemursportal" src="https://www.lemursportal.org/resources/img/Logo_LemursPortal_Final.png" class="" style="color:black!important;max-height: 100px;">
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <!-- Fin Logo -->
+                <!-- Bonjour -->
+                <tr>
+                    <td valign="top" id="" style="color:black!important;">
+                        <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:black!important;border-collapse:collapse;max-width:100%;min-width:100%">
+                            <tbody>
+                                <tr>
+                                    <td valign="top" class="" style="color:black!important;word-break:break-word;
+                                    color:rgb(32,32,32);
+                                    font-family:Helvetica;
+                                    font-size:16px;
+                                    line-height:24px;
+                                    text-align:left;
+                                    padding:0px 18px 9px">
+                                    <p style="color:black!important;margin:10px 0px;
+                                    padding:0px;
+                                    color:rgb(32,32,32);
+                                    font-family:Helvetica;
+                                    font-size:16px;
+                                    line-height:24px;
+                                    text-align:left">
+                                    <span style="color:black!important;font-family:roboto,"helvetica neue",helvetica,arial,sans-serif">
+                                        Bonjour ${title} ${name},<br>
+                                        Vous avez une nouvelle question/publication en rapport avec votre domaine d&#39;expertise (${topic}) :
+                                    </span><br>&nbsp;
+                                </p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <!-- Fin Bonjour-->
+        <!-- Question -->
+        <tr>
+            <td valign="top" id="" style="color:black!important;">
+
+                <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:black!important;border-collapse:collapse; width:100%">
+                    <tbody>
+                        <tr>
+                            <td valign="top" class="" style="color:black!important;word-break:break-word;
+                            color:rgb(32,32,32);
+                            font-family:Helvetica;
+                            font-size:16px;
+                            line-height:24px;
+                            text-align:left;
+                            padding:0px 18px 9px">
+                            <h1 style="color:black!important;display:block;
+                            margin:0px;
+                            padding:0px;
+                            color:rgb(32,32,32);
+                            font-family:Helvetica;
+                            font-size:20px;
+                            font-style:normal;
+                            font-weight:bold;
+                            letter-spacing:normal;
+                            text-align:left">
+                            <span style="color:black!important;font-family:roboto,"helvetica neue",helvetica,arial,sans-serif">
+                                ${title_post}
+                            </span>
+                        </h1>
+                        <p style="color:black!important;margin:10px 0px;
+                        padding:0px;
+                        color:rgb(32,32,32);
+                        font-family:Helvetica;
+                        font-size:16px;
+                        line-height:24px;
+                        text-align:left">
+                        <span style="color:black!important;font-family:roboto,"helvetica neue",helvetica,arial,sans-serif">
+                            ${text_post}
+                        </span><br>&nbsp;
+                    </p>
+                    <form method="post" action="http://localhost:8097/LemursPortal-web/post/email">
+                        <textarea name="response" style="color:black!important;width: 99%" placeholder="Please write your answer here"></textarea>
+                        <input type="hidden" name="token" value="${token}">
+                        <input type="hidden" name="idp" value="${idPost}">
+                        <input type="submit" value="R&eacute;pondre" style="color:white!important;float: right;
+                        font-family: Arial;
+                        font-size: 14px;
+                        padding: 2px;
+                        margin-right: 6px;
+                        background-color: #2baadf;
+                        border: solid;
+                        border-color: #2baadf;
+                        border-radius: 3px;
+                        margin-top: 2px;
+                        color: white;
+                        font-weight: 550;">
+                    </form><br><br>
+                    Si votre navigateur ne prend pas en charge les formulaires, veuiller cliquer sur ce lien pour r&eacute;pondre : ${link}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- S&eacute;parateur -->
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:rgb(101,101,101)!important;border-collapse:collapse;table-layout:fixed!important;min-width:100%">
+        <tbody class="">
+            <tr>
+                <td class="" style="color:rgb(101,101,101)!important;min-width:100%;padding:10px 18px 25px">
+                    <table class="" border="0" cellpadding="0" cellspacing="0" width="100%" style="color:rgb(101,101,101)!important;border-collapse:collapse;min-width:100%;border-top-width:2px;border-top-style:solid;border-top-color:rgb(238,238,238)">
+                        <tbody>
+                            <tr>
+                                <td><span></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <!-- Fin s&eacute;parateur -->
+
+</td>
+</tr>
+<!-- Fin Question -->
+</td>
+</tr>
+<!-- Fin Français -->
+<!-- D&eacute;but Anglais -->
+<tr>
+    <td align="center" valign="top" id="" 
+    style="color:black!important;margin:0px;
+    padding:10px;
+    padding-left: 0px;
+    width:925px;
+    border-top-width:0px">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="" 
+    style="color:black!important;border-collapse:collapse;
+    max-width:600px!important;
+    border:0px;
+    width:600px!important">
+    <tbody>
+        <!-- Bonjour -->
+        <tr>
+            <td valign="top" id="" style="color:black!important;">
+                <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:black!important;border-collapse:collapse;max-width:100%;min-width:100%">
+                    <tbody>
+                        <tr>
+                            <td valign="top" class="" style="color:black!important;word-break:break-word;
+                            color:rgb(32,32,32);
+                            font-family:Helvetica;
+                            font-size:16px;
+                            line-height:24px;
+                            text-align:left;
+                            padding:0px 18px 9px;">
+                            <p style="color:black!important;margin:10px 0px;
+                            padding:0px;
+                            color:rgb(32,32,32);
+                            font-family:Helvetica;
+                            font-size:16px;
+                            line-height:24px;
+                            text-align:left">
+                            <span style="color:black!important;font-family:roboto,"helvetica neue",helvetica,arial,sans-serif">
+                                Dear ${title} ${name},<br>
+                                You have a new question/post related to your area of expertise (${topic}) :
+                            </span><br>&nbsp;
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>
+<!-- Fin Bonjour-->
+<!-- Question -->
+<tr>
+    <td valign="top" id="" style="color:black!important;">
+
+        <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:black!important;border-collapse:collapse; width:100%">
+            <tbody>
+                <tr>
+                    <td valign="top" class="" style="color:black!important;word-break:break-word;
+                    color:rgb(32,32,32);
+                    font-family:Helvetica;
+                    font-size:16px;
+                    line-height:24px;
+                    text-align:left;
+                    padding:0px 18px 9px">
+                    <h1 style="color:black!important;display:block;
+                    margin:0px;
+                    padding:0px;
+                    color:rgb(32,32,32);
+                    font-family:Helvetica;
+                    font-size:20px;
+                    font-style:normal;
+                    font-weight:bold;
+                    letter-spacing:normal;
+                    text-align:left">
+                    <span style="color:black!important;font-family:roboto,"helvetica neue",helvetica,arial,sans-serif">
+                        ${title_post}
+                    </span>
+                </h1>
+                <p style="color:black!important;margin:10px 0px;
+                padding:0px;
+                color:rgb(32,32,32);
+                font-family:Helvetica;
+                font-size:16px;
+                line-height:24px;
+                text-align:left">
+                <span style="color:black!important;font-family:roboto,"helvetica neue",helvetica,arial,sans-serif">
+                    ${text_post}
+                </span><br>&nbsp;
             </p>
-        </div>
-            Pour r&eacute;pondre, veuiller cliquer sur le lien suivant : ${link}
-        </div>
-    </div>
+            <form method="post" action="http://localhost:8097/LemursPortal-web/post/email">
+                <textarea name="response" style="color:black!important;width: 99%" placeholder="Please write your answer here"></textarea>
+                <input type="hidden" name="token" value="${token}">
+                <input type="hidden" name="idp" value="${idPost}">
+                <input type="submit" value="Answer" style="color:white!important;float: right;
+                font-family: Arial;
+                font-size: 14px;
+                padding: 2px;
+                margin-right: 6px;
+                background-color: #2baadf;
+                border: solid;
+                border-color: #2baadf;
+                border-radius: 3px;
+                margin-top: 2px;
+                color: white;
+                font-weight: 550;">
+            </form><br><br>
+            If you have trouble answering the post, please follow the link to answer on the website : ${link}
+        </td>
+    </tr>
+</tbody>
+</table>
+</td>
+</tr>
+<!-- Fin Question -->
+</td>
+</tr>
+<!-- Fin Anglais -->
+<tr>
+    <td valign="top" id="" style="color:rgb(101,101,101)!important;background-color:rgb(250,250,250);background-image:none;background-size:cover;border-top-width:0px;border-bottom-width:0px;padding-top:9px;padding-bottom:9px;background-position:center center;background-repeat:no-repeat no-repeat">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:rgb(101,101,101)!important;border-collapse:collapse;min-width:100%">
+            <tbody class="">
+                <tr>
+                    <td align="center" valign="top" class="" style="color:rgb(101,101,101)!important;padding:9px">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:rgb(101,101,101)!important;border-collapse:collapse;min-width:100%">
+                            <tbody>
+                                <tr>
+                                    <td align="center" style="color:rgb(101,101,101)!important;padding-left:9px;padding-right:9px">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:rgb(101,101,101)!important;border-collapse:collapse;min-width:100%">
+                                            <tbody>
+                                                <tr>
+                                                    <td align="center" valign="top" style="color:rgb(101,101,101)!important;padding-top:9px;padding-right:9px;padding-left:9px">
+                                                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="color:rgb(101,101,101)!important;border-collapse:collapse">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td align="center" valign="top">
+                                                                        <table align="left" border="0" cellpadding="0" cellspacing="0" style="color:rgb(101,101,101)!important;border-collapse:collapse;display:inline">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td valign="top" class="" style="color:rgb(101,101,101)!important;padding-right:10px;padding-bottom:9px">
+                                                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:rgb(101,101,101)!important;border-collapse:collapse">
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td align="left" valign="middle" style="color:rgb(101,101,101)!important;padding:5px 10px 5px 9px">
+                                                                                                        <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="color:rgb(101,101,101)!important;border-collapse:collapse">
+                                                                                                            <tbody>
+                                                                                                                <tr>
+                                                                                                                    <td align="center" valign="middle" width="24" class=""><a href="https://www.facebook.com/lemursportal/" target="_blank" data-saferedirecturl="https://www.facebook.com/lemursportal/"><img src="https://ci5.googleusercontent.com/proxy/KLWDyxU_2JT5nOGTE6_NSp-hT37kpCU8B8HLih6GyBnhKJEvCDQsIeq4uLfJ7CQWsSCfpfcbCXVh74IrAuFYiXcU4R2sPN1CInMYwE7DpPIiYM9dGmBbl7FrtmeFZ6I=s0-d-e1-ft#https://cdn-images.mailchimp.com/icons/social-block-v2/color-facebook-48.png" height="24" width="24" style="color:rgb(101,101,101)!important;border:0px;height:auto;outline:none;text-decoration:none;display:block" class=""></a></td>
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <table align="left" border="0" cellpadding="0" cellspacing="0" style="color:rgb(101,101,101)!important;border-collapse:collapse;display:inline">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td valign="top" class="" style="color:rgb(101,101,101)!important;padding-right:10px;padding-bottom:9px">
+                                                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:rgb(101,101,101)!important;border-collapse:collapse">
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td align="left" valign="middle" style="color:rgb(101,101,101)!important;padding:5px 10px 5px 9px;">
+                                                                                                        <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="color:rgb(101,101,101)!important;border-collapse:collapse">
+                                                                                                            <tbody>
+                                                                                                                <tr>
+                                                                                                                    <td align="center" valign="middle" width="24" class=""><a href="https://www.instagram.com/lemursportal/" target="_blank" data-saferedirecturl="https://www.instagram.com/lemursportal/"><img src="https://68ef2f69c7787d4078ac-7864ae55ba174c40683f10ab811d9167.ssl.cf1.rackcdn.com/instagram-icon_square_24x24.png" height="24" width="24" style="color:rgb(101,101,101)!important;border:0px;height:auto;outline:none;text-decoration:none;display:block;border-radius: 50px;" class=""></a></td>
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                        <table align="left" border="0" cellpadding="0" cellspacing="0" style="color:rgb(101,101,101)!important;border-collapse:collapse;display:inline">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <td valign="top" class="" style="color:rgb(101,101,101)!important;padding-right:0px;padding-bottom:9px">
+                                                                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:rgb(101,101,101)!important;border-collapse:collapse">
+                                                                                            <tbody>
+                                                                                                <tr>
+                                                                                                    <td align="left" valign="middle" style="color:rgb(101,101,101)!important;padding:5px 10px 5px 9px">
+                                                                                                        <table align="left" border="0" cellpadding="0" cellspacing="0" width="" style="color:rgb(101,101,101)!important;border-collapse:collapse">
+                                                                                                            <tbody>
+                                                                                                                <tr>
+                                                                                                                    <td align="center" valign="middle" width="24" class=""><a href="https://twitter.com/LemursPortal" target="_blank"><img src="https://68ef2f69c7787d4078ac-7864ae55ba174c40683f10ab811d9167.ssl.cf1.rackcdn.com/twitter-icon_square_24x24.png" height="24" width="24" style="color:rgb(101,101,101)!important;border:0px;height:auto;outline:none;text-decoration:none;display:block;border-radius: 50px;" class=""></a></td>
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:rgb(101,101,101)!important;border-collapse:collapse;table-layout:fixed!important;min-width:100%">
+            <tbody class="">
+                <tr>
+                    <td class="" style="color:rgb(101,101,101)!important;min-width:100%;padding:10px 18px 25px">
+                        <table class="" border="0" cellpadding="0" cellspacing="0" width="100%" style="color:rgb(101,101,101)!important;border-collapse:collapse;min-width:100%;border-top-width:2px;border-top-style:solid;border-top-color:rgb(238,238,238)">
+                            <tbody>
+                                <tr>
+                                    <td><span></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:rgb(101,101,101)!important;border-collapse:collapse;min-width:100%">
+            <tbody class="">
+                <tr>
+                    <td valign="top" class="" style="color:rgb(101,101,101)!important;padding-top:9px">
+                        <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" class="" style="color:rgb(101,101,101)!important;border-collapse:collapse;max-width:100%;min-width:100%">
+                            <tbody>
+                                <tr>
+                                    <td valign="top" class="" style="color:rgb(101,101,101)!important;word-break:break-word;color:rgb(101,101,101)!important;font-family:Helvetica;font-size:12px;line-height:18px;text-align:center;padding:0px 18px 9px"><em>Copyright © 2019 Madagascar Lemurs Portal, All rights reserved.</em><span class="">&nbsp;</span><br>Vous recevez cet e-mail car vous &ecirc;tes inscrit en tant qu'expert dans https://www.lemursportal.org<span class="">&nbsp;</span><br><br><strong>Contacter nous &agrave;:</strong><span class="">&nbsp;</span><br>
+                                        <div class=""><span class="">Madagascar Lemurs Portal</span>
+                                            <div class="">
+                                                <div class="">Lot II K 44 Ankadivato</div><span class="">Antananarivo</span><span class="">&nbsp;</span><span class="">101</span>
+                                                <div class="">Madagascar</div>
+                                                <div class="">E-mail : lemursportal@gmail.com</div>
+                                                <div class="">Phone: (+261 20) 22 605 13</div>
+                                                <div class="">Fax : (+261 20) 22 621 44</div>
+                                            </div><br>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</center><img src="https://ci3.googleusercontent.com/proxy/fhoAwhK8iPFeQpfyMSRyFI-L2yT680C-tO9X_gCjZDRyfR6Lk_5uqDrzN6wM4FXFC-fwwZe9P1DYyQdxH8Fo5K8mUuFtRLwLi4h1AQCl8Cu6tRLHl8PiG_sbQojv0NKbO31EycOTmB6Jju9L7PS_3DQMgQaecRfV5FFE=s0-d-e1-ft#https://arsie.us20.list-manage.com/track/open.php?u=0b292a70d6d775bef14cd77e3&amp;id=18b5ba3e23&amp;e=40b574b4e0" height="1" width="1" style="color:rgb(101,101,101)!important;border:0px;height:auto;outline:none;text-decoration:none;font-family:Helvetica;font-size:12px;font-style:normal;font-variant-caps:normal;font-weight:normal;letter-spacing:normal;text-align:start;text-indent:0px;text-transform:none;white-space:normal;word-spacing:0px;background-color:rgb(250,250,250)" class="">
+<div class=""></div>
+<div class=""><span style="color:rgb(101,101,101)!important;font-family:Helvetica;font-size:12px;font-style:normal;font-variant-caps:normal;font-weight:normal;letter-spacing:normal;text-align:start;text-indent:0px;text-transform:none;white-space:normal;word-spacing:0px;background-color:rgb(250,250,250);text-decoration:none;float:none;display:inline!important"></span></div>
+</div>
 </body>
 </html>
