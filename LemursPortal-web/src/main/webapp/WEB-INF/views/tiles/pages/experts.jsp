@@ -11,11 +11,11 @@
 .expert-sidebar {
     padding: 0px;
     background: #f7f5f5 none repeat scroll 0 0;
-    border: 0px solid #d7d7d7; */
+    border: 0px solid #d7d7d7;
     margin-bottom: 50px;
     background-color: #fff;
     border-radius: 2px;
-    box-shadow: 0 1px 3px #9e9e9e;*/
+    box-shadow: 0 1px 3px #9e9e9e;
     display: inline-block;
     flex-grow: 1;
     /*margin: 8px 4px 0;*/
