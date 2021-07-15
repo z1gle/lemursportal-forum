@@ -10,6 +10,13 @@
 <spring:message code="date.format" var="dateFormat"/>
 <c:url value="/resources" var="resourcesPath"/>
 <c:url value="/" var="basePath"/>
+<%
+	String pDActive = (request.getParameter("pageDocument") != null)?"active":"";
+	String pPActive= (request.getParameter("pP")!= null)?"active":"";
+	if(pPActive.equals(""))pDActive="active";
+%>
+<c:set var="pDActive" value="<%=pDActive%>"/>
+<c:set var="pPActive" value="<%=pPActive%>"/>
 <style>	
     <!--	
     .project-wrapper {	
@@ -171,8 +178,8 @@
             <div class="box">
                 <!-- D Tab -->
                 <ul class="nav nav-tabs userProfileTabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.documents"/></a></li>
-                    <li role="presentation" class=""><a href="#tab-item-4" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="true"><spring:message code="document.header.pictures"/></a></li>
+                    <li role="presentation" class="${pDActive}"><a href="#tab-item-1" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.documents"/></a></li>
+                    <li role="presentation" class="${pPActive}"><a href="#tab-item-4" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="true"><spring:message code="document.header.pictures"/></a></li>
                     <li role="presentation" class=""><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.videos"/></a></li>
                     <li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.audios"/></a></li>
                     <li role="presentation" class=""><a href="#tab-item-5" aria-controls="tab-item-5" role="tab" data-toggle="tab" aria-expanded="false">Youtube</a></li>
@@ -188,7 +195,7 @@
                 <!-- F Tab -->
 
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane active fade in" id="tab-item-1">
+                    <div role="tabpanel" class="tab-pane ${pDActive} fade in" id="tab-item-1">
                         <div class="txt-content">
                             <div class="col-md-offset custyle">
                                 <table style="border: 0px;" class="table table-striped custab">
@@ -200,7 +207,7 @@
                                                 <tr style="background-color: white;">
                                                     <th style="color:  dodgerblue;font-size: 15px; border-color: white; padding-left: 20px;">${publication.year}</th>                                                                                                        
                                                     <th style="color:  dodgerblue;font-size: 15px; border-color: white;"></th>                                                                                                        
-                                                    <th style="font-size: 15px; border-color: white; text-align: right;">Page: ${pagination.pageDocument.pageDocumentCurrent}/${pagination.pageDocument.pageDocumentFin-1} | Total: </th>                                                                                                        
+                                                    <th style="font-size: 15px; border-color: white; text-align: right;">Page: ${pagination.pageDocument.pageDocumentCurrent+1}/${pagination.pageDocument.pageDocumentFin} | Total: </th>                                                                                                        
                                                     <th style="font-size: 15px; border-color: white; text-align: right;">${pagination.pageDocument.pageDocumentTotalElement}</th>                                                                                                        
                                                 </tr>
                                             </c:when>                                            
@@ -248,17 +255,17 @@
                                 <c:choose>
                                     <c:when test="${topic != 0}">
                                         <c:url var="pageBaseUrl" value="/documents?topic=${topic}"/>
-                                        <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent}" totalPages="${pagination.pageDocument.pageDocumentFin-1}" pageBaseUrl="${pageBaseUrl}"/>
+                                        <page:pagination currentPage="${pagination.pageDocument.pageDocumentCurrent+1}" page="pageDocument" totalPages="${pagination.pageDocument.pageDocumentFin}" pageBaseUrl="${pageBaseUrl}"/>
                                     </c:when>
                                     <c:otherwise>
                                         <c:choose>
                                             <c:when test="${!search.equals(Integer.toString(0))}">
                                                 <c:url var="pageBaseUrl" value="/documents?search=${search}"/>
-                                                <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent}" totalPages="${pagination.pageDocument.pageDocumentFin-1}" pageBaseUrl="${pageBaseUrl}"/>
+                                                <page:pagination currentPage="${pagination.pageDocument.pageDocumentCurrent+1}" page="pageDocument" totalPages="${pagination.pageDocument.pageDocumentFin}" pageBaseUrl="${pageBaseUrl}"/>
                                             </c:when>
                                             <c:otherwise>
                                                 <c:url var="pageBaseUrl" value="/documents"/>
-                                                <page:paginationDocument currentPage="${pagination.pageDocument.pageDocumentCurrent}" totalPages="${pagination.pageDocument.pageDocumentFin-1}" pageBaseUrl="${pageBaseUrl}"/>
+                                                <page:pagination currentPage="${pagination.pageDocument.pageDocumentCurrent+1}" page="pageDocument" totalPages="${pagination.pageDocument.pageDocumentFin}" pageBaseUrl="${pageBaseUrl}"/>
                                             </c:otherwise>
                                         </c:choose>                                        
                                     </c:otherwise>
@@ -267,12 +274,32 @@
                             </div>
                         </div>
                     </div>   
-                    <div role="tabpanel" class="tab-pane fade" id="tab-item-4">
+                    <div role="tabpanel" class="tab-pane ${pPActive} fade in" id="tab-item-4">
                         <div class="txt-content">
 
                             <div class="col-md-offset custyle">
-
-                                </br>
+								<!-- D Pagination Photo -->
+								<div align="left">
+									<c:choose>
+										<c:when test="${!search.equals(Integer.toString(0))}">
+											<c:url var="pageBaseUrl" value="/documents?search=${search}" />
+											<page:pagination
+												currentPage="${pagination.pagePhoto.pagePhotoCurrent+1}"
+												totalPages="${pagination.pagePhoto.pagePhotoFin}"
+												page="pP"
+												pageBaseUrl="${pageBaseUrl}" />
+										</c:when>
+										<c:otherwise>
+											<c:url var="pageBaseUrl" value="/documents" />
+											<page:pagination
+												currentPage="${pagination.pagePhoto.pagePhotoCurrent+1}"
+												totalPages="${pagination.pagePhoto.pagePhotoFin}"
+												page="pP"
+												pageBaseUrl="${pageBaseUrl}" />
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<!-- F Pagination --> 
                                 <div class="row">
                                     <c:set var="isa" value="1"/>
                                     <%--          <c:forEach items="${docIMAGE}" var="pic">
@@ -297,6 +324,28 @@
                                         </c:forEach>
                                     </ul>
                                 </div>
+                                
+                                <div align="left">
+									<c:choose>
+										<c:when test="${!search.equals(Integer.toString(0))}">
+											<c:url var="pageBaseUrl" value="/documents?search=${search}" />
+											<page:pagination
+												currentPage="${pagination.pagePhoto.pagePhotoCurrent+1}"
+												totalPages="${pagination.pagePhoto.pagePhotoFin}"
+												page="pP"
+												pageBaseUrl="${pageBaseUrl}" />
+										</c:when>
+										<c:otherwise>
+											<c:url var="pageBaseUrl" value="/documents" />
+											<page:pagination
+												currentPage="${pagination.pagePhoto.pagePhotoCurrent+1}"
+												totalPages="${pagination.pagePhoto.pagePhotoFin}"
+												page="pP"
+												pageBaseUrl="${pageBaseUrl}" />
+										</c:otherwise>
+									</c:choose>
+								</div> 
+                                
                                 <div id="myModal" class="modal">
                                     <span class="close cursor" onclick="closeModal()">&times;</span>
                                     <div class="modal-content">
@@ -359,9 +408,8 @@
                                         <!-- Modal Caption (Image Text) -->
                                         <!--<div id="caption"></div>-->
                                     </div>                                    
-                                </div>                                
+                                </div>                               
                             </div>
-
                         </div>
                     </div>
 

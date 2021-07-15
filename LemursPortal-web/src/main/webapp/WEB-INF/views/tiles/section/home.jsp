@@ -47,7 +47,7 @@ a.read-more:hover {
 
 <!-- 			D Pagination -->
 				<c:url var="pageBaseUrl" value="/"/>
-				<page:pagination currentPage="${topQuestionsPage.number + 1}" totalPages="${topQuestionsPage.totalPages}" pageBaseUrl="${pageBaseUrl}"/>
+				<page:pagination currentPage="${topQuestionsPage.number + 1}" page="page" totalPages="${topQuestionsPage.totalPages}" pageBaseUrl="${pageBaseUrl}"/>
 		</div>
 	</div>
 

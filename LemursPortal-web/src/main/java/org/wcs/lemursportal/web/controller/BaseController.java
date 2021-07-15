@@ -65,6 +65,7 @@ public class BaseController {
     public static final int TOP_QUESTIONS_PAGE_SIZE = 20;
     public static final int TOP_THEMATIQUES_PAGE_SIZE = 20;
     public static final int TOP_DOCUMENT_PAGE_SIZE = 20;
+    public static final int TOP_PHOTO_PAGE_SIZE = 21;
     public static final int TOP_DOCUMENT_ACCUEIL_SIZE = 6;
     public static final int DERNIERES_QUESTIONS_PAGE_SIZE = 20;
 
