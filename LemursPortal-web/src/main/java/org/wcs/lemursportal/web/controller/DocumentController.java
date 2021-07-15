@@ -94,6 +94,7 @@ public class DocumentController extends BaseController {
     private static final int BUFFER_SIZE = 4096;
 
     @GetMapping(value = {"/documents"})
+<<<<<<< HEAD
     public String list(@RequestParam(value = "pageDocument", required = false, defaultValue = "1") Integer pageDocument, @RequestParam(value = "pP", required = false, defaultValue = "0") Integer pagePhoto, @RequestParam(value = "pV", required = false, defaultValue = "0") Integer pageVideo, @RequestParam(value = "pA", required = false, defaultValue = "0") Integer pageAudio, @RequestParam(required = false, value = "topic") Integer thematique, @RequestParam(required = false, value = "search") String search, @RequestParam(required = false, value = "nouveau") Integer nouveau, Model model, Authentication authentication) {
         pageDocument--;
         HashMap temp = paginate(pageDocument, pageAudio, pagePhoto, pageVideo, thematique, search);
@@ -121,23 +122,29 @@ public class DocumentController extends BaseController {
 
         if (pageDocument == null || pageDocument < 1) {
             pageDocument = 1;
+=======
+    public String list(@RequestParam(value = "pageDocument", required = false, defaultValue = "0") Integer pageDocument, @RequestParam(value = "pP", required = false, defaultValue = "0") Integer pP, @RequestParam(value = "pV", required = false, defaultValue = "0") Integer pageVideo, @RequestParam(value = "pA", required = false, defaultValue = "0") Integer pageAudio, @RequestParam(required = false, value = "topic") Integer thematique, @RequestParam(required = false, value = "search") String search, Model model) {
+    	if (pageDocument == null || pageDocument < 1) {
+            pageDocument = 0;
+        } else {
+        	pageDocument -= 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+>>>>>>> c8a0b42aef870c449ae1414199f6d6e8244a54e2
         }
-        /*else {
-            pageDocument = pageDocument - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
-        }*/
         if (pageVideo == null || pageVideo < 1) {
-            pageVideo = -1;
+            pageVideo = 0;
         } else {
-            pageVideo = pageVideo - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+        	pageVideo -= 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }
-        if (pagePhoto == null || pagePhoto < 1) {
-            pagePhoto = -1;
+
+        if (pP == null || pP < 1) {
+            pP = 0;
         } else {
-            pagePhoto = pagePhoto - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
-        }
+        	pP -= 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+        }  
         if (pageAudio == null || pageAudio < 1) {
-            pageAudio = -1;
+            pageAudio = 0;
         } else {
+<<<<<<< HEAD
             pageAudio = pageAudio - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }
         if (authentication != null && nouveau != null) {
@@ -175,6 +182,32 @@ public class DocumentController extends BaseController {
             }
         }
 
+=======
+        	pageAudio -= 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
+        } 
+        if (search == null || search.isEmpty()) {
+            if (thematique != null) {
+                model.addAttribute("docAUDIO", listMetadatas(pageAudio, model, "3", thematique));
+                model.addAttribute("docVIDEO", listMetadatas(pageVideo, model, "2", thematique));
+                model.addAttribute("docIMAGE", listMetadatas(pP, model, "1", thematique));
+                model.addAttribute("docAUTRES", listMetadatas(pageDocument, model, "4", thematique));
+                model.addAttribute("metadata", new Metadata());
+            } else {
+                model.addAttribute("docAUDIO", listMetadata(pageAudio, model, "3"));
+                model.addAttribute("docVIDEO", listMetadata(pageVideo, model, "2"));
+                model.addAttribute("docIMAGE", listMetadata(pP, model, "1"));
+                model.addAttribute("docAUTRES", listMetadata(pageDocument, model, "4"));
+                model.addAttribute("metadata", new Metadata());
+            }
+        } else {
+            model.addAttribute("docAUDIO", listMetadata(null, model, "3"));
+            model.addAttribute("docVIDEO", listMetadata(null, model, "2"));
+            model.addAttribute("docIMAGE", listMetadata(pP, model, "1"));
+            model.addAttribute("docAUTRES", searchGlobal(pageDocument, model, search));
+            model.addAttribute("metadata", new Metadata());
+        }
+        HashMap temp = paginate(pageDocument, pageAudio, pP, pageVideo, thematique);
+>>>>>>> c8a0b42aef870c449ae1414199f6d6e8244a54e2
         model.addAttribute("pagination", temp);
         if (thematique == null) {
             model.addAttribute("topic", 0);
@@ -192,9 +225,8 @@ public class DocumentController extends BaseController {
     public List<Document> listDocs(Integer page, Model model, DOCTYPE docType) {
         if (page == null || page < 1) {
             page = 0;
-        } else {
-            page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
-        }
+        } 
+
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
         Page<Document> pageDocuments = documentRepository.findDocumentsbyType(docType.getValue(), pageable);
         if (null != pageDocuments) {
@@ -206,9 +238,8 @@ public class DocumentController extends BaseController {
     public List<MetadataUtilisateur> listMetadata(Integer page, Model model) {
         if (page == null || page < 1) {
             page = 0;
-        } else {
-            page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
-        }
+        } 
+
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
         Page<MetadataUtilisateur> pageMetadata = metadataUtilisateurRepository.findAll(pageable);
         if (null != pageMetadata) {
@@ -220,6 +251,7 @@ public class DocumentController extends BaseController {
     public List<MetadataUtilisateur> listMetadata(Integer page, Model model, String metadataType) {
         if (page == null || page < 1) {
             page = 0;
+<<<<<<< HEAD
         } else {
             page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }
@@ -261,6 +293,19 @@ public class DocumentController extends BaseController {
                 }
             }
         }
+=======
+        } 
+        
+        Metadata metadata = new Metadata();
+        metadata.setType(metadataType);
+        int pageSize = TOP_DOCUMENT_PAGE_SIZE;
+        
+        if(metadataType.equals("1")) {
+        	pageSize = TOP_PHOTO_PAGE_SIZE;
+        } 
+        Pageable pageable = new PageRequest(page, pageSize);
+        Page<Metadata> pageMetadata = metadataRepository.findAll(pageable, metadata, -2);
+>>>>>>> c8a0b42aef870c449ae1414199f6d6e8244a54e2
         if (null != pageMetadata) {
             return pageMetadata.getContent();
         }
@@ -270,9 +315,8 @@ public class DocumentController extends BaseController {
     public List<MetadataUtilisateur> searchGlobal(Integer page, Model model, String search) {
         if (page == null || page < 1) {
             page = 0;
-        } else {
-            page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }
+
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
         Page<MetadataUtilisateur> pageMetadata = metadataUtilisateurRepository.findGlobal(pageable, search);
         if (null != pageMetadata) {
@@ -284,9 +328,7 @@ public class DocumentController extends BaseController {
     public List<MetadataUtilisateur> listMetadatas(Integer page, Model model, String metadataType, Integer thematique) {
         if (page == null || page < 1) {
             page = 0;
-        } else {
-            page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
-        }
+        } 
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
         Page<MetadataUtilisateur> pageMetadata = metadataUtilisateurRepository.findAll(pageable, metadataType, thematique);
         if (metadataType.compareTo("1") == 0) {
@@ -334,7 +376,14 @@ public class DocumentController extends BaseController {
         HashMap<String, Object> pp = new HashMap<>();
         pp.put(name + "Debut", 1);
         pp.put(name + "Current", p);
-        int totalePage = new Double(Math.ceil(total.doubleValue() / TOP_DOCUMENT_PAGE_SIZE)).intValue();
+        
+        int pageSize = TOP_DOCUMENT_PAGE_SIZE;
+        
+        if(name.equals("pagePhoto")) {
+        	pageSize = TOP_PHOTO_PAGE_SIZE;
+        }
+        
+        int totalePage = new Double(Math.ceil(total.doubleValue() / pageSize)).intValue();
         pp.put(name + "Fin", totalePage);
         pp.put(name + "TotalElement", total);
         int debut = 1;
@@ -372,9 +421,8 @@ public class DocumentController extends BaseController {
     public List<Post> listYoutubeFile(Integer page, Model model, DOCTYPE docType) {
         if (page == null || page < 1) {
             page = 0;
-        } else {
-            page = page - 1; //Le numéro de page commence toujours par 1 du coté de l'utilisateur final
         }
+
         Pageable pageable = new PageRequest(page, TOP_DOCUMENT_PAGE_SIZE);
         Page<Post> pageYoutubes = postRepository.getYoutubeVideo(pageable);
         if (null != pageYoutubes) {

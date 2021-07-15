@@ -100,7 +100,36 @@
         }
     }
 </style>
+<<<<<<< HEAD
 <div class="wrapper wrapper-content animated fadeInRight">
+=======
+	<div class="wrapper wrapper-content animated fadeInRight">
+
+		<div class="forum-container">
+			<div class="forum-title">
+			<sec:authorize access="isAuthenticated()">
+				<div class="pull-right forum-desc">
+					<c:url value="/secured/post/create" var="addQuestionUrl"/>
+					<a class="add-quest" href="${addQuestionUrl}"><spring:message code="home.ask.question"/></a>
+				</div>
+			</sec:authorize>
+				<h2>
+					<spring:message code="home.topquestions" />
+				</h2>
+			</div>
+			
+			<!-- D Sujet -->
+			<c:forEach items="${topQuestionsPage.content}" var="topQuestion">
+				<post:question topQuestion="${topQuestion}"/>
+			</c:forEach>
+			<!-- F Sujet -->
+
+<!-- 			D Pagination -->
+				<c:url var="pageBaseUrl" value="/"/>
+				<page:pagination currentPage="${topQuestionsPage.number + 1}" page="page" totalPages="${topQuestionsPage.totalPages}" pageBaseUrl="${pageBaseUrl}"/>
+		</div>
+	</div>
+>>>>>>> c8a0b42aef870c449ae1414199f6d6e8244a54e2
 
     <div class="forum-container">
         <div class="forum-title">

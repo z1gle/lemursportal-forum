@@ -580,15 +580,15 @@
         </repository>
         <repository>
             <id>central</id>
-            <url>http://repo.maven.apache.org/maven2</url>
+            <url> https://repo.maven.apache.org/maven2/</url>
         </repository>
         <repository>
             <id>JBoss repository</id>
-            <url>http://repository.jboss.com/maven2/</url>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
         </repository>
         <repository>
             <id>Central maven</id>
-            <url>http://central.maven.org/maven2/</url>
+            <url>https://central.maven.org/maven2/</url>
         </repository>
         <repository>
             <id>JBoss release</id>

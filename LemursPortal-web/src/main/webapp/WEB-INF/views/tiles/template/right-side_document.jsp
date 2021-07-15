@@ -16,7 +16,7 @@
 	<c:url var="postsParThematique" value="/documents?topic=${topThematique.thematique.id}"></c:url>
 		<a href="${postsParThematique}" class="list-group-item">
          <div class="media">
-             <div class="pull-left" style="max-width:200px">
+             <div class="pull-left" style="max-width:180px">
                  <spring:message code="document.thematique.id.${topThematique.thematique.id}"/>
                  <%--<c:out value="${topThematique.thematique.libelle}"/>--%>
              </div>
@@ -38,7 +38,7 @@
 		<c:url value="/post/show/${post.id}" var="questionPageUrl"/>
 		<a href="${questionPageUrl}" class="list-group-item">
          <div class="media">
-             <div class="pull-left">
+             <div class="pull-left" style="max-width:180px">
                  <c:out value="${post.title}"/>
              </div>
              <div class="pull-right">

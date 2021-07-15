@@ -12,6 +12,7 @@
     <h2 class="thema"><a href="#"><spring:message code="home.thematiques"/></a></h2>
 </div>
 <div class="list-group people-group thematique">
+<<<<<<< HEAD
     <c:forEach items="${topThematiques}" var="topThematique">
         <c:url var="postsParThematique" value="/postsParThematique/${topThematique.thematique.id}"></c:url>
         <a href="${postsParThematique}" class="list-group-item">
@@ -26,6 +27,22 @@
             </div>
         </a>
     </c:forEach>
+=======
+	<c:forEach items="${topThematiques}" var="topThematique">
+	<c:url var="postsParThematique" value="/postsParThematique/${topThematique.thematique.id}"></c:url>
+		<a href="${postsParThematique}" class="list-group-item">
+         <div class="media">
+             <div class="pull-left" style="max-width:180px">
+                 <spring:message code="document.thematique.id.${topThematique.thematique.id}"/>
+                 <%--<c:out value="${topThematique.thematique.id}"/>--%>
+             </div>
+             <div class="pull-right">
+                 <c:out value="${topThematique.nombreQuestion}"/>
+             </div>
+         </div>
+     </a>
+	</c:forEach>
+>>>>>>> c8a0b42aef870c449ae1414199f6d6e8244a54e2
 </div>
 <!-- F Thematiques -->
 
@@ -34,6 +51,7 @@
     <h2 class="last-quest"><spring:message code="home.latestquestions"/></h2>
 </div>
 <div class="list-group people-group thematique">
+<<<<<<< HEAD
     <c:forEach items="${lastestPosts}" var="post">
         <c:url value="/post/show/${post.id}" var="questionPageUrl"/>
         <a href="${questionPageUrl}" class="list-group-item">
@@ -47,6 +65,21 @@
             </div>
         </a>
     </c:forEach>
+=======
+	<c:forEach items="${lastestPosts}" var="post">
+		<c:url value="/post/show/${post.id}" var="questionPageUrl"/>
+		<a href="${questionPageUrl}" class="list-group-item">
+         <div class="media">
+             <div class="pull-left" style="max-width:180px">
+                 <c:out value="${post.title}"/>
+             </div>
+             <div class="pull-right">
+                 &gt;
+             </div>
+         </div>
+     </a>
+	</c:forEach>
+>>>>>>> c8a0b42aef870c449ae1414199f6d6e8244a54e2
 </div>
 <!-- F Questions  -->
 
