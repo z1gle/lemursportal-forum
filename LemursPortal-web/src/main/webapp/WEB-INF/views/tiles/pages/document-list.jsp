@@ -1240,6 +1240,4 @@
         });
     }
 
-    $(document).ready(function () {
-    });
 </script>
