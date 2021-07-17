@@ -30,7 +30,7 @@
         <!-- F Sujet -->
         <!-- 			D Pagination -->
         <c:url var="currentBaseUrl" value="/postsParThematique/${thematique.id}"/>
-        <page:pagination currentPage="${postsBythematiquePage.number + 1}" totalPages="${postsBythematiquePage.totalPages}" pageBaseUrl="${currentBaseUrl}"/>
+        <page:pagination currentPage="${postsBythematiquePage.number + 1}" page="page" totalPages="${postsBythematiquePage.totalPages}" pageBaseUrl="${currentBaseUrl}"/>
     </div>
     <script type="text/javascript">
         function updateEdit() {

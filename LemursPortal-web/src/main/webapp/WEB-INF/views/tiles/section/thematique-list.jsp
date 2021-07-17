@@ -74,7 +74,7 @@
 	</c:forEach>
 	<!-- D Pagination -->
 	<c:url var="pageBaseUrl" value="/thematique/list/"/>
-		<page:pagination currentPage="${topThematiquePage.number + 1}" totalPages="${topThematiquePage.totalPages}" pageBaseUrl="${pageBaseUrl}"/>
+		<page:pagination currentPage="${topThematiquePage.number + 1}" page="page" totalPages="${topThematiquePage.totalPages}" pageBaseUrl="${pageBaseUrl}"/>
 			<!-- F Pagination -->
 </div>
 </div>

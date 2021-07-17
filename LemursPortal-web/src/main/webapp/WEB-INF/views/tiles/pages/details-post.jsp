@@ -203,7 +203,7 @@
         </div>
         <!-- 			D Pagination -->
         <c:url var="currentBaseUrl" value="/post/show/${post.id}"/>
-        <page:pagination currentPage="${responsesPage.number + 1}" totalPages="${responsesPage.totalPages}" pageBaseUrl="${currentBaseUrl}"/>
+        <page:pagination currentPage="${responsesPage.number + 1}" page="page" totalPages="${responsesPage.totalPages}" pageBaseUrl="${currentBaseUrl}"/>
     </div>
 </div>
 

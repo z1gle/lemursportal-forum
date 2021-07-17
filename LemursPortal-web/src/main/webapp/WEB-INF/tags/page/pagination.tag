@@ -11,6 +11,8 @@
 	type="java.lang.Integer" description="La page courante"%>
 <%@ attribute name="pageBaseUrl" required="true" rtexprvalue="true"
 	type="java.lang.String" description="L'url de page page courante"%>
+<%@ attribute name="page" required="true" rtexprvalue="true"
+	type="java.lang.String" description="La page courante"%>
 <%
 	int begin = Math.max(1, currentPage - 3);
 	int end = Math.min(begin + 6, totalPages);
@@ -22,10 +24,10 @@
 <c:set var="baseUrl" value="<%=baseUrl%>"/>
 <!-- 			D Pagination -->
 <c:set var="firstUrl"></c:set>
-<c:set var="firstUrl" value="${baseUrl}page=1" />
-<c:set var="lastUrl" value="${baseUrl}page=${totalPages}" />
-<c:set var="prevUrl" value="${baseUrl}page=${currentPage - 1}" />
-<c:set var="nextUrl" value="${baseUrl}page=${currentPage + 1}" />
+<c:set var="firstUrl" value="${baseUrl}${page}=1" />
+<c:set var="lastUrl" value="${baseUrl}${page}=${totalPages}" />
+<c:set var="prevUrl" value="${baseUrl}${page}=${currentPage - 1}" />
+<c:set var="nextUrl" value="${baseUrl}${page}=${currentPage + 1}" />
 
 <ul class="pagination">
 	<c:choose>
@@ -39,7 +41,7 @@
 		</c:otherwise>
 	</c:choose>
 	<c:forEach var="i" begin="${begin}" end="${end}">
-		<c:set var="pageUrl" value="${baseUrl}page=${i}" />
+		<c:set var="pageUrl" value="${baseUrl}${page}=${i}" />
 		<c:choose>
 			<c:when test="${i == currentPage}">
 				<li class="active"><a href="${pageUrl}"><c:out value="${i}" /></a></li>
