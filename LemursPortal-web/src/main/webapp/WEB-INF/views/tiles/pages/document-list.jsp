@@ -180,14 +180,14 @@
                     <div class="box">
                         <!-- D Tab -->
                         <ul id="tab" class="nav nav-tabs userProfileTabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#tab-item-1" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.documents"/></a></li>
-                    <li role="presentation" class=""><a href="#tab-item-4" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="true"><spring:message code="document.header.pictures"/></a></li>
-                    <li role="presentation" class=""><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.videos"/></a></li>
-                    <li role="presentation" class=""><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.audios"/></a></li>
-                    <li role="presentation" class=""><a href="#tab-item-5" aria-controls="tab-item-5" role="tab" data-toggle="tab" aria-expanded="false">Youtube</a></li>                        
+                            <li role="presentation" class="active" onclick="switchToAddDoc()"><a href="#tab-item-1" aria-controls="tab-item-4" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.documents"/></a></li>
+                    <li role="presentation" class="" onclick="switchToAddPhoto()"><a href="#tab-item-4" aria-controls="tab-item-1" role="tab" data-toggle="tab" aria-expanded="true"><spring:message code="document.header.pictures"/></a></li>
+                    <li role="presentation" class="" onclick="switchToAddDoc()"><a href="#tab-item-2" aria-controls="tab-item-2" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.videos"/></a></li>
+                    <li role="presentation" class="" onclick="switchToAddDoc()"><a href="#tab-item-3" aria-controls="tab-item-3" role="tab" data-toggle="tab" aria-expanded="false"><spring:message code="document.header.audios"/></a></li>
+                    <li role="presentation" class="" onclick="switchToAddDoc()"><a href="#tab-item-5" aria-controls="tab-item-5" role="tab" data-toggle="tab" aria-expanded="false">Youtube</a></li>                        
                         <c:choose>
                             <c:when test="${isLoggedInUser}">
-                            <li style="float: right;"><button style="color: white;" class="btn" aria-controls="tab-item-5" role="tab" aria-expanded="false" onclick="operModifAddModal()"><spring:message code="document.add"/></button></li>
+                            <li style="float: right;"><button id="button-add-doc" style="color: white;" class="btn" aria-controls="tab-item-5" role="tab" aria-expanded="false" onclick="operModifAddModal()"><spring:message code="document.add"/></button></li>
                             </c:when>
                             <c:otherwise>
                             </c:otherwise>
@@ -238,7 +238,7 @@
                                             <td>
                                                 <a href="#" onclick="showDetailNew(${publication.id})"><c:out	value="${publication.title}" /></a><br>
                                                 <c:choose>
-                                                    <c:when test="${isLoggedInUser}">
+													<c:when test="${isLoggedInUser}">
                                                         <a onclick="openDetail(${publication.idUtilisateur}, '${publication.userName}', '${publication.userFirstname}', '${publication.userEmail}', '${publication.userPhoto}');" href="#"><span class="user-detail"><c:out value="${publication.userFirstname}" /> <c:out value="${publication.userName}" /></span></a>
                                                     </c:when>
                                                     <c:otherwise>
@@ -351,8 +351,19 @@
                                             color: grey!important;
                                         }
 
+										.edit-photo-document {
+                                            position: absolute;
+                                            right: 35px;
+                                            background-color: #3330!important;
+                                            color: grey!important;
+                                        }
                                         a.delete-photo-document:hover {
-                                            background-color: #bbb!important;
+                                            background-color: red!important;
+                                            color: white!important;
+                                        }
+
+                                        a.edit-photo-document:hover {
+											background-color: #bbb!important;
                                             color: white!important;
                                         }
                                     </style>
@@ -362,10 +373,12 @@
                                                 <c:choose>
                                                     <c:when test="${isLoggedInUser && currentUser.id == publication.idUtilisateur}">
                                                         <a href="#" onclick="openDeleteModal(${pic.id}, '${pic.title.replace("'", "\\'")}')" class="btn delete-photo-document"><i class="fa fa-trash" aria-hidden="true"></i></a>
+														<a href="#" onclick="openModalPhotoManagement(${pic.id})" class="btn edit-photo-document"><i class="fa fa-edit" aria-hidden="true"></i></a>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <sec:authorize access="hasRole('ADMIN')">
                                                             <a href="#" onclick="openDeleteModal(${pic.id}, '${pic.title.replace("'", "\\'")}')" class="btn delete-photo-document"><i class="fa fa-trash" aria-hidden="true"></i></a>
+															<a href="#" onclick="openModalPhotoManagement(${pic.id})" class="btn edit-photo-document"><i class="fa fa-edit" aria-hidden="true"></i></a>
                                                             </sec:authorize>
                                                         </c:otherwise>
                                                     </c:choose>
@@ -456,10 +469,10 @@
                                                         <td><spring:message code="metadata.photo.location"/> :</td>
                                                         <td id="photoLocalisation"></td>
                                                     </tr>
-                                                    <tr>
+<!--                                                    <tr>
                                                         <td><spring:message code="metadata.photo.source"/> :</td>
                                                         <td id="photoSource"></td>
-                                                    </tr>
+                                                    </tr>-->
                                                     <tr>
                                                         <td><spring:message code="metadata.photo.author"/> :</td>
                                                         <td id="photoAuteur"></td>
@@ -500,7 +513,7 @@
                                             <td><c:out	value="${video.title}" /></td>
                                             <td class="text-center">
                                                 <c:url var="videoPageUrl" value="${video.url}"/>
-                                                <a class='btn btn-info btn-xs' href="${videoPageUrl}"><span class="glyphicont"></span><spring:message code="document.video.show"/></a></td>
+												<a class='btn btn-info btn-xs' href="${videoPageUrl}"><span class="glyphicont"></span><spring:message code="document.video.show"/></a></td>
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${isLoggedInUser && currentUser.id == publication.idUtilisateur}">
@@ -980,6 +993,64 @@
                 </div>
             </div>                        
         </div>
+		<!--Modal photo management-->
+        <style>
+            .red {
+                color:red;
+            }
+        </style>
+        <div id="modal-photo-management" class="modal edit-profil-form">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" onclick="closeModalPhotoManagement()">&times;</button>
+                        <h4 class="modal-title"><spring:message code="profil.edit.maj.btn"/>/<spring:message code="document.add_document.title"/></h4>
+                    </div>
+                    <form action="javascript:sendAddDocument();" autocomplete="off">
+                        <div class="modal-body" style="overflow-y: auto;max-height:  500px;">
+                            <div style=" font-size: 10px; color: #999;"><span style="color: red;">NB</span><spring:message code="document.add_document.nb"/></div>
+                            <div id="errorMdp"></div>
+                            <input type="hidden" id="id_photo_manage">
+                            <!--<input type="hidden" id="photo_thematique" value="797298">-->
+                            <input type="hidden" id="photo_type" value="1">
+                            <spring:message code="metadata.photo.title"/> <span class="red">*</span> :
+                            <input type="text" name="photo_title" id="photo_title" class="form-control">
+                            <spring:message code="metadata.photo.date"/>/<spring:message code="metadata.year"/> <span class="red">*</span> :
+                            <input type="text" name="photo_date" id="photo_date" class="form-control">
+                            <spring:message code="metadata.topics"/> <span class="red">*</span> :
+                            <div id="photo_topic_div">
+                                <select title="<spring:message code="metadata.popup.bubble.topics"/>" multiple class="form-control" id="photo_thematique" style="width: 100%!important;">
+                                    <c:forEach items="${topThematiques}" var="topThematique">
+                                        <option value="${topThematique.thematique.id}"><spring:message code="document.thematique.id.${topThematique.thematique.id}"/></option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <spring:message code="metadata.photo.right"/> <span class="red">*</span> :
+                            <input type="text" name="photo_right" id="photo_right" class="form-control">
+                            <spring:message code="metadata.species"/>
+                            <div id="species_div">
+                                <select title="<spring:message code="metadata.popup.bubble.species"/>" multiple class="form-control" id="photo_species" style="width: 100%!important;"></select>
+                            </div>
+                            <spring:message code="metadata.photo.location"/> :
+                            <input type="text" name="photo_location" id="photo_location" class="form-control">
+                            <!--<input type="text" name="photo_source" id="photo_source" class="form-control">-->
+                            <spring:message code="metadata.photo.author"/> :
+                            <input type="text" name="photo_author" id="photo_author" class="form-control">
+                            <div id="photo_file_div">
+                                <spring:message code="global.label.file"/>
+                                <input type="file" class="form-control" id="photo_file">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button style="float: right;" type="button" class="btn btn-default" data-dismiss="modal" onclick="closeModalPhotoManagement()"><spring:message code="global.btn.cancel"/></button>
+                            <button style="float: right;" type="button" onclick="sendPhoto()" class="btn btn-default" data-dismiss="modal"><spring:message code="global.btn.save"/></button>
+                            <div id="delete"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>                        
+        </div>
     </div>        
 </div>
 <script>
@@ -987,7 +1058,7 @@
         $('.removable-row').remove();
         $('#photoDate').text('');
         $('#photoLocalisation').text('');
-        $('#photoSource').text('');
+//        $('#photoSource').text('');
         $('#photoAuteur').text('');
         $('#photoRight').text('');
         $.get("metadata/" + id, {}, function (data) {
@@ -995,21 +1066,31 @@
             console.log(data);
             $('#photoDate').text(data[0].value.date);
             $('#photoLocalisation').text(data[0].value.coverage);
-            $('#photoSource').text(data[0].value.source);
+//            $('#photoSource').text(data[0].value.source);
             $('#photoAuteur').text(data[0].value.creator);
             $('#photoRight').text(data[0].value.rights);
             $('#photoSpecies').text(data[0].value.title);
 //            $('#deletePhoto').on('click', openDeleteModal(id, data[0].title));
-            document.getElementById('deletePhoto').html = '<span id="deletePhoto" style="float: left; margin-left: 35px;" class="closeP"><i onclick="openDeleteModal(' + id + ', \'' + data[0].value.title + '\')" class="fa fa-trash-o"></i></span>'
+//            document.getElementById('deletePhoto').html = '<span id="deletePhoto" style="float: left; margin-left: 35px;" class="closeP"><i onclick="openDeleteModal(' + id + ', \'' + data[0].value.title + '\')" class="fa fa-trash-o"></i></span>'
         }).done(function () {
             $.getJSON('metadata/' + id + '/taxonomis', {}, function (data, textStatus) {
                 if (data.length > 0) {
                     var species = '';
                     for (var v = 0; v < data.length; v++) {
-                        species += data[v].value.scientificname + '<br>';
+                        species += data[v].scientificname + '<br>';
                     }
                     drawRow('Species :', species, 'photoTable');
                 }
+			}).done(function () {
+                $.getJSON('metadata/' + id + '/topics', {}, function (data, textStatus) {
+                    if (data.length > 0) {
+                        var species = '';
+                        for (var v = 0; v < data.length; v++) {
+                            species += data[v].libelle + '<br>';
+                        }
+                        drawRow('Topics :', species, 'photoTable');
+                    }
+                });
             });
         });
         document.getElementById("img01").innerHTML = '<img class="modalP-content" src="' + url + '">';
@@ -1082,7 +1163,7 @@
     }
 
     function operModifAddModal() {
-        populate();
+        populate('species');
         resetModalModifAjout();
         openModal('modal-ajout-document');
     }
@@ -1334,6 +1415,148 @@
             }
         });
     }
+
+    function checkIfDoc() {
+        if ($('#type').val() == 4) {
+            $('.onlyDocument').show();
+        } else {
+            $('.onlyDocument').hide();
+        }
+    }
+
+    function openModalPhotoManagement(idPhoto) {
+        if (parseInt(idPhoto) >= 0) {
+            $('#id_photo_manage').val(idPhoto);
+            $.get("metadata/" + idPhoto + '/all', {}, function (data) {
+                if (data.metadata.date != '') {
+                    $('#photo_date').val(data.metadata.date);
+                } else {
+                    $('#photo_date').val(data.metadata.year);
+                }
+                $('#photo_location').val(data.metadata.coverage);
+                $('#photo_source').val(data.metadata.source);
+                $('#photo_author').val(data.metadata.creator);
+                $('#photo_right').val(data.metadata.rights);
+                $('#photo_title').val(data.metadata.title);
+                $('#photo_file_div').hide();
+
+                populateWithPredefined('photo_species', data.taxonomi, 'photo_thematique', data.topics);
+            });
+        } else {
+            $('#photo_file_div').show();
+            populate('photo_species');
+        }
+        openModal('modal-photo-management');
+    }
+
+    function closeModalPhotoManagement() {
+        $('#id_photo_manage').val('');
+        $('#photo_title').val('');
+        $('#photo_date').val('');
+        $('#photo_location').val('');
+        $('#photo_source').val('');
+        $('#photo_author').val('');
+        $('#photo_right').val('');
+        $('#photo_file').val('');
+        $('#species_div').replaceWith('<div id="species_div"><select title="<spring:message code="metadata.popup.bubble.species"/>" multiple class="form-control" id="photo_species" style="width: 100%!important;"></select></div>');
+        $('#photo_topic_div').replaceWith('<div id="photo_topic_div"><select title="<spring:message code="metadata.popup.bubble.topics"/>" multiple class="form-control" id="photo_thematique" style="width: 100%!important;"><c:forEach items="${topThematiques}" var="topThematique"><option value="${topThematique.thematique.id}"><spring:message code="document.thematique.id.${topThematique.thematique.id}"/></option></c:forEach></select></div>');
+        closeModal('modal-photo-management');
+    }
+
+    function switchToAddPhoto() {
+        $('#button-add-doc').replaceWith('<button id="button-add-doc" style="color: white;" class="btn" aria-controls="tab-item-5" role="tab" aria-expanded="false" onclick="openModalPhotoManagement(-99)"><spring:message code="document.add"/></button>');
+    }
+    function switchToAddDoc() {
+        $('#button-add-doc').replaceWith('<button id="button-add-doc" style="color: white;" class="btn" aria-controls="tab-item-5" role="tab" aria-expanded="false" onclick="operModifAddModal()"><spring:message code="document.add"/></button>');
+    }
+
+    function extractYearFromDate(date) {
+        var dateOrYear = date;
+        var dateOrYearSplited = dateOrYear.split(/-|[/]|_/);
+        var i = 0;
+        for (i = 0; i < dateOrYearSplited.length; i++) {
+            if (dateOrYearSplited[i].length >= 4) {
+                if (parseInt(dateOrYearSplited[i].substring(0, 2)) < 21) {
+                    return dateOrYearSplited[i];
+                }
+            }
+        }
+        if (i > dateOrYearSplited.length) {
+            return '';
+        }
+    }
+
+    function sendPhoto() {
+        $('#photo_title').attr('style', 'border-color: #ccc !important');
+        $('#photo_date').attr('style', 'border-color: #ccc !important');
+        $('#photo_right').attr('style', 'border-color: #ccc !important');
+        var error = 0;
+        if ($('#photo_title').val() == '' || $('#photo_title').val() == null ||
+                $('#photo_title').val() == undefined) {
+            $('#photo_title').attr('style', 'border-color: red !important');
+            error++;
+        }
+        if ($('#photo_date').val() == '' || $('#photo_date').val() == null ||
+                $('#photo_date').val() == undefined) {
+            $('#photo_date').attr('style', 'border-color: red !important');
+            error++;
+        }
+        if ($('#photo_right').val() == '' || $('#photo_right').val() == null ||
+                $('#photo_right').val() == undefined) {
+            $('#photo_right').attr('style', 'border-color: red !important');
+            error++;
+        }
+        if (error == 0) {
+            var formData = new FormData();
+            var id = $('#id_photo_manage').val();
+            if (id !== undefined && id !== null && id !== '' && id >= 0) {
+                formData.append('id', id);
+                console.log(id);
+            } else {
+                formData.append('file', $('#photo_file').get(0).files[0]);
+                console.log($('#photo_file'));
+            }
+            var datePhoto = $('#photo_date').val();
+            formData.append('bibliographicResource', '');
+            formData.append('date', datePhoto);
+            formData.append('idThematique', $('#photo_thematique').val());
+            formData.append('coverage', $('#photo_location').val());
+            formData.append('description', '');
+            formData.append('language', '');
+            formData.append('relation', '');
+            formData.append('source', '');
+            formData.append('subject', '');
+            formData.append('title', $('#photo_title').val());
+            formData.append('format', '');
+            formData.append('fileFormat', '');
+            formData.append('identifier', '');
+            formData.append('type', $('#photo_type').val());
+            formData.append('contributor', '');
+            formData.append('creator', $('#photo_author').val());
+            formData.append('publisher', '');
+            formData.append('rights', $('#photo_right').val());
+            formData.append('year', extractYearFromDate(datePhoto));
+            formData.append('url', '');
+            formData.append('species', $('#photo_species').val());
+            $.ajax({
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                url: 'secured/document/post',
+                success: function (json) {
+                    closeModalPhotoManagement();
+                    console.log('ito ilay id -' + id + '-');
+                    if (id == undefined || id == null || id == '' || id >= 0) {
+                        window.location.reload();
+                    }
+                },
+                error: function (json) {
+                    $('#errorMdp').html("<p style='color: red;'> " + "Le téléchargement du document est un échec. Veuiller réessayer.</p>");
+                }
+            });
+        }
+    }
 </script>
 <script src="${resourcesPath}/js/autocompleteForLemurs.min.js"></script>
 <!--Appel de la fonction-->
@@ -1362,23 +1585,66 @@
 <link rel="stylesheet" href="${resourcesPath}/css/bootstrap-multiselect.css" type="text/css">
 <script type="text/javascript" src="${resourcesPath}/js/bootstrap-multiselect.js"></script>
 <script type="text/javascript">
-    function populate() { 
+    function populate(id) { 
         $('#id_thematique').multiselect({
             maxHeight: 158,
             buttonWidth: '100%'
         });
+		$('#photo_thematique').multiselect({
+            maxHeight: 158,
+            buttonWidth: '100%'
+        });
         $.getJSON('https://www.lemursportal.org/species/getallTaxo', {}, function (data, textStatus) {
-            var el = $('select#species');
+            var el = $('select#' + id);
             el.html('');  // empty the select
             $.each(data, function (idx, jsonData) {
                 el.append($('<option style="background-color: #f9efc9;"></option>').val(jsonData.id).html(jsonData.scientificname));
             });
-            $('#species').multiselect({
+            $('#' + id).multiselect({
                 maxHeight: 316,
                 enableFiltering: true,
                 enableCaseInsensitiveFiltering: true,
                 buttonWidth: '100%'
             });
+        });
+    }
+
+    function populateWithPredefined(id, list, id2, listTopic) {
+        $.getJSON('https://www.lemursportal.org/species/getallTaxo', {}, function (data, textStatus) {
+            var el = $('select#' + id);
+            el.html('');  // empty the select
+            $.each(data, function (idx, jsonData) {
+                el.append($('<option style="background-color: #f9efc9;"></option>').val(jsonData.id).html(jsonData.scientificname));
+            });
+
+            var taxx = list;
+            if (taxx.length > 0) {
+                for (var v = 0; v < taxx.length; v++) {
+                    $('#' + id + ' option[value=' + taxx[v].id + ']').attr('selected', 'true');
+                }
+            }
+
+            $('#' + id).multiselect({
+                maxHeight: 316,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                buttonWidth: '100%'
+            });
+            
+            taxx = listTopic;
+            if (taxx.length > 0) {
+                for (var v = 0; v < taxx.length; v++) {
+                    $('#' + id2 + ' option[value=' + taxx[v].id + ']').attr('selected', 'true');
+                }
+            }
+
+            $('#' + id2).multiselect({
+                maxHeight: 316,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                buttonWidth: '100%'
+            });
+            
         });
     }
 

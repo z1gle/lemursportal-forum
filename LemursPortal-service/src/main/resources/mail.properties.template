@@ -1,0 +1,15 @@
+# configuration mail - rename this file to mail.properties
+application.mail.from=no-reply@lemursportal-wcs.org
+mail.username=testmailmahery@gmail.com
+mail.password=maheryapm2016
+mail.transport.protocol=smtp
+mail.smtp.host=smtp.gmail.com
+mail.smtp.port=587
+mail.smtp.auth=true
+mail.smtp.starttls.enable=true
+mail.debug=true
+# template
+template.freemaker.path=/fmtemplates/
+# sujet mail
+mail.notification.question.subject=Une nouvelle question vient d'�tre post�e
+mail.notification.thematique.subject=Une nouvelle th�matique a �t� cr��e
