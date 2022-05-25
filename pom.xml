@@ -13,7 +13,7 @@
         <maven.compiler.target>1.7</maven.compiler.target>
         <!-- <springframework.version>4.0.6.RELEASE</springframework.version> -->
         <springframework.version>4.3.6.RELEASE</springframework.version>
-        <spring.security.version>4.0.1.RELEASE</spring.security.version>
+        <spring.security.version>5.5.7</spring.security.version>
         <spring.security.oauth.version>2.0.12.RELEASE</spring.security.oauth.version>
         <spring.social.version>1.1.0.RELEASE</spring.social.version>
         <spring.social.facebook.version>2.0.3.RELEASE</spring.social.facebook.version>
