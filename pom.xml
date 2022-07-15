@@ -34,7 +34,7 @@
         <javax.inject.version>1</javax.inject.version>
         <log.slf4j.version>1.7.13</log.slf4j.version>
         <log.logback.version>1.1.3</log.logback.version>
-        <jackson.version>2.6.3</jackson.version>
+        <jackson.version>2.12.6.1</jackson.version>
 
         <google.guava.version>18.0</google.guava.version>
         <main.basedir>${project.parent.basedir}</main.basedir>
